@@ -27,7 +27,6 @@ export default function ContactPage() {
         photoSrc="/photos/residences-villa.jpg"
         photoAlt="An evening at Tavaro"
         placeholder="ph-1"
-        minHeight="52vh"
         breadcrumbLabel="Contact"
         eyebrow="Get in Touch"
         title={

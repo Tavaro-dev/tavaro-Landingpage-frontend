@@ -46,7 +46,6 @@ export default function AboutPage() {
         photoSrc="/photos/drone-hero.jpg"
         photoAlt="The Tavaro world, from above"
         placeholder="ph-1"
-        minHeight="64vh"
         breadcrumbLabel="About"
         eyebrow="About Tavaro"
         title={

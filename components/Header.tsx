@@ -5,11 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "./Icon";
 import { ThemeToggle } from "./ThemeToggle";
+import { CartButton } from "./CartButton";
 import { NAV_ITEMS } from "@/lib/nav";
 
 export default function Header() {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const showCart = pathname === "/resorts/accommodations";
   const [scrolled, setScrolled] = useState(false);
   const [pastPillarStrip, setPastPillarStrip] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -86,6 +88,7 @@ export default function Header() {
           <Link href="/contact" className="nav-cta">
             Enquire
           </Link>
+          {showCart && <CartButton />}
           <ThemeToggle />
         </nav>
         <button
@@ -119,6 +122,7 @@ export default function Header() {
           <Link href="/contact" onClick={closeMobile}>
             Enquire
           </Link>
+          {showCart && <CartButton />}
           <ThemeToggle />
         </div>
       </div>

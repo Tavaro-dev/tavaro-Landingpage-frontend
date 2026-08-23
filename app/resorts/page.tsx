@@ -4,6 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { OfferHead } from "@/components/OfferHead";
 import { SplitSection } from "@/components/SplitSection";
 import { Icon } from "@/components/Icon";
+import { RoomAvailability } from "@/components/RoomAvailability";
 import StickyCta from "@/components/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -33,10 +34,12 @@ export default function ResortsPage() {
         titleSize="clamp(38px,6.4vw,84px)"
         lede="Destinations for stays, celebrations, culinary experiences, coffee, movement and gathering — without having to go far."
         ctas={[
-          { label: "Book Your Stay", href: "#stay", solid: true },
+          { label: "Book Your Stay", href: "#availability", solid: true },
           { label: "Plan Your Event", href: "#celebrate" },
         ]}
       />
+
+      <RoomAvailability />
 
       {/* Intro */}
       <section className="section on-dark tight">

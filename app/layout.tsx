@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+import { CartDrawer } from "@/components/CartDrawer";
+import { CartProvider } from "@/lib/cart";
 import { SITE_URL } from "@/lib/metadata";
 import "./globals.css";
 
@@ -42,9 +44,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${hypatia.variable} ${archivo.variable}`} suppressHydrationWarning>
       <body>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-        <Header />
-        <PageTransition>{children}</PageTransition>
-        <Footer />
+        <CartProvider>
+          <Header />
+          <PageTransition>{children}</PageTransition>
+          <Footer />
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

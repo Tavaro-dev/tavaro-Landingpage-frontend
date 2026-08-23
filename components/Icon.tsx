@@ -52,6 +52,50 @@ const SVG_ICONS = {
       <circle cx="24" cy="19" r="4.5" stroke="currentColor" strokeWidth="1.1" />
     </svg>
   ),
+  bed: (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 18v-7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7" stroke="currentColor" strokeWidth="1.3" />
+      <path d="M2 18v2M22 18v2M2 13h20" stroke="currentColor" strokeWidth="1.3" />
+      <rect x="4" y="9" width="7" height="4" rx="1" stroke="currentColor" strokeWidth="1.2" />
+    </svg>
+  ),
+  expand: (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M9 3H3v6M15 3h6v6M15 21h6v-6M9 21H3v-6"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+  "chevron-left": (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  "chevron-right": (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  bag: (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 8h12l1 13H5L6 8Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" strokeWidth="1.3" />
+    </svg>
+  ),
+  close: (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 5l14 14M19 5L5 19" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  ),
+  play: (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 4.5v15l14-7.5-14-7.5Z" fill="currentColor" />
+    </svg>
+  ),
 } as const;
 
 type BrandIconName = keyof typeof BRAND_ICONS;
