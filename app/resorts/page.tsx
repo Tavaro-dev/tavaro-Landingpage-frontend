@@ -5,6 +5,7 @@ import { OfferHead } from "@/components/OfferHead";
 import { SplitSection } from "@/components/SplitSection";
 import { Icon } from "@/components/Icon";
 import { RoomAvailability } from "@/components/RoomAvailability";
+import { EnquireButton } from "@/components/EnquireButton";
 import StickyCta from "@/components/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -33,10 +34,8 @@ export default function ResortsPage() {
         }
         titleSize="clamp(38px,6.4vw,84px)"
         lede="Destinations for stays, celebrations, culinary experiences, coffee, movement and gathering — without having to go far."
-        ctas={[
-          { label: "Book Your Stay", href: "#availability", solid: true },
-          { label: "Plan Your Event", href: "#celebrate" },
-        ]}
+        ctas={[{ label: "Book Your Stay", href: "#availability", solid: true }]}
+        extraCta={<EnquireButton label="Plan Your Event" className="btn" />}
       />
 
       <RoomAvailability />
@@ -99,9 +98,7 @@ export default function ResortsPage() {
               <li>Multiple venues, varying capacities</li>
               <li>End-to-end event planning support</li>
             </ul>
-            <Link href="/contact" className="btn">
-              Plan Your Event <span className="btn-arrow">→</span>
-            </Link>
+            <EnquireButton label="Plan Your Event" className="btn" showArrow />
           </SplitSection>
         </div>
       </section>

@@ -1,9 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 
 export default function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
+  // Generic field names ("name", "email"...) would collide if this form is
+  // ever mounted more than once on a page — prefix every id/htmlFor pair
+  // with a per-instance id instead of hardcoding them.
+  const uid = useId();
+  const fieldId = (field: string) => `${uid}-${field}`;
 
   return (
     <form
@@ -15,20 +20,20 @@ export default function ContactForm() {
     >
       <div className="form-grid">
         <div className="field">
-          <label htmlFor="name">Full Name</label>
-          <input id="name" name="name" type="text" autoComplete="name" required disabled={submitted} />
+          <label htmlFor={fieldId("name")}>Full Name</label>
+          <input id={fieldId("name")} name="name" type="text" autoComplete="name" required disabled={submitted} />
         </div>
         <div className="field">
-          <label htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" autoComplete="email" required disabled={submitted} />
+          <label htmlFor={fieldId("email")}>Email</label>
+          <input id={fieldId("email")} name="email" type="email" autoComplete="email" required disabled={submitted} />
         </div>
         <div className="field">
-          <label htmlFor="phone">Phone</label>
-          <input id="phone" name="phone" type="tel" autoComplete="tel" disabled={submitted} />
+          <label htmlFor={fieldId("phone")}>Phone</label>
+          <input id={fieldId("phone")} name="phone" type="tel" autoComplete="tel" disabled={submitted} />
         </div>
         <div className="field">
-          <label htmlFor="interest">I&apos;m interested in</label>
-          <select id="interest" name="interest" defaultValue="Booking a Stay" disabled={submitted}>
+          <label htmlFor={fieldId("interest")}>I&apos;m interested in</label>
+          <select id={fieldId("interest")} name="interest" defaultValue="Booking a Stay" disabled={submitted}>
             <option>Booking a Stay</option>
             <option>Planning an Event</option>
             <option>A Corporate Experience</option>
@@ -39,8 +44,8 @@ export default function ContactForm() {
           </select>
         </div>
         <div className="field full">
-          <label htmlFor="message">Message</label>
-          <textarea id="message" name="message" rows={4} disabled={submitted} />
+          <label htmlFor={fieldId("message")}>Message</label>
+          <textarea id={fieldId("message")} name="message" rows={4} disabled={submitted} />
         </div>
       </div>
       <button type="submit" className="btn solid" style={{ marginTop: 28 }} disabled={submitted}>

@@ -1,33 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useId, useState, type FormEvent } from "react";
 import { useCart } from "@/lib/cart";
 import { ENHANCEMENTS } from "@/lib/enhancements";
 import { OrderSummary } from "./OrderSummary";
+import { Stepper } from "./Stepper";
 
 const STEPS = ["Enhance", "Complete", "Confirm"] as const;
-
-function Stepper({ current }: { current: number }) {
-  return (
-    <div className="checkout-stepper">
-      {STEPS.map((label, i) => {
-        const stepNum = i + 1;
-        return (
-          <div className="checkout-step" key={label}>
-            <span className={`checkout-step-circle${stepNum <= current ? " active" : ""}`}>{stepNum}</span>
-            <span className={`checkout-step-label${stepNum <= current ? " active" : ""}`}>{label}</span>
-            {i < STEPS.length - 1 && <span className="checkout-step-line" />}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 const ENHANCEMENT_CATEGORIES = Array.from(new Set(ENHANCEMENTS.map((e) => e.category)));
 
 export function CheckoutFlow() {
+  // Prefix ids per instance so this form stays safe to mount more than once.
+  const uid = useId();
+  const fieldId = (field: string) => `${uid}-${field}`;
   const { items, clear } = useCart();
   const [step, setStep] = useState(1);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -95,7 +82,7 @@ export function CheckoutFlow() {
 
   return (
     <>
-      <Stepper current={step} />
+      <Stepper steps={STEPS} current={step} />
 
       <div className="checkout-layout">
         <div className="checkout-main">
@@ -156,16 +143,16 @@ export function CheckoutFlow() {
 
               <div className="form-grid" style={{ marginTop: 30 }}>
                 <div className="field">
-                  <label htmlFor="co-name">Full Name</label>
-                  <input id="co-name" name="name" type="text" autoComplete="name" required />
+                  <label htmlFor={fieldId("name")}>Full Name</label>
+                  <input id={fieldId("name")} name="name" type="text" autoComplete="name" required />
                 </div>
                 <div className="field">
-                  <label htmlFor="co-email">Email</label>
-                  <input id="co-email" name="email" type="email" autoComplete="email" required />
+                  <label htmlFor={fieldId("email")}>Email</label>
+                  <input id={fieldId("email")} name="email" type="email" autoComplete="email" required />
                 </div>
                 <div className="field full">
-                  <label htmlFor="co-phone">Phone</label>
-                  <input id="co-phone" name="phone" type="tel" autoComplete="tel" required />
+                  <label htmlFor={fieldId("phone")}>Phone</label>
+                  <input id={fieldId("phone")} name="phone" type="tel" autoComplete="tel" required />
                 </div>
               </div>
 
@@ -176,13 +163,13 @@ export function CheckoutFlow() {
 
               <div className="form-grid">
                 <div className="field full">
-                  <label htmlFor="co-card-name">Name on Card</label>
-                  <input id="co-card-name" name="cc-name" type="text" autoComplete="cc-name" required />
+                  <label htmlFor={fieldId("card-name")}>Name on Card</label>
+                  <input id={fieldId("card-name")} name="cc-name" type="text" autoComplete="cc-name" required />
                 </div>
                 <div className="field full">
-                  <label htmlFor="co-card-number">Card Number</label>
+                  <label htmlFor={fieldId("card-number")}>Card Number</label>
                   <input
-                    id="co-card-number"
+                    id={fieldId("card-number")}
                     name="cc-number"
                     type="text"
                     inputMode="numeric"
@@ -192,9 +179,9 @@ export function CheckoutFlow() {
                   />
                 </div>
                 <div className="field">
-                  <label htmlFor="co-card-expiry">Expiry (MM/YY)</label>
+                  <label htmlFor={fieldId("card-expiry")}>Expiry (MM/YY)</label>
                   <input
-                    id="co-card-expiry"
+                    id={fieldId("card-expiry")}
                     name="cc-exp"
                     type="text"
                     inputMode="numeric"
@@ -204,9 +191,9 @@ export function CheckoutFlow() {
                   />
                 </div>
                 <div className="field">
-                  <label htmlFor="co-card-cvv">CVV</label>
+                  <label htmlFor={fieldId("card-cvv")}>CVV</label>
                   <input
-                    id="co-card-cvv"
+                    id={fieldId("card-cvv")}
                     name="cc-csc"
                     type="text"
                     inputMode="numeric"

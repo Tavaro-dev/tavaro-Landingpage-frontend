@@ -14,6 +14,7 @@ export function PageHero({
   titleMaxWidth = "16ch",
   lede,
   ctas,
+  extraCta,
 }: {
   photoSrc: string;
   photoAlt: string;
@@ -26,6 +27,7 @@ export function PageHero({
   titleMaxWidth?: string;
   lede?: ReactNode;
   ctas?: { label: string; href: string; solid?: boolean }[];
+  extraCta?: ReactNode;
 }) {
   const style: CSSProperties | undefined = minHeight ? { minHeight } : undefined;
 
@@ -48,13 +50,14 @@ export function PageHero({
             {lede}
           </p>
         )}
-        {ctas && (
+        {(ctas || extraCta) && (
           <div className="hero-cta-row">
-            {ctas.map((cta) => (
+            {ctas?.map((cta) => (
               <Link key={cta.href + cta.label} href={cta.href} className={`btn${cta.solid ? " solid" : ""}`}>
                 {cta.label}
               </Link>
             ))}
+            {extraCta}
           </div>
         )}
       </div>

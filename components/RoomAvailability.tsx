@@ -1,7 +1,13 @@
+import { useId } from "react";
 import { Reveal } from "./Reveal";
 import { RoomCards } from "./RoomCards";
 
 export function RoomAvailability() {
+  // Prefix ids per instance so this form stays safe to mount more than once
+  // on a page (useId works during server rendering too, no "use client" needed).
+  const uid = useId();
+  const fieldId = (field: string) => `${uid}-${field}`;
+
   return (
     <section className="section on-panel tight" id="availability">
       <div className="container">
@@ -20,20 +26,20 @@ export function RoomAvailability() {
         <Reveal className="availability-panel">
           <form className="availability-search" action="/resorts/accommodations" method="get">
             <div className="availability-field">
-              <label htmlFor="checkin">Check-in</label>
-              <input id="checkin" name="checkin" type="date" required />
+              <label htmlFor={fieldId("checkin")}>Check-in</label>
+              <input id={fieldId("checkin")} name="checkin" type="date" required />
             </div>
             <div className="availability-field">
-              <label htmlFor="checkout">Check-out</label>
-              <input id="checkout" name="checkout" type="date" required />
+              <label htmlFor={fieldId("checkout")}>Check-out</label>
+              <input id={fieldId("checkout")} name="checkout" type="date" required />
             </div>
             <div className="availability-field">
-              <label htmlFor="guests">Guests</label>
-              <input id="guests" name="guests" type="number" min={1} defaultValue={2} />
+              <label htmlFor={fieldId("guests")}>Guests</label>
+              <input id={fieldId("guests")} name="guests" type="number" min={1} defaultValue={2} />
             </div>
             <div className="availability-field">
-              <label htmlFor="roomType">Room Type</label>
-              <select id="roomType" name="roomType" defaultValue="Any">
+              <label htmlFor={fieldId("roomType")}>Room Type</label>
+              <select id={fieldId("roomType")} name="roomType" defaultValue="Any">
                 <option>Any</option>
                 <option>Executive Rooms</option>
                 <option>Suites</option>
