@@ -5,8 +5,8 @@ import { OfferHead } from "@/components/OfferHead";
 import { SplitSection } from "@/components/SplitSection";
 import { Icon } from "@/components/Icon";
 import { RoomAvailability } from "@/components/RoomAvailability";
-import { EnquireButton } from "@/components/EnquireButton";
 import StickyCta from "@/components/StickyCta";
+import { PlanEventButton } from "@/components/PlanEventButton";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
@@ -32,10 +32,19 @@ export default function ResortsPage() {
             yet close to you
           </>
         }
-        titleSize="clamp(38px,6.4vw,84px)"
+        titleSize="clamp(34px,4.2vw,54px)"
         lede="Destinations for stays, celebrations, culinary experiences, coffee, movement and gathering — without having to go far."
-        ctas={[{ label: "Book Your Stay", href: "#availability", solid: true }]}
-        extraCta={<EnquireButton label="Plan Your Event" className="btn" />}
+        ctas={[
+          { label: "Book Your Stay", href: "#availability", solid: true },
+          { label: "Plan Your Event", href: "#celebrate" },
+        ]}
+        quickNav={[
+          { label: "Location", href: "#location", icon: "location" },
+          { label: "Photos & Videos", href: "#gallery", icon: "photos" },
+          { label: "Facilities & Amenities", href: "#facilities", icon: "facilities" },
+          { label: "Dining", href: "#culinary", icon: "dining" },
+          { label: "Things to do", href: "#things-to-do", icon: "compass" },
+        ]}
       />
 
       <RoomAvailability />
@@ -98,13 +107,13 @@ export default function ResortsPage() {
               <li>Multiple venues, varying capacities</li>
               <li>End-to-end event planning support</li>
             </ul>
-            <EnquireButton label="Plan Your Event" className="btn" showArrow />
+            <PlanEventButton />
           </SplitSection>
         </div>
       </section>
 
       {/* 03 — Culinary Experience */}
-      <section className="offer-block on-dark">
+      <section className="offer-block on-dark" id="culinary">
         <div className="container">
           <OfferHead num="03 — Culinary Experience" heading="The Tavaro Table" />
           <SplitSection

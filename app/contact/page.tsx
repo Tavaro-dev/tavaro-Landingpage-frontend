@@ -77,21 +77,21 @@ export default function ContactPage() {
               </p>
               <div style={{ marginTop: 40, display: "flex", flexDirection: "column", gap: 16 }}>
                 <a
-                  href="tel:+914012345678"
+                  href="tel:+919989983029"
                   className="text-link"
                   style={{ borderColor: "rgba(28,23,18,.25)", color: "var(--ink)" }}
                 >
-                  +91 40 1234 5678
+                  +91 998 998 3029
                 </a>
                 <a
-                  href="mailto:hello@tavaro.com"
+                  href="mailto:celebrate@tavaro.in"
                   className="text-link"
                   style={{ borderColor: "rgba(28,23,18,.25)", color: "var(--ink)", textTransform: "none" }}
                 >
-                  hello@tavaro.com
+                  celebrate@tavaro.in
                 </a>
                 <span style={{ fontSize: 13, color: "var(--muted-on-light)" }}>
-                  Tavaro Resorts, Kokapet, Hyderabad
+                  Kokapet, Hyderabad
                 </span>
               </div>
             </div>

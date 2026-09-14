@@ -1,10 +1,23 @@
-import { useId } from "react";
+"use client";
+
+import { useId, useState } from "react";
 import { Reveal } from "./Reveal";
 import { RoomCards } from "./RoomCards";
+import { CustomDatePicker } from "./CustomDatePicker";
+import { CustomSelect } from "./CustomSelect";
+
+const ROOM_TYPE_OPTIONS = [
+  { value: "Any", label: "Any Room Type" },
+  { value: "Executive Rooms", label: "Executive Rooms" },
+  { value: "Suites", label: "Suites" },
+  { value: "Tavaro House", label: "Tavaro House" },
+];
 
 export function RoomAvailability() {
-  // Prefix ids per instance so this form stays safe to mount more than once
-  // on a page (useId works during server rendering too, no "use client" needed).
+  const [checkin, setCheckin] = useState("");
+  const [checkout, setCheckout] = useState("");
+  const [roomType, setRoomType] = useState("Any");
+
   const uid = useId();
   const fieldId = (field: string) => `${uid}-${field}`;
 
@@ -27,11 +40,24 @@ export function RoomAvailability() {
           <form className="availability-search" action="/resorts/accommodations" method="get">
             <div className="availability-field">
               <label htmlFor={fieldId("checkin")}>Check-in</label>
-              <input id={fieldId("checkin")} name="checkin" type="date" required />
+              <CustomDatePicker
+                id={fieldId("checkin")}
+                value={checkin}
+                placeholder="Select check-in"
+                required
+                onChange={(val) => setCheckin(val)}
+              />
             </div>
             <div className="availability-field">
               <label htmlFor={fieldId("checkout")}>Check-out</label>
-              <input id={fieldId("checkout")} name="checkout" type="date" required />
+              <CustomDatePicker
+                id={fieldId("checkout")}
+                value={checkout}
+                placeholder="Select check-out"
+                minDate={checkin}
+                required
+                onChange={(val) => setCheckout(val)}
+              />
             </div>
             <div className="availability-field">
               <label htmlFor={fieldId("guests")}>Guests</label>
@@ -39,12 +65,12 @@ export function RoomAvailability() {
             </div>
             <div className="availability-field">
               <label htmlFor={fieldId("roomType")}>Room Type</label>
-              <select id={fieldId("roomType")} name="roomType" defaultValue="Any">
-                <option>Any</option>
-                <option>Executive Rooms</option>
-                <option>Suites</option>
-                <option>Tavaro House</option>
-              </select>
+              <CustomSelect
+                id={fieldId("roomType")}
+                value={roomType}
+                options={ROOM_TYPE_OPTIONS}
+                onChange={(val) => setRoomType(val)}
+              />
             </div>
             <button type="submit" className="btn solid availability-submit">
               Check Availability

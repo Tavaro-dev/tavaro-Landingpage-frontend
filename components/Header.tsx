@@ -81,11 +81,11 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link href="/about" className={pathname === "/about" ? "active" : ""}>
-              About
-            </Link>
           </div>
-          <Link href="/contact" className="nav-cta">
+          <Link href="/about" className={`nav-cta${pathname === "/about" ? " active" : ""}`}>
+            About
+          </Link>
+          <Link href="/contact" className="nav-cta outline">
             Enquire
           </Link>
           {showCart && <CartButton />}
@@ -116,10 +116,7 @@ export default function Header() {
           About
         </Link>
         <div className="mobile-sub">
-          <Link href="/contact" onClick={closeMobile}>
-            Contact
-          </Link>
-          <Link href="/contact" onClick={closeMobile}>
+          <Link href="/contact" className="nav-cta outline" onClick={closeMobile}>
             Enquire
           </Link>
           {showCart && <CartButton />}

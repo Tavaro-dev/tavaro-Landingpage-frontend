@@ -40,6 +40,14 @@ const CATEGORIES: TriCardData[] = [
     tags: ["Yoga", "Breathwork", "Meditation", "Retreats", "Sound"],
     cta: { label: "Explore Wellness Experiences", href: "/wellness" },
   },
+  {
+    id: "celebrations",
+    icon: "celebration",
+    heading: "Celebrations",
+    body: "Weddings, milestone anniversaries, birthday gatherings and personal celebrations created across Tavaro's lawns, banquet spaces and private dining rooms.",
+    tags: ["Weddings", "Milestones", "Banquets", "Private Parties"],
+    cta: { label: "Plan a Celebration", href: "/resorts#celebrate" },
+  },
 ];
 
 export default function ExperiencesPage() {
@@ -58,18 +66,20 @@ export default function ExperiencesPage() {
             extraordinary
           </>
         }
-        titleSize="clamp(38px,6.4vw,84px)"
+        titleSize="clamp(34px,4.2vw,54px)"
         lede="Tavaro curates and creates experiences — not just spaces to host them in. An ongoing platform of gatherings, not a static list of events."
-        ctas={[
-          { label: "See Upcoming Experiences", href: "#upcoming", solid: true },
-          { label: "Create a Corporate Experience", href: "#corporate" },
+        quickNav={[
+          { label: "SEE UPCOMING EXPERIENCES", desc: "Join a curated experience at Tavaro.", icon: "sun", href: "#upcoming" },
+          { label: "CREATE YOUR DAY", desc: "Build a day around your team, friends or family.", icon: "building", href: "#ways-to-gather" },
+          { label: "HOST YOUR TABLE", desc: "Bring your people together over a meal.", icon: "dining", href: "/contact" },
+          { label: "GALLERY", desc: "Explore photos & moments from past gatherings.", icon: "photos", href: "#gallery" },
         ]}
       />
 
-      {/* Three categories */}
-      <section className="section on-dark">
+      {/* Four categories */}
+      <section className="section on-dark" id="ways-to-gather">
         <div className="container">
-          <OfferHead eyebrow="What We Curate" heading="Three ways to gather" />
+          <OfferHead eyebrow="What We Curate" heading="Four ways to gather" />
         </div>
         <TriGrid cards={CATEGORIES} />
       </section>
@@ -91,7 +101,38 @@ export default function ExperiencesPage() {
         </div>
       </section>
 
-      <section className="section on-dark">
+      {/* Experience Gallery */}
+      <section className="section on-dark" id="gallery">
+        <div className="container">
+          <OfferHead
+            eyebrow="Visual Memories"
+            heading="Experiences Gallery"
+            lede="A look back at moments, gatherings, and celebrations created at Tavaro."
+          />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20, marginTop: 40 }}>
+            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+              <img src="/photos/experiences-cars.jpg" alt="Curated Car Meet" />
+            </div>
+            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+              <img src="/images/unsplash/resorts-wedding-celebration.jpg" alt="Outdoor Lawn Celebration" />
+            </div>
+            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+              <img src="/images/unsplash/monsoon-table-culinary.jpg" alt="Private Dining Experience" />
+            </div>
+            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+              <img src="/images/unsplash/mare-community-coffee-house.jpg" alt="Màre Social Gathering" />
+            </div>
+            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+              <img src="/images/unsplash/resorts-sol-pilates.jpg" alt="Wellness Movement Retreat" />
+            </div>
+            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+              <img src="/photos/resorts-horses.jpg" alt="Estate Sunset Walk" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section on-panel">
         <BandQuote
           label="Experiences at Tavaro"
           quote="Reasons to come together — curated, not just hosted."

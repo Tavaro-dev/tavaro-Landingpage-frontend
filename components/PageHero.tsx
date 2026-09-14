@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
+import { Icon, type IconName } from "./Icon";
 
 export function PageHero({
   photoSrc,
@@ -15,6 +16,7 @@ export function PageHero({
   lede,
   ctas,
   extraCta,
+  quickNav,
 }: {
   photoSrc: string;
   photoAlt: string;
@@ -28,6 +30,7 @@ export function PageHero({
   lede?: ReactNode;
   ctas?: { label: string; href: string; solid?: boolean }[];
   extraCta?: ReactNode;
+  quickNav?: { label: string; href?: string; icon?: IconName; desc?: string }[];
 }) {
   const style: CSSProperties | undefined = minHeight ? { minHeight } : undefined;
 
@@ -38,26 +41,44 @@ export function PageHero({
       </div>
       <div className="hero-scrim" />
       <div className="page-hero-inner container">
-        <div className="breadcrumb">
-          <Link href="/">Tavaro</Link> <span>/</span> <span>{breadcrumbLabel}</span>
+        <div className="page-hero-content">
+          <div className="breadcrumb">
+            <Link href="/">Tavaro</Link> <span>/</span> <span>{breadcrumbLabel}</span>
+          </div>
+          <p className="eyebrow">{eyebrow}</p>
+          <h1 className="hero-title" style={{ fontSize: titleSize, maxWidth: titleMaxWidth }}>
+            {title}
+          </h1>
+          {lede && (
+            <p className="lede" style={{ marginTop: 24, maxWidth: "52ch" }}>
+              {lede}
+            </p>
+          )}
+          {(ctas || extraCta) && (
+            <div className="hero-cta-row">
+              {ctas?.map((cta) => (
+                <Link key={cta.href + cta.label} href={cta.href} className={`btn${cta.solid ? " solid" : ""}`}>
+                  {cta.label}
+                </Link>
+              ))}
+              {extraCta}
+            </div>
+          )}
         </div>
-        <p className="eyebrow">{eyebrow}</p>
-        <h1 className="hero-title" style={{ fontSize: titleSize, maxWidth: titleMaxWidth }}>
-          {title}
-        </h1>
-        {lede && (
-          <p className="lede" style={{ marginTop: 24, maxWidth: "52ch" }}>
-            {lede}
-          </p>
-        )}
-        {(ctas || extraCta) && (
-          <div className="hero-cta-row">
-            {ctas?.map((cta) => (
-              <Link key={cta.href + cta.label} href={cta.href} className={`btn${cta.solid ? " solid" : ""}`}>
-                {cta.label}
-              </Link>
+
+        {quickNav && (
+          <div className={`hero-quick-nav${quickNav.some((i) => i.desc) ? " with-desc" : ""}`}>
+            {quickNav.map((item) => (
+              <a key={item.label} href={item.href || "#"} className="hero-quick-nav-item">
+                {item.icon && (
+                  <span className="hero-quick-icon">
+                    <Icon name={item.icon} />
+                  </span>
+                )}
+                <span className="hero-quick-label">{item.label}</span>
+                {item.desc && <span className="hero-quick-desc">{item.desc}</span>}
+              </a>
             ))}
-            {extraCta}
           </div>
         )}
       </div>

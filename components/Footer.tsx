@@ -20,13 +20,13 @@ export default function Footer() {
             </p>
             <div className="footer-social">
               <a href="#" aria-label="Instagram">
-                IG
+                <Icon name="instagram" />
               </a>
               <a href="#" aria-label="Facebook">
-                FB
+                <Icon name="facebook" />
               </a>
               <a href="#" aria-label="WhatsApp">
-                WA
+                <Icon name="whatsapp" />
               </a>
             </div>
           </div>
@@ -71,10 +71,10 @@ export default function Footer() {
             <h5>Reach Us</h5>
             <ul>
               <li>
-                <a href="tel:+914012345678">+91 40 1234 5678</a>
+                <a href="tel:+919989983029">+91 998 998 3029</a>
               </li>
               <li>
-                <a href="mailto:hello@tavaro.com">hello@tavaro.com</a>
+                <a href="mailto:celebrate@tavaro.in">celebrate@tavaro.in</a>
               </li>
               <li>
                 <a href="#">Kokapet, Hyderabad</a>
