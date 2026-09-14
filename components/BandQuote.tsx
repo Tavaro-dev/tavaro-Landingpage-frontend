@@ -9,7 +9,7 @@ export function BandQuote({
 }: {
   label: string;
   quote: ReactNode;
-  ctas: { label: string; href: string; solid?: boolean }[];
+  ctas?: { label: string; href: string; solid?: boolean }[];
 }) {
   return (
     <div className="container">
@@ -21,21 +21,23 @@ export function BandQuote({
           {label}
         </p>
         <p>{quote}</p>
-        <div
-          style={{
-            marginTop: ctas.length > 1 ? 40 : 36,
-            display: "flex",
-            gap: 18,
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          {ctas.map((cta) => (
-            <Link key={cta.href + cta.label} href={cta.href} className={`btn${cta.solid ? " solid" : ""}`}>
-              {cta.label}
-            </Link>
-          ))}
-        </div>
+        {ctas && ctas.length > 0 && (
+          <div
+            style={{
+              marginTop: ctas.length > 1 ? 40 : 36,
+              display: "flex",
+              gap: 18,
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {ctas.map((cta) => (
+              <Link key={cta.href + cta.label} href={cta.href} className={`btn${cta.solid ? " solid" : ""}`}>
+                {cta.label}
+              </Link>
+            ))}
+          </div>
+        )}
       </Reveal>
     </div>
   );

@@ -100,8 +100,8 @@ export default function ContactForm() {
         ENQUIRE <span className="btn-arrow">→</span>
       </button>
       {submitted && (
-        <div className="form-success" style={{ marginTop: 20, padding: 18, border: "1px solid var(--gold-dark)", background: "var(--paper-2)" }}>
-          <p style={{ fontSize: 14, lineHeight: 1.6, color: "var(--ink)" }}>
+        <div className="form-success" style={{ marginTop: 20, padding: 18, border: "1px solid var(--gold-dark)", background: "var(--surface-overlay)" }}>
+          <p style={{ fontSize: 14, lineHeight: 1.6, color: "var(--on-surface)" }}>
             Thank You for Reaching Out. We&apos;re delighted to hear from you. Your enquiry has been received, and
             our team will be in touch with you shortly to help bring your plans to life. We look forward to welcoming
             you to Tavaro.

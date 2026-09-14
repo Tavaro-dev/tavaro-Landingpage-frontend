@@ -104,6 +104,9 @@ export default function Header() {
         </button>
       </header>
       <div id="mobile-nav" className={`mobile-nav${mobileOpen ? " open" : ""}`} aria-hidden={!mobileOpen}>
+        <button className="mobile-close-btn" aria-label="Close menu" onClick={closeMobile}>
+          <Icon name="x" />
+        </button>
         <Link href="/" onClick={closeMobile}>
           Home
         </Link>
@@ -112,15 +115,19 @@ export default function Header() {
             {item.label}
           </Link>
         ))}
-        <Link href="/about" onClick={closeMobile}>
-          About
-        </Link>
         <div className="mobile-sub">
-          <Link href="/contact" className="nav-cta outline" onClick={closeMobile}>
-            Enquire
-          </Link>
-          {showCart && <CartButton />}
-          <ThemeToggle />
+          <div className="mobile-sub-buttons">
+            <Link href="/about" className={`nav-cta${pathname === "/about" ? " active" : ""}`} onClick={closeMobile}>
+              About
+            </Link>
+            <Link href="/contact" className="nav-cta outline" onClick={closeMobile}>
+              Enquire
+            </Link>
+          </div>
+          <div className="mobile-sub-icons">
+            {showCart && <CartButton />}
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </>

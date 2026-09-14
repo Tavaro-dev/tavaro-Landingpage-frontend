@@ -62,7 +62,7 @@ export default function MarePage() {
               </>
             }
           />
-          <SplitSection placeholder="ph-1" src="/images/unsplash/mare-pour-over-coffee.jpg" alt="Pour over coffee at Màre">
+          <SplitSection placeholder="ph-1" src="/images/unsplash/mare-coffee.jpg" alt="Pour over coffee at Màre">
             <p>
               Specialty beans roasted for balance, house bakery items baked daily, and clean, fresh plates
               designed for unhurried breakfasts and afternoon gatherings.

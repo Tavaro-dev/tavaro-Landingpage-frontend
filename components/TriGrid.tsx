@@ -13,8 +13,9 @@ export type TriCardData = {
 };
 
 export function TriGrid({ cards }: { cards: TriCardData[] }) {
+  const colsClass = cards.length === 4 ? " cols-4" : "";
   return (
-    <Reveal stagger className="tri-grid">
+    <Reveal stagger className={`tri-grid${colsClass}`}>
       {cards.map((card) => (
         <div className="tri-card" id={card.id} key={card.heading}>
           <span className="tri-icon">

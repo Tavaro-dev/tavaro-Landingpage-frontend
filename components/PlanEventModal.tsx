@@ -107,7 +107,7 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
                   <input
                     id="ev-name"
                     type="text"
-                    placeholder="e.g. Om Prakash"
+                    placeholder="e.g. Ananya Sharma"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -131,7 +131,7 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
                   <input
                     id="ev-email"
                     type="email"
-                    placeholder="omprakash163@gmail.com"
+                    placeholder="ananya.sharma@example.com"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}

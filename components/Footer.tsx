@@ -19,14 +19,35 @@ export default function Footer() {
               experiences around a more meaningful way of living.
             </p>
             <div className="footer-social">
-              <a href="#" aria-label="Instagram">
+              <a
+                href="https://www.instagram.com/tavaro.resorts"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
                 <Icon name="instagram" />
               </a>
-              <a href="#" aria-label="Facebook">
+              <a
+                href="https://www.facebook.com/p/Tavaro-Resorts-61588547362755/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
                 <Icon name="facebook" />
               </a>
-              <a href="#" aria-label="WhatsApp">
+              <a
+                href="https://wa.me/919989983029"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+              >
                 <Icon name="whatsapp" />
+              </a>
+              <a
+                href="mailto:celebrate@tavaro.in"
+                aria-label="Email"
+              >
+                <Icon name="mail" />
               </a>
             </div>
           </div>
@@ -72,6 +93,15 @@ export default function Footer() {
             <ul>
               <li>
                 <a href="tel:+919989983029">+91 998 998 3029</a>
+              </li>
+              <li>
+                <a
+                  href="https://wa.me/919989983029"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  WhatsApp Us
+                </a>
               </li>
               <li>
                 <a href="mailto:celebrate@tavaro.in">celebrate@tavaro.in</a>

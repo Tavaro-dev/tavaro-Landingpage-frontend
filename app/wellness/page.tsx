@@ -94,7 +94,6 @@ export default function WellnessPage() {
         lede="Not a single facility or service — a way of living that shapes the places we create, the food we serve and the experiences we curate."
         ctas={[
           { label: "Explore Wellness", href: "#pillars", solid: true },
-          { label: "Register for a Programme", href: "/contact" },
         ]}
       />
 
@@ -176,7 +175,6 @@ export default function WellnessPage() {
         <BandQuote
           label="A Way of Life"
           quote="Wellness at Tavaro isn't a department. It's the thread through everything we build."
-          ctas={[{ label: "Register for a Programme", href: "/contact", solid: true }]}
         />
       </section>
 

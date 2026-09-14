@@ -2,6 +2,7 @@ import { PageHero } from "@/components/PageHero";
 import { OfferHead } from "@/components/OfferHead";
 import { Reveal } from "@/components/Reveal";
 import ContactForm from "@/components/ContactForm";
+import { Icon } from "@/components/Icon";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
@@ -65,7 +66,7 @@ export default function ContactPage() {
       </section>
 
       {/* Form */}
-      <section className="section on-light">
+      <section className="section on-dark">
         <div className="container">
           <Reveal className="split">
             <div className="split-body">
@@ -79,18 +80,59 @@ export default function ContactPage() {
                 <a
                   href="tel:+919989983029"
                   className="text-link"
-                  style={{ borderColor: "rgba(28,23,18,.25)", color: "var(--ink)" }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
                 >
                   +91 998 998 3029
                 </a>
                 <a
+                  href="https://wa.me/919989983029"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-link"
+                  style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+                >
+                  <Icon name="whatsapp" style={{ width: 16, height: 16 }} /> WhatsApp: +91 998 998 3029
+                </a>
+                <a
                   href="mailto:celebrate@tavaro.in"
                   className="text-link"
-                  style={{ borderColor: "rgba(28,23,18,.25)", color: "var(--ink)", textTransform: "none" }}
+                  style={{ textTransform: "none", display: "inline-flex", alignItems: "center", gap: 8 }}
                 >
-                  celebrate@tavaro.in
+                  <Icon name="mail" style={{ width: 16, height: 16 }} /> celebrate@tavaro.in
                 </a>
-                <span style={{ fontSize: 13, color: "var(--muted-on-light)" }}>
+                <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
+                  <a
+                    href="https://www.instagram.com/tavaro.resorts?stkn=anQwdWZkbmd1NmE5"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                  >
+                    <Icon name="instagram" style={{ width: 20, height: 20 }} />
+                  </a>
+                  <a
+                    href="https://www.facebook.com/p/Tavaro-Resorts-61588547362755/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                  >
+                    <Icon name="facebook" style={{ width: 20, height: 20 }} />
+                  </a>
+                  <a
+                    href="https://wa.me/919989983029"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="WhatsApp"
+                  >
+                    <Icon name="whatsapp" style={{ width: 20, height: 20 }} />
+                  </a>
+                  <a
+                    href="mailto:celebrate@tavaro.in"
+                    aria-label="Email"
+                  >
+                    <Icon name="mail" style={{ width: 20, height: 20 }} />
+                  </a>
+                </div>
+                <span style={{ fontSize: 13, color: "var(--muted)", marginTop: 4 }}>
                   Kokapet, Hyderabad
                 </span>
               </div>
