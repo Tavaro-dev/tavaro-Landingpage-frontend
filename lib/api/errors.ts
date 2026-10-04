@@ -1,4 +1,4 @@
-import type { ServiceErrorCode } from "../booking/types";
+import type { ServiceErrorCode } from "../domain/errors";
 
 export class DomainError extends Error {
   readonly code: ServiceErrorCode;

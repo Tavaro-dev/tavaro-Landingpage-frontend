@@ -1,4 +1,4 @@
-import type { ServiceErrorCode } from "../booking/types";
+import type { ServiceErrorCode } from "../domain/errors";
 
 export type PaymentStatus = "pending" | "processing" | "succeeded" | "failed";
 

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { PageTransition } from "@/components/PageTransition";
-import { CartDrawer } from "@/components/CartDrawer";
-import { CartProvider } from "@/lib/cart";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { PageTransition } from "@/components/layout/PageTransition";
+import { CartDrawer } from "@/features/booking/components/CartDrawer";
+import { CartProvider } from "@/features/booking/cart/CartProvider";
 import { SITE_URL } from "@/lib/metadata";
 import "./globals.css";
 

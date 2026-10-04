@@ -1,6 +1,7 @@
 import type { PaymentStatus } from "../payment/types";
+import type { ServiceErrorCode } from "../domain/errors";
 
-import type { Room } from "../rooms";
+import type { Room } from "../content/rooms";
 
 export type BookingSearch = {
   checkIn: string;
@@ -60,14 +61,7 @@ export type BookingRequest = {
 
 export type BookingStatus = "pending" | "confirmed" | "failed";
 
-export type ServiceErrorCode =
-  | "VALIDATION_ERROR"
-  | "UNAVAILABLE"
-  | "PAYMENT_FAILED"
-  | "BOOKING_FAILED"
-  | "UNAUTHORIZED"
-  | "NETWORK_ERROR"
-  | "UNKNOWN";
+
 
 export type BookingResult = {
   status: BookingStatus;

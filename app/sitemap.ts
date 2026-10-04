@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/metadata";
-import { EVENTS } from "@/lib/events";
+import { EVENTS } from "@/lib/content/events";
 
 const ROUTES = [
   "/",

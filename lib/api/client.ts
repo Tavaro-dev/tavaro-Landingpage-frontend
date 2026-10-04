@@ -1,4 +1,4 @@
-import { ServiceErrorCode } from "../booking/types";
+import { ServiceErrorCode } from "../domain/errors";
 import { DomainError } from "./errors";
 
 /**

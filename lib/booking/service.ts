@@ -1,5 +1,5 @@
-import { ROOMS } from "../rooms";
-import { ENHANCEMENTS } from "../enhancements";
+import { ROOMS } from "../content/rooms";
+import { ENHANCEMENTS } from "../content/enhancements";
 import type { BookingQuote, QuoteRequest, BookingRequest, BookingResult, BookingSearch, RoomAvailability } from "./types";
 
 export interface BookingService {

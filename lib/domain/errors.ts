@@ -1,0 +1,8 @@
+export type ServiceErrorCode =
+  | "VALIDATION_ERROR"
+  | "UNAVAILABLE"
+  | "PAYMENT_FAILED"
+  | "BOOKING_FAILED"
+  | "UNAUTHORIZED"
+  | "NETWORK_ERROR"
+  | "UNKNOWN";
