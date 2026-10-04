@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { OfferHead } from "@/components/OfferHead";
@@ -111,22 +112,22 @@ export default function ExperiencesPage() {
           />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20, marginTop: 40 }}>
             <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
-              <img src="/photos/experiences-cars.jpg" alt="Curated Car Meet" />
+              <Image src="/photos/experiences-cars.jpg" alt="Curated Car Meet" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
             <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
-              <img src="/images/unsplash/resorts-wedding-celebration.jpg" alt="Outdoor Lawn Celebration" />
+              <Image src="/images/unsplash/resorts-wedding-celebration.jpg" alt="Outdoor Lawn Celebration" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
             <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
-              <img src="/images/unsplash/monsoon-table-culinary.jpg" alt="Private Dining Experience" />
+              <Image src="/images/unsplash/monsoon-table-culinary.jpg" alt="Private Dining Experience" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
             <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
-              <img src="/images/unsplash/mare-community-coffee-house.jpg" alt="Màre Social Gathering" />
+              <Image src="/images/unsplash/mare-community-coffee-house.jpg" alt="Màre Social Gathering" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
             <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
-              <img src="/images/unsplash/resorts-sol-pilates.jpg" alt="Wellness Movement Retreat" />
+              <Image src="/images/unsplash/resorts-sol-pilates.jpg" alt="Wellness Movement Retreat" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
             <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
-              <img src="/photos/resorts-horses.jpg" alt="Estate Sunset Walk" />
+              <Image src="/photos/resorts-horses.jpg" alt="Estate Sunset Walk" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
           </div>
         </div>

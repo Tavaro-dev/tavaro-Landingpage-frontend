@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { ThemeProvider } from "next-themes";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
@@ -35,21 +36,18 @@ export const metadata: Metadata = {
     "Tavaro is a hospitality and lifestyle group creating places and experiences around a more meaningful way of living — Resorts, Residences, Experiences, Wellness and Màre.",
 };
 
-// Runs before hydration so the correct theme is applied before first paint —
-// prevents a flash of the wrong theme when the user has chosen "light".
-const THEME_INIT_SCRIPT = `try{if(localStorage.getItem('tavaro-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}`;
-
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${hypatia.variable} ${archivo.variable}`} suppressHydrationWarning>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-        <CartProvider>
-          <Header />
-          <PageTransition>{children}</PageTransition>
-          <Footer />
-          <CartDrawer />
-        </CartProvider>
+        <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
+          <CartProvider>
+            <Header />
+            <PageTransition>{children}</PageTransition>
+            <Footer />
+            <CartDrawer />
+          </CartProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,42 +1,135 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useState, type FormEvent } from "react";
+import { useId, useState, useEffect, type FormEvent } from "react";
 import { useCart } from "@/lib/cart";
 import { ENHANCEMENTS } from "@/lib/enhancements";
 import { OrderSummary } from "./OrderSummary";
 import { Stepper } from "./Stepper";
+import { bookingService } from "@/lib/booking/service";
+import type { BookingQuote, BookingResult } from "@/lib/booking/types";
+import { paymentService } from "@/lib/payment/service";
+
+import { DomainError } from "@/lib/api/errors";
 
 const STEPS = ["Enhance", "Complete", "Confirm"] as const;
 
 const ENHANCEMENT_CATEGORIES = Array.from(new Set(ENHANCEMENTS.map((e) => e.category)));
 
 export function CheckoutFlow() {
-  // Prefix ids per instance so this form stays safe to mount more than once.
   const uid = useId();
   const fieldId = (field: string) => `${uid}-${field}`;
   const { items, clear } = useCart();
   const [step, setStep] = useState(1);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [confirmed, setConfirmed] = useState(false);
+  
+  const [quote, setQuote] = useState<BookingQuote | null>(null);
+  const [loadingQuote, setLoadingQuote] = useState(false);
+  const [guestDetails, setGuestDetails] = useState({ name: "", email: "", phone: "" });
+  const [bookingResult, setBookingResult] = useState<BookingResult | null>(null);
+  
+  // Explicitly separate payment processing state from booking result state
+  const [checkoutStatus, setCheckoutStatus] = useState<"idle" | "processing_payment" | "verifying_booking">("idle");
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
-  const selectedEnhancements = ENHANCEMENTS.filter((e) => selectedIds.includes(e.id));
+  useEffect(() => {
+    let active = true;
+    if (items.length === 0) return;
+    
+    const fetchQuote = async () => {
+      setLoadingQuote(true);
+      try {
+        const q = await bookingService.createQuote({
+          roomSlugs: items.map(i => ({ slug: i.slug, nights: i.nights })),
+          enhancementIds: selectedIds
+        });
+        if (active) setQuote(q);
+      } catch (err) {
+        console.error("Failed to fetch quote", err);
+      } finally {
+        if (active) setLoadingQuote(false);
+      }
+    };
+    fetchQuote();
+    return () => { active = false; };
+  }, [items, selectedIds]);
 
   const toggleEnhancement = (id: string) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
   };
 
-  const handleGuestSubmit = (e: FormEvent) => {
+  const handleGuestSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    setGuestDetails({
+      name: String(formData.get("name") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      phone: String(formData.get("phone") ?? "")
+    });
     setStep(3);
   };
 
-  const handleConfirm = () => {
-    setConfirmed(true);
-    clear();
+  const getUserFriendlyMessage = (code?: string, fallback?: string): string => {
+    switch (code) {
+      case "PAYMENT_FAILED": return "Your bank declined the transaction. Please try another card.";
+      case "UNAVAILABLE": return "One of your selected rooms is no longer available.";
+      case "NETWORK_ERROR": return "A network error occurred. Please check your connection.";
+      case "VALIDATION_ERROR": return "Please check your details and try again.";
+      case "BOOKING_FAILED": return "Payment succeeded, but booking failed to confirm. Please contact support.";
+      default: return fallback || "An unexpected error occurred. Please try again.";
+    }
   };
 
-  if (items.length === 0 && !confirmed) {
+  const handleConfirm = async () => {
+    if (!quote || checkoutStatus !== "idle") return; // prevent duplicate submission
+    
+    setPaymentError(null);
+    setCheckoutStatus("processing_payment");
+    
+    try {
+      // 1. Process Payment
+      // In production, the backend determines the authoritative amount, and the frontend SDK processes it.
+      const paymentRes = await paymentService.processPayment({ quoteId: quote.quoteId });
+      
+      if (!paymentRes.success) {
+        setPaymentError(getUserFriendlyMessage(paymentRes.errorCode, paymentRes.error));
+        setCheckoutStatus("idle");
+        return; // Booking remains unconfirmed
+      }
+      
+      // 2. Verify and Create Booking
+      setCheckoutStatus("verifying_booking");
+      const res = await bookingService.createBooking({ 
+        intent: {
+          roomSlugs: items.map(i => ({ slug: i.slug, nights: i.nights })),
+          enhancementIds: selectedIds
+        }, 
+        guest: guestDetails,
+        paymentReference: paymentRes.paymentReference
+      });
+      
+      if (res.status === "confirmed") {
+        setBookingResult(res);
+        setCheckoutStatus("idle");
+        clear();
+      } else {
+        setPaymentError(getUserFriendlyMessage(res.errorCode, res.message));
+        setCheckoutStatus("idle");
+      }
+    } catch (err) {
+      console.error("Failed to create booking", err);
+      if (err instanceof DomainError) {
+        setPaymentError(getUserFriendlyMessage(err.code));
+      } else {
+        setPaymentError("An unexpected error occurred. Please try again.");
+      }
+      setCheckoutStatus("idle");
+    }
+  };
+
+  const isConfirmed = bookingResult?.status === "confirmed";
+
+  if (items.length === 0 && !isConfirmed) {
     return (
       <div className="center-col" style={{ padding: "60px 0" }}>
         <p className="eyebrow center no-line" style={{ display: "flex", justifyContent: "center" }}>
@@ -57,7 +150,7 @@ export function CheckoutFlow() {
     );
   }
 
-  if (confirmed) {
+  if (isConfirmed) {
     return (
       <div className="center-col" style={{ padding: "60px 0" }}>
         <p className="eyebrow center no-line" style={{ display: "flex", justifyContent: "center" }}>
@@ -67,9 +160,11 @@ export function CheckoutFlow() {
           Thank you for choosing Tavaro.
         </h1>
         <p className="lede" style={{ marginTop: 20, maxWidth: "52ch", marginLeft: "auto", marginRight: "auto" }}>
-          This is a demo checkout — no payment has been processed and no card details were transmitted or
+          This is a demo checkout — no real payment has been processed and no card details were transmitted or
           stored. Our reservations team will be in touch shortly to confirm availability and arrange secure
           payment.
+          <br /><br />
+          Booking Reference: <strong>{bookingResult?.reference}</strong>
         </p>
         <div style={{ marginTop: 32 }}>
           <Link href="/" className="btn solid">
@@ -79,6 +174,8 @@ export function CheckoutFlow() {
       </div>
     );
   }
+
+  const processing = checkoutStatus !== "idle";
 
   return (
     <>
@@ -156,52 +253,12 @@ export function CheckoutFlow() {
                 </div>
               </div>
 
-              <p className="checkout-demo-notice">
-                This is a demo checkout. Card details below are never transmitted, processed, or stored —
-                no real payment is taken.
-              </p>
-
-              <div className="form-grid">
-                <div className="field full">
-                  <label htmlFor={fieldId("card-name")}>Name on Card</label>
-                  <input id={fieldId("card-name")} name="cc-name" type="text" autoComplete="cc-name" required />
-                </div>
-                <div className="field full">
-                  <label htmlFor={fieldId("card-number")}>Card Number</label>
-                  <input
-                    id={fieldId("card-number")}
-                    name="cc-number"
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="cc-number"
-                    placeholder="•••• •••• •••• ••••"
-                    required
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor={fieldId("card-expiry")}>Expiry (MM/YY)</label>
-                  <input
-                    id={fieldId("card-expiry")}
-                    name="cc-exp"
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="cc-exp"
-                    placeholder="MM/YY"
-                    required
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor={fieldId("card-cvv")}>CVV</label>
-                  <input
-                    id={fieldId("card-cvv")}
-                    name="cc-csc"
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="cc-csc"
-                    placeholder="•••"
-                    required
-                  />
-                </div>
+              <div style={{ marginTop: 40, padding: 24, border: "1px dashed var(--border)", borderRadius: 4, background: "var(--background-alt)" }}>
+                <p className="eyebrow no-line">Demo Payment</p>
+                <p className="lede" style={{ marginTop: 8, fontSize: 16 }}>
+                  No payment provider is currently connected. Real card details are not collected or stored. 
+                  Continuing will simulate a successful transaction.
+                </p>
               </div>
 
               <div style={{ marginTop: 40, display: "flex", gap: 18, flexWrap: "wrap" }}>
@@ -225,19 +282,25 @@ export function CheckoutFlow() {
                 Please review your stay in the summary before confirming.
               </p>
 
-              <div style={{ marginTop: 40, display: "flex", gap: 18, flexWrap: "wrap" }}>
-                <button type="button" className="btn" onClick={() => setStep(2)}>
+              {paymentError && (
+                <div style={{ marginTop: 24, padding: "16px 20px", background: "#fee2e2", color: "#991b1b", borderRadius: 4 }}>
+                  <p><strong>Payment Error:</strong> {paymentError}</p>
+                </div>
+              )}
+
+              <div style={{ marginTop: 40, display: "flex", gap: 18, flexWrap: "wrap", alignItems: "center" }}>
+                <button type="button" className="btn" onClick={() => setStep(2)} disabled={processing}>
                   Back
                 </button>
-                <button type="button" className="btn solid" onClick={handleConfirm}>
-                  Confirm Booking
+                <button type="button" className="btn solid" disabled={processing || !quote} onClick={handleConfirm}>
+                  {checkoutStatus === "processing_payment" ? "Processing Payment..." : checkoutStatus === "verifying_booking" ? "Verifying Booking..." : "Pay & Confirm"}
                 </button>
               </div>
             </div>
           )}
         </div>
 
-        <OrderSummary selectedEnhancements={selectedEnhancements} />
+        <OrderSummary quote={quote} loading={loadingQuote} />
       </div>
     </>
   );

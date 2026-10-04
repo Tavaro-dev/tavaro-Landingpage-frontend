@@ -5,6 +5,7 @@ import { Icon } from "./Icon";
 
 interface CustomDatePickerProps {
   id?: string;
+  name?: string;
   value: string; // YYYY-MM-DD
   onChange: (value: string) => void;
   placeholder?: string;
@@ -51,6 +52,7 @@ function formatDisplayDate(dateStr: string): string {
 
 export function CustomDatePicker({
   id,
+  name,
   value,
   onChange,
   placeholder = "Select date",
@@ -64,6 +66,7 @@ export function CustomDatePicker({
   const [viewMonth, setViewMonth] = useState(() => (selectedDate ? selectedDate.getMonth() : new Date().getMonth()));
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -124,14 +127,31 @@ export function CustomDatePicker({
     return current < min;
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape" && isOpen) {
+      e.stopPropagation();
+      setIsOpen(false);
+      triggerRef.current?.focus();
+    }
+  };
+
+  const calendarId = id ? `${id}-calendar` : undefined;
+
   return (
-    <div className={`custom-datepicker-container${isOpen ? " active-field" : ""}`} ref={containerRef} id={id}>
+    <div 
+      className={`custom-datepicker-container${isOpen ? " active-field" : ""}`} 
+      ref={containerRef}
+      onKeyDown={handleKeyDown}
+    >
       <button
         type="button"
+        id={id}
+        ref={triggerRef}
         className={`custom-datepicker-trigger${isOpen ? " open" : ""}`}
         onClick={() => setIsOpen(!isOpen)}
         aria-haspopup="dialog"
         aria-expanded={isOpen}
+        aria-controls={isOpen ? calendarId : undefined}
       >
         <span className={value ? "selected-text" : "placeholder-text"}>
           {value ? formatDisplayDate(value) : placeholder}
@@ -145,15 +165,20 @@ export function CustomDatePicker({
       </button>
 
       {/* Hidden native input for form compatibility */}
-      {id && <input type="hidden" id={id} name={id} value={value} required={required} />}
+      <input type="hidden" name={name} value={value} required={required} />
 
       {isOpen && (
-        <div className="custom-datepicker-popover">
+        <div 
+          id={calendarId} 
+          className="custom-datepicker-popover" 
+          role="dialog" 
+          aria-label={`${MONTH_NAMES[viewMonth]} ${viewYear}`}
+        >
           <div className="datepicker-header">
             <button type="button" className="datepicker-nav-btn" onClick={handlePrevMonth} aria-label="Previous Month">
               <Icon name="chevron-left" />
             </button>
-            <span className="datepicker-title">
+            <span className="datepicker-title" aria-live="polite">
               {MONTH_NAMES[viewMonth]} {viewYear}
             </span>
             <button type="button" className="datepicker-nav-btn" onClick={handleNextMonth} aria-label="Next Month">
@@ -163,7 +188,7 @@ export function CustomDatePicker({
             </button>
           </div>
 
-          <div className="datepicker-weekdays">
+          <div className="datepicker-weekdays" aria-hidden="true">
             {WEEKDAYS.map((day) => (
               <span key={day} className="datepicker-weekday">
                 {day}
@@ -176,7 +201,7 @@ export function CustomDatePicker({
             {Array.from({ length: firstDayOfWeek }).map((_, i) => {
               const dayNum = prevMonthDays - firstDayOfWeek + i + 1;
               return (
-                <span key={`prev-${i}`} className="datepicker-day muted">
+                <span key={`prev-${i}`} className="datepicker-day muted" aria-hidden="true">
                   {dayNum}
                 </span>
               );
@@ -188,12 +213,16 @@ export function CustomDatePicker({
               const selected = isSelected(day);
               const today = isToday(day);
               const disabled = isPast(day);
+              const ariaLabel = `${day} ${MONTH_NAMES[viewMonth]} ${viewYear}`;
 
               return (
                 <button
                   key={`day-${day}`}
                   type="button"
                   disabled={disabled}
+                  aria-label={ariaLabel}
+                  aria-pressed={selected}
+                  aria-current={today ? "date" : undefined}
                   className={`datepicker-day${selected ? " selected" : ""}${today ? " today" : ""}${
                     disabled ? " disabled" : ""
                   }`}
@@ -201,6 +230,9 @@ export function CustomDatePicker({
                     const newDateStr = formatDate(new Date(viewYear, viewMonth, day));
                     onChange(newDateStr);
                     setIsOpen(false);
+                    requestAnimationFrame(() => {
+                      triggerRef.current?.focus();
+                    });
                   }}
                 >
                   {day}

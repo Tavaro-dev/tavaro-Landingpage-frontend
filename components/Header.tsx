@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "./Icon";
@@ -16,6 +16,10 @@ export default function Header() {
   const [pastPillarStrip, setPastPillarStrip] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navVisible = isHome ? pastPillarStrip : true;
+  const noHero = pathname === "/resorts/accommodations" || pathname === "/checkout";
+
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -42,19 +46,34 @@ export default function Header() {
   }, [isHome]);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => closeBtnRef.current?.focus());
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
   useEffect(() => {
     if (!mobileOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMobileOpen(false);
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        triggerRef.current?.focus();
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [mobileOpen]);
 
-  const closeMobile = () => setMobileOpen(false);
+  const closeMobile = () => {
+    setMobileOpen(false);
+    triggerRef.current?.focus();
+  };
 
   return (
     <>
@@ -64,6 +83,7 @@ export default function Header() {
           isHome && "home",
           scrolled && "scrolled",
           navVisible && "nav-visible",
+          noHero && "no-hero"
         ]
           .filter(Boolean)
           .join(" ")}
@@ -92,6 +112,8 @@ export default function Header() {
           <ThemeToggle />
         </nav>
         <button
+          type="button"
+          ref={triggerRef}
           className={`nav-toggle${mobileOpen ? " open" : ""}`}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
@@ -104,7 +126,7 @@ export default function Header() {
         </button>
       </header>
       <div id="mobile-nav" className={`mobile-nav${mobileOpen ? " open" : ""}`} aria-hidden={!mobileOpen}>
-        <button className="mobile-close-btn" aria-label="Close menu" onClick={closeMobile}>
+        <button type="button" ref={closeBtnRef} className="mobile-close-btn" aria-label="Close menu" onClick={closeMobile}>
           <Icon name="x" />
         </button>
         <Link href="/" onClick={closeMobile}>

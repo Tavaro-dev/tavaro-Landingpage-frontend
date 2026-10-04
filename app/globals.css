@@ -47,6 +47,7 @@
   --on-surface-muted: var(--muted-on-light);
   --on-surface-emphasis: var(--gold-dark);
   --surface-line: rgba(156, 124, 62, 0.35);
+  --gold: var(--gold-dark);
 }
 [data-theme="light"] .site-header.scrolled {
   background: rgba(247, 242, 231, 0.88);
@@ -54,6 +55,15 @@
 [data-theme="light"] .sticky-cta {
   background: rgba(247, 242, 231, 0.95);
 }
+
+.hero,
+.page-hero,
+.pillar-card,
+.site-header:not(.scrolled),
+.cart-overlay {
+  --gold: #c9a45a;
+}
+
 
 @theme inline {
   --color-black: var(--black);
@@ -351,10 +361,13 @@ select {
   border-bottom-color: var(--surface-line);
 }
 .site-header.scrolled .logo,
-.site-header.scrolled .nav-links a {
+.site-header.scrolled .nav-links a,
+.site-header.no-hero:not(.scrolled) .logo,
+.site-header.no-hero:not(.scrolled) .nav-links a {
   color: var(--on-surface);
 }
-.site-header.scrolled .nav-toggle span {
+.site-header.scrolled .nav-toggle span,
+.site-header.no-hero:not(.scrolled) .nav-toggle span {
   background: var(--on-surface);
 }
 .logo {
@@ -453,7 +466,8 @@ select {
   color: var(--cream);
   border-color: var(--gold);
 }
-.site-header.scrolled .nav-cta.outline {
+.site-header.scrolled .nav-cta.outline,
+.site-header.no-hero:not(.scrolled) .nav-cta.outline {
   color: var(--on-surface);
 }
 .nav-cta.outline:hover {
@@ -570,7 +584,8 @@ select {
   color: var(--cream);
   transition: border-color 0.3s, color 0.3s;
 }
-.site-header.scrolled .theme-toggle {
+.site-header.scrolled .theme-toggle,
+.site-header.no-hero:not(.scrolled) .theme-toggle {
   color: var(--on-surface);
   border-color: var(--surface-line);
 }
@@ -601,7 +616,8 @@ select {
   color: var(--cream);
   transition: border-color 0.3s, color 0.3s;
 }
-.site-header.scrolled .cart-button {
+.site-header.scrolled .cart-button,
+.site-header.no-hero:not(.scrolled) .cart-button {
   color: var(--on-surface);
   border-color: var(--surface-line);
 }
@@ -1868,6 +1884,7 @@ select {
   font-size: 19px;
   margin-bottom: 18px;
   width: fit-content;
+  color: var(--on-surface);
 }
 .footer-brand .logo svg,
 .footer-brand .logo img {
@@ -3210,6 +3227,10 @@ select {
 .custom-select-option.active {
   background: var(--gold);
   color: var(--black);
+  font-weight: 500;
+}
+
+.custom-select-option[aria-selected="true"] {
   font-weight: 500;
 }
 

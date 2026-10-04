@@ -3,6 +3,7 @@ import { OfferHead } from "@/components/OfferHead";
 import { RoomListing } from "@/components/RoomListing";
 import { CartStickyBar } from "@/components/CartStickyBar";
 import { pageMetadata } from "@/lib/metadata";
+import { bookingService } from "@/lib/booking/service";
 
 export const metadata = pageMetadata({
   title: "Accommodations — Availability | Tavaro Resorts",
@@ -26,6 +27,13 @@ export default async function AccommodationsPage(props: PageProps<"/resorts/acco
     .filter(Boolean)
     .join(" · ");
 
+  const availableRooms = await bookingService.searchAvailability({
+    checkIn: checkin ?? "",
+    checkOut: checkout ?? "",
+    guests: guests ? parseInt(guests, 10) : 2,
+    roomType: roomType === "Any" ? undefined : roomType,
+  });
+
   return (
     <section className="section on-dark" style={{ paddingTop: 170 }}>
       <div className="container">
@@ -41,7 +49,7 @@ export default async function AccommodationsPage(props: PageProps<"/resorts/acco
               : "13 keys across the estate, from Executive Rooms to the exclusive Tavaro House."
           }
         />
-        <RoomListing />
+        <RoomListing availability={availableRooms} />
         <p className="lede" style={{ marginTop: 40, maxWidth: "60ch" }}>
           This is a demo availability search — add rooms to your cart, then book now. Real-time pricing and
           confirmed availability are handled by our reservations team.

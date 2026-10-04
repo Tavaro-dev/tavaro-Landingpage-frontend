@@ -1,11 +1,8 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { Icon, type IconName } from "./Icon";
-import PlanEventModal from "./PlanEventModal";
+import { PlanEventButton } from "./PlanEventButton";
 
 export function PageHero({
   photoSrc,
@@ -32,11 +29,10 @@ export function PageHero({
   titleSize: string;
   titleMaxWidth?: string;
   lede?: ReactNode;
-  ctas?: { label: string; href?: string; solid?: boolean; onClick?: () => void; isEventModal?: boolean }[];
+  ctas?: { label: string; href?: string; solid?: boolean; isEventModal?: boolean }[];
   extraCta?: ReactNode;
   quickNav?: { label: string; href?: string; icon?: IconName; desc?: string }[];
 }) {
-  const [eventModalOpen, setEventModalOpen] = useState(false);
   const style: CSSProperties | undefined = minHeight ? { minHeight } : undefined;
 
   return (
@@ -67,30 +63,18 @@ export function PageHero({
                   cta.isEventModal ||
                   labelLower.includes("plan your event") ||
                   labelLower.includes("plan an event");
+                
                 if (isEvent) {
                   return (
-                    <button
+                    <PlanEventButton
                       key={cta.label}
-                      type="button"
                       className={`btn${cta.solid ? " solid" : ""}`}
-                      onClick={() => setEventModalOpen(true)}
                     >
                       {cta.label}
-                    </button>
+                    </PlanEventButton>
                   );
                 }
-                if (cta.onClick) {
-                  return (
-                    <button
-                      key={cta.label}
-                      type="button"
-                      className={`btn${cta.solid ? " solid" : ""}`}
-                      onClick={cta.onClick}
-                    >
-                      {cta.label}
-                    </button>
-                  );
-                }
+                
                 return (
                   <Link key={(cta.href || "#") + cta.label} href={cta.href || "#"} className={`btn${cta.solid ? " solid" : ""}`}>
                     {cta.label}
@@ -118,8 +102,6 @@ export function PageHero({
           </div>
         )}
       </div>
-
-      <PlanEventModal isOpen={eventModalOpen} onClose={() => setEventModalOpen(false)} />
     </section>
   );
 }

@@ -16,10 +16,12 @@ export function pageMetadata({
   title,
   description,
   path,
+  image = "/og-image.jpg",
 }: {
   title: string;
   description: string;
   path: string;
+  image?: string;
 }): Metadata {
   return {
     title,
@@ -31,11 +33,13 @@ export function pageMetadata({
       url: path,
       siteName: SITE_NAME,
       type: "website",
+      images: [image],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title,
       description,
+      images: [image],
     },
   };
 }

@@ -1,11 +1,27 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/metadata";
+import { EVENTS } from "@/lib/events";
 
-const ROUTES = ["/", "/about", "/resorts", "/residences", "/experiences", "/wellness", "/mare", "/contact"];
+const ROUTES = [
+  "/",
+  "/about",
+  "/contact",
+  "/experiences",
+  "/mare",
+  "/residences",
+  "/resorts",
+  "/resorts/accommodations",
+  "/wellness",
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return ROUTES.map((path) => ({
+  const staticRoutes = ROUTES.map((path) => ({
     url: `${SITE_URL}${path}`,
-    lastModified: new Date(),
   }));
+
+  const dynamicRoutes = EVENTS.map((event) => ({
+    url: `${SITE_URL}/experiences/${event.id}`,
+  }));
+
+  return [...staticRoutes, ...dynamicRoutes];
 }

@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { Icon } from "./Icon";
 import { useCart } from "@/lib/cart";
-import { ROOMS, type Room } from "@/lib/rooms";
 import { formatInr } from "@/lib/format";
 
-function RoomListingCard({ room }: { room: Room }) {
+import type { RoomAvailability } from "@/lib/booking/types";
+
+function RoomListingCard({ availability }: { availability: RoomAvailability }) {
+  const { room } = availability;
   const [imageIndex, setImageIndex] = useState(0);
   const [added, setAdded] = useState(false);
   const { addItem } = useCart();
@@ -17,6 +19,8 @@ function RoomListingCard({ room }: { room: Room }) {
   const next = () => setImageIndex((i) => (i === room.images.length - 1 ? 0 : i + 1));
 
   const handleAdd = () => {
+    // Note: We are pushing the user's intent to book this room to the cart.
+    // This is NOT an inventory reservation. The cart is not authoritative.
     addItem({ slug: room.slug, name: room.name, image: room.images[0], pricePerNight: room.pricePerNight });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
@@ -69,8 +73,8 @@ function RoomListingCard({ room }: { room: Room }) {
             <span>Avg. price per night</span>
             <strong>{formatInr(room.pricePerNight)}</strong>
           </div>
-          <button type="button" className="btn solid" onClick={handleAdd}>
-            {added ? "Added ✓" : "Add to Cart"}
+          <button type="button" className="btn solid" onClick={handleAdd} disabled={!availability.available}>
+            {!availability.available ? "Unavailable" : added ? "Added ✓" : "Add to Cart"}
           </button>
         </div>
       </div>
@@ -78,14 +82,14 @@ function RoomListingCard({ room }: { room: Room }) {
   );
 }
 
-export function RoomListing() {
+export function RoomListing({ availability }: { availability: readonly RoomAvailability[] }) {
   return (
     <div className="room-listings">
       <h2 className="display-3" style={{ marginBottom: 30 }}>
-        Guest Rooms ({ROOMS.length})
+        Guest Rooms ({availability.length})
       </h2>
-      {ROOMS.map((room) => (
-        <RoomListingCard room={room} key={room.slug} />
+      {availability.map((av) => (
+        <RoomListingCard availability={av} key={av.room.slug} />
       ))}
     </div>
   );
