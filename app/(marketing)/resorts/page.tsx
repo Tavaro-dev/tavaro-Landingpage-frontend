@@ -7,6 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { RoomAvailability } from "@/features/accommodations/components/RoomAvailability";
 import StickyCta from "@/components/shared/StickyCta";
 import { PlanEventButton } from "@/features/experiences/components/PlanEventButton";
+import { ResortDining } from "@/features/resorts/components/ResortDining";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
@@ -23,8 +24,8 @@ export default function ResortsPage() {
         photoSrc="/photos/resorts-horses.jpg"
         photoAlt="Horses on the grounds at Tavaro Resorts, Kokapet"
         placeholder="ph-1"
-        breadcrumbLabel="Resorts"
-        eyebrow="Resorts"
+        breadcrumbLabel="Tavaro Resorts"
+        eyebrow="Kokapet, Hyderabad"
         title={
           <>
             A world away,
@@ -33,14 +34,14 @@ export default function ResortsPage() {
           </>
         }
         titleSize="clamp(34px,4.2vw,54px)"
-        lede="Destinations for stays, celebrations, culinary experiences, coffee, movement and gathering — without having to go far."
+        lede="From quiet stays and long lunches to grand celebrations and shared experiences, Tavaro brings people together in one expansive destination."
         ctas={[
           { label: "Book Your Stay", href: "#availability", solid: true },
           { label: "Plan Your Event", href: "#celebrate" },
         ]}
         quickNav={[
-          { label: "Location", href: "#location", icon: "location" },
-          { label: "Photos & Videos", href: "#gallery", icon: "photos" },
+          { label: "Location", href: "/resorts/location", icon: "location" },
+          { label: "Photos & Videos", href: "/resorts/photos", icon: "photos" },
           { label: "Facilities & Amenities", href: "#facilities", icon: "facilities" },
           { label: "Dining", href: "#culinary", icon: "dining" },
           { label: "Things to do", href: "#things-to-do", icon: "compass" },
@@ -63,33 +64,9 @@ export default function ResortsPage() {
         </div>
       </section>
 
-      {/* 01 — Rooms & Stays */}
-      <section className="offer-block on-dark" id="stay">
-        <div className="container">
-          <OfferHead num="01 — Stay With Us" heading="Rooms & Stays" />
-          <SplitSection wide placeholder="ph-1" src="/images/unsplash/resorts-suite.jpg" alt="A Tavaro Resorts suite">
-            <p>
-              Rooms and suites designed for rest — natural materials, soft light and views that slow the
-              day down. Every stay is built around comfort, quiet and easy access to everything Tavaro has
-              to offer.
-            </p>
-            <ul className="split-list">
-              <li>Garden &amp; pool-facing rooms and suites</li>
-              <li>Curated in-room amenities</li>
-              <li>Daily dining, coffee and wellness access</li>
-              <li>Flexible rates and seasonal offers</li>
-            </ul>
-            <Link href="/contact" className="btn">
-              Book Your Stay <span className="btn-arrow">→</span>
-            </Link>
-          </SplitSection>
-        </div>
-      </section>
-
-      {/* 02 — Celebrate With Us */}
+      {/* 01 — Celebrate With Us */}
       <section className="offer-block on-panel" id="celebrate">
         <div className="container">
-          <OfferHead num="02 — Celebrate With Us" heading="Events & Venues" />
           <SplitSection
             reverse
             wide
@@ -97,6 +74,7 @@ export default function ResortsPage() {
             src="/images/unsplash/resorts-wedding-celebration.jpg"
             alt="A wedding celebration at Tavaro Resorts"
           >
+            <OfferHead num="01 — Celebrate With Us" heading="Events & Venues" />
             <p>
               Weddings, social celebrations and corporate gatherings, held across lawns, banquet halls and
               intimate courtyards — each venue shaped for a different scale of celebration.
@@ -112,44 +90,42 @@ export default function ResortsPage() {
         </div>
       </section>
 
-      {/* 03 — Culinary Experience */}
-      <section className="offer-block on-dark" id="culinary">
+      {/* 02 — Rooms & Stays */}
+      <section className="offer-block on-dark" id="stay">
         <div className="container">
-          <OfferHead num="03 — Culinary Experience" heading="The Tavaro Table" />
-          <SplitSection
-            wide
-            placeholder="ph-5"
-            src="/images/unsplash/monsoon-table-culinary.jpg"
-            alt="Culinary experience at Tavaro"
-          >
+          <SplitSection wide placeholder="ph-1" src="/images/unsplash/resorts-suite.jpg" alt="A Tavaro Resorts suite">
+            <OfferHead num="02 — Stay With Us" heading="Rooms & Stays" />
             <p>
-              A dining philosophy built on seasonal, thoughtful food — from everyday menus to private
-              dining and celebration feasts, shaped by chefs who cook the way Tavaro lives.
+              Rooms and suites designed for rest — natural materials, soft light and views that slow the
+              day down. Every stay is built around comfort, quiet and easy access to everything Tavaro has
+              to offer.
             </p>
             <ul className="split-list">
-              <li>Seasonal &amp; curated menus</li>
-              <li>Private dining experiences</li>
-              <li>Celebration &amp; festival menus</li>
-              <li>Culinary events through the year</li>
+              <li>Garden &amp; pool-facing rooms and suites</li>
+              <li>Curated in-room amenities</li>
+              <li>Daily dining, coffee and wellness access</li>
+              <li>Flexible rates and seasonal offers</li>
             </ul>
-            <Link href="/contact" className="btn">
-              Explore Culinary <span className="btn-arrow">→</span>
+            <Link href="#availability" className="btn">
+              Book Your Stay <span className="btn-arrow">→</span>
             </Link>
           </SplitSection>
         </div>
       </section>
 
+      {/* 03 — Culinary Experience */}
+      <ResortDining />
+
       {/* 04 — Màre */}
-      <section className="offer-block on-panel">
+      <section className="offer-block on-dark">
         <div className="container">
-          <OfferHead num="04 — Coffee & Community" heading="Màre Coffee House" />
           <SplitSection
-            reverse
             wide
             placeholder="ph-gold"
             src="/images/unsplash/mare-community-coffee-house.jpg"
             alt="Màre Coffee House at Tavaro Resorts"
           >
+            <OfferHead num="04 — Coffee & Community" heading="Màre Coffee House" />
             <p className="italic display-3" style={{ marginBottom: 16 }}>
               Where life comes together.
             </p>
@@ -165,10 +141,10 @@ export default function ResortsPage() {
       </section>
 
       {/* 05 — Sol Pilates */}
-      <section className="offer-block on-dark" id="sol">
+      <section className="offer-block on-panel" id="sol">
         <div className="container">
-          <OfferHead num="05 — Movement & Wellness" heading="Sol Pilates Studio" />
-          <SplitSection wide placeholder="ph-6" src="/images/unsplash/resorts-sol-pilates.jpg" alt="Sol Pilates Studio">
+          <SplitSection reverse wide placeholder="ph-6" src="/images/unsplash/resorts-sol-pilates.jpg" alt="Sol Pilates Studio">
+            <OfferHead num="05 — Movement & Wellness" heading="Sol Pilates Studio" />
             <p>
               A dedicated studio for movement and physical wellbeing — Pilates, mobility and guided fitness
               sessions set within the calm of the Tavaro grounds.

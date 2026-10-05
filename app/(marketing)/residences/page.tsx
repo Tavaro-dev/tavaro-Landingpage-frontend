@@ -61,17 +61,17 @@ export default function ResidencesPage() {
       {/* Leela */}
       <section className="offer-block on-dark" id="leela">
         <div className="container">
-          <OfferHead
-            num="01 — Leela by Tavaro Residences"
-            heading={
-              <>
-                A home shaped
-                <br />
-                by stillness
-              </>
-            }
-          />
           <SplitSection placeholder="ph-2" src="/images/unsplash/residences-leela.jpg" alt="Leela by Tavaro Residences">
+            <OfferHead
+              num="01 — Leela by Tavaro Residences"
+              heading={
+                <>
+                  A home shaped
+                  <br />
+                  by stillness
+                </>
+              }
+            />
             <p>
               Leela is a residence built around calm — considered architecture, natural materials and light
               that changes through the day. Every detail, from the amenities to the landscaping, is
@@ -93,22 +93,22 @@ export default function ResidencesPage() {
       {/* Bhairavi Nilayam */}
       <section className="offer-block on-panel" id="bhairavi">
         <div className="container">
-          <OfferHead
-            num="02 — Bhairavi Nilayam"
-            heading={
-              <>
-                Rooted in place,
-                <br />
-                built for living
-              </>
-            }
-          />
           <SplitSection
             reverse
             placeholder="ph-4"
             src="/images/unsplash/residences-bhairavi-nilayam.jpg"
             alt="Bhairavi Nilayam residence"
           >
+            <OfferHead
+              num="02 — Bhairavi Nilayam"
+              heading={
+                <>
+                  Rooted in place,
+                  <br />
+                  built for living
+                </>
+              }
+            />
             <p>
               Bhairavi Nilayam brings together a strong sense of place with a design philosophy centred on
               privacy, craft and quiet luxury — a residence conceived as a long-term home, not a

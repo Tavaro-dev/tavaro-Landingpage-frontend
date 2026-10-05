@@ -2,8 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/shared/PageHero";
 import { OfferHead } from "@/components/shared/OfferHead";
+import { SplitSection } from "@/components/shared/SplitSection";
 import { TriGrid, type TriCardData } from "@/components/shared/TriGrid";
 import { EventsSection } from "@/features/experiences/components/EventsSection";
+import { OffsiteEditButton } from "@/features/experiences/components/OffsiteEditButton";
+import { GalleryHeroButton } from "@/features/experiences/components/GalleryHeroButton";
 import { BandQuote } from "@/components/shared/BandQuote";
 import { Icon } from "@/components/ui/Icon";
 import StickyCta from "@/components/shared/StickyCta";
@@ -21,33 +24,30 @@ const CATEGORIES: TriCardData[] = [
     id: "social",
     icon: "sun",
     heading: "Social & Cultural",
-    body: "Experiences built around music, food, art, culture, markets, festivals, community and conversation.",
-    tags: ["Music", "Food", "Art", "Markets", "Festivals"],
-    cta: { label: "See What's On", href: "#upcoming" },
+    subtitle: "People · Culture · Connection",
+    bgImage: "/images/unsplash/mare-sunday-market.jpg",
   },
   {
     id: "corporate",
     icon: "building",
     heading: "Corporate",
-    body: "Experiences for organisations and teams — retreats, offsites, leadership gatherings and custom celebrations.",
-    tags: ["Retreats", "Offsites", "Team Experiences", "Leadership"],
-    cta: { label: "Create a Corporate Experience", href: "/contact" },
+    subtitle: "Offsites, retreats & team experiences",
+    bgImage: "/photos/experiences-cars.jpg",
   },
   {
     id: "wellness-exp",
     icon: "wellness",
     heading: "Wellness",
-    body: "Yoga, movement, breathwork, meditation, retreats, sound and rituals for conscious living.",
-    tags: ["Yoga", "Breathwork", "Meditation", "Retreats", "Sound"],
-    cta: { label: "Explore Wellness Experiences", href: "/wellness" },
+    subtitle: "Movement · Stillness · Wellbeing",
+    bgImage: "/images/unsplash/stillness-retreat.jpg",
   },
   {
-    id: "celebrations",
-    icon: "celebration",
-    heading: "Celebrations",
-    body: "Weddings, milestone anniversaries, birthday gatherings and personal celebrations created across Tavaro's lawns, banquet spaces and private dining rooms.",
-    tags: ["Weddings", "Milestones", "Banquets", "Private Parties"],
-    cta: { label: "Plan a Celebration", href: "/resorts#celebrate" },
+    id: "golden-society",
+    icon: "golden-society",
+    heading: "The Golden Society",
+    subtitle: "Weddings & Celebrations",
+    bgImage: "/images/unsplash/resorts-wedding-celebration.jpg",
+    isGoldenSociety: true,
   },
 ];
 
@@ -58,7 +58,7 @@ export default function ExperiencesPage() {
         photoSrc="/photos/experiences-cars.jpg"
         photoAlt="A curated car experience at Tavaro"
         placeholder="ph-3"
-        breadcrumbLabel="Experiences"
+        breadcrumbLabel="Tavaro / Experiences"
         eyebrow="Experiences"
         title={
           <>
@@ -69,13 +69,58 @@ export default function ExperiencesPage() {
         }
         titleSize="clamp(34px,4.2vw,54px)"
         lede="Tavaro curates and creates experiences — not just spaces to host them in. An ongoing platform of gatherings, not a static list of events."
+        topRightCta={<GalleryHeroButton />}
         quickNav={[
-          { label: "SEE UPCOMING EXPERIENCES", desc: "Join a curated experience at Tavaro.", icon: "sun", href: "#upcoming" },
-          { label: "CREATE YOUR DAY", desc: "Build a day around your team, friends or family.", icon: "building", href: "#ways-to-gather" },
-          { label: "HOST YOUR TABLE", desc: "Bring your people together over a meal.", icon: "dining", href: "/contact" },
-          { label: "GALLERY", desc: "Explore photos & moments from past gatherings.", icon: "photos", href: "#gallery" },
+          {
+            label: "UPCOMING EXPERIENCES",
+            desc: "Experiences worth showing up for.",
+            icon: "sun",
+            href: "#upcoming",
+          },
+          {
+            label: "THE OFFSITE EDIT",
+            desc: "Team outings, offsites, celebrations & more.",
+            icon: "building",
+            href: "#offsite-edit",
+            isOffsiteModal: true,
+          },
+          {
+            label: "UNDER THE SKY",
+            desc: "Open-air dining experience across Tavaro",
+            icon: "dining",
+            href: "#under-the-sky",
+            isUnderTheSkyModal: true,
+          },
         ]}
       />
+
+      {/* The Offsite Edit Featured Section */}
+      <section className="offer-block on-panel" id="offsite-edit">
+        <div className="container">
+          <SplitSection
+            reverse
+            wide
+            placeholder="ph-3"
+            src="/photos/experiences-cars.jpg"
+            alt="Corporate offsite and brand activation experience at Tavaro"
+          >
+            <OfferHead num="Featured Experience" heading="The Offsite Edit" />
+            <p className="italic display-3" style={{ marginBottom: 16 }}>
+              Create your day.
+            </p>
+            <p>
+              Tell us what you&apos;re building. From team offsites and leadership retreats to brand activations and after-hours gatherings, give us the brief and we&apos;ll help shape the experience around it.
+            </p>
+            <ul className="split-list">
+              <li>Corporate Offsites &amp; Team Days</li>
+              <li>Leadership &amp; Strategic Retreats</li>
+              <li>Brand Activations &amp; Launches</li>
+              <li>After Hours Dining &amp; Evening Add-ons</li>
+            </ul>
+            <OffsiteEditButton />
+          </SplitSection>
+        </div>
+      </section>
 
       {/* Four categories */}
       <section className="section on-dark" id="ways-to-gather">

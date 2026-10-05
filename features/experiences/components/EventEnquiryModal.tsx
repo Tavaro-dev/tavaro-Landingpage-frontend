@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useId, useState, type FormEvent } from "react";
+import { useEffect, useId, useState, useSyncExternalStore, type FormEvent } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "@/components/ui/Icon";
 import { VENUES, ENQUIRY_MENU_ITEMS, ENQUIRY_GST_RATE, ENQUIRY_BASE_PLATE_PRICE, computeEnquiryTotal } from "@/lib/content/venues";
 import { formatInr } from "@/lib/format";
+
+const emptySubscribe = () => () => {};
 
 const EMPTY_DETAILS = { name: "", phone: "", email: "", eventType: "Wedding", eventDate: "", budget: "" };
 type Details = typeof EMPTY_DETAILS;
@@ -29,8 +31,7 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
   // the containing block for `position: fixed` descendants per spec — the
   // overlay would track that ancestor's scroll position instead of the
   // viewport. Portalling to <body> sidesteps that entirely.
-  const [portalRoot, setPortalRoot] = useState<Element | null>(null);
-  useEffect(() => setPortalRoot(document.body), []);
+  const portalRoot = useSyncExternalStore(emptySubscribe, () => document.body, () => null);
 
   useEffect(() => {
     if (!open) return;

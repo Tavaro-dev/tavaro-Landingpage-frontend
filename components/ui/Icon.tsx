@@ -185,6 +185,21 @@ const SVG_ICONS = {
       <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
+  check: (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  "golden-society": (
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="44" stroke="currentColor" strokeWidth="2" />
+      <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
+      <circle cx="50" cy="50" r="37" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="0.8" />
+      <text x="50" y="52" textAnchor="middle" dominantBaseline="central" fill="currentColor" fontFamily="Georgia, serif" fontSize="20" fontWeight="700" letterSpacing="2.5">TGS</text>
+      <path d="M50 71l1.8 3.6L55.5 73l-2.7 2.7L54 79.5 50 77.2l-4 2.3.7-3.8-2.7-2.7 3.7-1.6z" fill="currentColor" />
+      <path d="M50 21l1.2 2.4 2.8.5-1.8 1.8.5 2.6-2.7-1.5-2.7 1.5.5-2.6-1.8-1.8 2.8-.5z" fill="currentColor" />
+    </svg>
+  ),
 } as const;
 
 type BrandIconName = keyof typeof BRAND_ICONS;

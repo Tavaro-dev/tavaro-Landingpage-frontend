@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "@/components/ui/Icon";
 import { CustomSelect } from "@/components/ui/CustomSelect";
@@ -30,8 +30,10 @@ const ROOM_OPTIONS = [
   { value: "Entire Estate (13 Rooms)", label: "Entire Estate (13 Rooms)" },
 ];
 
+const emptySubscribe = () => () => {};
+
 export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps) {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -43,10 +45,6 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
     rooms: "",
     needCatering: false,
   });
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -64,7 +62,7 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
   return createPortal(
     <div className="event-modal-overlay" onClick={onClose}>
       <div className="event-modal-card" onClick={(e) => e.stopPropagation()}>
-        {/* Requirement 3: Header without 'Step 1 of 4' */}
+        {/* Header */}
         <div className="event-modal-head">
           <h3 className="event-modal-title">Tell us about your celebration</h3>
           <button type="button" className="event-modal-close" onClick={onClose} aria-label="Close modal">
@@ -72,138 +70,117 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
           </button>
         </div>
 
-        <div className="event-modal-body">
-          {submitted ? (
-            <div className="event-success-box">
-              <p className="eyebrow center no-line">Enquiry Received</p>
-              <h4 className="event-success-heading">Thank You for Reaching Out</h4>
-              <p className="event-success-body">
-                We&apos;re delighted to hear from you. Your enquiry has been received, and our team will be in touch
-                with you shortly to help bring your plans to life. We look forward to welcoming you to Tavaro.
-              </p>
-              <button
-                type="button"
-                className="btn solid"
-                style={{ marginTop: 28 }}
-                onClick={() => {
-                  setSubmitted(false);
-                  onClose();
-                }}
-              >
-                Close
+        {submitted ? (
+          <div className="event-modal-body" style={{ textAlign: "center", padding: "40px 20px" }}>
+            <span className="eyebrow center no-line">Enquiry Sent</span>
+            <h4 className="display-3" style={{ marginTop: 12, marginBottom: 16 }}>
+              Thank You
+            </h4>
+            <p className="lede" style={{ color: "var(--on-surface-muted)", maxWidth: "420px", margin: "0 auto" }}>
+              We&apos;ve received your celebration details. Our events team will reach out shortly.
+            </p>
+            <button
+              type="button"
+              className="btn solid"
+              style={{ marginTop: 28 }}
+              onClick={() => {
+                setSubmitted(false);
+                onClose();
+              }}
+            >
+              Done
+            </button>
+          </div>
+        ) : (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setSubmitted(true);
+            }}
+            className="event-modal-body"
+          >
+            <div className="event-modal-field">
+              <label className="event-modal-label">Your Name *</label>
+              <input
+                type="text"
+                required
+                className="event-modal-input"
+                placeholder="Enter your name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+            </div>
+
+            <div className="event-modal-field">
+              <label className="event-modal-label">Phone Number *</label>
+              <input
+                type="tel"
+                required
+                className="event-modal-input"
+                placeholder="+91 98765 43210"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              />
+            </div>
+
+            <div className="event-modal-field">
+              <label className="event-modal-label">Email Address *</label>
+              <input
+                type="email"
+                required
+                className="event-modal-input"
+                placeholder="you@example.com"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+            </div>
+
+            <div className="event-modal-field">
+              <label className="event-modal-label">Type of Event *</label>
+              <CustomSelect
+                value={formData.eventType}
+                onChange={(val) => setFormData({ ...formData, eventType: val })}
+                options={EVENT_TYPES}
+              />
+            </div>
+
+            <div className="event-modal-field">
+              <label className="event-modal-label">Tentative Event Date *</label>
+              <CustomDatePicker
+                value={formData.eventDate}
+                onChange={(val) => setFormData({ ...formData, eventDate: val })}
+                placeholder="Select date"
+              />
+            </div>
+
+            <div className="event-modal-field">
+              <label className="event-modal-label">Guest Count *</label>
+              <input
+                type="text"
+                required
+                className="event-modal-input"
+                placeholder="e.g. 50 guests"
+                value={formData.guestCount}
+                onChange={(e) => setFormData({ ...formData, guestCount: e.target.value })}
+              />
+            </div>
+
+            <div className="event-modal-field">
+              <label className="event-modal-label">Accommodation / Rooms</label>
+              <CustomSelect
+                value={formData.rooms}
+                onChange={(val) => setFormData({ ...formData, rooms: val })}
+                options={ROOM_OPTIONS}
+              />
+            </div>
+
+            <div className="event-modal-foot" style={{ marginTop: 24 }}>
+              <button type="submit" className="btn solid" style={{ width: "100%" }}>
+                Submit Enquiry
               </button>
             </div>
-          ) : (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSubmitted(true);
-              }}
-              className="event-form"
-            >
-              <div className="event-form-grid">
-                <div className="field">
-                  <label htmlFor="ev-name">YOUR NAME</label>
-                  <input
-                    id="ev-name"
-                    type="text"
-                    placeholder="e.g. Ananya Sharma"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  />
-                </div>
-
-                <div className="field">
-                  <label htmlFor="ev-phone">PHONE / WHATSAPP</label>
-                  <input
-                    id="ev-phone"
-                    type="tel"
-                    placeholder="+91 998 998 3029"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  />
-                </div>
-
-                <div className="field">
-                  <label htmlFor="ev-email">EMAIL</label>
-                  <input
-                    id="ev-email"
-                    type="email"
-                    placeholder="ananya.sharma@example.com"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  />
-                </div>
-
-                {/* Requirement 1: Theme-styled CustomSelect dropdown */}
-                <div className="field">
-                  <label htmlFor="ev-type">EVENT TYPE</label>
-                  <CustomSelect
-                    id="ev-type"
-                    value={formData.eventType}
-                    options={EVENT_TYPES}
-                    onChange={(val) => setFormData({ ...formData, eventType: val })}
-                  />
-                </div>
-
-                <div className="field">
-                  <label htmlFor="ev-date">EVENT DATE</label>
-                  <CustomDatePicker
-                    id="ev-date"
-                    value={formData.eventDate}
-                    placeholder="Select event date"
-                    required
-                    onChange={(val) => setFormData({ ...formData, eventDate: val })}
-                  />
-                </div>
-
-                <div className="field">
-                  <label htmlFor="ev-guests">EXPECTED GUEST COUNT</label>
-                  <input
-                    id="ev-guests"
-                    type="number"
-                    placeholder="100"
-                    required
-                    value={formData.guestCount}
-                    onChange={(e) => setFormData({ ...formData, guestCount: e.target.value })}
-                  />
-                </div>
-
-                {/* Requirement 1 & 2: Theme-styled dropdown with actual room counts (13 keys total) */}
-                <div className="field">
-                  <label htmlFor="ev-rooms">ROOMS</label>
-                  <CustomSelect
-                    id="ev-rooms"
-                    value={formData.rooms}
-                    options={ROOM_OPTIONS}
-                    placeholder="Select no. of rooms"
-                    onChange={(val) => setFormData({ ...formData, rooms: val })}
-                  />
-                </div>
-
-                <div className="field full checkbox-field">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      checked={formData.needCatering}
-                      onChange={(e) => setFormData({ ...formData, needCatering: e.target.checked })}
-                    />
-                    <span>I need catering</span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="event-form-actions">
-                <button type="submit" className="btn solid event-submit-btn">
-                  ENQUIRE <span className="btn-arrow">→</span>
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
+          </form>
+        )}
       </div>
     </div>,
     document.body

@@ -33,10 +33,7 @@ export function HomeHero() {
           <br />
           <em>between worlds</em>
         </h1>
-        <p className="hero-sub">
-          Hospitality <span className="dot">·</span> Residences <span className="dot">·</span> Experiences{" "}
-          <span className="dot">·</span> Wellness
-        </p>
+
         <div className="hero-cta-row">
           <a href="#pillars" className="btn">
             Explore Tavaro <span className="btn-arrow">→</span>

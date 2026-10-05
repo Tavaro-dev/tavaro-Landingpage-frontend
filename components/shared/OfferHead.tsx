@@ -16,19 +16,12 @@ export function OfferHead({
 
   return (
     <Reveal className="offer-head">
-      {lede ? (
-        <div>
-          {label}
-          <h2 className="display-2" style={{ marginTop: 18 }}>
-            {heading}
-          </h2>
-        </div>
-      ) : (
-        <>
-          {label}
-          <h2 className="display-2">{heading}</h2>
-        </>
-      )}
+      <div>
+        {label}
+        <h2 className="display-2" style={{ marginTop: 18 }}>
+          {heading}
+        </h2>
+      </div>
       {lede && <p className="lede" style={{ maxWidth: "38ch" }}>{lede}</p>}
     </Reveal>
   );

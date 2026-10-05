@@ -16,7 +16,7 @@ export default function Header() {
   const [pastPillarStrip, setPastPillarStrip] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navVisible = isHome ? pastPillarStrip : true;
-  const noHero = pathname === "/resorts/accommodations" || pathname === "/checkout";
+  const noHero = pathname === "/resorts/accommodations" || pathname === "/checkout" || pathname === "/resorts/location" || pathname === "/resorts/photos";
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);

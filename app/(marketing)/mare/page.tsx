@@ -52,17 +52,17 @@ export default function MarePage() {
       {/* Coffee & Food */}
       <section className="offer-block on-dark" id="coffee">
         <div className="container">
-          <OfferHead
-            num="01 — Coffee &amp; Culinary"
-            heading={
-              <>
-                Shaped by flavor,
-                <br />
-                poured with care
-              </>
-            }
-          />
           <SplitSection placeholder="ph-1" src="/images/unsplash/mare-coffee.jpg" alt="Pour over coffee at Màre">
+            <OfferHead
+              num="01 — Coffee &amp; Culinary"
+              heading={
+                <>
+                  Shaped by flavor,
+                  <br />
+                  poured with care
+                </>
+              }
+            />
             <p>
               Specialty beans roasted for balance, house bakery items baked daily, and clean, fresh plates
               designed for unhurried breakfasts and afternoon gatherings.
@@ -80,17 +80,17 @@ export default function MarePage() {
       {/* Community */}
       <section className="offer-block on-panel" id="community">
         <div className="container">
-          <OfferHead
-            num="02 — Community &amp; Culture"
-            heading={
-              <>
-                A table for
-                <br />
-                every conversation
-              </>
-            }
-          />
           <SplitSection wide placeholder="ph-4" src="/images/unsplash/mare-community-coffee-house.jpg" alt="Community at Màre">
+            <OfferHead
+              num="02 — Community &amp; Culture"
+              heading={
+                <>
+                  A table for
+                  <br />
+                  every conversation
+                </>
+              }
+            />
             <p>
               A place to meet, work, connect and spend time — Màre draws together guests, neighbours and
               regulars into one shared table.
