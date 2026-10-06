@@ -165,6 +165,7 @@ export function CustomSelect({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-controls={isOpen ? listboxId : undefined}
+        suppressHydrationWarning
       >
         <span className={selectedOption ? "selected-text" : "placeholder-text"}>
           {selectedOption ? selectedOption.label : placeholder}

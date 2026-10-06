@@ -121,6 +121,7 @@ export default function ResortsPage() {
         <div className="container">
           <SplitSection
             wide
+            priority
             placeholder="ph-gold"
             src="/images/unsplash/mare-community-coffee-house.jpg"
             alt="Màre Coffee House at Tavaro Resorts"

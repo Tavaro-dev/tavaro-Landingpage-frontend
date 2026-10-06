@@ -38,9 +38,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${hypatia.variable} ${archivo.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${hypatia.variable} ${archivo.variable}`}
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+    >
       <body>
-        <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
+        <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem={true}>
           <CartProvider>
             <Header />
             <PageTransition>{children}</PageTransition>

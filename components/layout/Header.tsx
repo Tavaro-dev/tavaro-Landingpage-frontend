@@ -16,7 +16,12 @@ export default function Header() {
   const [pastPillarStrip, setPastPillarStrip] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navVisible = isHome ? pastPillarStrip : true;
-  const noHero = pathname === "/resorts/accommodations" || pathname === "/checkout" || pathname === "/resorts/location" || pathname === "/resorts/photos";
+  const noHero =
+    pathname === "/resorts/accommodations" ||
+    pathname.startsWith("/checkout") ||
+    pathname === "/resorts/location" ||
+    pathname === "/resorts/photos" ||
+    pathname.endsWith("/book");
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
@@ -119,6 +124,7 @@ export default function Header() {
           aria-expanded={mobileOpen}
           aria-controls="mobile-nav"
           onClick={() => setMobileOpen((v) => !v)}
+          suppressHydrationWarning
         >
           <span></span>
           <span></span>

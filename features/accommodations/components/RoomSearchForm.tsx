@@ -46,7 +46,7 @@ export function RoomSearchForm() {
       </div>
       <div className="availability-field">
         <label htmlFor={fieldId("guests")}>Guests</label>
-        <input id={fieldId("guests")} name="guests" type="number" min={1} defaultValue={2} />
+        <input id={fieldId("guests")} name="guests" type="number" min={1} defaultValue={2} suppressHydrationWarning />
       </div>
       <div className="availability-field">
         <label htmlFor={fieldId("roomType")}>Room Type</label>
@@ -58,7 +58,7 @@ export function RoomSearchForm() {
           onChange={(val) => setRoomType(val)}
         />
       </div>
-      <button type="submit" className="btn solid availability-submit">
+      <button type="submit" className="btn solid availability-submit" suppressHydrationWarning>
         Check Availability
       </button>
     </form>

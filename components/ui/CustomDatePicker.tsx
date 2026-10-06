@@ -152,6 +152,7 @@ export function CustomDatePicker({
         aria-haspopup="dialog"
         aria-expanded={isOpen}
         aria-controls={isOpen ? calendarId : undefined}
+        suppressHydrationWarning
       >
         <span className={value ? "selected-text" : "placeholder-text"}>
           {value ? formatDisplayDate(value) : placeholder}

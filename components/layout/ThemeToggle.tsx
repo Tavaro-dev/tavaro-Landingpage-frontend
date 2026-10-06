@@ -1,25 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const STORAGE_KEY = "tavaro-theme";
+import { useTheme } from "next-themes";
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
 
+  // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
-    const syncTheme = () => {
-      const current = document.documentElement.getAttribute("data-theme");
-      setTheme(current === "light" ? "light" : "dark");
-    };
-    syncTheme();
+    setMounted(true);
   }, []);
 
+  if (!mounted) {
+    // Return a placeholder with the same dimensions to avoid layout shift
+    return <button type="button" className={`theme-toggle ${className ?? ""}`.trim()} aria-hidden="true" />;
+  }
+
   const toggle = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem(STORAGE_KEY, next);
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -27,9 +26,9 @@ export function ThemeToggle({ className }: { className?: string }) {
       type="button"
       className={`theme-toggle ${className ?? ""}`.trim()}
       onClick={toggle}
-      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
     >
-      {theme === "dark" ? (
+      {resolvedTheme === "dark" ? (
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.4" />
           <path

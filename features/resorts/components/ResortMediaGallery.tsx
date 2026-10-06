@@ -34,33 +34,40 @@ export function ResortMediaGallery({ isStandalone = false }: ResortMediaGalleryP
     <>
       <style dangerouslySetInnerHTML={{ __html: `
         .resort-media-section {
-          padding: ${isStandalone ? "clamp(180px, 22vh, 260px) 0 clamp(80px, 10vh, 140px) 0" : "clamp(80px, 12vh, 140px) 0"};
+          padding: ${isStandalone ? "clamp(120px, 20vh, 260px) 0 clamp(60px, 10vh, 140px) 0" : "clamp(60px, 10vh, 140px) 0"};
           background: var(--surface);
           ${isStandalone ? "" : "border-top: 1px solid var(--surface-line);"}
         }
         .resort-media-header {
           text-align: center;
           max-width: 720px;
-          margin: 0 auto clamp(40px, 6vh, 64px);
+          margin: 0 auto clamp(32px, 5vh, 64px);
         }
+        
+        /* Desktop Asymmetric Grid (> 1024px) */
         .resort-media-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: clamp(16px, 2.5vw, 32px);
-          max-width: 1200px;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-rows: auto auto auto;
+          gap: clamp(16px, 2vw, 24px);
+          max-width: 1360px;
           margin: 0 auto;
         }
-        .resort-media-grid-item.full-width {
-          grid-column: 1 / -1;
-        }
-        @media (max-width: 768px) {
+        .resort-media-grid-item:nth-child(1) { grid-column: 1 / span 2; grid-row: 1 / span 2; }
+        .resort-media-grid-item:nth-child(2) { grid-column: 3; grid-row: 1; }
+        .resort-media-grid-item:nth-child(3) { grid-column: 3; grid-row: 2; }
+        .resort-media-grid-item:nth-child(4) { grid-column: 1 / span 3; grid-row: 3; }
+        
+        /* Tablet & Mobile Grid (< 1024px) */
+        @media (max-width: 1024px) {
           .resort-media-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: auto;
           }
-          .resort-media-grid-item.full-width {
-            grid-column: 1;
-          }
+          .resort-media-grid-item:nth-child(1) { grid-column: 1 / span 2; grid-row: auto; }
+          .resort-media-grid-item:nth-child(2) { grid-column: 1; grid-row: auto; }
+          .resort-media-grid-item:nth-child(3) { grid-column: 2; grid-row: auto; }
+          .resort-media-grid-item:nth-child(4) { grid-column: 1 / span 2; grid-row: auto; }
         }
       `}} />
       <section className="section resort-media-section" id="gallery">
@@ -76,47 +83,43 @@ export function ResortMediaGallery({ isStandalone = false }: ResortMediaGalleryP
           </Reveal>
 
           <div className="resort-media-grid">
-            {/* 1. RESORT OVERVIEW — Hero Visual Anchor */}
             {overview && (
-              <Reveal className="resort-media-grid-item full-width">
+              <Reveal className="resort-media-grid-item">
                 <MediaCategoryCard
                   category={overview}
                   variant="hero"
                   priority
-                  onSelect={() => handleSelectCategory(overview)}
+                  onSelect={(e) => handleSelectCategory(overview, e)}
                 />
               </Reveal>
             )}
 
-            {/* 2. EVENTS */}
             {events && (
               <Reveal className="resort-media-grid-item">
                 <MediaCategoryCard
                   category={events}
                   variant="standard"
-                  onSelect={() => handleSelectCategory(events)}
+                  onSelect={(e) => handleSelectCategory(events, e)}
                 />
               </Reveal>
             )}
 
-            {/* 3. DINING */}
             {dining && (
               <Reveal className="resort-media-grid-item">
                 <MediaCategoryCard
                   category={dining}
                   variant="standard"
-                  onSelect={() => handleSelectCategory(dining)}
+                  onSelect={(e) => handleSelectCategory(dining, e)}
                 />
               </Reveal>
             )}
 
-            {/* 4. ACCOMMODATION — Full-width Lower Card */}
             {accommodation && (
-              <Reveal className="resort-media-grid-item full-width">
+              <Reveal className="resort-media-grid-item">
                 <MediaCategoryCard
                   category={accommodation}
                   variant="wide"
-                  onSelect={() => handleSelectCategory(accommodation)}
+                  onSelect={(e) => handleSelectCategory(accommodation, e)}
                 />
               </Reveal>
             )}

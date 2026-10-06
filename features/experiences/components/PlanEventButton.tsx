@@ -14,7 +14,7 @@ export function PlanEventButton({ className = "btn", style, children }: PlanEven
 
   return (
     <>
-      <button type="button" className={className} style={style} onClick={() => setIsOpen(true)}>
+      <button type="button" className={className} style={style} onClick={() => setIsOpen(true)} suppressHydrationWarning>
         {children || (
           <>
             Plan Your Event <span className="btn-arrow">→</span>

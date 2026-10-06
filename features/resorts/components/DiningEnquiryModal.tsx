@@ -106,7 +106,7 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
       setSubmitted(false);
       previousFocusRef.current = document.activeElement as HTMLElement;
       document.body.style.overflow = "hidden";
-      
+
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
           onClose();
@@ -130,9 +130,9 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
           }
         }
       };
-      
+
       document.addEventListener("keydown", handleKeyDown);
-      
+
       setTimeout(() => {
         modalRef.current?.focus();
       }, 50);
@@ -169,11 +169,11 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
           .discover-grid .event-meta { margin-top: 4px !important; padding: 0 !important; font-size: 13px; padding-bottom: 0 !important; }
         }
       `}</style>
-      <div 
-        className={`event-modal-card ${view === "discover" ? "wide" : ""}`} 
+      <div
+        className={`event-modal-card ${view === "discover" ? "wide" : ""}`}
         onClick={(e) => e.stopPropagation()}
-        role="dialog" 
-        aria-modal="true" 
+        role="dialog"
+        aria-modal="true"
         aria-labelledby="dining-enquiry-title"
         tabIndex={-1}
         ref={modalRef}
