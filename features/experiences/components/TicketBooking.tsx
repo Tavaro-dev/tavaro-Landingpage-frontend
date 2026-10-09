@@ -450,7 +450,7 @@ export function TicketBooking({ event }: { event: EventItem }) {
                 <span>I have read and accept the terms and conditions.</span>
               </label>
 
-              <div style={{ marginTop: 40, display: "flex", gap: 18, flexWrap: "wrap" }}>
+              <div style={{ marginTop: 40, display: "flex", justifyContent: "center", gap: 18, flexWrap: "wrap" }}>
                 <button type="button" className="btn" onClick={() => goTo(2)}>
                   Back
                 </button>

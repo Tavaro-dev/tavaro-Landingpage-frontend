@@ -321,13 +321,13 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
         .offsite-form-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 20px;
+          gap: 28px 24px;
         }
         .offsite-form-group {
           display: flex;
           flex-direction: column;
-          gap: 6px;
-          margin-bottom: 22px;
+          gap: 10px;
+          margin-bottom: 24px;
         }
         .offsite-form-group.full {
           grid-column: 1 / -1;
@@ -353,7 +353,7 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           background: #ffffff;
           border: 1px solid rgba(28, 23, 18, 0.2);
           color: var(--on-surface);
-          padding: 11px 14px;
+          padding: 13px 14px;
           border-radius: 2px;
           font-family: var(--font-sans);
           font-size: 14px;
@@ -445,7 +445,8 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
         .offsite-footer-actions {
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: center;
+          gap: 16px;
           margin-top: 28px;
           padding-top: 20px;
           border-top: 1px solid var(--surface-line);

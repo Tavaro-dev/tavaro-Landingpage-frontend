@@ -278,14 +278,14 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
         </div>
 
         {step === 1 && (
-          <div className="modal-foot" style={{ justifyContent: "flex-end" }}>
+          <div className="modal-foot" style={{ justifyContent: "center" }}>
             <button type="submit" form={step1FormId} className="btn solid">
               See Live Availability <span className="btn-arrow">→</span>
             </button>
           </div>
         )}
         {step === 2 && (
-          <div className="modal-foot">
+          <div className="modal-foot" style={{ justifyContent: "center", gap: 16 }}>
             <button type="button" className="btn" onClick={() => setStep(1)}>
               ← Back
             </button>
@@ -295,7 +295,7 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
           </div>
         )}
         {step === 3 && (
-          <div className="modal-foot">
+          <div className="modal-foot" style={{ justifyContent: "center", gap: 16 }}>
             <button type="button" className="btn" onClick={() => setStep(2)}>
               ← Back
             </button>
@@ -305,7 +305,7 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
           </div>
         )}
         {step === 4 && (
-          <div className="modal-foot" style={{ justifyContent: "space-between" }}>
+          <div className="modal-foot" style={{ justifyContent: "center", gap: 16 }}>
             <button type="button" className="btn" onClick={() => setStep(3)}>
               ← Back
             </button>

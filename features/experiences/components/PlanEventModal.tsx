@@ -99,84 +99,82 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
             }}
             className="event-modal-body"
           >
-            <div className="event-modal-field">
-              <label className="event-modal-label">Your Name *</label>
-              <input
-                type="text"
-                required
-                className="event-modal-input"
-                placeholder="Enter your name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              />
+            <div className="event-form-grid">
+              <div className="field">
+                <label>Your Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Enter your name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              </div>
+
+              <div className="field">
+                <label>Phone Number *</label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="+91 98765 43210"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                />
+              </div>
+
+              <div className="field">
+                <label>Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+              </div>
+
+              <div className="field">
+                <label>Type of Event *</label>
+                <CustomSelect
+                  value={formData.eventType}
+                  onChange={(val) => setFormData({ ...formData, eventType: val })}
+                  options={EVENT_TYPES}
+                />
+              </div>
+
+              <div className="field">
+                <label>Tentative Event Date *</label>
+                <CustomDatePicker
+                  value={formData.eventDate}
+                  onChange={(val) => setFormData({ ...formData, eventDate: val })}
+                  placeholder="Select date"
+                />
+              </div>
+
+              <div className="field">
+                <label>Guest Count *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. 50 guests"
+                  value={formData.guestCount}
+                  onChange={(e) => setFormData({ ...formData, guestCount: e.target.value })}
+                />
+              </div>
+
+              <div className="field">
+                <label>Accommodation / Rooms</label>
+                <CustomSelect
+                  value={formData.rooms}
+                  onChange={(val) => setFormData({ ...formData, rooms: val })}
+                  options={ROOM_OPTIONS}
+                />
+              </div>
             </div>
 
-            <div className="event-modal-field">
-              <label className="event-modal-label">Phone Number *</label>
-              <input
-                type="tel"
-                required
-                className="event-modal-input"
-                placeholder="+91 98765 43210"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              />
-            </div>
-
-            <div className="event-modal-field">
-              <label className="event-modal-label">Email Address *</label>
-              <input
-                type="email"
-                required
-                className="event-modal-input"
-                placeholder="you@example.com"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
-            </div>
-
-            <div className="event-modal-field">
-              <label className="event-modal-label">Type of Event *</label>
-              <CustomSelect
-                value={formData.eventType}
-                onChange={(val) => setFormData({ ...formData, eventType: val })}
-                options={EVENT_TYPES}
-              />
-            </div>
-
-            <div className="event-modal-field">
-              <label className="event-modal-label">Tentative Event Date *</label>
-              <CustomDatePicker
-                value={formData.eventDate}
-                onChange={(val) => setFormData({ ...formData, eventDate: val })}
-                placeholder="Select date"
-              />
-            </div>
-
-            <div className="event-modal-field">
-              <label className="event-modal-label">Guest Count *</label>
-              <input
-                type="text"
-                required
-                className="event-modal-input"
-                placeholder="e.g. 50 guests"
-                value={formData.guestCount}
-                onChange={(e) => setFormData({ ...formData, guestCount: e.target.value })}
-              />
-            </div>
-
-            <div className="event-modal-field">
-              <label className="event-modal-label">Accommodation / Rooms</label>
-              <CustomSelect
-                value={formData.rooms}
-                onChange={(val) => setFormData({ ...formData, rooms: val })}
-                options={ROOM_OPTIONS}
-              />
-            </div>
-
-            <div className="event-modal-foot" style={{ marginTop: 24 }}>
-              <button type="submit" className="btn solid" style={{ width: "100%" }}>
-                Submit Enquiry
+            <div className="event-modal-foot" style={{ marginTop: 24, display: "flex", justifyContent: "center" }}>
+              <button type="submit" className="btn solid" style={{ padding: "14px 28px" }}>
+                Submit Enquiry →
               </button>
             </div>
           </form>

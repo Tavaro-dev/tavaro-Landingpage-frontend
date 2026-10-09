@@ -365,7 +365,8 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
         .uts-footer-actions {
           display: flex;
           align-items: center;
-          justify-content: space-between;
+          justify-content: center;
+          gap: 16px;
           margin-top: 28px;
           padding-top: 20px;
           border-top: 1px solid var(--surface-line);

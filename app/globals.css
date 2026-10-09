@@ -2185,13 +2185,13 @@ select {
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
+  gap: 32px 24px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   grid-column: span 1;
 }
 
@@ -3807,10 +3807,10 @@ select {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(28, 23, 18, 0.25);
-  padding: 10px 4px;
+  border-bottom: 1px solid var(--surface-line);
+  padding: 12px 4px;
   font-size: 14.5px;
-  color: var(--ink);
+  color: var(--on-surface);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3845,11 +3845,11 @@ select {
 }
 
 .custom-select-trigger .placeholder-text {
-  color: var(--muted-on-light);
+  color: var(--on-surface-muted);
 }
 
 .custom-select-trigger .selected-text {
-  color: var(--ink);
+  color: var(--on-surface);
 }
 
 .select-arrow {
@@ -3874,8 +3874,8 @@ select {
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  background: var(--paper-2);
-  border: 1px solid var(--gold-dark);
+  background: var(--surface-2);
+  border: 1px solid var(--surface-line);
   box-shadow: 0 16px 40px rgba(10, 9, 8, 0.45);
   z-index: 1000;
   padding: 6px 0;
@@ -3889,7 +3889,7 @@ select {
 .custom-select-option {
   padding: 10px 16px;
   font-size: 13.5px;
-  color: var(--ink);
+  color: var(--on-surface);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
@@ -3917,10 +3917,10 @@ select {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(28, 23, 18, 0.25);
+  border-bottom: 1px solid var(--surface-line);
   padding: 10px 4px;
   font-size: 14.5px;
-  color: var(--ink);
+  color: var(--on-surface);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3965,8 +3965,8 @@ select {
   top: calc(100% + 6px);
   left: 0;
   width: 280px;
-  background: var(--paper-2);
-  border: 1px solid var(--gold-dark);
+  background: var(--surface-2);
+  border: 1px solid var(--surface-line);
   box-shadow: 0 18px 45px rgba(10, 9, 8, 0.5);
   z-index: 1000;
   padding: 16px;
@@ -3987,7 +3987,7 @@ select {
   font-family: var(--font-display);
   font-size: 14.5px;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--on-surface);
   letter-spacing: 0.04em;
 }
 
@@ -4040,7 +4040,7 @@ select {
   background: none;
   border: none;
   font-size: 12.5px;
-  color: var(--ink);
+  color: var(--on-surface);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4050,7 +4050,7 @@ select {
 }
 
 .datepicker-day.muted {
-  color: rgba(28, 23, 18, 0.25);
+  color: var(--on-surface-muted);
   cursor: default;
 }
 
@@ -4104,15 +4104,15 @@ select {
 }
 
 .event-modal-card {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--surface);
+  color: var(--on-surface);
   width: min(640px, 94vw);
   max-height: 88vh;
   display: flex;
   flex-direction: column;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
   position: relative;
-  border: 1px solid var(--line-dark);
+  border: 1px solid var(--surface-line);
   border-radius: 2px;
 }
 
@@ -4121,8 +4121,8 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(201, 164, 90, 0.3);
-  background: var(--paper);
+  border-bottom: 1px solid var(--surface-line);
+  background: var(--surface);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -4131,14 +4131,14 @@ select {
 .event-modal-title {
   font-family: var(--font-display);
   font-size: clamp(20px, 2.5vw, 26px);
-  color: var(--ink);
+  color: var(--on-surface);
   margin: 0;
 }
 
 .event-modal-close {
   background: none;
   border: none;
-  color: var(--ink-soft);
+  color: var(--on-surface-muted);
   width: 32px;
   height: 32px;
   display: flex;
@@ -4166,13 +4166,13 @@ select {
 .event-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 22px 24px;
+  gap: 32px 24px;
 }
 
 .event-form-grid .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 
 .event-form-grid .field label {
@@ -4183,18 +4183,23 @@ select {
   color: var(--gold-dark);
 }
 
-.event-form-grid .field input {
+.event-form-grid .field input,
+.event-form-grid .field textarea,
+.event-form-grid .field select {
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(28, 23, 18, 0.25);
-  padding: 10px 4px;
+  border-bottom: 1px solid var(--surface-line);
+  padding: 12px 4px;
   font-size: 14.5px;
-  color: var(--ink);
+  color: var(--on-surface);
   outline: none;
   transition: border-color 0.3s;
+  resize: vertical;
 }
 
-.event-form-grid .field input:focus {
+.event-form-grid .field input:focus,
+.event-form-grid .field textarea:focus,
+.event-form-grid .field select:focus {
   border-color: var(--gold-dark);
 }
 
@@ -4224,13 +4229,13 @@ select {
 .checkbox-label span {
   font-size: 14px;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--on-surface);
 }
 
 .event-form-actions {
   margin-top: 32px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .event-submit-btn {
@@ -4247,14 +4252,14 @@ select {
 .event-success-heading {
   font-family: var(--font-display);
   font-size: clamp(24px, 3.5vw, 32px);
-  color: var(--ink);
+  color: var(--on-surface);
   margin: 12px 0 16px;
 }
 
 .event-success-body {
   font-size: 15px;
   line-height: 1.7;
-  color: var(--muted-on-light);
+  color: var(--on-surface-muted);
   max-width: 52ch;
   margin: 0 auto;
 }
