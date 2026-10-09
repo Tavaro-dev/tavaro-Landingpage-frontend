@@ -83,4 +83,28 @@ export class MockBookingService implements BookingService {
   }
 }
 
-export const bookingService = new MockBookingService();
+export class UnavailableBookingService implements BookingService {
+  async searchAvailability(search: BookingSearch): Promise<readonly RoomAvailability[]> {
+    // We can still allow searching availability in production for demo purposes
+    // Or we could return [] if we wanted to block it. 
+    // Let's use the mock for search so the UI still works until checkout.
+    return new MockBookingService().searchAvailability(search);
+  }
+
+  async createQuote(req: QuoteRequest): Promise<BookingQuote> {
+    // Same here, allow quoting so users can see prices.
+    return new MockBookingService().createQuote(req);
+  }
+
+  async createBooking(): Promise<BookingResult> {
+    return Promise.resolve({
+      status: "failed",
+      errorCode: "UNAVAILABLE",
+      message: "Online booking is not yet available in production. Please contact reservations.",
+    });
+  }
+}
+
+export const bookingService = process.env.NODE_ENV === "production"
+  ? new UnavailableBookingService()
+  : new MockBookingService();

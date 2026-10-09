@@ -8,7 +8,7 @@ import { OrderSummary } from "./OrderSummary";
 import { Stepper } from "@/components/ui/Stepper";
 import { bookingService } from "@/lib/booking/service";
 import type { BookingQuote, BookingResult } from "@/lib/booking/types";
-import { paymentService } from "@/lib/payment/service";
+import { processPaymentAction, createBookingAction } from "@/app/actions/transaction";
 
 import { DomainError } from "@/lib/api/errors";
 
@@ -89,7 +89,7 @@ export function CheckoutFlow() {
     try {
       // 1. Process Payment
       // In production, the backend determines the authoritative amount, and the frontend SDK processes it.
-      const paymentRes = await paymentService.processPayment({ quoteId: quote.quoteId });
+      const paymentRes = await processPaymentAction({ quoteId: quote.quoteId });
       
       if (!paymentRes.success) {
         setPaymentError(getUserFriendlyMessage(paymentRes.errorCode, paymentRes.error));
@@ -99,7 +99,7 @@ export function CheckoutFlow() {
       
       // 2. Verify and Create Booking
       setCheckoutStatus("verifying_booking");
-      const res = await bookingService.createBooking({ 
+      const res = await createBookingAction({ 
         intent: {
           roomSlugs: items.map(i => ({ slug: i.slug, nights: i.nights })),
           enhancementIds: selectedIds

@@ -5,6 +5,7 @@ import { useId, useState, type FormEvent } from "react";
 import { Stepper } from "@/components/ui/Stepper";
 import { type EventItem, getBookingDates, formatEventDate, formatTime } from "@/lib/content/events";
 import { formatInr } from "@/lib/format";
+import { createTicketBookingAction } from "@/app/actions/transaction";
 
 const STEPS = ["Tickets", "Cart", "Details", "Payment", "Done"] as const;
 
@@ -40,6 +41,8 @@ export function TicketBooking({ event }: { event: EventItem }) {
   const [details, setDetails] = useState<Details>(EMPTY_DETAILS);
   const [method, setMethod] = useState<string>(PAYMENT_METHODS[0].id);
   const [bookingRef, setBookingRef] = useState("");
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const items = ticketTypes
     .map((type) => ({ type, count: qty[type.id] ?? 0 }))
@@ -74,9 +77,24 @@ export function TicketBooking({ event }: { event: EventItem }) {
     goTo(4);
   };
 
-  const handlePay = () => {
-    setBookingRef(makeBookingRef());
-    goTo(5);
+  const handlePay = async () => {
+    setPaymentError(null);
+    setIsProcessing(true);
+    
+    try {
+      const res = await createTicketBookingAction();
+      if (!res.success) {
+        setPaymentError(res.error || "An error occurred");
+        setIsProcessing(false);
+        return;
+      }
+      setBookingRef(res.reference || makeBookingRef());
+      goTo(5);
+    } catch (err) {
+      setPaymentError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const downloadTickets = () => {
@@ -499,12 +517,18 @@ export function TicketBooking({ event }: { event: EventItem }) {
                 collected, transmitted or stored.
               </p>
 
+              {paymentError && (
+                <div className="form-error" style={{ marginTop: 24, padding: "16px", backgroundColor: "var(--surface-error, #fef2f2)", color: "var(--text-error, #991b1b)", borderRadius: "8px", border: "1px solid var(--border-error, #f87171)" }}>
+                  <p>{paymentError}</p>
+                </div>
+              )}
+
               <div style={{ marginTop: 40, display: "flex", gap: 18, flexWrap: "wrap" }}>
-                <button type="button" className="btn" onClick={() => goTo(3)}>
+                <button type="button" className="btn" onClick={() => goTo(3)} disabled={isProcessing}>
                   Back
                 </button>
-                <button type="button" className="btn solid" onClick={handlePay}>
-                  Pay {formatInr(total)}
+                <button type="button" className="btn solid" onClick={handlePay} disabled={isProcessing}>
+                  {isProcessing ? "Processing..." : `Pay ${formatInr(total)}`}
                 </button>
               </div>
             </div>

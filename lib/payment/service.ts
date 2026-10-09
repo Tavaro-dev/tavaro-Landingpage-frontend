@@ -29,4 +29,18 @@ export class MockPaymentService implements PaymentService {
   }
 }
 
-export const paymentService = new MockPaymentService();
+export class UnavailablePaymentService implements PaymentService {
+  async processPayment(): Promise<PaymentResult> {
+    return Promise.resolve({
+      success: false,
+      error: "Real payments are not currently enabled. Please contact reservations.",
+      errorCode: "UNAVAILABLE",
+    });
+  }
+}
+
+// The service implementation is selected based on the environment.
+// In production, we prevent mock payments entirely.
+export const paymentService = process.env.NODE_ENV === "production"
+  ? new UnavailablePaymentService()
+  : new MockPaymentService();

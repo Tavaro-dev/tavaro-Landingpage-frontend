@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { bookingService } from '../../lib/booking/service';
 
 describe('Booking Service', () => {
@@ -31,5 +31,43 @@ describe('Booking Service', () => {
     };
     
     await expect(bookingService.createQuote(req)).rejects.toThrowError('Room not found: invalid-room');
+  });
+});
+
+describe('Booking Server Actions (Production restrictions)', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.resetModules();
+  });
+
+  it('createBookingAction should succeed in development (demo mode)', async () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    const action = await import('../../app/actions/transaction');
+    const result = await action.createBookingAction({
+      intent: { roomSlugs: [], enhancementIds: [] },
+      guest: { name: 'Test', email: 'test@example.com', phone: '1234567890' }
+    });
+    expect(result.status).toBe('confirmed');
+    expect(result.reference).toBeDefined();
+  });
+
+  it('createBookingAction should fail safely in production', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    const action = await import('../../app/actions/transaction');
+    const result = await action.createBookingAction({
+      intent: { roomSlugs: [], enhancementIds: [] },
+      guest: { name: 'Test', email: 'test@example.com', phone: '1234567890' }
+    });
+    expect(result.status).toBe('failed');
+    expect(result.errorCode).toBe('UNAVAILABLE');
+    expect(result.message).toContain('not yet available in production');
+  });
+
+  it('createTicketBookingAction should fail safely in production', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    const action = await import('../../app/actions/transaction');
+    const result = await action.createTicketBookingAction();
+    expect(result.success).toBe(false);
+    expect(result.error).toContain('disabled in production');
   });
 });
