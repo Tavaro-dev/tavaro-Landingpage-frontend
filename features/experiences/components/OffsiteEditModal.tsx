@@ -15,6 +15,7 @@ import {
   DURATION_OPTIONS,
   CREATIVE_DIRECTIONS,
 } from "../content/offsiteEditForm";
+import { submitEnquiryAction } from "@/app/actions/enquiry";
 
 interface OffsiteEditModalProps {
   isOpen: boolean;
@@ -49,6 +50,9 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState<OffsiteEditFormData>(INITIAL_OFFSITE_FORM_DATA);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isDemo, setIsDemo] = useState(false);
 
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false);
@@ -147,10 +151,23 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateStep2()) {
-      setSubmitted(true);
+      setIsSubmitting(true);
+      setSubmitError(null);
+      const result = await submitEnquiryAction({
+        type: "offsite",
+        data: formData,
+      });
+      setIsSubmitting(false);
+
+      if (result.success) {
+        setIsDemo(!!result.isDemo);
+        setSubmitted(true);
+      } else {
+        setSubmitError(result.message);
+      }
     }
   };
 
@@ -503,6 +520,11 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
                   We&apos;ve received your requirements for <strong>{formData.company || "your team"}</strong>.
                   Our experiences curation team will review the details and reach out shortly to help shape the experience.
                 </p>
+                {isDemo && (
+                  <p className="order-summary-muted" style={{ marginTop: 16, color: "var(--gold-dark)" }}>
+                    (Demo: No real enquiry was delivered.)
+                  </p>
+                )}
                 <button
                   type="button"
                   className="btn solid"
@@ -797,10 +819,16 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
                     <div />
                   )}
 
-                  <button type="submit" className="btn solid" style={{ padding: "12px 28px" }}>
-                    {step === 1 ? "Next: Your Details →" : "Submit Brief"}
+                  <button type="submit" className="btn solid" style={{ padding: "12px 28px" }} disabled={isSubmitting}>
+                    {step === 1 ? "Next: Your Details →" : (isSubmitting ? "Submitting Brief..." : "Submit Brief")}
                   </button>
                 </div>
+                
+                {submitError && (
+                  <div className="form-error" style={{ marginTop: 20, textAlign: "center", color: "var(--danger)" }}>
+                    {submitError}
+                  </div>
+                )}
               </form>
             )}
           </div>

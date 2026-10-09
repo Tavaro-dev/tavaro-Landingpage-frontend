@@ -2,6 +2,7 @@
 
 import { useId, useState } from "react";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import { submitEnquiryAction } from "@/app/actions/enquiry";
 
 const INTEREST_OPTIONS = [
   { value: "Booking a Stay", label: "Booking a Stay" },
@@ -28,6 +29,9 @@ export default function ContactForm() {
   const [interest, setInterest] = useState("Booking a Stay");
   const [rooms, setRooms] = useState("");
   const [needCatering, setNeedCatering] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isDemo, setIsDemo] = useState(false);
 
   const uid = useId();
   const fieldId = (field: string) => `${uid}-${field}`;
@@ -37,9 +41,32 @@ export default function ContactForm() {
   return (
     <form
       className="split-body"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        setSubmitted(true);
+        setIsSubmitting(true);
+        setSubmitError(null);
+        
+        const form = new FormData(e.currentTarget);
+        const result = await submitEnquiryAction({
+          type: "contact",
+          data: {
+            name: String(form.get("name") || ""),
+            email: String(form.get("email") || ""),
+            phone: String(form.get("phone") || ""),
+            interest,
+            rooms: isEvent ? rooms : undefined,
+            needCatering: isEvent ? needCatering : undefined,
+            message: String(form.get("message") || ""),
+          },
+        });
+        setIsSubmitting(false);
+
+        if (result.success) {
+          setIsDemo(!!result.isDemo);
+          setSubmitted(true);
+        } else {
+          setSubmitError(result.message);
+        }
       }}
     >
       <div className="form-grid">
@@ -93,11 +120,18 @@ export default function ContactForm() {
 
         <div className="field full">
           <label htmlFor={fieldId("message")}>Message / Details</label>
-          <textarea id={fieldId("message")} name="message" rows={4} disabled={submitted} />
+          <textarea id={fieldId("message")} name="message" rows={4} disabled={submitted || isSubmitting} />
         </div>
       </div>
-      <button type="submit" className="btn solid" style={{ marginTop: 28 }} disabled={submitted}>
-        ENQUIRE <span className="btn-arrow">→</span>
+      
+      {submitError && (
+        <div className="form-error" style={{ marginTop: 20, color: "var(--danger)" }}>
+          {submitError}
+        </div>
+      )}
+
+      <button type="submit" className="btn solid" style={{ marginTop: 28 }} disabled={submitted || isSubmitting}>
+        {isSubmitting ? "SUBMITTING..." : "ENQUIRE"} <span className="btn-arrow">→</span>
       </button>
       {submitted && (
         <div className="form-success" style={{ marginTop: 20, padding: 18, border: "1px solid var(--gold-dark)", background: "var(--surface-overlay)" }}>
@@ -106,6 +140,11 @@ export default function ContactForm() {
             our team will be in touch with you shortly to help bring your plans to life. We look forward to welcoming
             you to Tavaro.
           </p>
+          {isDemo && (
+            <p className="order-summary-muted" style={{ marginTop: 12, color: "var(--gold-dark)" }}>
+              (Demo: No real enquiry was delivered.)
+            </p>
+          )}
         </div>
       )}
     </form>

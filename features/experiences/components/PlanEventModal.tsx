@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { Icon } from "@/components/ui/Icon";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
+import { submitEnquiryAction } from "@/app/actions/enquiry";
 
 interface PlanEventModalProps {
   isOpen: boolean;
@@ -45,6 +46,9 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
     rooms: "",
     needCatering: false,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isDemo, setIsDemo] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -79,6 +83,11 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
             <p className="lede" style={{ color: "var(--on-surface-muted)", maxWidth: "420px", margin: "0 auto" }}>
               We&apos;ve received your celebration details. Our events team will reach out shortly.
             </p>
+            {isDemo && (
+              <p className="order-summary-muted" style={{ marginTop: 12, color: "var(--gold-dark)" }}>
+                (Demo: No real enquiry was delivered.)
+              </p>
+            )}
             <button
               type="button"
               className="btn solid"
@@ -93,9 +102,23 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
           </div>
         ) : (
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              setSubmitted(true);
+              setIsSubmitting(true);
+              setSubmitError(null);
+              
+              const result = await submitEnquiryAction({
+                type: "plan_event",
+                data: formData,
+              });
+              setIsSubmitting(false);
+
+              if (result.success) {
+                setIsDemo(!!result.isDemo);
+                setSubmitted(true);
+              } else {
+                setSubmitError(result.message);
+              }
             }}
             className="event-modal-body"
           >
@@ -171,10 +194,16 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
                 />
               </div>
             </div>
+            
+            {submitError && (
+              <div className="form-error" style={{ marginTop: 20, textAlign: "center", color: "var(--danger)" }}>
+                {submitError}
+              </div>
+            )}
 
             <div className="event-modal-foot" style={{ marginTop: 24, display: "flex", justifyContent: "center" }}>
-              <button type="submit" className="btn solid" style={{ padding: "14px 28px" }}>
-                Submit Enquiry →
+              <button type="submit" className="btn solid" style={{ padding: "14px 28px" }} disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Submit Enquiry →"}
               </button>
             </div>
           </form>

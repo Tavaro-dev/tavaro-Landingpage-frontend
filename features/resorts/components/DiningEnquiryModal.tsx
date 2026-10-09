@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
+import { submitEnquiryAction } from "@/app/actions/enquiry";
 
 interface DiningEnquiryModalProps {
   isOpen: boolean;
@@ -89,6 +90,9 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
     diningStyle: "Curated Table",
     gatheringDescription: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isDemo, setIsDemo] = useState(false);
 
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -102,8 +106,9 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
     if (isOpen) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setView("discover");
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSubmitted(false);
+      setSubmitError(null);
+      setIsDemo(false);
       previousFocusRef.current = document.activeElement as HTMLElement;
       document.body.style.overflow = "hidden";
 
@@ -221,6 +226,11 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
                 We&apos;re delighted to hear from you. Your enquiry has been received, and our team will be in touch
                 with you shortly to help bring your plans to life. We look forward to welcoming you to Tavaro.
               </p>
+              {isDemo && (
+                <p className="order-summary-muted" style={{ marginTop: 16, color: "var(--gold-dark)" }}>
+                  (Demo: No real enquiry was delivered.)
+                </p>
+              )}
               <button
                 type="button"
                 className="btn solid"
@@ -235,9 +245,22 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
             </div>
           ) : (
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                setSubmitted(true);
+                setIsSubmitting(true);
+                setSubmitError(null);
+                const result = await submitEnquiryAction({
+                  type: "dining",
+                  data: formData,
+                });
+                setIsSubmitting(false);
+
+                if (result.success) {
+                  setIsDemo(!!result.isDemo);
+                  setSubmitted(true);
+                } else {
+                  setSubmitError(result.message);
+                }
               }}
               className="event-form"
             >
@@ -344,9 +367,15 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
                 </div>
               </div>
 
+              {submitError && (
+                <div className="form-error" style={{ marginBottom: 20, color: "var(--danger)" }}>
+                  {submitError}
+                </div>
+              )}
+
               <div className="event-form-actions">
-                <button type="submit" className="btn solid event-submit-btn">
-                  SUBMIT ENQUIRY <span className="btn-arrow">→</span>
+                <button type="submit" className="btn solid event-submit-btn" disabled={isSubmitting}>
+                  {isSubmitting ? "SUBMITTING..." : "SUBMIT ENQUIRY"} <span className="btn-arrow">→</span>
                 </button>
               </div>
             </form>

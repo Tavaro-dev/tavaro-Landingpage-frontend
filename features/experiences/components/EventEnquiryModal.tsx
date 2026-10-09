@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { Icon } from "@/components/ui/Icon";
 import { VENUES, ENQUIRY_MENU_ITEMS, ENQUIRY_GST_RATE, ENQUIRY_BASE_PLATE_PRICE, computeEnquiryTotal } from "@/lib/content/venues";
 import { formatInr } from "@/lib/format";
+import { submitEnquiryAction } from "@/app/actions/enquiry";
 
 const emptySubscribe = () => () => {};
 
@@ -23,6 +24,9 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
   const [venueKey, setVenueKey] = useState<string | null>(null);
   const [withFood, setWithFood] = useState<boolean | null>(null);
   const [selectedItems, setSelectedItems] = useState<Set<number>>(new Set());
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isDemo, setIsDemo] = useState(false);
 
   const venue = VENUES.find((v) => v.key === venueKey) ?? null;
 
@@ -54,13 +58,19 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
       setVenueKey(null);
       setWithFood(null);
       setSelectedItems(new Set());
+      setSubmitError(null);
+      setIsDemo(false);
     }, 350);
   };
 
   const toggleItem = (i: number) => {
     setSelectedItems((prev) => {
       const next = new Set(prev);
-      next.has(i) ? next.delete(i) : next.add(i);
+      if (next.has(i)) {
+        next.delete(i);
+      } else {
+        next.add(i);
+      }
       return next;
     });
   };
@@ -82,6 +92,34 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
     });
     setGuestCount(Math.max(10, Number(form.get("guests")) || 100));
     setStep(2);
+  };
+
+  const handleSubmitFinal = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    const result = await submitEnquiryAction({
+      type: "event",
+      data: {
+        name: details.name,
+        phone: details.phone,
+        email: details.email,
+        eventType: details.eventType,
+        eventDate: details.eventDate,
+        budget: details.budget || undefined,
+        guestCount,
+        venueKey,
+        withFood,
+        selectedItems: Array.from(selectedItems),
+      },
+    });
+    setIsSubmitting(false);
+
+    if (result.success) {
+      setIsDemo(!!result.isDemo);
+      setStep(5);
+    } else {
+      setSubmitError(result.message);
+    }
   };
 
   const step1FormId = fieldId("step1-form");
@@ -256,6 +294,11 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
                 estimate — no payment is taken here. Submitting sends your full requirement to our sales
                 team, who&apos;ll call to confirm your date and finalize pricing.
               </p>
+              {submitError && (
+                <div className="form-error" style={{ marginBottom: 20, color: "var(--danger)" }}>
+                  {submitError}
+                </div>
+              )}
             </>
           )}
 
@@ -270,6 +313,11 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
                 {formatInr(total)}. A Guest Relations Officer will call or WhatsApp {details.phone || "you"}{" "}
                 shortly to confirm availability and finalize pricing.
               </p>
+              {isDemo && (
+                <p className="order-summary-muted" style={{ marginTop: 16, color: "var(--gold-dark)" }}>
+                  (Demo: No real enquiry was delivered.)
+                </p>
+              )}
               <button type="button" className="btn solid" style={{ marginTop: 20 }} onClick={handleClose}>
                 Close
               </button>
@@ -306,11 +354,11 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
         )}
         {step === 4 && (
           <div className="modal-foot" style={{ justifyContent: "center", gap: 16 }}>
-            <button type="button" className="btn" onClick={() => setStep(3)}>
+            <button type="button" className="btn" onClick={() => setStep(3)} disabled={isSubmitting}>
               ← Back
             </button>
-            <button type="button" className="btn solid" onClick={() => setStep(5)}>
-              Enquire Now →
+            <button type="button" className="btn solid" onClick={handleSubmitFinal} disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Enquire Now →"}
             </button>
           </div>
         )}

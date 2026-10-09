@@ -60,15 +60,12 @@ test.describe('Dining Enquiry Flow', () => {
     const submitBtn = page.getByRole('button', { name: /SUBMIT ENQUIRY/i });
     await submitBtn.click();
     
-    // Expect success state
-    await expect(page.getByText('Thank You for Reaching Out')).toBeVisible();
+    // Expect error state for production mode
+    await expect(page.getByText('currently unavailable in production', { exact: false })).toBeVisible();
     
-    // Close success state
-    const closeBtn = page.getByRole('button', { name: 'Close' }).filter({ hasText: 'Close' });
-    await closeBtn.click();
-    
-    // Expect modal to be hidden
-    await expect(formHeading).toBeHidden();
+    // Expect form to remain open and input to remain intact
+    await expect(page.locator('#dn-name')).toHaveValue('Test User');
+    await expect(page.getByRole('button', { name: /SUBMIT ENQUIRY/i })).toBeVisible();
   });
 
   test('Escape key closes Dining Enquiry Modal and restores focus', async ({ page }) => {

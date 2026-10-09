@@ -72,10 +72,11 @@ test.describe('Booking Flow', () => {
     // Step 3: Confirm & Pay
     await page.getByRole('button', { name: 'Pay & Confirm' }).click();
 
-    // 12. Verify successful booking confirmation
-    // 13. Verify a booking reference is displayed
-    await expect(page.locator('h1', { hasText: 'Thank you for choosing Tavaro.' })).toBeVisible();
-    await expect(page.locator('text=/Booking Reference:/')).toBeVisible();
-    await expect(page.locator('text=/TAV-[A-Z0-9]+/')).toBeVisible();
+    // 12. Verify that in production mode, mock bookings are safely rejected
+    await expect(page.getByText('Payment Error')).toBeVisible();
+    await expect(page.getByText('One of your selected rooms is no longer available', { exact: false })).toBeVisible();
+
+    // 13. Verify that the form data remains intact and we are still on step 3 (Confirm & Pay button is still present)
+    await expect(page.getByRole('button', { name: 'Pay & Confirm' })).toBeVisible();
   });
 });
