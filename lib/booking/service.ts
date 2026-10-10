@@ -68,6 +68,7 @@ export class MockBookingService implements BookingService {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async createBooking(_req: BookingRequest): Promise<BookingResult> {
     // The production backend will re-validate _req.intent (availability and pricing) here.
     // It will calculate authoritative totals and create the booking in the database.
@@ -105,6 +106,6 @@ export class UnavailableBookingService implements BookingService {
   }
 }
 
-export const bookingService = process.env.NODE_ENV === "production"
+export const bookingService: BookingService = process.env.NODE_ENV === "production"
   ? new UnavailableBookingService()
   : new MockBookingService();

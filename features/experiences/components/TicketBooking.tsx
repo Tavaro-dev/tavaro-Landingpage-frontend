@@ -90,7 +90,7 @@ export function TicketBooking({ event }: { event: EventItem }) {
       }
       setBookingRef(res.reference || makeBookingRef());
       goTo(5);
-    } catch (err) {
+    } catch {
       setPaymentError("An unexpected error occurred. Please try again.");
     } finally {
       setIsProcessing(false);

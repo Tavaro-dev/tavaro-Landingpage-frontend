@@ -5,6 +5,7 @@ export interface EnquiryService {
 }
 
 export class MockEnquiryService implements EnquiryService {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async submitEnquiry(_payload: EnquiryPayload): Promise<EnquiryResult> {
     // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 800));
@@ -27,6 +28,6 @@ export class UnavailableEnquiryService implements EnquiryService {
   }
 }
 
-export const enquiryService = process.env.NODE_ENV === "production"
+export const enquiryService: EnquiryService = process.env.NODE_ENV === "production"
   ? new UnavailableEnquiryService()
   : new MockEnquiryService();

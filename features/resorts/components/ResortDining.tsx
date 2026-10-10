@@ -1,38 +1,13 @@
 "use client";
 
-import Image from "next/image";
+
 import { OfferHead } from "@/components/shared/OfferHead";
 import { SplitSection } from "@/components/shared/SplitSection";
-import { Reveal } from "@/components/shared/Reveal";
+
 import { useState } from "react";
 import { DiningEnquiryModal } from "./DiningEnquiryModal";
 
-const EXPERIENCES = [
-  {
-    title: "CELEBRATION CATERING",
-    description: "Weddings, social occasions & grand celebrations",
-    image: "/images/unsplash/resorts-wedding-celebration.jpg",
-    placeholder: "ph-1",
-  },
-  {
-    title: "EVENT CATERING",
-    description: "Corporate & large-scale events",
-    image: "/images/unsplash/mare-sunday-market.jpg",
-    placeholder: "ph-2",
-  },
-  {
-    title: "UNDER THE SKY",
-    description: "Intimate outdoor & poolside dining",
-    image: "/images/unsplash/wellness-future-retreat.jpg",
-    placeholder: "ph-3",
-  },
-  {
-    title: "PRIVATE DINING",
-    description: "Bespoke tables & menus",
-    image: "/images/unsplash/monsoon-table-culinary.jpg",
-    placeholder: "ph-4",
-  },
-];
+
 
 export function ResortDining() {
   const [modalOpen, setModalOpen] = useState(false);
