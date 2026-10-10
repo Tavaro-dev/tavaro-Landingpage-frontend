@@ -3454,16 +3454,36 @@ select {
   }
 
   .pillar-cards {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .pillar-card {
     display: flex;
+    aspect-ratio: 3/3.8;
+  }
+
+  .pillar-card:nth-child(5) {
+    grid-column: span 2;
+    aspect-ratio: 16/9;
   }
 
   .tri-grid,
   .tri-grid.cols-4 {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tri-grid > .tri-card:last-child:nth-child(odd) {
+    grid-column: span 2;
+  }
+
+  .tri-grid > .tri-card:last-child:nth-child(odd) .tri-card-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .tri-grid > .tri-card:last-child:nth-child(odd) .tags {
+    justify-content: center;
   }
 
   .idea-grid {
@@ -3489,6 +3509,21 @@ select {
 
   .nav-toggle {
     display: flex;
+  }
+}
+
+@media (min-width: 861px) and (max-width: 1080px) {
+  .event-grid > .event-card:last-child:nth-child(odd) {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .event-grid > .event-card:last-child:nth-child(odd) .event-media {
+    margin-bottom: 0;
+    aspect-ratio: 4/3;
   }
 }
 
@@ -3621,20 +3656,6 @@ select {
 
   .hero-sub {
     font-size: 11px;
-  }
-
-  .pillar-cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .pillar-card {
-    display: flex;
-    aspect-ratio: 3/3.8;
-  }
-
-  .pillar-card:nth-child(5) {
-    grid-column: span 2;
-    aspect-ratio: 16/9;
   }
 
   .pillar-card-go {
