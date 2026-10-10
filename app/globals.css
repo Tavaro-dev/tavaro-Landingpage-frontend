@@ -3573,8 +3573,19 @@ select {
   }
 
   .pillar-grid {
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin: 0 calc(var(--pad) * -1);
+    padding: 0 var(--pad) 8px var(--pad);
     gap: 6px;
+  }
+
+  .pillar-grid::-webkit-scrollbar {
+    display: none;
   }
 
   .pillar-icon {
@@ -3583,6 +3594,9 @@ select {
   }
 
   .pillar-item {
+    flex: 0 0 auto;
+    min-width: 76px;
+    scroll-snap-align: start;
     gap: 8px;
     padding: 10px 2px;
   }
