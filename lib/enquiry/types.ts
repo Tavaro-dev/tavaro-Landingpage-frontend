@@ -8,7 +8,7 @@ export const ContactEnquirySchema = z.object({
   rooms: z.string().max(100).optional(),
   needCatering: z.boolean().optional(),
   message: z.string().max(2000).optional(),
-});
+}).strict();
 
 export const EventEnquirySchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
@@ -21,7 +21,7 @@ export const EventEnquirySchema = z.object({
   venueKey: z.string().max(100).nullable(),
   withFood: z.boolean().nullable(),
   selectedItems: z.array(z.number().int()).max(100),
-});
+}).strict();
 
 export const DiningEnquirySchema = z.object({
   planningType: z.string().max(100),
@@ -33,7 +33,7 @@ export const DiningEnquirySchema = z.object({
   occasion: z.string().max(100),
   diningStyle: z.string().max(100),
   gatheringDescription: z.string().max(2000),
-});
+}).strict();
 
 export const PlanEventSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
@@ -43,7 +43,7 @@ export const PlanEventSchema = z.object({
   eventDate: z.string().max(100),
   guestCount: z.string().max(100),
   rooms: z.string().max(100),
-});
+}).strict();
 
 export const OffsiteEnquirySchema = z.object({
   planningType: z.string().max(100),
@@ -61,14 +61,14 @@ export const OffsiteEnquirySchema = z.object({
   contactNumber: z.string().min(1, "Contact is required").max(50),
   email: z.string().email("Invalid email address").max(100),
   designation: z.string().min(1, "Designation is required").max(100),
-});
+}).strict();
 
 export const EnquiryPayloadSchema = z.discriminatedUnion("type", [
-  z.object({ type: z.literal("contact"), data: ContactEnquirySchema }),
-  z.object({ type: z.literal("event"), data: EventEnquirySchema }),
-  z.object({ type: z.literal("dining"), data: DiningEnquirySchema }),
-  z.object({ type: z.literal("plan_event"), data: PlanEventSchema }),
-  z.object({ type: z.literal("offsite"), data: OffsiteEnquirySchema }),
+  z.object({ type: z.literal("contact"), data: ContactEnquirySchema }).strict(),
+  z.object({ type: z.literal("event"), data: EventEnquirySchema }).strict(),
+  z.object({ type: z.literal("dining"), data: DiningEnquirySchema }).strict(),
+  z.object({ type: z.literal("plan_event"), data: PlanEventSchema }).strict(),
+  z.object({ type: z.literal("offsite"), data: OffsiteEnquirySchema }).strict(),
 ]);
 
 export type EnquiryPayload = z.infer<typeof EnquiryPayloadSchema>;
