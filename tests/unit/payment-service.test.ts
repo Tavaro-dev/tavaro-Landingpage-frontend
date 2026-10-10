@@ -38,4 +38,32 @@ describe('Transaction Server Actions (Production restrictions)', () => {
     expect(result.errorCode).toBe('UNAVAILABLE');
     expect(result.error).toContain('not currently enabled');
   });
+
+  it('processPaymentAction should reject invalid payloads and strictly strip/reject unknowns', async () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    const action = await import('../../app/actions/transaction');
+    const { paymentService } = await import('../../lib/payment/service');
+    
+    const spy = vi.spyOn(paymentService, 'processPayment');
+
+    // 1. Missing required field
+    let result = await action.processPaymentAction({} as unknown);
+    expect(result.success).toBe(false);
+    expect(result.errorCode).toBe('VALIDATION_ERROR');
+
+    // 2. Null payload
+    result = await action.processPaymentAction(null as unknown);
+    expect(result.success).toBe(false);
+
+    // 3. Unknown extra field (strict mode should reject)
+    result = await action.processPaymentAction({ quoteId: '123', extra: true } as unknown);
+    expect(result.success).toBe(false);
+
+    // 4. Invalid type
+    result = await action.processPaymentAction({ quoteId: 123 } as unknown);
+    expect(result.success).toBe(false);
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });

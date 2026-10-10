@@ -70,4 +70,49 @@ describe('Booking Server Actions (Production restrictions)', () => {
     expect(result.success).toBe(false);
     expect(result.error).toContain('disabled in production');
   });
+
+  it('createBookingAction should reject invalid payloads and strictly reject unknowns', async () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    const action = await import('../../app/actions/transaction');
+    const { bookingService } = await import('../../lib/booking/service');
+
+    const spy = vi.spyOn(bookingService, 'createBooking');
+
+    // 1. Missing required field
+    let result = await action.createBookingAction({ intent: { roomSlugs: [], enhancementIds: [] } } as unknown);
+    expect(result.status).toBe('failed');
+    expect(result.errorCode).toBe('VALIDATION_ERROR');
+
+    // 2. Null payload
+    result = await action.createBookingAction(null as unknown);
+    expect(result.status).toBe('failed');
+
+    // 3. Unknown extra field
+    const validButExtra = {
+      intent: { roomSlugs: [], enhancementIds: [] },
+      guest: { name: 'Test', email: 'test@example.com', phone: '123' },
+      extraField: true
+    };
+    result = await action.createBookingAction(validButExtra as unknown);
+    expect(result.status).toBe('failed');
+
+    // 4. Invalid email format
+    const invalidEmail = {
+      intent: { roomSlugs: [], enhancementIds: [] },
+      guest: { name: 'Test', email: 'not-an-email', phone: '123' }
+    };
+    result = await action.createBookingAction(invalidEmail as unknown);
+    expect(result.status).toBe('failed');
+
+    // 5. Malformed nested objects (invalid nights)
+    const invalidNights = {
+      intent: { roomSlugs: [{ slug: 'room', nights: -1 }], enhancementIds: [] },
+      guest: { name: 'Test', email: 'test@example.com', phone: '123' }
+    };
+    result = await action.createBookingAction(invalidNights as unknown);
+    expect(result.status).toBe('failed');
+
+    expect(spy).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });

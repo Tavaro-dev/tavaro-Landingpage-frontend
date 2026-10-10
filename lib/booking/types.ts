@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { PaymentStatus } from "../payment/types";
 import type { ServiceErrorCode } from "../domain/errors";
 
@@ -17,10 +18,15 @@ export type RoomAvailability = {
   // It is NOT a reservation or a guarantee.
 };
 
-export type QuoteRequest = {
-  roomSlugs: { slug: string; nights: number }[];
-  enhancementIds: string[];
-};
+export const QuoteRequestSchema = z.object({
+  roomSlugs: z.array(z.object({
+    slug: z.string().min(1, "Room slug is required"),
+    nights: z.number().int().positive("Nights must be positive"),
+  }).strict()),
+  enhancementIds: z.array(z.string()),
+}).strict();
+
+export type QuoteRequest = z.infer<typeof QuoteRequestSchema>;
 
 export type QuoteItem = {
   slug: string;
@@ -47,17 +53,17 @@ export type BookingQuote = {
   currency: string;
 };
 
-export type BookingRequest = {
-  // Client's booking intent. The backend will re-calculate pricing based on this to ensure authority.
-  intent: QuoteRequest;
-  guest: {
-    name: string;
-    email: string;
-    phone: string;
-  };
-  // Reference proving payment success, to be verified by backend before confirming booking.
-  paymentReference?: string;
-};
+export const BookingRequestSchema = z.object({
+  intent: QuoteRequestSchema,
+  guest: z.object({
+    name: z.string().min(1, "Name is required"),
+    email: z.string().email("Invalid email format"),
+    phone: z.string().min(1, "Phone number is required"),
+  }).strict(),
+  paymentReference: z.string().optional(),
+}).strict();
+
+export type BookingRequest = z.infer<typeof BookingRequestSchema>;
 
 export type BookingStatus = "pending" | "confirmed" | "failed";
 
