@@ -3769,6 +3769,13 @@ select {
 
   .hero-inner .hero-cta-row {
     align-items: center;
+    gap: 20px;
+  }
+
+  .hero-inner .hero-cta-row .btn {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
   }
 
   .scroll-cue {
