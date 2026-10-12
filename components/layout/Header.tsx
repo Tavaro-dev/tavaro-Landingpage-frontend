@@ -25,30 +25,82 @@ export default function Header() {
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const topSentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    const sentinel = topSentinelRef.current;
+    if (!sentinel) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+      const onScroll = () => setScrolled(window.scrollY > 40);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      return () => window.removeEventListener("scroll", onScroll);
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setScrolled(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     if (!isHome) return;
-    const strip = document.querySelector(".hero .pillar-strip") ?? document.querySelector(".hero");
-    if (!strip) return;
-    const onScroll = () => {
-      const threshold = strip.getBoundingClientRect().bottom + window.scrollY;
-      setPastPillarStrip(window.scrollY >= threshold - 80);
+
+    if (typeof IntersectionObserver === "undefined") {
+      const strip = document.querySelector(".hero .pillar-strip") ?? document.querySelector(".hero");
+      if (!strip) return;
+      const onScroll = () => {
+        const threshold = strip.getBoundingClientRect().bottom + window.scrollY;
+        setPastPillarStrip(window.scrollY >= threshold - 80);
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      return () => window.removeEventListener("scroll", onScroll);
+    }
+
+    let heroObserver: IntersectionObserver | null = null;
+    let mutationObserver: MutationObserver | null = null;
+    let isCleanedUp = false;
+
+    const observeTarget = (target: Element) => {
+      heroObserver?.disconnect();
+      heroObserver = new IntersectionObserver(
+        ([entry]) => {
+          const isPast = !entry.isIntersecting && entry.boundingClientRect.bottom <= 80;
+          setPastPillarStrip(isPast);
+        },
+        { rootMargin: "-80px 0px 0px 0px" }
+      );
+      heroObserver.observe(target);
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    onScroll();
+
+    const target = document.querySelector(".hero .pillar-strip") ?? document.querySelector(".hero");
+    if (target) {
+      observeTarget(target);
+    } else {
+      mutationObserver = new MutationObserver(() => {
+        if (isCleanedUp) return;
+        const el = document.querySelector(".hero .pillar-strip") ?? document.querySelector(".hero");
+        if (el) {
+          mutationObserver?.disconnect();
+          observeTarget(el);
+        }
+      });
+      mutationObserver.observe(document.body, { childList: true, subtree: true });
+    }
+
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      isCleanedUp = true;
+      heroObserver?.disconnect();
+      mutationObserver?.disconnect();
     };
-  }, [isHome]);
+  }, [isHome, pathname]);
 
   useEffect(() => {
     if (mobileOpen) {
@@ -82,6 +134,20 @@ export default function Header() {
 
   return (
     <>
+      <div
+        ref={topSentinelRef}
+        aria-hidden="true"
+        className="header-scroll-sentinel"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "40px",
+          pointerEvents: "none",
+          visibility: "hidden",
+        }}
+      />
       <header
         className={[
           "site-header",
