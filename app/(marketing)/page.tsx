@@ -109,7 +109,7 @@ export default function HomePage() {
           </Reveal>
         </div>
 
-        <Reveal className="pillar-cards">
+        <Reveal stagger className="pillar-cards">
           {PILLAR_CARDS.map((card) => (
             <Link className="pillar-card" href={card.href} key={card.href}>
               <div className={card.placeholder} style={{ position: "absolute", inset: 0 }} />

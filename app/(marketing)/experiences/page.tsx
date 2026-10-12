@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/shared/PageHero";
+import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
 import { SplitSection } from "@/components/shared/SplitSection";
 import { TriGrid, type TriCardData } from "@/components/shared/TriGrid";
@@ -155,7 +156,7 @@ export default function ExperiencesPage() {
             heading="Experiences Gallery"
             lede="A look back at moments, gatherings, and celebrations created at Tavaro."
           />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20, marginTop: 40 }}>
+          <Reveal stagger style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20, marginTop: 40 }}>
             <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
               <Image src="/photos/experiences-cars.jpg" alt="Curated Car Meet" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
@@ -174,7 +175,7 @@ export default function ExperiencesPage() {
             <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
               <Image src="/photos/resorts-horses.jpg" alt="Estate Sunset Walk" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 

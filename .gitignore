@@ -56,3 +56,6 @@ Desktop.ini
 $RECYCLE.BIN/
 .DS_Store?
 ._*
+
+# scratch & temporary audit artifacts
+/scratch/

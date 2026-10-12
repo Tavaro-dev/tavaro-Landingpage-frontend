@@ -87,9 +87,10 @@ export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaView
           z-index: 2000;
           background: rgba(10, 9, 8, 0.94);
           backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
           display: flex;
           flex-direction: column;
-          animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          animation: fadeIn 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
         @keyframes fadeIn {
           from { opacity: 0; }
@@ -135,7 +136,7 @@ export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaView
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
           outline: none;
         }
         .media-viewer-close-btn:hover,
@@ -162,6 +163,29 @@ export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaView
           border-radius: 4px;
           overflow: hidden;
           box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+          animation: mediaViewerScale 0.35s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+        }
+        @keyframes mediaViewerScale {
+          from {
+            opacity: 0;
+            transform: scale(0.96) translateY(6px);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+        .media-viewer-image-container img {
+          transition: opacity 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .media-viewer-backdrop,
+          .media-viewer-image-container {
+            animation: none !important;
+          }
+          .media-viewer-image-container img {
+            transition: none !important;
+          }
         }
         .media-viewer-nav-btn {
           position: absolute;

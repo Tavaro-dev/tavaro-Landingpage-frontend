@@ -33,6 +33,15 @@ html {
   --radius: 2px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 
+  /* Motion system tokens (Tavaro Luxury Motion) */
+  --ease-luxury: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-ambient: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --duration-micro: 0.3s;
+  --duration-surface: 0.4s;
+  --duration-card: 0.65s;
+  --duration-reveal: 0.85s;
+  --duration-ambient: 24s;
+
   /* theme-aware section chrome — dark theme (default) */
   --surface: var(--black);
   --surface-2: var(--near-black);
@@ -584,13 +593,36 @@ select {
   gap: 26px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.4s var(--ease);
+  transition: opacity var(--duration-surface, 0.4s) var(--ease-luxury, var(--ease)),
+              visibility var(--duration-surface, 0.4s) var(--ease-luxury, var(--ease));
 }
 
 .mobile-nav.open {
   opacity: 1;
   visibility: visible;
 }
+
+.mobile-nav > a,
+.mobile-nav .mobile-sub {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--duration-card, 0.5s) var(--ease-luxury, var(--ease)),
+              transform var(--duration-card, 0.5s) var(--ease-luxury, var(--ease));
+}
+
+.mobile-nav.open > a,
+.mobile-nav.open .mobile-sub {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-nav.open > a:nth-of-type(1) { transition-delay: 0.05s; }
+.mobile-nav.open > a:nth-of-type(2) { transition-delay: 0.10s; }
+.mobile-nav.open > a:nth-of-type(3) { transition-delay: 0.15s; }
+.mobile-nav.open > a:nth-of-type(4) { transition-delay: 0.20s; }
+.mobile-nav.open > a:nth-of-type(5) { transition-delay: 0.25s; }
+.mobile-nav.open > a:nth-of-type(6) { transition-delay: 0.30s; }
+.mobile-nav.open .mobile-sub { transition-delay: 0.35s; }
 
 .mobile-close-btn {
   position: absolute;
@@ -606,6 +638,15 @@ select {
   color: var(--on-surface);
   cursor: pointer;
   z-index: 1060;
+  transition: transform var(--duration-micro, 0.25s) var(--ease-luxury, var(--ease)),
+              color var(--duration-micro, 0.25s) var(--ease-luxury, var(--ease));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mobile-close-btn:hover {
+    transform: scale(1.1);
+    color: var(--gold);
+  }
 }
 
 .mobile-close-btn svg {
@@ -757,7 +798,8 @@ select {
   z-index: 1150;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.4s var(--ease);
+  transition: opacity var(--duration-surface, 0.4s) var(--ease-luxury, var(--ease)),
+              visibility var(--duration-surface, 0.4s) var(--ease-luxury, var(--ease));
 }
 
 .cart-overlay.open {
@@ -777,12 +819,15 @@ select {
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
-  transition: transform 0.45s var(--ease);
+  visibility: hidden;
+  transition: transform var(--duration-surface, 0.45s) var(--ease-luxury, var(--ease)),
+              visibility var(--duration-surface, 0.45s) var(--ease-luxury, var(--ease));
   box-shadow: -20px 0 60px rgba(0, 0, 0, 0.3);
 }
 
 .cart-drawer.open {
   transform: translateX(0);
+  visibility: visible;
 }
 
 .cart-drawer-head {
@@ -955,7 +1000,8 @@ select {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg,
-      rgba(8, 7, 6, 0.55) 0%,
+      rgba(8, 7, 6, 0.82) 0%,
+      rgba(8, 7, 6, 0.50) 80px,
       rgba(8, 7, 6, 0.15) 30%,
       rgba(8, 7, 6, 0.35) 60%,
       rgba(6, 5, 4, 0.92) 100%),
@@ -973,7 +1019,7 @@ select {
 @keyframes heroFadeUp {
   from {
     opacity: 0;
-    transform: translateY(26px);
+    transform: translateY(20px);
   }
 
   to {
@@ -984,7 +1030,7 @@ select {
 
 .hero-eyebrow {
   margin-bottom: 16px;
-  animation: heroFadeUp 0.8s var(--ease) both;
+  animation: heroFadeUp 0.85s var(--ease-luxury, var(--ease)) 0.05s both;
 }
 
 .hero-title {
@@ -992,7 +1038,7 @@ select {
   line-height: 1.05;
   letter-spacing: -0.01em;
   max-width: 14ch;
-  animation: heroFadeUp 0.9s var(--ease) 0.15s both;
+  animation: heroFadeUp 0.95s var(--ease-luxury, var(--ease)) 0.18s both;
 }
 
 .hero-inner .hero-title {
@@ -1015,7 +1061,7 @@ select {
   gap: 14px;
   flex-wrap: wrap;
   align-items: center;
-  animation: heroFadeUp 0.9s var(--ease) 0.32s both;
+  animation: heroFadeUp 0.9s var(--ease-luxury, var(--ease)) 0.32s both;
 }
 
 .hero-inner .hero-sub {
@@ -1031,11 +1077,22 @@ select {
   display: flex;
   gap: 18px;
   flex-wrap: wrap;
-  animation: heroFadeUp 0.9s var(--ease) 0.48s both;
 }
 
 .hero-inner .hero-cta-row {
   justify-content: center;
+}
+
+.hero-cta-row .btn {
+  animation: heroFadeUp 0.85s var(--ease-luxury, var(--ease)) both;
+}
+
+.hero-cta-row .btn:first-child {
+  animation-delay: 0.42s;
+}
+
+.hero-cta-row .btn:last-child {
+  animation-delay: 0.54s;
 }
 
 /* Page Hero & Quick Nav Strip */
@@ -1092,7 +1149,7 @@ select {
   border-radius: 4px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
   overflow: hidden;
-  animation: heroFadeUp 0.9s var(--ease) 0.6s both;
+  animation: heroFadeUp 0.9s var(--ease-luxury, var(--ease)) 0.58s both;
 }
 
 .hero-quick-nav-item {
@@ -1108,17 +1165,15 @@ select {
   color: var(--cream);
   text-decoration: none;
   background: rgba(255, 255, 255, 0.02);
-  transition: background 0.35s var(--ease), color 0.35s var(--ease), transform 0.35s var(--ease), border-color 0.35s var(--ease);
+  transition: background var(--duration-micro, 0.3s) var(--ease-luxury, var(--ease)),
+              color var(--duration-micro, 0.3s) var(--ease-luxury, var(--ease)),
+              transform var(--duration-micro, 0.3s) var(--ease-luxury, var(--ease)),
+              border-color var(--duration-micro, 0.3s) var(--ease-luxury, var(--ease));
   box-sizing: border-box;
 }
 
 .hero-quick-nav-item:last-child {
   border-right: none;
-}
-
-.hero-quick-nav-item:hover {
-  background: rgba(212, 175, 55, 0.16);
-  color: var(--gold);
 }
 
 .hero-quick-icon {
@@ -1128,12 +1183,20 @@ select {
   align-items: center;
   justify-content: center;
   color: var(--gold);
-  transition: transform 0.35s var(--ease), color 0.35s var(--ease);
+  transition: transform var(--duration-micro, 0.35s) var(--ease-luxury, var(--ease)),
+              color var(--duration-micro, 0.35s) var(--ease-luxury, var(--ease));
 }
 
-.hero-quick-nav-item:hover .hero-quick-icon {
-  transform: scale(1.18) translateY(-2px);
-  color: #f5e4b3;
+@media (hover: hover) and (pointer: fine) {
+  .hero-quick-nav-item:hover {
+    background: rgba(212, 175, 55, 0.16);
+    color: var(--gold);
+  }
+
+  .hero-quick-nav-item:hover .hero-quick-icon {
+    transform: scale(1.15) translateY(-2px);
+    color: #f5e4b3;
+  }
 }
 
 .hero-quick-icon svg {
@@ -1661,11 +1724,13 @@ select {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.9s var(--ease);
+  transition: transform var(--duration-card, 0.75s) var(--ease-luxury, var(--ease));
 }
 
-.split-media:hover img {
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .split-media:hover img {
+    transform: scale(1.04);
+  }
 }
 
 .split-media.wide {
@@ -1760,12 +1825,8 @@ select {
   flex-direction: column;
   justify-content: space-between;
   min-height: 480px;
-  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
-}
-
-.tri-grid .tri-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 28px 56px -16px rgba(0, 0, 0, 0.65);
+  transition: transform var(--duration-surface, 0.45s) var(--ease-luxury, var(--ease)),
+              box-shadow var(--duration-surface, 0.45s) var(--ease-luxury, var(--ease));
 }
 
 .tri-card-bg-wrap {
@@ -1779,11 +1840,7 @@ select {
   object-fit: cover;
   width: 100%;
   height: 100%;
-  transition: transform 0.75s var(--ease);
-}
-
-.tri-card:hover .tri-card-bg-wrap img {
-  transform: scale(1.08);
+  transition: transform var(--duration-card, 0.75s) var(--ease-luxury, var(--ease));
 }
 
 .tri-card-scrim {
@@ -1793,14 +1850,29 @@ select {
       rgba(10, 8, 6, 0.88) 0%,
       rgba(10, 8, 6, 0.76) 45%,
       rgba(10, 8, 6, 0.94) 100%);
-  transition: background 0.45s var(--ease);
+  transition: background var(--duration-surface, 0.45s) var(--ease-luxury, var(--ease));
 }
 
-.tri-card:hover .tri-card-scrim {
-  background: linear-gradient(180deg,
-      rgba(10, 8, 6, 0.82) 0%,
-      rgba(10, 8, 6, 0.68) 45%,
-      rgba(10, 8, 6, 0.92) 100%);
+@media (hover: hover) and (pointer: fine) {
+  .tri-grid .tri-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.65);
+  }
+
+  .tri-card:hover .tri-card-bg-wrap img {
+    transform: scale(1.05);
+  }
+
+  .tri-card:hover .tri-card-scrim {
+    background: linear-gradient(180deg,
+        rgba(10, 8, 6, 0.82) 0%,
+        rgba(10, 8, 6, 0.68) 45%,
+        rgba(10, 8, 6, 0.92) 100%);
+  }
+
+  .tri-card:hover .tri-icon {
+    transform: scale(1.1);
+  }
 }
 
 .tri-card-inner {
@@ -1930,11 +2002,7 @@ select {
 .event-card {
   display: flex;
   flex-direction: column;
-  transition: transform 0.45s var(--ease);
-}
-
-.event-grid .event-card:hover {
-  transform: translateY(-6px);
+  transition: transform var(--duration-surface, 0.45s) var(--ease-luxury, var(--ease));
 }
 
 .event-media {
@@ -1949,11 +2017,17 @@ select {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s var(--ease);
+  transition: transform var(--duration-card, 0.7s) var(--ease-luxury, var(--ease));
 }
 
-.event-card:hover .event-media img {
-  transform: scale(1.06);
+@media (hover: hover) and (pointer: fine) {
+  .event-grid .event-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .event-card:hover .event-media img {
+    transform: scale(1.04);
+  }
 }
 
 .event-tag {
@@ -2132,12 +2206,15 @@ select {
   background: var(--surface-2);
   padding: 44px 30px;
   text-align: center;
-  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+  transition: transform var(--duration-surface, 0.45s) var(--ease-luxury, var(--ease)),
+              box-shadow var(--duration-surface, 0.45s) var(--ease-luxury, var(--ease));
 }
 
-.idea-grid .idea-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 24px 48px -16px rgba(201, 164, 90, 0.35);
+@media (hover: hover) and (pointer: fine) {
+  .idea-grid .idea-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -12px rgba(201, 164, 90, 0.28);
+  }
 }
 
 .idea-num {
@@ -2220,7 +2297,7 @@ select {
   background: transparent;
   border: none;
   border-bottom: 1px solid rgba(28, 23, 18, 0.25);
-  padding: 12px 2px 6px;
+  padding: 10px 2px 8px;
   font-size: 15px;
   line-height: 1.5;
   color: var(--ink);
@@ -2434,7 +2511,7 @@ select {
   display: flex;
   gap: 10px;
   align-items: center;
-  animation: heroFadeUp 0.8s var(--ease) both;
+  animation: heroFadeUp 0.8s var(--ease-luxury, var(--ease)) 0.05s both;
 }
 
 .page-hero-inner .breadcrumb {
@@ -2446,6 +2523,10 @@ select {
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
+.hero-top-right {
+  animation: heroFadeUp 0.85s var(--ease-luxury, var(--ease)) 0.35s both;
+}
+
 .page-hero-inner .eyebrow {
   font-size: 16px;
   letter-spacing: normal;
@@ -2453,7 +2534,7 @@ select {
   font-weight: 500;
   color: var(--gold-light);
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
-  animation: heroFadeUp 0.8s var(--ease) 0.1s both;
+  animation: heroFadeUp 0.85s var(--ease-luxury, var(--ease)) 0.12s both;
 }
 
 .page-hero-inner .eyebrow::before {
@@ -2465,7 +2546,7 @@ select {
 }
 
 .page-hero-inner .lede {
-  animation: heroFadeUp 0.9s var(--ease) 0.32s both;
+  animation: heroFadeUp 0.9s var(--ease-luxury, var(--ease)) 0.30s both;
 }
 
 .breadcrumb a:hover {
@@ -2489,50 +2570,57 @@ select {
   }
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(32px) scale(0.97);
-  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+/* ==========================================================================
+   SCROLL REVEAL SYSTEM (Progressive Enhancement)
+   ========================================================================== */
+/* Default / No-JS fallback: content is 100% visible and unshifted */
+.reveal,
+.reveal-stagger > * {
+  opacity: 1;
+  transform: none;
 }
 
+/* Once JavaScript mounts and initializes the reveal observer */
+.reveal.reveal-init:not(.in) {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity var(--duration-reveal, 0.85s) var(--ease-luxury, var(--ease)),
+              transform var(--duration-reveal, 0.85s) var(--ease-luxury, var(--ease));
+}
+
+.reveal.reveal-init.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-stagger.reveal-init > *:not(.in) {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--duration-reveal, 0.8s) var(--ease-luxury, var(--ease)),
+              transform var(--duration-reveal, 0.8s) var(--ease-luxury, var(--ease));
+}
+
+.reveal-stagger.reveal-init.in > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-stagger.reveal-init.in > *:nth-child(1) { transition-delay: 0.05s; }
+.reveal-stagger.reveal-init.in > *:nth-child(2) { transition-delay: 0.14s; }
+.reveal-stagger.reveal-init.in > *:nth-child(3) { transition-delay: 0.23s; }
+.reveal-stagger.reveal-init.in > *:nth-child(4) { transition-delay: 0.32s; }
+.reveal-stagger.reveal-init.in > *:nth-child(5) { transition-delay: 0.41s; }
+.reveal-stagger.reveal-init.in > *:nth-child(6) { transition-delay: 0.50s; }
+
+/* Compatibility for elements directly receiving .in */
 .reveal.in {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
 }
 
-.reveal-stagger>* {
-  opacity: 0;
-  transform: translateY(26px) scale(0.97);
-  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
-}
-
-.reveal-stagger.in>* {
+.reveal-stagger.in > * {
   opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.reveal-stagger.in>*:nth-child(1) {
-  transition-delay: 0.05s;
-}
-
-.reveal-stagger.in>*:nth-child(2) {
-  transition-delay: 0.15s;
-}
-
-.reveal-stagger.in>*:nth-child(3) {
-  transition-delay: 0.25s;
-}
-
-.reveal-stagger.in>*:nth-child(4) {
-  transition-delay: 0.35s;
-}
-
-.reveal-stagger.in>*:nth-child(5) {
-  transition-delay: 0.45s;
-}
-
-.reveal-stagger.in>*:nth-child(6) {
-  transition-delay: 0.55s;
+  transform: translateY(0);
 }
 
 .sticky-cta {
@@ -2673,11 +2761,13 @@ select {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s var(--ease);
+  transition: transform var(--duration-card, 0.75s) var(--ease-luxury, var(--ease));
 }
 
-.gallery-item:hover img {
-  transform: scale(1.06);
+@media (hover: hover) and (pointer: fine) {
+  .gallery-item:hover img {
+    transform: scale(1.04);
+  }
 }
 
 .gallery-item.tall {
@@ -2766,11 +2856,13 @@ select {
 
 .room-card-media img {
   object-fit: cover;
-  transition: transform 0.8s var(--ease);
+  transition: transform var(--duration-card, 0.75s) var(--ease-luxury, var(--ease));
 }
 
-.room-card:hover .room-card-media img {
-  transform: scale(1.06);
+@media (hover: hover) and (pointer: fine) {
+  .room-card:hover .room-card-media img {
+    transform: scale(1.04);
+  }
 }
 
 .room-card-info {
@@ -3784,22 +3876,21 @@ select {
     padding: 12px 18px;
   }
 
-  .pillar-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
   .container {
     padding: 0 20px;
   }
 
   .hero-cta-row {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    width: 100%;
+    gap: 16px;
   }
 
   .hero-inner .hero-cta-row {
     align-items: center;
-    gap: 20px;
+    gap: 16px;
+    width: 100%;
   }
 
   .hero-inner .hero-cta-row .btn {
@@ -3835,9 +3926,12 @@ select {
   }
 
   .reveal,
-  .reveal-stagger>* {
-    opacity: 1;
-    transform: none;
+  .reveal.reveal-init,
+  .reveal-stagger > *,
+  .reveal-stagger.reveal-init > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 
@@ -3935,6 +4029,18 @@ select {
   max-height: 220px;
   overflow-y: auto;
   border-radius: 2px;
+  animation: dropdownSlideDown var(--duration-micro, 0.25s) var(--ease-luxury, var(--ease)) both;
+}
+
+@keyframes dropdownSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .custom-select-option {
@@ -3942,7 +4048,8 @@ select {
   font-size: 13.5px;
   color: var(--on-surface);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background var(--duration-micro, 0.2s) var(--ease-luxury, var(--ease)),
+              color var(--duration-micro, 0.2s) var(--ease-luxury, var(--ease));
 }
 
 .custom-select-option:hover,
@@ -4022,7 +4129,7 @@ select {
   z-index: 1000;
   padding: 16px;
   border-radius: 2px;
-  animation: fadeIn 0.2s var(--ease);
+  animation: dropdownSlideDown var(--duration-micro, 0.25s) var(--ease-luxury, var(--ease)) both;
 }
 
 .datepicker-header {
@@ -4135,13 +4242,14 @@ select {
   inset: 0;
   background: rgba(10, 9, 8, 0.65);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 1250;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
   overflow-y: auto;
-  animation: fadeIn 0.3s var(--ease);
+  animation: fadeIn var(--duration-surface, 0.35s) var(--ease-luxury, var(--ease));
 }
 
 @keyframes fadeIn {
@@ -4165,6 +4273,18 @@ select {
   position: relative;
   border: 1px solid var(--surface-line);
   border-radius: 2px;
+  animation: modalScaleUp var(--duration-surface, 0.35s) var(--ease-luxury, var(--ease)) both;
+}
+
+@keyframes modalScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .event-modal-head {
