@@ -1620,395 +1620,125 @@ button.hero-quick-nav-item {
 }
 
 @media (max-width: 1024px) {
-  /* Hide scroll cue on tablet and mobile so it never collides or clutters */
-  .scroll-cue {
-    display: none !important;
-  }
-
-  /* Homepage Hero: Strictly fit within opening viewport (100dvh) */
-  .hero {
-    height: 100dvh;
-    min-height: 100dvh;
-    max-height: 100dvh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-top: clamp(64px, 8vh, 80px);
-    padding-bottom: 0;
-    box-sizing: border-box;
-  }
-
-  .hero-inner {
-    margin-top: auto;
-    margin-bottom: auto;
-    padding: 12px var(--pad);
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    box-sizing: border-box;
-  }
-
-  .hero-inner .hero-eyebrow {
-    margin-bottom: clamp(6px, 1.2vh, 12px);
-  }
-
-  .hero-inner .hero-title {
-    font-size: clamp(26px, 5.2vw, 44px);
-    line-height: 1.08;
-    max-width: 16ch;
-  }
-
-  .hero-inner .hero-cta-row {
-    margin-top: clamp(14px, 2.5vh, 22px);
-    gap: 12px;
-  }
-
-  /* Pillar Strip on Tablet: compact and cleanly contained */
-  .pillar-strip {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    border-top: 1px solid rgba(230, 207, 158, 0.2);
-    flex-shrink: 0;
-    background: linear-gradient(180deg, rgba(8, 7, 6, 0) 0%, rgba(6, 5, 4, 0.85) 100%);
-  }
-
-  .pillar-strip .container {
-    padding-top: clamp(10px, 1.8vh, 16px) !important;
-    padding-bottom: clamp(12px, 2.2vh, 18px) !important;
-  }
-
-  .pillar-grid {
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: clamp(4px, 1vw, 8px) !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    overflow: visible !important;
-  }
-
-  .pillar-item {
-    flex: 1 1 0 !important;
-    min-width: 0 !important;
-    width: 100% !important;
-    padding: 4px 2px !important;
-    gap: 6px !important;
-    align-items: center !important;
-    text-align: center !important;
-    transform: none !important;
-    opacity: 1 !important;
-    animation: none !important;
-  }
-
-  .pillar-icon {
-    width: clamp(22px, 2.8vw, 28px) !important;
-    height: clamp(22px, 2.8vw, 28px) !important;
-    margin: 0 auto !important;
-  }
-
-  .pillar-label {
-    font-size: clamp(8px, 1.1vw, 9.5px) !important;
-    letter-spacing: clamp(0.04em, 0.6vw, 0.10em) !important;
-    white-space: nowrap !important;
-    text-align: center !important;
-    max-width: 100% !important;
-  }
-
-  /* Page Heroes: Vertically center title, lede, and buttons in the middle of hero */
-  .page-hero {
-    height: 100dvh;
-    min-height: 100dvh;
-    max-height: 100dvh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-    padding-top: clamp(64px, 8vh, 80px);
-    padding-bottom: clamp(10px, 1.8vh, 16px);
-    box-sizing: border-box;
-  }
-
   .page-hero-inner {
-    flex: 1;
-    display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-    padding: 0 var(--pad);
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .page-hero-top-row {
-    margin-bottom: 8px !important;
-  }
-
-  .page-hero-content {
-    margin-top: auto;
-    margin-bottom: auto;
-    padding: 10px 0;
-    width: 100%;
-  }
-
-  .page-hero-content .hero-cta-row {
-    margin-top: 16px !important;
+    align-items: flex-start;
   }
 
   .hero-quick-nav {
     width: 100%;
-    margin-top: 14px;
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
   }
 
   .hero-quick-nav.with-desc {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .hero-quick-nav-item {
     min-width: 0;
-    padding: 10px 6px;
-    gap: 6px;
+    padding: 14px 8px;
+    gap: 8px;
   }
 
   .hero-quick-label {
-    font-size: 8.5px;
-    letter-spacing: 0.08em;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
   }
 }
 
 @media (max-width: 640px) {
-  .hero {
-    height: 100dvh;
-    min-height: 100dvh;
-    max-height: 100dvh;
-    padding-top: clamp(56px, 7vh, 68px);
-    padding-bottom: 0;
-  }
-
-  .hero-inner {
-    margin-top: auto;
-    margin-bottom: auto;
-    padding: 8px var(--pad);
-  }
-
-  .hero-inner .hero-eyebrow {
-    margin-bottom: 6px;
-    font-size: 11px;
-  }
-
-  .hero-inner .hero-title {
-    font-size: clamp(23px, 6vw, 32px) !important;
-    line-height: 1.08;
-  }
-
-  .hero-inner .hero-cta-row {
-    margin-top: 14px !important;
-    gap: 10px !important;
-  }
-
-  .pillar-strip .container {
-    padding-left: clamp(8px, 2vw, 16px) !important;
-    padding-right: clamp(8px, 2vw, 16px) !important;
-    padding-top: 10px !important;
-    padding-bottom: max(14px, env(safe-area-inset-bottom, 14px)) !important;
-  }
-
-  .pillar-grid {
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: 4px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    overflow: visible !important;
-  }
-
-  .pillar-item {
-    padding: 2px 0 !important;
-    gap: 4px !important;
-  }
-
-  .pillar-icon {
-    width: 20px !important;
-    height: 20px !important;
-  }
-
-  .pillar-label {
-    font-size: 7px !important;
-    letter-spacing: 0.02em !important;
-    white-space: nowrap !important;
-    text-align: center !important;
-  }
-
   .page-hero {
-    height: 100dvh;
     min-height: 100dvh;
-    max-height: 100dvh;
-    padding-top: clamp(56px, 7vh, 68px);
-    padding-bottom: 10px;
-    justify-content: space-between;
-    align-items: stretch;
+    padding: clamp(70px, 10dvh, 100px) 0 clamp(16px, 3dvh, 32px);
+    justify-content: center;
   }
 
   .page-hero-inner {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-    padding: 0 var(--pad);
-    gap: 6px;
-  }
-
-  .page-hero-top-row {
-    margin-bottom: 6px !important;
-  }
-
-  .page-hero-content {
-    margin-top: auto;
-    margin-bottom: auto;
-    padding: 6px 0;
-  }
-
-  .page-hero-content .hero-cta-row {
-    margin-top: 12px !important;
+    gap: 16px;
   }
 
   .page-hero-content .breadcrumb {
-    font-size: 10.5px;
-    margin-bottom: 4px;
+    font-size: 11px;
+    margin-bottom: 6px;
   }
 
   .page-hero-content .eyebrow {
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
 
   .page-hero-content .hero-title {
-    font-size: clamp(22px, 6.5vw, 30px) !important;
-    line-height: 1.08;
+    font-size: clamp(24px, 7vw, 34px) !important;
+    line-height: 1.1;
   }
 
   .page-hero-content .lede {
-    margin-top: 8px !important;
-    font-size: 13px;
-    line-height: 1.45;
+    margin-top: 10px !important;
+    font-size: 13.5px;
+    line-height: 1.5;
   }
 
   .page-hero-content .hero-cta-row {
-    margin-top: 12px !important;
-    gap: 8px;
+    margin-top: 14px !important;
+    gap: 10px;
   }
 
   .hero-quick-nav {
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin-top: 16px;
     border-radius: 6px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     background: rgba(12, 10, 8, 0.92);
   }
 
   .hero-quick-nav.with-desc {
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1px;
   }
 
   .hero-quick-nav-item {
-    padding: 8px 4px;
-    gap: 3px;
+    padding: 10px 6px;
+    gap: 4px;
   }
 
   .hero-quick-nav.with-desc .hero-quick-nav-item {
-    padding: 8px 8px 10px;
+    padding: 10px 10px 12px;
     gap: 2px;
     box-sizing: border-box;
   }
 
   .hero-quick-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-quick-icon svg {
     width: 16px;
     height: 16px;
   }
 
-  .hero-quick-icon svg {
-    width: 14px;
-    height: 14px;
-  }
-
   .hero-quick-label {
-    font-size: 7.5px;
-    letter-spacing: 0.02em;
+    font-size: 8px;
+    letter-spacing: 0.04em;
     word-break: normal;
     hyphens: auto;
   }
 
   .hero-quick-nav.with-desc .hero-quick-label {
-    font-size: 9px;
-    letter-spacing: 0.06em;
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
     line-height: 1.2;
   }
 
   .hero-quick-desc {
-    font-size: 8.5px;
-    line-height: 1.2;
+    font-size: 9px;
+    line-height: 1.25;
     margin-top: 2px;
   }
 }
 
-@media (max-height: 720px) and (max-width: 1024px) {
-  .hero {
-    padding-top: 56px !important;
-  }
-
-  .hero-inner {
-    padding: 4px var(--pad) !important;
-  }
-
-  .hero-inner .hero-eyebrow {
-    margin-bottom: 4px !important;
-  }
-
-  .hero-inner .hero-title {
-    font-size: clamp(20px, 4.2vh, 26px) !important;
-    line-height: 1.05 !important;
-  }
-
-  .hero-inner .hero-cta-row {
-    margin-top: 10px !important;
-    gap: 8px !important;
-  }
-
-  .hero-inner .hero-cta-row .btn,
-  .hero-cta-row .btn {
-    padding: 12px 24px !important;
-    font-size: 11px !important;
-  }
-
-  .pillar-strip .container {
-    padding-top: 6px !important;
-    padding-bottom: 8px !important;
-  }
-
-  .pillar-icon {
-    width: 18px !important;
-    height: 18px !important;
-  }
-
-  .pillar-item {
-    gap: 3px !important;
-    padding: 2px 0 !important;
-  }
-
-  .pillar-label {
-    font-size: 7.5px !important;
-  }
-}
 
 .scroll-cue {
   position: absolute;
@@ -4266,31 +3996,37 @@ button.hero-quick-nav-item {
   }
 
   .pillar-grid {
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: 4px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    overflow: visible !important;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin: 0 calc(var(--pad) * -1);
+    padding: 0 var(--pad) 8px var(--pad);
+    gap: 6px;
+  }
+
+  .pillar-grid::-webkit-scrollbar {
+    display: none;
   }
 
   .pillar-icon {
-    width: 22px !important;
-    height: 22px !important;
+    width: 26px;
+    height: 26px;
   }
 
   .pillar-item {
-    min-width: 0 !important;
-    flex: 1 1 0 !important;
-    gap: 4px !important;
-    padding: 3px 0 !important;
+    flex: 0 0 auto;
+    min-width: 76px;
+    scroll-snap-align: start;
+    gap: 8px;
+    padding: 10px 2px;
   }
 
   .pillar-label {
-    font-size: 8px !important;
-    letter-spacing: 0.03em !important;
-    white-space: nowrap !important;
+    font-size: 8.5px;
+    letter-spacing: 0.02em;
   }
 
   .hero-title {
