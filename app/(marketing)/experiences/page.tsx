@@ -44,10 +44,8 @@ const CATEGORIES: TriCardData[] = [
   },
   {
     id: "golden-society",
-    icon: "golden-society",
     heading: "The Golden Society",
     subtitle: "Weddings & Celebrations",
-    bgImage: "/images/unsplash/resorts-wedding-celebration.jpg",
     isGoldenSociety: true,
   },
 ];

@@ -2228,8 +2228,31 @@ button.hero-quick-nav-item {
 }
 
 .golden-society-card {
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  box-shadow: inset 0 0 40px rgba(212, 175, 55, 0.1);
+  background: #690600 !important;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.2);
+  padding: 0 !important;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.golden-society-card-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 24px;
+  box-sizing: border-box;
+  transition: transform 0.5s var(--ease);
+}
+
+.golden-society-card:hover .golden-society-card-visual {
+  transform: scale(1.03);
 }
 
 .tri-card .tri-icon {
