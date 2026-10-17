@@ -7,16 +7,19 @@ export default function StickyCta({
   text,
   ctaLabel,
   ctaHref,
+  onCtaClick,
 }: {
   text: string;
   ctaLabel: string;
   ctaHref: string;
+  onCtaClick?: () => void;
 }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.9);
     window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -30,9 +33,22 @@ export default function StickyCta({
   return (
     <div className={`sticky-cta${show ? " show" : ""}`}>
       <span>{text}</span>
-      <Link href={ctaHref} className="btn solid">
-        {ctaLabel}
-      </Link>
+      {onCtaClick ? (
+        <button
+          type="button"
+          onClick={onCtaClick}
+          className="btn solid"
+          suppressHydrationWarning
+        >
+          {ctaLabel}
+        </button>
+      ) : (
+        <Link href={ctaHref} className="btn solid">
+          {ctaLabel}
+        </Link>
+      )}
     </div>
   );
 }
+
+

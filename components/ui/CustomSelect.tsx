@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect, KeyboardEvent, useId } from "react";
+import { useState, useRef, useEffect, useCallback, useSyncExternalStore, KeyboardEvent, useId } from "react";
+import { createPortal } from "react-dom";
 import { Icon } from "@/components/ui/Icon";
 
 export interface CustomSelectOption {
@@ -19,15 +20,19 @@ interface CustomSelectProps {
   disabled?: boolean;
 }
 
+const emptySubscribe = () => () => {};
+
 export function CustomSelect({
   id,
   name,
+  label,
   value,
   options,
   onChange,
   placeholder = "Select an option",
   disabled = false,
 }: CustomSelectProps) {
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -35,22 +40,69 @@ export function CustomSelect({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const listboxRef = useRef<HTMLUListElement>(null);
 
+  const [position, setPosition] = useState<{
+    top?: number;
+    bottom?: number;
+    left: number;
+    width: number;
+  }>({ left: 0, width: 200 });
+
   const baseId = useId();
   const listboxId = `custom-select-listbox-${baseId}`;
 
   const selectedOption = options.find((opt) => opt.value === value);
 
+  const updatePosition = useCallback(() => {
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    const listboxHeight = Math.min(options.length * 40 + 16, 240);
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const spaceAbove = rect.top;
+    const openAbove = spaceBelow < listboxHeight + 8 && spaceAbove > spaceBelow;
+
+    if (openAbove) {
+      setPosition({
+        bottom: window.innerHeight - rect.top + 4,
+        left: rect.left,
+        width: Math.max(rect.width, 180),
+      });
+    } else {
+      setPosition({
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: Math.max(rect.width, 180),
+      });
+    }
+  }, [options.length]);
+
   useEffect(() => {
+    if (!isOpen) return;
+    updatePosition();
+
+    function onScrollOrResize() {
+      updatePosition();
+    }
+
     function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        containerRef.current && !containerRef.current.contains(target) &&
+        listboxRef.current && !listboxRef.current.contains(target)
+      ) {
         closeListbox();
       }
     }
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+
+    window.addEventListener("scroll", onScrollOrResize, { capture: true, passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize, { capture: true });
+      window.removeEventListener("resize", onScrollOrResize);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, updatePosition]);
 
   useEffect(() => {
     if (isOpen && activeIndex !== null && listboxRef.current) {
@@ -143,6 +195,48 @@ export function CustomSelect({
     triggerRef.current?.focus();
   }
 
+  const dropdownPortal = isOpen && mounted && typeof document !== "undefined" ? (
+    createPortal(
+      <ul
+        className="custom-select-dropdown portal-floating"
+        role="listbox"
+        id={listboxId}
+        ref={listboxRef}
+        aria-label={label || placeholder}
+        onKeyDown={handleListboxKeyDown}
+        style={{
+          position: "fixed",
+          top: position.top !== undefined ? `${position.top}px` : "auto",
+          bottom: position.bottom !== undefined ? `${position.bottom}px` : "auto",
+          left: `${position.left}px`,
+          width: `${position.width}px`,
+          zIndex: 99999,
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {options.map((option, index) => {
+          const isSelected = option.value === value;
+          const isActive = index === activeIndex;
+          return (
+            <li
+              key={option.value}
+              id={`${listboxId}-option-${index}`}
+              className={`custom-select-option${isActive ? " active" : ""}`}
+              onClick={() => handleOptionClick(option.value)}
+              onMouseEnter={() => setActiveIndex(index)}
+              role="option"
+              aria-selected={isSelected}
+              tabIndex={isActive ? 0 : -1}
+            >
+              {option.label}
+            </li>
+          );
+        })}
+      </ul>,
+      document.body
+    )
+  ) : null;
+
   return (
     <div className={`custom-select-container${isOpen ? " active-field" : ""}`} ref={containerRef} id={id}>
       <input type="hidden" name={name} value={value} />
@@ -175,34 +269,7 @@ export function CustomSelect({
         </span>
       </button>
 
-      {isOpen && (
-        <ul
-          className="custom-select-dropdown"
-          role="listbox"
-          id={listboxId}
-          ref={listboxRef}
-          onKeyDown={handleListboxKeyDown}
-        >
-          {options.map((option, index) => {
-            const isSelected = option.value === value;
-            const isActive = index === activeIndex;
-            return (
-              <li
-                key={option.value}
-                id={`${listboxId}-option-${index}`}
-                className={`custom-select-option${isActive ? " active" : ""}`}
-                onClick={() => handleOptionClick(option.value)}
-                onMouseEnter={() => setActiveIndex(index)}
-                role="option"
-                aria-selected={isSelected}
-                tabIndex={isActive ? 0 : -1}
-              >
-                {option.label}
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      {dropdownPortal}
     </div>
   );
 }

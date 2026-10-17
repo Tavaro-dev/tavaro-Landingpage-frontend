@@ -8,6 +8,8 @@ import { RoomAvailability } from "@/features/accommodations/components/RoomAvail
 import StickyCta from "@/components/shared/StickyCta";
 import { PlanEventButton } from "@/features/experiences/components/PlanEventButton";
 import { ResortDining } from "@/features/resorts/components/ResortDining";
+import { ResortAmenitiesCarousel } from "@/features/resorts/components/ResortAmenitiesCarousel";
+import { ThingsToDoSection } from "@/features/resorts/components/ThingsToDoSection";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
@@ -44,7 +46,7 @@ export default function ResortsPage() {
           { label: "Photos & Videos", href: "/resorts/photos", icon: "photos" },
           { label: "Facilities & Amenities", href: "#facilities", icon: "facilities" },
           { label: "Dining", href: "#culinary", icon: "dining" },
-          { label: "Things to do", href: "#things-to-do", icon: "compass" },
+          { label: "Things to do", href: "#things-to-do", icon: "compass", isThingsToDoModal: true },
         ]}
       />
 
@@ -156,6 +158,12 @@ export default function ResortsPage() {
           </SplitSection>
         </div>
       </section>
+
+      {/* Amenities & Services Continuous Carousel */}
+      <ResortAmenitiesCarousel />
+
+      {/* 06 — Things to Do */}
+      <ThingsToDoSection />
 
       {/* Leaf by Tavaro */}
       <section className="section leaf-section" id="leaf" style={{ color: "var(--cream)" }}>

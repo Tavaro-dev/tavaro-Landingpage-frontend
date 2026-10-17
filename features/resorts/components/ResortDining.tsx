@@ -38,7 +38,12 @@ export function ResortDining() {
               <li>Seasonal menus &amp; chef-led experiences</li>
             </ul>
             <div style={{ marginTop: "24px" }}>
-              <button type="button" onClick={() => setModalOpen(true)} className="btn">
+              <button
+                type="button"
+                onClick={() => setModalOpen(true)}
+                className="btn"
+                suppressHydrationWarning
+              >
                 DISCOVER TAVARO DINING <span className="btn-arrow">→</span>
               </button>
             </div>

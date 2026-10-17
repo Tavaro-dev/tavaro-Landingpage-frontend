@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
@@ -5,6 +7,7 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { PlanEventButton } from "@/features/experiences/components/PlanEventButton";
 import { OffsiteEditButton } from "@/features/experiences/components/OffsiteEditButton";
 import { UnderTheSkyButton } from "@/features/experiences/components/UnderTheSkyButton";
+import { ThingsToDoButton } from "@/features/resorts/components/ThingsToDoButton";
 
 export function PageHero({
   photoSrc,
@@ -35,7 +38,7 @@ export function PageHero({
   ctas?: { label: string; href?: string; solid?: boolean; isEventModal?: boolean; isOffsiteModal?: boolean; isUnderTheSkyModal?: boolean }[];
   extraCta?: ReactNode;
   topRightCta?: ReactNode;
-  quickNav?: { label: string; href?: string; icon?: IconName; desc?: string; isOffsiteModal?: boolean; isUnderTheSkyModal?: boolean }[];
+  quickNav?: { label: string; href?: string; icon?: IconName; desc?: string; isOffsiteModal?: boolean; isUnderTheSkyModal?: boolean; isThingsToDoModal?: boolean }[];
 }) {
   const style: CSSProperties | undefined = minHeight ? { minHeight } : undefined;
 
@@ -128,6 +131,11 @@ export function PageHero({
                   item.isUnderTheSkyModal ||
                   labelLower.includes("under the sky");
 
+                const isThingsToDo =
+                  item.isThingsToDoModal ||
+                  item.href === "#things-to-do" ||
+                  labelLower.includes("things to do");
+
                 if (isOffsite) {
                   return (
                     <OffsiteEditButton key={item.label} className="hero-quick-nav-item">
@@ -156,8 +164,60 @@ export function PageHero({
                   );
                 }
 
+                if (isThingsToDo) {
+                  return (
+                    <ThingsToDoButton key={item.label} className="hero-quick-nav-item">
+                      {item.icon && (
+                        <span className="hero-quick-icon">
+                          <Icon name={item.icon} />
+                        </span>
+                      )}
+                      <span className="hero-quick-label">{item.label}</span>
+                      {item.desc && <span className="hero-quick-desc">{item.desc}</span>}
+                    </ThingsToDoButton>
+                  );
+                }
+
+                if (item.href?.startsWith("#")) {
+                  return (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      className="hero-quick-nav-item"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const id = item.href!.slice(1);
+                        const element = document.getElementById(id);
+                        if (element) {
+                          const header = document.getElementById("site-header");
+                          const headerH = header ? header.offsetHeight : 72;
+                          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                          const offsetPosition = elementPosition - headerH;
+                          window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth",
+                          });
+                          window.history.pushState(null, "", item.href!);
+                        }
+                      }}
+                    >
+                      {item.icon && (
+                        <span className="hero-quick-icon">
+                          <Icon name={item.icon} />
+                        </span>
+                      )}
+                      <span className="hero-quick-label">{item.label}</span>
+                      {item.desc && <span className="hero-quick-desc">{item.desc}</span>}
+                    </a>
+                  );
+                }
+
                 return (
-                  <a key={item.label} href={item.href || "#"} className="hero-quick-nav-item">
+                  <Link
+                    key={item.label}
+                    href={item.href || "#"}
+                    className="hero-quick-nav-item"
+                  >
                     {item.icon && (
                       <span className="hero-quick-icon">
                         <Icon name={item.icon} />
@@ -165,7 +225,7 @@ export function PageHero({
                     )}
                     <span className="hero-quick-label">{item.label}</span>
                     {item.desc && <span className="hero-quick-desc">{item.desc}</span>}
-                  </a>
+                  </Link>
                 );
               })}
             </div>

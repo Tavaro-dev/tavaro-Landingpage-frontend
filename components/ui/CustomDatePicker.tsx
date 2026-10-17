@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { Icon } from "@/components/ui/Icon";
 
 interface CustomDatePickerProps {
@@ -12,6 +13,8 @@ interface CustomDatePickerProps {
   minDate?: string; // YYYY-MM-DD
   required?: boolean;
 }
+
+const emptySubscribe = () => () => {};
 
 const MONTH_NAMES = [
   "January",
@@ -59,6 +62,7 @@ export function CustomDatePicker({
   minDate,
   required,
 }: CustomDatePickerProps) {
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const [isOpen, setIsOpen] = useState(false);
   const selectedDate = value ? parseDate(value) : null;
 
@@ -67,20 +71,94 @@ export function CustomDatePicker({
 
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  const [position, setPosition] = useState<{
+    top?: number;
+    bottom?: number;
+    left: number;
+    isMobileModal: boolean;
+  }>({ left: 0, isMobileModal: false });
+
+  const updatePosition = useCallback(() => {
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    const isMobile = window.innerWidth <= 540;
+
+    if (isMobile) {
+      setPosition({
+        left: 0,
+        isMobileModal: true,
+      });
+      return;
+    }
+
+    const popoverWidth = 280;
+    const popoverHeight = 330;
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const spaceAbove = rect.top;
+    const openAbove = spaceBelow < popoverHeight + 10 && spaceAbove > spaceBelow;
+
+    let left = rect.left;
+    if (left + popoverWidth > window.innerWidth - 16) {
+      left = window.innerWidth - popoverWidth - 16;
+    }
+    if (left < 16) left = 16;
+
+    if (openAbove) {
+      setPosition({
+        bottom: window.innerHeight - rect.top + 6,
+        left,
+        isMobileModal: false,
+      });
+    } else {
+      setPosition({
+        top: rect.bottom + 6,
+        left,
+        isMobileModal: false,
+      });
+    }
+  }, []);
+
+  const handleToggle = () => {
+    if (!isOpen) {
+      updatePosition();
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
+    }
+  };
 
   useEffect(() => {
+    if (!isOpen) return;
+
+    function onScrollOrResize() {
+      updatePosition();
+    }
+
     function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        containerRef.current && !containerRef.current.contains(target) &&
+        popoverRef.current && !popoverRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     }
+
+    window.addEventListener("scroll", onScrollOrResize, { capture: true, passive: true });
+    window.addEventListener("resize", onScrollOrResize);
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize, { capture: true });
+      window.removeEventListener("resize", onScrollOrResize);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, updatePosition]);
 
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
   const firstDayOfWeek = new Date(viewYear, viewMonth, 1).getDay();
-
   const prevMonthDays = new Date(viewYear, viewMonth, 0).getDate();
 
   const handlePrevMonth = () => {
@@ -137,6 +215,131 @@ export function CustomDatePicker({
 
   const calendarId = id ? `${id}-calendar` : undefined;
 
+  const calendarBody = (
+    <>
+      <div className="datepicker-header">
+        <button type="button" className="datepicker-nav-btn" onClick={handlePrevMonth} aria-label="Previous Month">
+          <Icon name="chevron-left" />
+        </button>
+        <span className="datepicker-title" aria-live="polite">
+          {MONTH_NAMES[viewMonth]} {viewYear}
+        </span>
+        <button type="button" className="datepicker-nav-btn" onClick={handleNextMonth} aria-label="Next Month">
+          <span style={{ display: "inline-block", transform: "rotate(180deg)" }}>
+            <Icon name="chevron-left" />
+          </span>
+        </button>
+      </div>
+
+      <div className="datepicker-weekdays" aria-hidden="true">
+        {WEEKDAYS.map((day) => (
+          <span key={day} className="datepicker-weekday">
+            {day}
+          </span>
+        ))}
+      </div>
+
+      <div className="datepicker-days">
+        {/* Empty slots before first day */}
+        {Array.from({ length: firstDayOfWeek }).map((_, i) => {
+          const dayNum = prevMonthDays - firstDayOfWeek + i + 1;
+          return (
+            <span key={`prev-${i}`} className="datepicker-day muted" aria-hidden="true">
+              {dayNum}
+            </span>
+          );
+        })}
+
+        {/* Days of current month */}
+        {Array.from({ length: daysInMonth }).map((_, i) => {
+          const day = i + 1;
+          const selected = isSelected(day);
+          const today = isToday(day);
+          const disabled = isPast(day);
+          const ariaLabel = `${day} ${MONTH_NAMES[viewMonth]} ${viewYear}`;
+
+          return (
+            <button
+              key={`day-${day}`}
+              type="button"
+              disabled={disabled}
+              aria-label={ariaLabel}
+              aria-pressed={selected}
+              aria-current={today ? "date" : undefined}
+              className={`datepicker-day${selected ? " selected" : ""}${today ? " today" : ""}${
+                disabled ? " disabled" : ""
+              }`}
+              onClick={() => {
+                const newDateStr = formatDate(new Date(viewYear, viewMonth, day));
+                onChange(newDateStr);
+                setIsOpen(false);
+                requestAnimationFrame(() => {
+                  triggerRef.current?.focus();
+                });
+              }}
+            >
+              {day}
+            </button>
+          );
+        })}
+      </div>
+    </>
+  );
+
+  const popoverPortal = isOpen && mounted && typeof document !== "undefined" ? (
+    createPortal(
+      position.isMobileModal ? (
+        <div 
+          className="datepicker-portal-backdrop"
+          onClick={() => setIsOpen(false)}
+          role="presentation"
+        >
+          <div 
+            id={calendarId} 
+            ref={popoverRef}
+            className="custom-datepicker-popover portal-mobile-sheet" 
+            role="dialog" 
+            aria-modal="true"
+            aria-label={`${MONTH_NAMES[viewMonth]} ${viewYear}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="datepicker-mobile-top">
+              <span className="datepicker-mobile-title">Select Date</span>
+              <button 
+                type="button" 
+                className="datepicker-mobile-close" 
+                onClick={() => setIsOpen(false)}
+                aria-label="Close date picker"
+              >
+                <Icon name="close" />
+              </button>
+            </div>
+            {calendarBody}
+          </div>
+        </div>
+      ) : (
+        <div 
+          id={calendarId} 
+          ref={popoverRef}
+          className="custom-datepicker-popover portal-floating" 
+          role="dialog" 
+          aria-label={`${MONTH_NAMES[viewMonth]} ${viewYear}`}
+          style={{
+            position: "fixed",
+            top: position.top !== undefined ? `${position.top}px` : "auto",
+            bottom: position.bottom !== undefined ? `${position.bottom}px` : "auto",
+            left: `${position.left}px`,
+            zIndex: 99999,
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {calendarBody}
+        </div>
+      ),
+      document.body
+    )
+  ) : null;
+
   return (
     <div 
       className={`custom-datepicker-container${isOpen ? " active-field" : ""}`} 
@@ -148,7 +351,7 @@ export function CustomDatePicker({
         id={id}
         ref={triggerRef}
         className={`custom-datepicker-trigger${isOpen ? " open" : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         aria-haspopup="dialog"
         aria-expanded={isOpen}
         aria-controls={isOpen ? calendarId : undefined}
@@ -168,81 +371,7 @@ export function CustomDatePicker({
       {/* Hidden native input for form compatibility */}
       <input type="hidden" name={name} value={value} required={required} />
 
-      {isOpen && (
-        <div 
-          id={calendarId} 
-          className="custom-datepicker-popover" 
-          role="dialog" 
-          aria-label={`${MONTH_NAMES[viewMonth]} ${viewYear}`}
-        >
-          <div className="datepicker-header">
-            <button type="button" className="datepicker-nav-btn" onClick={handlePrevMonth} aria-label="Previous Month">
-              <Icon name="chevron-left" />
-            </button>
-            <span className="datepicker-title" aria-live="polite">
-              {MONTH_NAMES[viewMonth]} {viewYear}
-            </span>
-            <button type="button" className="datepicker-nav-btn" onClick={handleNextMonth} aria-label="Next Month">
-              <span style={{ display: "inline-block", transform: "rotate(180deg)" }}>
-                <Icon name="chevron-left" />
-              </span>
-            </button>
-          </div>
-
-          <div className="datepicker-weekdays" aria-hidden="true">
-            {WEEKDAYS.map((day) => (
-              <span key={day} className="datepicker-weekday">
-                {day}
-              </span>
-            ))}
-          </div>
-
-          <div className="datepicker-days">
-            {/* Empty slots before first day */}
-            {Array.from({ length: firstDayOfWeek }).map((_, i) => {
-              const dayNum = prevMonthDays - firstDayOfWeek + i + 1;
-              return (
-                <span key={`prev-${i}`} className="datepicker-day muted" aria-hidden="true">
-                  {dayNum}
-                </span>
-              );
-            })}
-
-            {/* Days of current month */}
-            {Array.from({ length: daysInMonth }).map((_, i) => {
-              const day = i + 1;
-              const selected = isSelected(day);
-              const today = isToday(day);
-              const disabled = isPast(day);
-              const ariaLabel = `${day} ${MONTH_NAMES[viewMonth]} ${viewYear}`;
-
-              return (
-                <button
-                  key={`day-${day}`}
-                  type="button"
-                  disabled={disabled}
-                  aria-label={ariaLabel}
-                  aria-pressed={selected}
-                  aria-current={today ? "date" : undefined}
-                  className={`datepicker-day${selected ? " selected" : ""}${today ? " today" : ""}${
-                    disabled ? " disabled" : ""
-                  }`}
-                  onClick={() => {
-                    const newDateStr = formatDate(new Date(viewYear, viewMonth, day));
-                    onChange(newDateStr);
-                    setIsOpen(false);
-                    requestAnimationFrame(() => {
-                      triggerRef.current?.focus();
-                    });
-                  }}
-                >
-                  {day}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      {popoverPortal}
     </div>
   );
 }

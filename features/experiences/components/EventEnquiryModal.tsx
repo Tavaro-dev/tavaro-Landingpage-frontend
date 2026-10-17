@@ -6,6 +6,7 @@ import { Icon } from "@/components/ui/Icon";
 import { VENUES, ENQUIRY_MENU_ITEMS, ENQUIRY_GST_RATE, ENQUIRY_BASE_PLATE_PRICE, computeEnquiryTotal } from "@/lib/content/venues";
 import { formatInr } from "@/lib/format";
 import { submitEnquiryAction } from "@/app/actions/enquiry";
+import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
 
 const emptySubscribe = () => () => {};
 
@@ -179,7 +180,14 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
                 </div>
                 <div className="field">
                   <label htmlFor={fieldId("date")}>Event Date</label>
-                  <input id={fieldId("date")} name="eventDate" type="date" defaultValue={details.eventDate} required />
+                  <CustomDatePicker
+                    id={fieldId("date")}
+                    name="eventDate"
+                    value={details.eventDate}
+                    placeholder="Select event date"
+                    required
+                    onChange={(val) => setDetails((prev) => ({ ...prev, eventDate: val }))}
+                  />
                 </div>
                 <div className="field">
                   <label htmlFor={fieldId("guests")}>Expected Guest Count</label>

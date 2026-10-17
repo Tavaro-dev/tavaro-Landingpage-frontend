@@ -67,6 +67,32 @@ test.describe('Accessibility Regressions', () => {
     await expect(modalHeading).toBeHidden();
   });
 
+  test('Things to Do Modal accessibility and dismissal behavior', async ({ page }) => {
+    await page.goto('/resorts');
+
+    const trigger = page.getByRole('button', { name: /Things to do/i });
+    await expect(trigger).toBeVisible();
+    await trigger.click();
+
+    // Verify dialog role and attributes
+    const modal = page.locator('.ttd-modal-container');
+    await expect(modal).toBeVisible();
+    await expect(modal).toHaveAttribute('role', 'dialog');
+    await expect(modal).toHaveAttribute('aria-modal', 'true');
+
+    // Test Escape key closes modal and restores focus
+    await page.keyboard.press('Escape');
+    await expect(modal).toBeHidden();
+    await expect(trigger).toBeFocused();
+
+    // Reopen and test backdrop click closes modal
+    await trigger.click();
+    await expect(modal).toBeVisible();
+    // Click outside container on the backdrop
+    await page.locator('.ttd-modal-backdrop').click({ position: { x: 10, y: 10 } });
+    await expect(modal).toBeHidden();
+  });
+
   test('Mobile navigation accessibility', async ({ page }) => {
     // Force mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
