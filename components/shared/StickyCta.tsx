@@ -17,7 +17,8 @@ export default function StickyCta({
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.9);
+    // Activate as soon as the user scrolls past the top (40px) on mobile view
+    const onScroll = () => setShow(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
