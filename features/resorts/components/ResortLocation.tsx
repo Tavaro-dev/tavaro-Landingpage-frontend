@@ -33,7 +33,7 @@ export function ResortLocation() {
               }}>
                 <iframe
                   title="Google Maps Location Preview"
-                  src="https://maps.google.com/maps?q=Kokapet%2C%20Hyderabad&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                  src="https://maps.google.com/maps?q=Tavaro+Resorts%2C+Kokapet%2C+Hyderabad&t=&z=15&ie=UTF8&iwloc=&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
