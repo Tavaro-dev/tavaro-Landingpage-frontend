@@ -3846,6 +3846,23 @@ button.hero-quick-nav-item {
 /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
+@media (max-width: 1024px) {
+  .hero.home-hero {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: clamp(64px, 8vh, 84px);
+  }
+
+  .hero.home-hero .hero-inner {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-top: 16px;
+    padding-bottom: 24px;
+  }
+}
+
 @media (max-width: 1080px) {
   .checkout-layout {
     grid-template-columns: 1fr;

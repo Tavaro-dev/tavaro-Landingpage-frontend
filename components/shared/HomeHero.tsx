@@ -12,7 +12,7 @@ const PILLARS: { label: string; href: string; icon: IconName }[] = [
 
 export function HomeHero() {
   return (
-    <section className="hero">
+    <section className="hero home-hero">
       <div className="hero-media ph-1">
         <Image
           src="/photos/drone-hero.jpg"
