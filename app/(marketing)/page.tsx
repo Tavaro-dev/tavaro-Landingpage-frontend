@@ -167,8 +167,71 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Featured: Experiences */}
+      <section className="section on-panel">
+        <div className="container">
+          <SplitSection placeholder="ph-3" src="/photos/experiences-cars.jpg" alt="Tavaro Experiences">
+            <p className="eyebrow">Experiences</p>
+            <h3 className="display-3">
+              Moments made
+              <br />
+              extraordinary
+            </h3>
+            <p className="lede">
+              Social and cultural gatherings, curated corporate offsites, and wellness retreats designed as
+              an ongoing platform of moments. Where people gather with intention and celebration.
+            </p>
+            <Link href="/experiences" className="btn">
+              Explore Experiences <span className="btn-arrow">→</span>
+            </Link>
+          </SplitSection>
+        </div>
+      </section>
+
+      {/* Featured: Wellness */}
+      <section className="section on-dark">
+        <div className="container">
+          <SplitSection reverse placeholder="ph-green" src="/photos/wellness-hands.jpg" alt="Wellness at Tavaro">
+            <p className="eyebrow">Wellness</p>
+            <h3 className="display-3">
+              A Tavaro way
+              <br />
+              of life
+            </h3>
+            <p className="lede">
+              Physical vitality, mental clarity, and restorative living woven into everyday life — mindful
+              movement, breathwork, stillness and retreats designed to help you slow down and restore.
+            </p>
+            <Link href="/wellness" className="btn">
+              Explore Wellness <span className="btn-arrow">→</span>
+            </Link>
+          </SplitSection>
+        </div>
+      </section>
+
+      {/* Featured: Màre */}
+      <section className="section on-panel">
+        <div className="container">
+          <SplitSection placeholder="ph-gold" src="/photos/mare-cover.jpg" alt="Màre Coffee House">
+            <p className="eyebrow">Màre Coffee House</p>
+            <h3 className="display-3">
+              Where life
+              <br />
+              comes together
+            </h3>
+            <p className="lede">
+              An artisanal coffee house and culinary destination built around quiet luxury, craftsmanship,
+              slow mornings, and spaces for creative conversation and community.
+            </p>
+            <Link href="/mare" className="btn">
+              Explore Màre <span className="btn-arrow">→</span>
+            </Link>
+          </SplitSection>
+        </div>
+      </section>
+
       {/* Stay / Live / Gather / Restore / Connect */}
-      <section className="section on-panel tight">
+      <section className="section on-dark tight">
         <div className="container">
           <Reveal>
             <p
@@ -194,6 +257,10 @@ export default function HomePage() {
           />
         </div>
       </section>
+
+      <div className="container">
+        <div className="rule" />
+      </div>
 
       {/* Closing */}
       <section className="section on-dark">

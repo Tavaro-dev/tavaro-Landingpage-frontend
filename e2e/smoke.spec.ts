@@ -78,21 +78,27 @@ test.describe('Navigation Smoke tests', () => {
     await expect(page.getByRole('heading', { name: /A little more room to be\./i, level: 1 })).toBeVisible();
     await expect(page.getByText('EXPLORE AT YOUR OWN PACE', { exact: true })).toBeVisible();
 
-    // 4 Category headings (level 2 to disambiguate from footer h5)
-    await expect(page.getByRole('heading', { name: 'Dine', level: 2 })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Unwind', level: 2 })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Play', level: 2 })).toBeVisible();
-    await expect(page.locator('#heading-explore')).toBeVisible();
+    // 4 Category tab options
+    await expect(page.locator('.showcase-tab-btn', { hasText: 'Dine' })).toBeVisible();
+    await expect(page.locator('.showcase-tab-btn', { hasText: 'Unwind' })).toBeVisible();
+    await expect(page.locator('.showcase-tab-btn', { hasText: 'Play' })).toBeVisible();
+    await expect(page.locator('.showcase-tab-btn', { hasText: 'Explore' })).toBeVisible();
 
-    // Sample activities
-    await expect(page.locator('.editorial-activity-name', { hasText: 'Màre — poolside coffee & dining' })).toBeVisible();
-    await expect(page.locator('.editorial-activity-name', { hasText: 'Time in the Mango Grove' })).toBeVisible();
-    await expect(page.locator('.editorial-activity-name', { hasText: 'Lawn games' })).toBeVisible();
-    await expect(page.locator('.editorial-activity-name', { hasText: 'Tree Deck' })).toBeVisible();
+    // Verify category tab switching and activity chips in each panel
+    await expect(page.locator('.showcase-chip', { hasText: 'Màre — poolside coffee & dining' })).toBeVisible();
+
+    await page.locator('.showcase-tab-btn', { hasText: 'Unwind' }).click();
+    await expect(page.locator('.showcase-chip', { hasText: 'Time in the Mango Grove' })).toBeVisible();
+
+    await page.locator('.showcase-tab-btn', { hasText: 'Play' }).click();
+    await expect(page.locator('.showcase-chip', { hasText: 'Lawn games' })).toBeVisible();
+
+    await page.locator('.showcase-tab-btn', { hasText: 'Explore' }).click();
+    await expect(page.locator('.showcase-chip', { hasText: 'Tree Deck' })).toBeVisible();
 
     // Closing section
-    await expect(page.getByRole('heading', { name: 'Your time, your way.' })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Explore Accommodations/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Explore at Your Own Pace' })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Resorts Overview/i })).toBeVisible();
   });
 
   test('Create Your Experience page renders categories and opens enquiry modal from CTA', async ({ page }) => {
@@ -102,19 +108,26 @@ test.describe('Navigation Smoke tests', () => {
     await expect(page.getByRole('heading', { name: /Something special, made yours\./i, level: 1 })).toBeVisible();
     await expect(page.getByText('CREATE YOUR EXPERIENCE', { exact: true })).toBeVisible();
 
-    // Key headings
-    await expect(page.getByRole('heading', { name: 'Wellness & Movement' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Make something of the moment.' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Bring people together.' })).toBeVisible();
+    // Key category tabs
+    await expect(page.locator('.showcase-tab-btn', { hasText: 'Wellness' })).toBeVisible();
+    await expect(page.locator('.showcase-tab-btn', { hasText: 'Movement' })).toBeVisible();
+    await expect(page.locator('.showcase-tab-btn', { hasText: 'Create' })).toBeVisible();
+    await expect(page.locator('.showcase-tab-btn', { hasText: 'Gather' })).toBeVisible();
 
-    // Sample activities
-    await expect(page.locator('.editorial-activity-name', { hasText: 'Hatha Yoga' })).toBeVisible();
-    await expect(page.locator('.editorial-activity-name', { hasText: 'Animal Flow' })).toBeVisible();
-    await expect(page.locator('.editorial-activity-name', { hasText: 'Art Workshops' })).toBeVisible();
-    await expect(page.locator('.editorial-activity-name', { hasText: 'Private Dining' })).toBeVisible();
+    // Verify category tab switching and activity chips in each panel
+    await expect(page.locator('.showcase-chip', { hasText: 'Hatha Yoga' })).toBeVisible();
 
-    // Arrange an experience CTA
-    const arrangeBtn = page.getByRole('button', { name: /Arrange an Experience/i }).first();
+    await page.locator('.showcase-tab-btn', { hasText: 'Movement' }).click();
+    await expect(page.locator('.showcase-chip', { hasText: 'Animal Flow' })).toBeVisible();
+
+    await page.locator('.showcase-tab-btn', { hasText: 'Create' }).click();
+    await expect(page.locator('.showcase-chip', { hasText: 'Art Workshops' })).toBeVisible();
+
+    await page.locator('.showcase-tab-btn', { hasText: 'Gather' }).click();
+    await expect(page.locator('.showcase-chip', { hasText: 'Private Dining' })).toBeVisible();
+
+    // Enquire about experience CTA
+    const arrangeBtn = page.locator('.showcase-panel.active .showcase-enquire-btn');
     await expect(arrangeBtn).toBeVisible();
     await arrangeBtn.click();
 
