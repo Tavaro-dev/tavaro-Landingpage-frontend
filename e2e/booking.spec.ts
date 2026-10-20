@@ -1,33 +1,38 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Booking Flow', () => {
-  test('Complete accommodation booking flow', async ({ page }) => {
-    // 1. Open resorts page to access search form (as requested by 'Open /resorts/accommodations' and 'Submit/search')
+  test('Resorts page opens Third-Party Booking modal when clicking Check Availability', async ({ page }) => {
     await page.goto('/resorts');
 
-    // 2. Enter/select check-in date
-    await page.getByText('Select check-in').click();
-    await page.getByRole('button', { name: /15 [A-Z]/i }).click();
+    // Click Check Availability button
+    const checkAvailabilityBtn = page.getByRole('button', { name: 'Check Availability' });
+    await expect(checkAvailabilityBtn).toBeVisible();
+    await checkAvailabilityBtn.click();
 
-    // 3. Enter/select check-out date
-    await page.getByText('Select check-out').click();
-    await page.getByRole('button', { name: /17 [A-Z]/i }).click();
+    // Verify modal appears
+    const modal = page.locator('.ota-modal-card');
+    await expect(modal).toBeVisible();
 
-    // 4. Select guest count
-    // Default is 2, but we can clear and fill it
-    await page.getByLabel('Guests').fill('2');
+    // Verify Agoda primary link
+    const agodaLink = page.locator('a.ota-option-row.primary');
+    await expect(agodaLink).toBeVisible();
+    await expect(agodaLink).toHaveAttribute('href', /agoda\.com/);
 
-    // 5. Select room type if applicable
-    await page.getByText('Any Room Type').click();
-    await page.getByRole('option', { name: 'Executive Rooms' }).click();
+    // Verify partners are present in modal with verified direct Tavaro listings
+    await expect(page.locator('.ota-option-name', { hasText: 'Bluepillow' })).toBeVisible();
+    await expect(page.locator('.ota-option-name', { hasText: 'Google Hotels' })).toBeVisible();
 
-    // 6. Submit/search availability
-    await page.getByRole('button', { name: 'Check Availability' }).click();
+    // Close modal
+    const closeBtn = page.locator('.ota-modal-close');
+    await closeBtn.click();
+    await expect(modal).toBeHidden();
+  });
 
-    // 7. Verify available room results appear
-    await expect(page).toHaveURL(/.*\/resorts\/accommodations.*/);
-    
-    // There should be a room listing
+  test('Complete accommodation booking flow', async ({ page }) => {
+    // 1. Open accommodations directly
+    await page.goto('/resorts/accommodations');
+
+    // 2. There should be a room listing
     const firstRoom = page.locator('.room-listing-card').first();
     await expect(firstRoom).toBeVisible();
 

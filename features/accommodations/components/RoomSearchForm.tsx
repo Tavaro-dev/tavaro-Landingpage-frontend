@@ -11,7 +11,20 @@ const ROOM_TYPE_OPTIONS = [
   { value: "Tavaro House", label: "Tavaro House" },
 ];
 
-export function RoomSearchForm() {
+interface RoomSearchFormProps {
+  /**
+   * RELEASE 1: Intercept search submit to open third-party booking modal
+   * RELEASE 2: Omit onSearchSubmit to revert to native GET navigation to /resorts/accommodations
+   */
+  onSearchSubmit?: (data: {
+    checkin: string;
+    checkout: string;
+    guests: number;
+    roomType: string;
+  }) => void;
+}
+
+export function RoomSearchForm({ onSearchSubmit }: RoomSearchFormProps = {}) {
   const [checkin, setCheckin] = useState("");
   const [checkout, setCheckout] = useState("");
   const [roomType, setRoomType] = useState("Any");
@@ -19,8 +32,31 @@ export function RoomSearchForm() {
   const uid = useId();
   const fieldId = (field: string) => `${uid}-${field}`;
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (onSearchSubmit) {
+      e.preventDefault();
+      const form = e.currentTarget;
+      const guestsInput = form.elements.namedItem("guests") as HTMLInputElement | null;
+      const guestsNum = guestsInput ? parseInt(guestsInput.value, 10) || 2 : 2;
+
+      onSearchSubmit({
+        checkin,
+        checkout,
+        guests: guestsNum,
+        roomType,
+      });
+    }
+    // RELEASE 2 RESTORATION:
+    // If onSearchSubmit is not provided, form submits naturally to action="/resorts/accommodations" method="get"
+  };
+
   return (
-    <form className="availability-search" action="/resorts/accommodations" method="get">
+    <form
+      className="availability-search"
+      action="/resorts/accommodations"
+      method="get"
+      onSubmit={handleSubmit}
+    >
       <div className="availability-field">
         <label htmlFor={fieldId("checkin")}>Check-in</label>
         <CustomDatePicker
