@@ -356,6 +356,11 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
           color: #ffffff;
           border-color: var(--gold-dark);
         }
+        .uts-pill svg {
+          width: 14px;
+          height: 14px;
+          flex-shrink: 0;
+        }
         .uts-error-msg {
           font-family: var(--font-sans);
           font-size: 11px;

@@ -56,7 +56,7 @@ const GALLERY_IMAGES = [
 
 const ARCHITECTURAL_PRINCIPLES = [
   {
-    label: "Belong to Place",
+    label: "Belong to the Place",
     body: "Leela's architecture responds to its orientation, natural light and surrounding landscape — not apart from it.",
   },
   {

@@ -4553,6 +4553,12 @@ button.hero-quick-nav-item {
   color: var(--gold);
 }
 
+.datepicker-mobile-close svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
 .datepicker-header {
   display: flex;
   align-items: center;
@@ -4879,16 +4885,24 @@ button.hero-quick-nav-item {
 /* Principles Grid */
 .principles-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 1px;
   background: var(--surface-line);
   margin-top: 32px;
+  border: 1px solid var(--surface-line);
 }
 
 .principle-item {
+  grid-column: span 2;
   background: var(--surface);
   padding: 30px 26px;
   transition: background 0.4s var(--ease);
+}
+
+/* When there are exactly 5 items (3 top, 2 bottom) */
+.principles-grid .principle-item:nth-child(4):nth-last-child(2),
+.principles-grid .principle-item:nth-child(5):last-child {
+  grid-column: span 3;
 }
 
 .principle-item:hover {
@@ -5273,6 +5287,19 @@ button.hero-quick-nav-item {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .principle-item {
+    grid-column: span 1;
+  }
+
+  .principles-grid .principle-item:nth-child(4):nth-last-child(2),
+  .principles-grid .principle-item:nth-child(5):last-child {
+    grid-column: span 1;
+  }
+
+  .principles-grid .principle-item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
   .residence-feature-card,
   .residence-feature-card.reverse {
     grid-template-columns: 1fr;
@@ -5305,6 +5332,13 @@ button.hero-quick-nav-item {
     grid-template-columns: 1fr;
   }
 
+  .principle-item,
+  .principles-grid .principle-item:nth-child(4):nth-last-child(2),
+  .principles-grid .principle-item:nth-child(5):last-child,
+  .principles-grid .principle-item:last-child:nth-child(odd) {
+    grid-column: span 1;
+  }
+
   .living-spaces-grid {
     grid-template-columns: 1fr;
   }
@@ -5313,3 +5347,26 @@ button.hero-quick-nav-item {
     gap: 48px;
   }
 }
+
+/* Universal Icon Fallback Styles */
+.ui-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.ui-icon > svg {
+  width: 1em;
+  height: 1em;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+.ui-icon[style*="width"] > svg,
+.ui-icon[style*="height"] > svg {
+  width: 100%;
+  height: 100%;
+}

@@ -41,6 +41,7 @@ export default function ResidenceInterestForm({
   return (
     <form
       className="split-body"
+      suppressHydrationWarning
       onSubmit={async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -81,6 +82,7 @@ export default function ResidenceInterestForm({
             autoComplete="name"
             required
             disabled={submitted}
+            suppressHydrationWarning
           />
         </div>
 
@@ -94,6 +96,7 @@ export default function ResidenceInterestForm({
             autoComplete="tel"
             required
             disabled={submitted}
+            suppressHydrationWarning
           />
         </div>
 
@@ -107,6 +110,7 @@ export default function ResidenceInterestForm({
             autoComplete="email"
             required
             disabled={submitted}
+            suppressHydrationWarning
           />
         </div>
 
@@ -136,6 +140,7 @@ export default function ResidenceInterestForm({
               className={`intent-pill${intents.includes(opt.value) ? " active" : ""}`}
               onClick={() => toggleIntent(opt.value)}
               disabled={submitted}
+              suppressHydrationWarning
             >
               {intents.includes(opt.value) ? "✓ " : ""}
               {opt.label}
@@ -156,6 +161,7 @@ export default function ResidenceInterestForm({
         className="btn solid"
         style={{ marginTop: 32 }}
         disabled={submitted || isSubmitting}
+        suppressHydrationWarning
       >
         {isSubmitting ? "REGISTERING..." : "REGISTER INTEREST"}{" "}
         <span className="btn-arrow">→</span>

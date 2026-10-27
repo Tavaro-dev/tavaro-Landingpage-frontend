@@ -40,5 +40,3 @@ export const RESORT_LOCATION_POINTS: ResortLocationPoint[] = [
     y: 74,
   },
 ];
-
-export const RESORT_DISTANCE_INFO = "32 KILOMETRES / 20 MILES";

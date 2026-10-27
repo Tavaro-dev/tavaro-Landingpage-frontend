@@ -53,10 +53,25 @@ export function ResortMediaGallery({ isStandalone = false }: ResortMediaGalleryP
           max-width: 1360px;
           margin: 0 auto;
         }
+        .resort-media-grid-item {
+          display: flex;
+          flex-direction: column;
+        }
         .resort-media-grid-item:nth-child(1) { grid-column: 1 / span 2; grid-row: 1 / span 2; }
         .resort-media-grid-item:nth-child(2) { grid-column: 3; grid-row: 1; }
         .resort-media-grid-item:nth-child(3) { grid-column: 3; grid-row: 2; }
         .resort-media-grid-item:nth-child(4) { grid-column: 1 / span 3; grid-row: 3; }
+        
+        @media (min-width: 1025px) {
+          .resort-media-grid-item:nth-child(1) {
+            height: 100%;
+          }
+          .resort-media-grid-item:nth-child(1) .media-card {
+            height: 100% !important;
+            min-height: 100%;
+            flex: 1;
+          }
+        }
         
         /* Tablet & Mobile Grid (< 1024px) */
         @media (max-width: 1024px) {

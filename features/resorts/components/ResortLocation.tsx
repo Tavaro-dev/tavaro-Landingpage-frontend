@@ -1,5 +1,5 @@
 import { Reveal } from "@/components/shared/Reveal";
-import { RESORT_LOCATION_POINTS, RESORT_DISTANCE_INFO } from "../content/resortLocation";
+import { RESORT_LOCATION_POINTS } from "../content/resortLocation";
 
 export function ResortLocation() {
   const landmarks = RESORT_LOCATION_POINTS.filter((p) => p.type === "landmark");
@@ -62,18 +62,6 @@ export function ResortLocation() {
                   </li>
                 ))}
               </ul>
-
-              <div style={{ textAlign: "center", marginBottom: "48px" }}>
-                <p style={{ 
-                  fontFamily: "var(--font-sans)", 
-                  textTransform: "uppercase", 
-                  letterSpacing: "0.05em", 
-                  fontSize: "12px", 
-                  color: "var(--muted-on-light)" 
-                }}>
-                  {RESORT_DISTANCE_INFO}
-                </p>
-              </div>
 
               <div style={{ textAlign: "center" }}>
                 <a 

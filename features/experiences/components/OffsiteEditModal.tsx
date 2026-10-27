@@ -430,6 +430,11 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           color: #ffffff;
           border-color: var(--gold-dark);
         }
+        .offsite-pill svg {
+          width: 14px;
+          height: 14px;
+          flex-shrink: 0;
+        }
         .offsite-checkbox-row {
           display: flex;
           align-items: flex-start;

@@ -524,9 +524,18 @@ export function CinematicShowcaseView({
           </div>
 
           <div>
-            <ThingsToDoButton className="cinematic-change-btn">
-              Change Option ↺
-            </ThingsToDoButton>
+            <Link
+              href="/resorts/things-to-do/create"
+              className="cinematic-change-btn"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                textDecoration: "none",
+              }}
+            >
+              Create your experience <span className="btn-arrow" aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </nav>

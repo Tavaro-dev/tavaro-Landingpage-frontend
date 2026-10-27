@@ -725,15 +725,20 @@ export function EditorialStoryboard({
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <ThingsToDoButton
+            <Link
+              href="/resorts/things-to-do/create"
               className="storyboard-tab-btn"
               style={{
                 border: "1px solid rgba(197, 160, 89, 0.4)",
                 color: "var(--gold)",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                textDecoration: "none",
               }}
             >
-              Change Option ↺
-            </ThingsToDoButton>
+              Create your experience <span className="btn-arrow" aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </nav>

@@ -145,6 +145,11 @@ export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaView
           border-color: var(--gold);
           color: var(--black);
         }
+        .media-viewer-close-btn svg {
+          width: 18px;
+          height: 18px;
+          display: block;
+        }
         .media-viewer-body {
           flex: 1;
           position: relative;

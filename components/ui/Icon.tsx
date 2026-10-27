@@ -190,6 +190,18 @@ const SVG_ICONS = {
       <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
+  wrong: (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  cross: (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
   "golden-society": (
     <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="50" cy="50" r="44" stroke="currentColor" strokeWidth="2" />
@@ -219,5 +231,13 @@ export function Icon({
     const icon = BRAND_ICONS[name as BrandIconName];
     return <Image src={icon.src} alt="" width={icon.width} height={icon.height} className={className} style={style} />;
   }
-  return <span className={className} style={style}>{SVG_ICONS[name as SvgIconName]}</span>;
+  const svg = SVG_ICONS[name as SvgIconName] ?? SVG_ICONS.close;
+  return (
+    <span
+      className={`ui-icon ui-icon-${String(name)}${className ? ` ${className}` : ""}`}
+      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", ...style }}
+    >
+      {svg}
+    </span>
+  );
 }

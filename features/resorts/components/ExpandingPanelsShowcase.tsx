@@ -424,11 +424,24 @@ export function ExpandingPanelsShowcase({
           border-radius: 999px;
           cursor: pointer;
           transition: all 0.25s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          text-decoration: none;
+          white-space: nowrap;
         }
 
         .showcase-change-btn:hover {
           background: rgba(197, 160, 89, 0.22);
           color: #ffffff;
+        }
+
+        .showcase-change-btn .btn-arrow {
+          transition: transform 0.25s ease;
+        }
+
+        .showcase-change-btn:hover .btn-arrow {
+          transform: translateX(3px);
         }
 
         /* PANEL MEDIA & OVERLAYS */
@@ -1008,9 +1021,21 @@ export function ExpandingPanelsShowcase({
                   })}
                 </nav>
 
-                <ThingsToDoButton className="showcase-change-btn">
-                  Change Option ↺
-                </ThingsToDoButton>
+                {mode === "explore" ? (
+                  <Link
+                    href="/resorts/things-to-do/create"
+                    className="showcase-change-btn"
+                  >
+                    Create your experience <span className="btn-arrow" aria-hidden="true">→</span>
+                  </Link>
+                ) : (
+                  <Link
+                    href="/resorts/things-to-do/explore"
+                    className="showcase-change-btn"
+                  >
+                    Discover <span className="btn-arrow" aria-hidden="true">→</span>
+                  </Link>
+                )}
               </div>
             </div>
 

@@ -72,15 +72,15 @@ export default function ContactForm() {
       <div className="form-grid">
         <div className="field">
           <label htmlFor={fieldId("name")}>Full Name</label>
-          <input id={fieldId("name")} name="name" type="text" autoComplete="name" required disabled={submitted} />
+          <input id={fieldId("name")} name="name" type="text" autoComplete="name" required disabled={submitted} suppressHydrationWarning />
         </div>
         <div className="field">
           <label htmlFor={fieldId("email")}>Email</label>
-          <input id={fieldId("email")} name="email" type="email" autoComplete="email" required disabled={submitted} />
+          <input id={fieldId("email")} name="email" type="email" autoComplete="email" required disabled={submitted} suppressHydrationWarning />
         </div>
         <div className="field">
           <label htmlFor={fieldId("phone")}>Phone / WhatsApp</label>
-          <input id={fieldId("phone")} name="phone" type="tel" autoComplete="tel" required disabled={submitted} />
+          <input id={fieldId("phone")} name="phone" type="tel" autoComplete="tel" required disabled={submitted} suppressHydrationWarning />
         </div>
         <div className="field">
           <label htmlFor={fieldId("interest")}>I&apos;m interested in</label>
@@ -111,6 +111,7 @@ export default function ContactForm() {
                   checked={needCatering}
                   onChange={(e) => setNeedCatering(e.target.checked)}
                   disabled={submitted}
+                  suppressHydrationWarning
                 />
                 <span>I need catering</span>
               </label>
@@ -120,7 +121,7 @@ export default function ContactForm() {
 
         <div className="field full">
           <label htmlFor={fieldId("message")}>Message / Details</label>
-          <textarea id={fieldId("message")} name="message" rows={4} disabled={submitted || isSubmitting} />
+          <textarea id={fieldId("message")} name="message" rows={4} disabled={submitted || isSubmitting} suppressHydrationWarning />
         </div>
       </div>
       
@@ -130,7 +131,7 @@ export default function ContactForm() {
         </div>
       )}
 
-      <button type="submit" className="btn solid" style={{ marginTop: 28 }} disabled={submitted || isSubmitting}>
+      <button type="submit" className="btn solid" style={{ marginTop: 28 }} disabled={submitted || isSubmitting} suppressHydrationWarning>
         {isSubmitting ? "SUBMITTING..." : "ENQUIRE"} <span className="btn-arrow">→</span>
       </button>
       {submitted && (

@@ -26,7 +26,7 @@ const RESIDENCE_SPECS = [
 
 const DESIGN_PRINCIPLES = [
   {
-    label: "Belong to Place",
+    label: "Belong to the Place",
     body: "Approximately 7,000 sq. ft. of green space and lawn creates a private landscape around the home, rooting it in its West Hyderabad setting.",
   },
   {

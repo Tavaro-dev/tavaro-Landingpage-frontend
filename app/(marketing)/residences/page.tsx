@@ -16,7 +16,7 @@ export const metadata = pageMetadata({
 
 const PRINCIPLES = [
   {
-    label: "Belong to Place",
+    label: "Belong to the Place",
     body: "Architecture that responds to its landscape, climate, orientation and surroundings.",
   },
   {
