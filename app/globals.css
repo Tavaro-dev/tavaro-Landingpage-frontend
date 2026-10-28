@@ -220,6 +220,12 @@ select {
   display: none;
 }
 
+.display-1,
+.display-2,
+.display-3 {
+  font-family: var(--font-display);
+}
+
 .display-1 {
   font-size: clamp(42px, 7vw, 96px);
   line-height: 1.03;
@@ -1901,20 +1907,60 @@ button.hero-quick-nav-item {
    ========================================================================== */
 .intro-quote {
   text-align: center;
+  max-width: 860px;
+  margin: 0 auto;
 }
 
 .intro-quote .display-2 {
-  max-width: 20ch;
+  max-width: 22ch;
   margin: 0 auto;
 }
 
 .intro-quote-mark {
   font-family: var(--font-display);
-  font-size: 64px;
+  font-size: 40px;
   color: var(--gold);
   line-height: 1;
-  margin-bottom: 8px;
-  opacity: 0.7;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  opacity: 0.85;
+}
+
+.intro-quote-text {
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 600;
+  font-size: clamp(26px, 3.4vw, 46px);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--on-surface);
+  max-width: 22ch;
+  margin: 0 auto;
+}
+
+.intro-quote-cta {
+  margin-top: 36px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .intro-quote-mark {
+    font-size: 30px;
+    margin-top: 12px;
+    margin-bottom: 8px;
+  }
+
+  .intro-quote-text {
+    font-size: clamp(21px, 5.6vw, 28px);
+    line-height: 1.32;
+    max-width: 18ch;
+    padding: 0 8px;
+  }
+
+  .intro-quote-cta {
+    margin-top: 24px;
+  }
 }
 
 .center-col {
@@ -4296,6 +4342,7 @@ button.hero-quick-nav-item {
 
 .custom-select-trigger {
   width: 100%;
+  max-width: 100%;
   background: transparent;
   border: none;
   border-bottom: 1px solid var(--surface-line);
@@ -4305,10 +4352,12 @@ button.hero-quick-nav-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   text-align: left;
   cursor: pointer;
   outline: none;
   transition: border-color 0.3s;
+  box-sizing: border-box;
 }
 
 .on-dark .custom-select-trigger,
@@ -4337,10 +4386,20 @@ button.hero-quick-nav-item {
 
 .custom-select-trigger .placeholder-text {
   color: var(--on-surface-muted);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .custom-select-trigger .selected-text {
   color: var(--on-surface);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .select-arrow {
@@ -4676,6 +4735,7 @@ button.hero-quick-nav-item {
   justify-content: center;
   padding: 24px 16px;
   overflow-y: auto;
+  overflow-x: hidden;
   animation: fadeIn var(--duration-surface, 0.35s) var(--ease-luxury, var(--ease));
 }
 
@@ -4692,10 +4752,11 @@ button.hero-quick-nav-item {
 .event-modal-card {
   background: var(--surface);
   color: var(--on-surface);
-  width: min(640px, 94vw);
+  width: min(640px, calc(100vw - 24px));
   max-height: 88vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
   position: relative;
   border: 1px solid var(--surface-line);
@@ -4758,7 +4819,11 @@ button.hero-quick-nav-item {
 .event-modal-body {
   padding: 24px 32px 32px;
   overflow-y: auto;
+  overflow-x: hidden;
   flex: 1;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .event-form-grid {

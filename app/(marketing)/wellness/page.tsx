@@ -100,9 +100,9 @@ export default function WellnessPage() {
       {/* Opening statement */}
       <section className="section on-dark">
         <div className="container">
-          <Reveal className="center-col">
+          <Reveal className="center-col intro-quote">
             <p className="intro-quote-mark">&ldquo;</p>
-            <p className="display-2 italic">
+            <p className="intro-quote-text">
               Wellness is not something we visit.
               <br />
               It is something we live.

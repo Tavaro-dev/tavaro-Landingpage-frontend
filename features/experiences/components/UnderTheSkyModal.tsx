@@ -143,6 +143,7 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
           justify-content: center;
           padding: 20px;
           overflow-y: auto;
+          overflow-x: hidden;
           animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes modalFadeIn {
@@ -152,7 +153,7 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
         .uts-modal-card {
           position: relative;
           width: 100%;
-          max-width: 680px;
+          max-width: min(680px, calc(100vw - 24px));
           max-height: 90vh;
           background: var(--surface);
           color: var(--on-surface);
@@ -162,6 +163,7 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
           display: flex;
           flex-direction: column;
           overflow: hidden;
+          margin: auto;
           transition: background-color 0.3s, color 0.3s;
         }
         .uts-modal-header {
@@ -232,7 +234,11 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
         .uts-modal-body {
           padding: 24px 30px 32px;
           overflow-y: auto;
+          overflow-x: hidden;
           flex: 1;
+          min-width: 0;
+          width: 100%;
+          box-sizing: border-box;
         }
         .uts-step-bar {
           display: flex;
@@ -381,9 +387,29 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
           padding: 40px 20px;
         }
         @media (max-width: 640px) {
-          .uts-modal-header { padding: 18px 20px; }
-          .uts-modal-body { padding: 20px; }
-          .uts-form-grid { grid-template-columns: 1fr; }
+          .uts-modal-backdrop {
+            padding: 12px;
+          }
+          .uts-modal-card {
+            max-height: 94vh;
+          }
+          .uts-modal-header {
+            padding: 16px 18px;
+          }
+          .uts-modal-body {
+            padding: 18px 16px 24px;
+            overflow-x: hidden;
+          }
+          .uts-step-bar {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            flex-wrap: wrap;
+            gap: 4px;
+          }
+          .uts-form-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
         }
       `}} />
 

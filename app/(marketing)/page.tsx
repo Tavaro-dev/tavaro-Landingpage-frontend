@@ -71,13 +71,13 @@ export default function HomePage() {
       {/* Introduction */}
       <section className="section on-dark">
         <div className="container">
-          <Reveal className="center-col">
+          <Reveal className="center-col intro-quote">
             <p className="eyebrow center no-line">Welcome to Tavaro</p>
             <p className="intro-quote-mark">&ldquo;</p>
-            <p className="display-2 italic">
+            <p className="intro-quote-text">
               Everything we create at Tavaro is guided by one simple belief: Earth is our only true home.
             </p>
-            <div style={{ marginTop: 40 }}>
+            <div className="intro-quote-cta">
               <Link href="/about" className="text-link">
                 Discover Tavaro <Icon name="arrow" className="icon-arrow" />
               </Link>

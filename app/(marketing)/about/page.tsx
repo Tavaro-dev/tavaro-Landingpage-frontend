@@ -66,7 +66,7 @@ export default function AboutPage() {
             <p className="eyebrow center no-line" style={{ display: "flex", justifyContent: "center" }}>
               Why Tavaro
             </p>
-            <p className="display-2 italic" style={{ marginTop: 24 }}>
+            <p className="display-2" style={{ marginTop: 24, maxWidth: "22ch", marginInline: "auto" }}>
               Tavaro creates places for people
               <br />
               to stay, live, gather and grow.

@@ -187,6 +187,7 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           justify-content: center;
           padding: 20px;
           overflow-y: auto;
+          overflow-x: hidden;
           animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes modalFadeIn {
@@ -196,7 +197,7 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
         .offsite-modal-card {
           position: relative;
           width: 100%;
-          max-width: 680px;
+          max-width: min(680px, calc(100vw - 24px));
           max-height: 90vh;
           background: var(--surface);
           color: var(--on-surface);
@@ -206,6 +207,7 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           display: flex;
           flex-direction: column;
           overflow: hidden;
+          margin: auto;
           transition: background-color 0.3s, color 0.3s;
         }
         .offsite-modal-header {
@@ -275,48 +277,14 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           line-height: 1.5;
           margin: 0;
         }
-        .offsite-checkbox-row {
-          display: flex;
-          align-items: flex-start;
-          gap: 12px;
-          padding: 12px 16px;
-          border: 1px solid var(--surface-line);
-          border-radius: 2px;
-          background: var(--surface-2);
-          cursor: pointer;
-          transition: border-color 0.2s var(--ease);
-          user-select: none;
-          margin-top: 4px;
-        }
-        .offsite-checkbox-row:hover {
-          border-color: var(--gold);
-        }
-        .offsite-checkbox-row input[type="checkbox"] {
-          accent-color: var(--gold);
-          width: 18px;
-          height: 18px;
-          margin-top: 2px;
-          cursor: pointer;
-          flex-shrink: 0;
-        }
-        .offsite-checkbox-title {
-          font-family: var(--font-sans);
-          font-size: 13.5px;
-          font-weight: 600;
-          color: var(--on-surface);
-          display: block;
-        }
-        .offsite-checkbox-desc {
-          font-family: var(--font-sans);
-          font-size: 12px;
-          color: var(--on-surface-muted);
-          display: block;
-          margin-top: 2px;
-        }
         .offsite-modal-body {
           padding: 24px 30px 32px;
           overflow-y: auto;
+          overflow-x: hidden;
           flex: 1;
+          min-width: 0;
+          width: 100%;
+          box-sizing: border-box;
         }
         .offsite-step-bar {
           display: flex;
@@ -345,6 +313,9 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           flex-direction: column;
           gap: 10px;
           margin-bottom: 24px;
+          min-width: 0;
+          width: 100%;
+          box-sizing: border-box;
         }
         .offsite-form-group.full {
           grid-column: 1 / -1;
@@ -357,6 +328,7 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           text-transform: uppercase;
           color: var(--on-surface);
           margin-bottom: 4px;
+          word-break: break-word;
         }
         .offsite-label .required {
           color: var(--gold);
@@ -367,6 +339,7 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
         }
         .offsite-input, .offsite-textarea {
           width: 100%;
+          max-width: 100%;
           background: #ffffff;
           border: 1px solid rgba(28, 23, 18, 0.2);
           color: var(--on-surface);
@@ -395,6 +368,7 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           flex-wrap: wrap;
           gap: 8px;
           margin-top: 4px;
+          max-width: 100%;
         }
         .offsite-pill {
           padding: 9px 15px;
@@ -407,9 +381,12 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           cursor: pointer;
           transition: all 0.2s var(--ease);
           user-select: none;
-          display: flex;
+          display: inline-flex;
           align-items: center;
           gap: 6px;
+          max-width: 100%;
+          box-sizing: border-box;
+          word-break: break-word;
         }
         [data-theme="dark"] .offsite-pill {
           background: rgba(255, 255, 255, 0.04);
@@ -447,6 +424,38 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           transition: border-color 0.2s var(--ease);
           user-select: none;
           margin-top: 4px;
+          max-width: 100%;
+          box-sizing: border-box;
+          min-width: 0;
+        }
+        .offsite-checkbox-row > div {
+          flex: 1;
+          min-width: 0;
+          word-break: break-word;
+        }
+        .offsite-checkbox-row input[type="checkbox"] {
+          accent-color: var(--gold);
+          width: 18px;
+          height: 18px;
+          margin-top: 2px;
+          cursor: pointer;
+          flex-shrink: 0;
+        }
+        .offsite-checkbox-title {
+          font-family: var(--font-sans);
+          font-size: 13.5px;
+          font-weight: 600;
+          color: var(--on-surface);
+          display: block;
+          word-break: break-word;
+        }
+        .offsite-checkbox-desc {
+          font-family: var(--font-sans);
+          font-size: 12px;
+          color: var(--on-surface-muted);
+          display: block;
+          margin-top: 2px;
+          word-break: break-word;
         }
         [data-theme="dark"] .offsite-checkbox-row {
           background: rgba(255, 255, 255, 0.04);
@@ -478,9 +487,38 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           padding: 40px 20px;
         }
         @media (max-width: 640px) {
-          .offsite-modal-header { padding: 18px 20px; }
-          .offsite-modal-body { padding: 20px; }
-          .offsite-form-grid { grid-template-columns: 1fr; }
+          .offsite-modal-backdrop {
+            padding: 12px;
+          }
+          .offsite-modal-card {
+            max-height: 94vh;
+          }
+          .offsite-modal-header {
+            padding: 16px 18px;
+          }
+          .offsite-modal-body {
+            padding: 18px 16px 24px;
+            overflow-x: hidden;
+          }
+          .offsite-step-bar {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            flex-wrap: wrap;
+            gap: 4px;
+          }
+          .offsite-form-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
+          .offsite-checkbox-row {
+            padding: 12px;
+          }
+          .offsite-checkbox-title {
+            font-size: 12.5px;
+          }
+          .offsite-checkbox-desc {
+            font-size: 11.5px;
+          }
         }
       `}} />
 
