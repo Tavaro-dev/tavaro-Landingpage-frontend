@@ -37,6 +37,12 @@ export const metadata: Metadata = {
     "Tavaro is a hospitality and lifestyle group creating places and experiences around a more meaningful way of living — Resorts, Residences, Experiences, Wellness and Màre.",
 };
 
+// Sets <html data-scrolled> once the page is past 40px, before first paint and
+// without waiting for React. The header's scrolled look keys off it, so it is
+// right even while the page hydrates, including when the browser restores a
+// scroll position on reload.
+const SCROLL_STATE_SCRIPT = `(function(){var d=document.documentElement;function u(){d.toggleAttribute("data-scrolled",window.scrollY>40)}u();window.addEventListener("scroll",u,{passive:true})})()`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -45,6 +51,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       data-scroll-behavior="smooth"
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: SCROLL_STATE_SCRIPT }} />
+      </head>
       <body>
         <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem={true}>
           <CartProvider>

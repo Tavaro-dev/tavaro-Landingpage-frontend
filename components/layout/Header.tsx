@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
@@ -15,7 +15,6 @@ export default function Header() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const showCart = DEMO_SERVICES && pathname === "/resorts/accommodations";
-  const [scrolled, setScrolled] = useState(false);
   const [pastPillarStrip, setPastPillarStrip] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navVisible = isHome ? pastPillarStrip : true;
@@ -26,29 +25,8 @@ export default function Header() {
     pathname === "/resorts/photos" ||
     pathname.endsWith("/book");
 
-  const topSentinelRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const sentinel = topSentinelRef.current;
-    if (!sentinel) return;
-
-    if (typeof IntersectionObserver === "undefined") {
-      const onScroll = () => setScrolled(window.scrollY > 40);
-      window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
-      return () => window.removeEventListener("scroll", onScroll);
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setScrolled(!entry.isIntersecting);
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, []);
+  // The scrolled look is driven by <html data-scrolled>, set by the inline
+  // script in app/layout.tsx so it is right before React hydrates.
 
   useEffect(() => {
     if (!isHome) return;
@@ -107,16 +85,10 @@ export default function Header() {
 
   return (
     <>
-      <div
-        ref={topSentinelRef}
-        aria-hidden="true"
-        className={styles["header-scroll-sentinel"]}
-      />
       <header
         className={[
           "site-header",
           isHome && "home",
-          scrolled && "scrolled",
           navVisible && "nav-visible",
           noHero && "no-hero"
         ]

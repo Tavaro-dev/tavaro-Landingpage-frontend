@@ -1,21 +1,33 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Header Scroll and Route Transitions', () => {
-  test('header starts transparent and adds scrolled class when scrolled down', async ({ page }) => {
+  test('header starts transparent and switches to its scrolled look past 40px', async ({ page }) => {
     await page.goto('/');
-    const header = page.locator('.site-header');
-    await expect(header).toBeVisible();
+    const html = page.locator('html');
+    await expect(page.locator('.site-header')).toBeVisible();
 
     // Initial state: not scrolled
-    await expect(header).not.toHaveClass(/scrolled/);
+    await expect(html).not.toHaveAttribute('data-scrolled');
 
     // Scroll past 40px threshold
     await page.evaluate(() => window.scrollTo(0, 150));
-    await expect(header).toHaveClass(/scrolled/);
+    await expect(html).toHaveAttribute('data-scrolled');
 
     // Scroll back to top
     await page.evaluate(() => window.scrollTo(0, 0));
-    await expect(header).not.toHaveClass(/scrolled/);
+    await expect(html).not.toHaveAttribute('data-scrolled');
+  });
+
+  test('header is in its scrolled look before JavaScript hydrates', async ({ browser }) => {
+    // The inline script alone must set the state: block every other script.
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.route(/\/_next\/static\/.*\.js/, (route) => route.abort());
+    await page.goto('/');
+    await page.evaluate(() => window.scrollTo(0, 300));
+    await expect(page.locator('html')).toHaveAttribute('data-scrolled');
+    await expect(page.locator('.site-header')).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+    await context.close();
   });
 
   test('header handles non-home routes with immediate nav-visible and hero-less routes with no-hero', async ({ page }) => {

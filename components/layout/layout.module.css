@@ -2,8 +2,8 @@
 
 @layer components {
 
-:global(.site-header):global(.scrolled) .nav-toggle span,
-:global(.site-header):global(.no-hero):not(:global(.scrolled)) .nav-toggle span {
+[data-scrolled] :global(.site-header) .nav-toggle span,
+:where(html):not([data-scrolled]) :global(.site-header):global(.no-hero) .nav-toggle span {
   background: var(--on-surface);
 }
 
@@ -102,16 +102,6 @@
   .mobile-nav:global(.open) .mobile-sub { opacity: 0; transform: translateY(14px); }
 }
 
-.header-scroll-sentinel {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 40px;
-  pointer-events: none;
-  visibility: hidden;
-}
-
 .mobile-close-btn {
   position: absolute;
   top: 20px;
@@ -205,8 +195,8 @@
   transition: border-color 0.3s, color 0.3s;
 }
 
-:global(.site-header):global(.scrolled) .theme-toggle,
-:global(.site-header):global(.no-hero):not(:global(.scrolled)) .theme-toggle {
+[data-scrolled] :global(.site-header) .theme-toggle,
+:where(html):not([data-scrolled]) :global(.site-header):global(.no-hero) .theme-toggle {
   color: var(--on-surface);
   border-color: var(--surface-line);
 }

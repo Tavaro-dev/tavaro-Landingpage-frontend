@@ -85,7 +85,7 @@ html {
   --gold: var(--gold-dark);
 }
 
-[data-theme="light"] .site-header.scrolled {
+[data-theme="light"][data-scrolled] .site-header {
   background: rgba(247, 242, 231, 0.88);
 }
 
@@ -94,7 +94,7 @@ html {
 .hero,
 .page-hero,
 .pillar-card,
-.site-header:not(.scrolled),
+:where(html):not([data-scrolled]) .site-header,
 .cart-overlay {
   --gold: #c9a45a;
 }
@@ -662,17 +662,17 @@ button,
   border-bottom: 1px solid transparent;
 }
 
-.site-header.scrolled {
+[data-scrolled] .site-header {
   background: rgba(10, 9, 8, 0.86);
   backdrop-filter: blur(14px);
   padding: 16px var(--pad);
   border-bottom-color: var(--surface-line);
 }
 
-.site-header.scrolled .logo,
-.site-header.scrolled .nav-links a,
-.site-header.no-hero:not(.scrolled) .logo,
-.site-header.no-hero:not(.scrolled) .nav-links a {
+[data-scrolled] .site-header .logo,
+[data-scrolled] .site-header .nav-links a,
+:where(html):not([data-scrolled]) .site-header.no-hero .logo,
+:where(html):not([data-scrolled]) .site-header.no-hero .nav-links a {
   color: var(--on-surface);
 }
 
@@ -769,8 +769,8 @@ button,
   border-color: var(--gold);
 }
 
-.site-header.scrolled .nav-cta.outline,
-.site-header.no-hero:not(.scrolled) .nav-cta.outline {
+[data-scrolled] .site-header .nav-cta.outline,
+:where(html):not([data-scrolled]) .site-header.no-hero .nav-cta.outline {
   color: var(--on-surface);
 }
 
@@ -857,8 +857,8 @@ button,
   transition: border-color 0.3s, color 0.3s;
 }
 
-.site-header.scrolled .cart-button,
-.site-header.no-hero:not(.scrolled) .cart-button {
+[data-scrolled] .site-header .cart-button,
+:where(html):not([data-scrolled]) .site-header.no-hero .cart-button {
   color: var(--on-surface);
   border-color: var(--surface-line);
 }
