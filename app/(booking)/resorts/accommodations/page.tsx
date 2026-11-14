@@ -4,6 +4,7 @@ import { RoomListing } from "@/features/accommodations/components/RoomListing";
 import { CartStickyBar } from "@/features/booking/components/CartStickyBar";
 import { pageMetadata } from "@/lib/metadata";
 import { bookingService } from "@/lib/booking/service";
+import { DEMO_SERVICES } from "@/lib/env";
 
 export const metadata = pageMetadata({
   title: "Accommodations — Availability | Tavaro Resorts",
@@ -51,11 +52,12 @@ export default async function AccommodationsPage(props: PageProps<"/resorts/acco
         />
         <RoomListing availability={availableRooms} />
         <p className="lede" style={{ marginTop: 40, maxWidth: "60ch" }}>
-          This is a demo availability search — add rooms to your cart, then book now. Real-time pricing and
-          confirmed availability are handled by our reservations team.
+          {DEMO_SERVICES
+            ? "This is a demo availability search — add rooms to your cart, then book now. Real-time pricing and confirmed availability are handled by our reservations team."
+            : "Prices shown are indicative. Live rates and confirmed availability are provided by our booking partners."}
         </p>
       </div>
-      <CartStickyBar />
+      {DEMO_SERVICES && <CartStickyBar />}
     </section>
   );
 }

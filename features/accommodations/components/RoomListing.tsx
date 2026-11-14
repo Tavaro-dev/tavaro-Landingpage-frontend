@@ -6,10 +6,12 @@ import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { useCart } from "@/features/booking/cart/CartProvider";
 import { formatInr } from "@/lib/format";
+import { DEMO_SERVICES } from "@/lib/env";
+import { ThirdPartyBookingModal } from "./ThirdPartyBookingModal";
 
 import type { RoomAvailability } from "@/lib/booking/types";
 
-function RoomListingCard({ availability }: { availability: RoomAvailability }) {
+function RoomListingCard({ availability, onBook }: { availability: RoomAvailability; onBook: () => void }) {
   const { room } = availability;
   const [imageIndex, setImageIndex] = useState(0);
   const [added, setAdded] = useState(false);
@@ -73,9 +75,16 @@ function RoomListingCard({ availability }: { availability: RoomAvailability }) {
             <span>Avg. price per night</span>
             <strong>{formatInr(room.pricePerNight)}</strong>
           </div>
-          <button type="button" className="btn solid" onClick={handleAdd} disabled={!availability.available}>
-            {!availability.available ? "Unavailable" : added ? "Added ✓" : "Add to Cart"}
-          </button>
+          {DEMO_SERVICES ? (
+            <button type="button" className="btn solid" onClick={handleAdd} disabled={!availability.available}>
+              {!availability.available ? "Unavailable" : added ? "Added ✓" : "Add to Cart"}
+            </button>
+          ) : (
+            // No booking backend yet: send guests to the third-party partners.
+            <button type="button" className="btn solid" onClick={onBook}>
+              Check Rates
+            </button>
+          )}
         </div>
       </div>
     </article>
@@ -83,14 +92,16 @@ function RoomListingCard({ availability }: { availability: RoomAvailability }) {
 }
 
 export function RoomListing({ availability }: { availability: readonly RoomAvailability[] }) {
+  const [bookingOpen, setBookingOpen] = useState(false);
   return (
     <div className="room-listings">
       <h2 className="display-3" style={{ marginBottom: 30 }}>
         Guest Rooms ({availability.length})
       </h2>
       {availability.map((av) => (
-        <RoomListingCard availability={av} key={av.room.slug} />
+        <RoomListingCard availability={av} key={av.room.slug} onBook={() => setBookingOpen(true)} />
       ))}
+      {!DEMO_SERVICES && <ThirdPartyBookingModal isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />}
     </div>
   );
 }

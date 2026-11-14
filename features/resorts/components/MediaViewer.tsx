@@ -1,4 +1,5 @@
 "use client";
+import { lockScroll } from "@/lib/scrollLock";
 
 import { useEffect, useState, useRef, useCallback, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
@@ -38,8 +39,7 @@ export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaView
   useEffect(() => {
     if (!isOpen) return;
 
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const unlockScroll = lockScroll();
 
     // Focus close button
     const timeout = setTimeout(() => {
@@ -47,7 +47,7 @@ export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaView
     }, 50);
 
     return () => {
-      document.body.style.overflow = originalOverflow;
+      unlockScroll();
       clearTimeout(timeout);
     };
   }, [isOpen]);

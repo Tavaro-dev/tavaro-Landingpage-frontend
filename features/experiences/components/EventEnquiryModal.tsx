@@ -1,4 +1,5 @@
 "use client";
+import { lockScroll } from "@/lib/scrollLock";
 
 import { useEffect, useId, useState, useSyncExternalStore, type FormEvent } from "react";
 import { createPortal } from "react-dom";
@@ -42,10 +43,10 @@ export function EventEnquiryModal({ open, onClose }: { open: boolean; onClose: (
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
+    const unlockScroll = lockScroll();
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
+      unlockScroll();
     };
   }, [open, onClose]);
 

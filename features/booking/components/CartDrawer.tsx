@@ -1,4 +1,5 @@
 "use client";
+import { lockScroll } from "@/lib/scrollLock";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -16,10 +17,10 @@ export function CartDrawer() {
       if (e.key === "Escape") close();
     };
     window.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
+    const unlockScroll = lockScroll();
     return () => {
       window.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
+      unlockScroll();
     };
   }, [isOpen, close]);
 

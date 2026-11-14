@@ -1,4 +1,5 @@
 "use client";
+import { lockScroll } from "@/lib/scrollLock";
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
@@ -7,11 +8,12 @@ import { Icon } from "@/components/ui/Icon";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { CartButton } from "@/features/booking/components/CartButton";
 import { NAV_ITEMS } from "@/lib/nav";
+import { DEMO_SERVICES } from "@/lib/env";
 
 export default function Header() {
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const showCart = pathname === "/resorts/accommodations";
+  const showCart = DEMO_SERVICES && pathname === "/resorts/accommodations";
   const [scrolled, setScrolled] = useState(false);
   const [pastPillarStrip, setPastPillarStrip] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -103,16 +105,10 @@ export default function Header() {
   }, [isHome, pathname]);
 
   useEffect(() => {
-    if (mobileOpen) {
-      document.body.style.overflow = "hidden";
-      requestAnimationFrame(() => closeBtnRef.current?.focus());
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
+    if (!mobileOpen) return;
+    const unlockScroll = lockScroll();
+    requestAnimationFrame(() => closeBtnRef.current?.focus());
+    return unlockScroll;
   }, [mobileOpen]);
 
   useEffect(() => {
@@ -168,7 +164,7 @@ export default function Header() {
         <nav className="main-nav">
           <div className="nav-links">
             {NAV_ITEMS.map((item) => (
-              <Link key={item.href} href={item.href} className={pathname === item.href ? "active" : ""}>
+              <Link key={item.href} href={item.href} className={pathname === item.href || pathname.startsWith(`${item.href}/`) ? "active" : ""}>
                 {item.label}
               </Link>
             ))}

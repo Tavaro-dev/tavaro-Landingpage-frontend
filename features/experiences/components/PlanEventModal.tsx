@@ -1,4 +1,5 @@
 "use client";
+import { lockScroll } from "@/lib/scrollLock";
 
 import { useState, useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
@@ -51,14 +52,8 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
   const [isDemo, setIsDemo] = useState(false);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    if (!isOpen) return;
+    return lockScroll();
   }, [isOpen]);
 
   if (!isOpen || !mounted) return null;

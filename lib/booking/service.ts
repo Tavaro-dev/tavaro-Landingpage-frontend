@@ -1,5 +1,6 @@
 import { ROOMS } from "../content/rooms";
 import { ENHANCEMENTS } from "../content/enhancements";
+import { DEMO_SERVICES } from "../env";
 import type { BookingQuote, QuoteRequest, BookingRequest, BookingResult, BookingSearch, RoomAvailability } from "./types";
 
 export interface BookingService {
@@ -106,6 +107,6 @@ export class UnavailableBookingService implements BookingService {
   }
 }
 
-export const bookingService: BookingService = process.env.NODE_ENV === "production"
-  ? new UnavailableBookingService()
-  : new MockBookingService();
+export const bookingService: BookingService = DEMO_SERVICES
+  ? new MockBookingService()
+  : new UnavailableBookingService();

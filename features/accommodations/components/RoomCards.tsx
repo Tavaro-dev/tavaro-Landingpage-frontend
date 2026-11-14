@@ -61,7 +61,7 @@ export function RoomCards({ onBookClick }: RoomCardsProps = {}) {
               )}
               */}
 
-              <Link href="/resorts/accommodations" className="room-card-cta outline">
+              <Link href={`/resorts/accommodations#${room.slug}`} className="room-card-cta outline">
                 View Room
               </Link>
             </div>

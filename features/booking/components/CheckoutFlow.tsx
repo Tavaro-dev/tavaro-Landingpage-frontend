@@ -6,9 +6,8 @@ import { useCart } from "@/features/booking/cart/CartProvider";
 import { ENHANCEMENTS } from "@/lib/content/enhancements";
 import { OrderSummary } from "./OrderSummary";
 import { Stepper } from "@/components/ui/Stepper";
-import { bookingService } from "@/lib/booking/service";
 import type { BookingQuote, BookingResult } from "@/lib/booking/types";
-import { processPaymentAction, createBookingAction } from "@/app/actions/transaction";
+import { processPaymentAction, createBookingAction, createQuoteAction } from "@/app/actions/transaction";
 
 import { DomainError } from "@/lib/api/errors";
 
@@ -19,12 +18,16 @@ const ENHANCEMENT_CATEGORIES = Array.from(new Set(ENHANCEMENTS.map((e) => e.cate
 export function CheckoutFlow() {
   const uid = useId();
   const fieldId = (field: string) => `${uid}-${field}`;
-  const { items, clear } = useCart();
+  const { items, clear, hydrated } = useCart();
   const [step, setStep] = useState(1);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   
   const [quote, setQuote] = useState<BookingQuote | null>(null);
   const [loadingQuote, setLoadingQuote] = useState(false);
+  const [quoteFailed, setQuoteFailed] = useState(false);
+  const [quoteAttempt, setQuoteAttempt] = useState(0);
+  // Kept across retries so a "paid but booking failed" retry never pays twice.
+  const [paymentReference, setPaymentReference] = useState<string | null>(null);
   const [guestDetails, setGuestDetails] = useState({ name: "", email: "", phone: "" });
   const [bookingResult, setBookingResult] = useState<BookingResult | null>(null);
   
@@ -38,21 +41,29 @@ export function CheckoutFlow() {
     
     const fetchQuote = async () => {
       setLoadingQuote(true);
+      setQuoteFailed(false);
       try {
-        const q = await bookingService.createQuote({
+        const q = await createQuoteAction({
           roomSlugs: items.map(i => ({ slug: i.slug, nights: i.nights })),
           enhancementIds: selectedIds
         });
-        if (active) setQuote(q);
-      } catch (err) {
-        console.error("Failed to fetch quote", err);
+        if (!active) return;
+        setQuote(q);
+        setQuoteFailed(!q);
+      } catch {
+        if (active) setQuoteFailed(true);
       } finally {
         if (active) setLoadingQuote(false);
       }
     };
     fetchQuote();
     return () => { active = false; };
-  }, [items, selectedIds]);
+  }, [items, selectedIds, quoteAttempt]);
+
+  // Each step swaps the whole panel; bring the user back to its heading.
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step]);
 
   const toggleEnhancement = (id: string) => {
     setSelectedIds((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
@@ -72,7 +83,7 @@ export function CheckoutFlow() {
   const getUserFriendlyMessage = (code?: string, fallback?: string): string => {
     switch (code) {
       case "PAYMENT_FAILED": return "Your bank declined the transaction. Please try another card.";
-      case "UNAVAILABLE": return "One of your selected rooms is no longer available.";
+      case "UNAVAILABLE": return fallback || "Online booking is currently unavailable. Please contact reservations.";
       case "NETWORK_ERROR": return "A network error occurred. Please check your connection.";
       case "VALIDATION_ERROR": return "Please check your details and try again.";
       case "BOOKING_FAILED": return "Payment succeeded, but booking failed to confirm. Please contact support.";
@@ -81,20 +92,24 @@ export function CheckoutFlow() {
   };
 
   const handleConfirm = async () => {
-    if (!quote || checkoutStatus !== "idle") return; // prevent duplicate submission
+    if (!quote || loadingQuote || checkoutStatus !== "idle") return; // prevent duplicate submission
     
     setPaymentError(null);
     setCheckoutStatus("processing_payment");
     
     try {
-      // 1. Process Payment
+      // 1. Process Payment (skipped on retry if an earlier attempt already paid)
       // In production, the backend determines the authoritative amount, and the frontend SDK processes it.
-      const paymentRes = await processPaymentAction({ quoteId: quote.quoteId });
-      
-      if (!paymentRes.success) {
-        setPaymentError(getUserFriendlyMessage(paymentRes.errorCode, paymentRes.error));
-        setCheckoutStatus("idle");
-        return; // Booking remains unconfirmed
+      let reference = paymentReference;
+      if (!reference) {
+        const paymentRes = await processPaymentAction({ quoteId: quote.quoteId });
+        if (!paymentRes.success || !paymentRes.paymentReference) {
+          setPaymentError(getUserFriendlyMessage(paymentRes.errorCode, paymentRes.error));
+          setCheckoutStatus("idle");
+          return; // Booking remains unconfirmed
+        }
+        reference = paymentRes.paymentReference;
+        setPaymentReference(reference);
       }
       
       // 2. Verify and Create Booking
@@ -105,7 +120,7 @@ export function CheckoutFlow() {
           enhancementIds: selectedIds
         }, 
         guest: guestDetails,
-        paymentReference: paymentRes.paymentReference
+        paymentReference: reference
       });
       
       if (res.status === "confirmed") {
@@ -128,6 +143,9 @@ export function CheckoutFlow() {
   };
 
   const isConfirmed = bookingResult?.status === "confirmed";
+
+  // Cart loads from localStorage after mount; don't flash "empty" before then.
+  if (!hydrated) return null;
 
   if (items.length === 0 && !isConfirmed) {
     return (
@@ -241,15 +259,15 @@ export function CheckoutFlow() {
               <div className="form-grid" style={{ marginTop: 30 }}>
                 <div className="field">
                   <label htmlFor={fieldId("name")}>Full Name</label>
-                  <input id={fieldId("name")} name="name" type="text" autoComplete="name" required />
+                  <input id={fieldId("name")} name="name" defaultValue={guestDetails.name} type="text" autoComplete="name" required />
                 </div>
                 <div className="field">
                   <label htmlFor={fieldId("email")}>Email</label>
-                  <input id={fieldId("email")} name="email" type="email" autoComplete="email" required />
+                  <input id={fieldId("email")} name="email" defaultValue={guestDetails.email} type="email" autoComplete="email" required />
                 </div>
                 <div className="field full">
                   <label htmlFor={fieldId("phone")}>Phone</label>
-                  <input id={fieldId("phone")} name="phone" type="tel" autoComplete="tel" required />
+                  <input id={fieldId("phone")} name="phone" defaultValue={guestDetails.phone} type="tel" autoComplete="tel" required />
                 </div>
               </div>
 
@@ -282,8 +300,17 @@ export function CheckoutFlow() {
                 Please review your stay in the summary before confirming.
               </p>
 
+              {quoteFailed && (
+                <div className="checkout-error" role="alert">
+                  <p>We couldn&apos;t price your stay right now.</p>
+                  <button type="button" className="btn sm" style={{ marginTop: 12 }} onClick={() => setQuoteAttempt((n) => n + 1)}>
+                    Try again
+                  </button>
+                </div>
+              )}
+
               {paymentError && (
-                <div style={{ marginTop: 24, padding: "16px 20px", background: "#fee2e2", color: "#991b1b", borderRadius: 4 }}>
+                <div className="checkout-error" role="alert">
                   <p><strong>Payment Error:</strong> {paymentError}</p>
                 </div>
               )}
@@ -292,7 +319,7 @@ export function CheckoutFlow() {
                 <button type="button" className="btn" onClick={() => setStep(2)} disabled={processing}>
                   Back
                 </button>
-                <button type="button" className="btn solid" disabled={processing || !quote} onClick={handleConfirm}>
+                <button type="button" className="btn solid" disabled={processing || loadingQuote || !quote} onClick={handleConfirm}>
                   {checkoutStatus === "processing_payment" ? "Processing Payment..." : checkoutStatus === "verifying_booking" ? "Verifying Booking..." : "Pay & Confirm"}
                 </button>
               </div>

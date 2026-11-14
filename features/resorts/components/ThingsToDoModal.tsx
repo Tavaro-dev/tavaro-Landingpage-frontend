@@ -1,4 +1,5 @@
 "use client";
+import { lockScroll } from "@/lib/scrollLock";
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
@@ -25,15 +26,14 @@ export function ThingsToDoModal({ isOpen, onClose, triggerRef }: ThingsToDoModal
   useEffect(() => {
     if (!isOpen) return;
 
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const unlockScroll = lockScroll();
 
     const timeout = setTimeout(() => {
       closeBtnRef.current?.focus();
     }, 50);
 
     return () => {
-      document.body.style.overflow = originalOverflow;
+      unlockScroll();
       clearTimeout(timeout);
     };
   }, [isOpen]);

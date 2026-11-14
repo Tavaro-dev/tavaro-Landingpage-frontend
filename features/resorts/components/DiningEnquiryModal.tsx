@@ -1,4 +1,5 @@
 "use client";
+import { lockScroll } from "@/lib/scrollLock";
 
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
@@ -110,7 +111,7 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
       setSubmitError(null);
       setIsDemo(false);
       previousFocusRef.current = document.activeElement as HTMLElement;
-      document.body.style.overflow = "hidden";
+      const unlockScroll = lockScroll();
 
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
@@ -143,7 +144,7 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
       }, 50);
 
       return () => {
-        document.body.style.overflow = "";
+        unlockScroll();
         document.removeEventListener("keydown", handleKeyDown);
         if (previousFocusRef.current) {
           previousFocusRef.current.focus();

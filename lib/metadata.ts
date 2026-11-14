@@ -16,7 +16,7 @@ export function pageMetadata({
   title,
   description,
   path,
-  image = "/og-image.jpg",
+  image = "/photos/drone-hero.jpg", // ponytail: swap for a dedicated 1200x630 /og-image.jpg when design supplies one
 }: {
   title: string;
   description: string;

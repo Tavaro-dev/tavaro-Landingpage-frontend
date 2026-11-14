@@ -1,4 +1,5 @@
 import type { PaymentResult, PaymentRequest } from "./types";
+import { DEMO_SERVICES } from "../env";
 
 export interface PaymentService {
   processPayment(request: PaymentRequest, forceFailure?: boolean): Promise<PaymentResult>;
@@ -41,6 +42,6 @@ export class UnavailablePaymentService implements PaymentService {
 
 // The service implementation is selected based on the environment.
 // In production, we prevent mock payments entirely.
-export const paymentService = process.env.NODE_ENV === "production"
-  ? new UnavailablePaymentService()
-  : new MockPaymentService();
+export const paymentService = DEMO_SERVICES
+  ? new MockPaymentService()
+  : new UnavailablePaymentService();

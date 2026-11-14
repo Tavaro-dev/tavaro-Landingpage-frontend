@@ -51,7 +51,7 @@ describe('Enquiry Service', () => {
 
     expect(result.success).toBe(false);
     expect(result.isDemo).toBe(false);
-    expect(result.message).toContain('currently unavailable in production');
+    expect(result.message).toContain('celebrate@tavaro.in');
   });
 
   it('should return validation errors for malformed input and strictly reject unknowns', async () => {

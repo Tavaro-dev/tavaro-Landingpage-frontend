@@ -107,17 +107,14 @@ export default function Footer() {
                 <a href="mailto:celebrate@tavaro.in">celebrate@tavaro.in</a>
               </li>
               <li>
-                <a href="#">Kokapet, Hyderabad</a>
+                <Link href="/resorts/location">Kokapet, Hyderabad</Link>
               </li>
             </ul>
           </div>
         </div>
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} Tavaro Group. All rights reserved.</p>
-          <div className="footer-legal">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms</a>
-          </div>
+          {/* TODO: restore Privacy Policy / Terms links once those pages exist */}
         </div>
       </div>
     </footer>

@@ -1,14 +1,17 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { z } from "zod";
 
-export type CartItem = {
-  slug: string;
-  name: string;
-  image: string;
-  pricePerNight: number;
-  nights: number;
-};
+const CartItemSchema = z.object({
+  slug: z.string().min(1),
+  name: z.string(),
+  image: z.string(),
+  pricePerNight: z.number().nonnegative(),
+  nights: z.number().int().positive(),
+});
+
+export type CartItem = z.infer<typeof CartItemSchema>;
 
 type CartContextValue = {
   items: CartItem[];
@@ -36,7 +39,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const loadCart = () => {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) setItems(JSON.parse(raw));
+        const parsed = raw ? z.array(CartItemSchema).safeParse(JSON.parse(raw)) : null;
+        if (parsed?.success) setItems(parsed.data);
       } catch {
         // ignore malformed/unavailable storage
       }
@@ -47,7 +51,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!hydrated) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    } catch {
+      // storage full or blocked (private mode); cart still works in memory
+    }
   }, [items, hydrated]);
 
   const addItem: CartContextValue["addItem"] = (item) => {

@@ -1,4 +1,5 @@
 import type { EnquiryPayload, EnquiryResult } from "./types";
+import { CONTACT, DEMO_SERVICES } from "../env";
 
 export interface EnquiryService {
   submitEnquiry(payload: EnquiryPayload): Promise<EnquiryResult>;
@@ -22,12 +23,12 @@ export class UnavailableEnquiryService implements EnquiryService {
   async submitEnquiry(): Promise<EnquiryResult> {
     return {
       success: false,
-      message: "Our online enquiry system is currently unavailable in production until a real integration is configured. Please contact us directly.",
+      message: `We can't send enquiries online just yet. Please call or WhatsApp us on ${CONTACT.phone}, or email ${CONTACT.email}, and we'll take it from there.`,
       isDemo: false,
     };
   }
 }
 
-export const enquiryService: EnquiryService = process.env.NODE_ENV === "production"
-  ? new UnavailableEnquiryService()
-  : new MockEnquiryService();
+export const enquiryService: EnquiryService = DEMO_SERVICES
+  ? new MockEnquiryService()
+  : new UnavailableEnquiryService();

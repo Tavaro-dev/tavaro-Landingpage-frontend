@@ -6,6 +6,9 @@ import type { BookingResult } from "../../lib/booking/types";
 import { BookingRequestSchema } from "../../lib/booking/types";
 import { paymentService } from "../../lib/payment/service";
 import { bookingService } from "../../lib/booking/service";
+import type { BookingQuote } from "../../lib/booking/types";
+import { QuoteRequestSchema } from "../../lib/booking/types";
+import { DEMO_SERVICES } from "../../lib/env";
 
 export async function processPaymentAction(req: unknown): Promise<PaymentResult> {
   const result = PaymentRequestSchema.safeParse(req);
@@ -23,6 +26,17 @@ export async function processPaymentAction(req: unknown): Promise<PaymentResult>
   return paymentService.processPayment(result.data);
 }
 
+// Pricing is computed server-side so quote logic never ships to the browser.
+export async function createQuoteAction(req: unknown): Promise<BookingQuote | null> {
+  const result = QuoteRequestSchema.safeParse(req);
+  if (!result.success) return null;
+  try {
+    return await bookingService.createQuote(result.data);
+  } catch {
+    return null; // unknown room/enhancement id, e.g. a stale cart
+  }
+}
+
 export async function createBookingAction(req: unknown): Promise<BookingResult> {
   const result = BookingRequestSchema.safeParse(req);
   if (!result.success) {
@@ -37,7 +51,7 @@ export async function createBookingAction(req: unknown): Promise<BookingResult> 
 }
 
 export async function createTicketBookingAction() {
-  if (process.env.NODE_ENV === "production") {
+  if (!DEMO_SERVICES) {
     return {
       success: false,
       error: "Ticket booking is disabled in production. Please contact us directly.",
