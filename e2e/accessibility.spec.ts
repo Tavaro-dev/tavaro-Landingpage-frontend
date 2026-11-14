@@ -37,7 +37,8 @@ test.describe('Accessibility Regressions', () => {
     
     // Open calendar
     await checkinTrigger.click();
-    const dialog = page.getByRole('dialog').filter({ hasText: /202/ }).first();
+    // The calendar is named "<Month> <Year>"; select by name since it now renders inside the event modal dialog.
+    const dialog = page.getByRole('dialog', { name: /^\w+ \d{4}$/ });
     await expect(dialog).toBeVisible();
     
     // Select a date

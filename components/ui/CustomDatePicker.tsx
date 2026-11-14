@@ -80,8 +80,12 @@ export function CustomDatePicker({
     isMobileModal: boolean;
   }>({ left: 0, isMobileModal: false });
 
+  // Inside a modal <dialog> everything outside it is inert, so portal into the dialog.
+  const [portalRoot, setPortalRoot] = useState<Element | null>(null);
+
   const updatePosition = useCallback(() => {
     if (!triggerRef.current) return;
+    setPortalRoot(triggerRef.current.closest("dialog") ?? document.body);
     const rect = triggerRef.current.getBoundingClientRect();
     const isMobile = window.innerWidth <= 540;
 
@@ -207,6 +211,7 @@ export function CustomDatePicker({
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape" && isOpen) {
+      e.preventDefault(); // keeps an enclosing <dialog> from closing too
       e.stopPropagation();
       setIsOpen(false);
       triggerRef.current?.focus();
@@ -336,7 +341,7 @@ export function CustomDatePicker({
           {calendarBody}
         </div>
       ),
-      document.body
+      portalRoot ?? document.body
     )
   ) : null;
 

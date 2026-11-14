@@ -47,6 +47,9 @@ export function CustomSelect({
     width: number;
   }>({ left: 0, width: 200 });
 
+  // Inside a modal <dialog> everything outside it is inert, so portal into the dialog.
+  const [portalRoot, setPortalRoot] = useState<Element | null>(null);
+
   const baseId = useId();
   const listboxId = `custom-select-listbox-${baseId}`;
 
@@ -54,6 +57,7 @@ export function CustomSelect({
 
   const updatePosition = useCallback(() => {
     if (!triggerRef.current) return;
+    setPortalRoot(triggerRef.current.closest("dialog") ?? document.body);
     const rect = triggerRef.current.getBoundingClientRect();
     const listboxHeight = Math.min(options.length * 40 + 16, 240);
     const spaceBelow = window.innerHeight - rect.bottom;
@@ -233,7 +237,7 @@ export function CustomSelect({
           );
         })}
       </ul>,
-      document.body
+      portalRoot ?? document.body
     )
   ) : null;
 

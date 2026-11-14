@@ -37,7 +37,6 @@ export function ExpandingPanelsShowcase({
   onEnquireCategory,
   closing,
 }: ExpandingPanelsShowcaseProps) {
-  console.log("SHOWCASE RENDERING, categories:", categories.length);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [selectedChip, setSelectedChip] = useState<string | null>(null);
 

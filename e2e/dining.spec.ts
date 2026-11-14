@@ -62,7 +62,7 @@ test.describe('Dining Enquiry Flow', () => {
     
     // Expect response message (demo mode or production safeguard)
     const successHeading = page.getByRole('heading', { name: 'Thank You for Reaching Out' });
-    const prodMsg = page.getByText('currently unavailable in production', { exact: false });
+    const prodMsg = page.getByText(/send enquiries online just yet/);
     await expect(successHeading.or(prodMsg)).toBeVisible({ timeout: 10000 });
   });
 

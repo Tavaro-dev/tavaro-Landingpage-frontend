@@ -1,9 +1,8 @@
 "use client";
-import { lockScroll } from "@/lib/scrollLock";
 
-import { useState, useEffect, useSyncExternalStore } from "react";
-import { createPortal } from "react-dom";
+import { useId, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { Modal } from "@/components/ui/Modal";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
 import { submitEnquiryAction } from "@/app/actions/enquiry";
@@ -32,10 +31,9 @@ const ROOM_OPTIONS = [
   { value: "Entire Estate (13 Rooms)", label: "Entire Estate (13 Rooms)" },
 ];
 
-const emptySubscribe = () => () => {};
-
 export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps) {
-  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const uid = useId();
+  const fieldId = (field: string) => `${uid}-${field}`;
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -45,25 +43,17 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
     eventDate: "",
     guestCount: "",
     rooms: "",
-    needCatering: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isDemo, setIsDemo] = useState(false);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    return lockScroll();
-  }, [isOpen]);
-
-  if (!isOpen || !mounted) return null;
-
-  return createPortal(
-    <div className="event-modal-overlay" onClick={onClose}>
-      <div className="event-modal-card" onClick={(e) => e.stopPropagation()}>
+  return (
+    <Modal open={isOpen} onClose={onClose} labelledBy={fieldId("title")}>
+      <div className="event-modal-card">
         {/* Header */}
         <div className="event-modal-head">
-          <h3 className="event-modal-title">Tell us about your celebration</h3>
+          <h3 className="event-modal-title" id={fieldId("title")}>Tell us about your celebration</h3>
           <button type="button" className="event-modal-close" onClick={onClose} aria-label="Close modal">
             <Icon name="close" />
           </button>
@@ -119,8 +109,9 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
           >
             <div className="event-form-grid">
               <div className="field">
-                <label>Your Name *</label>
+                <label htmlFor={fieldId("name")}>Your Name *</label>
                 <input
+                  id={fieldId("name")}
                   type="text"
                   required
                   placeholder="Enter your name"
@@ -130,8 +121,9 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
               </div>
 
               <div className="field">
-                <label>Phone Number *</label>
+                <label htmlFor={fieldId("phone")}>Phone Number *</label>
                 <input
+                  id={fieldId("phone")}
                   type="tel"
                   required
                   placeholder="+91 98765 43210"
@@ -141,8 +133,9 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
               </div>
 
               <div className="field">
-                <label>Email Address *</label>
+                <label htmlFor={fieldId("email")}>Email Address *</label>
                 <input
+                  id={fieldId("email")}
                   type="email"
                   required
                   placeholder="you@example.com"
@@ -152,8 +145,9 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
               </div>
 
               <div className="field">
-                <label>Type of Event *</label>
+                <label htmlFor={fieldId("eventType")}>Type of Event *</label>
                 <CustomSelect
+                  id={fieldId("eventType")}
                   value={formData.eventType}
                   onChange={(val) => setFormData({ ...formData, eventType: val })}
                   options={EVENT_TYPES}
@@ -161,8 +155,9 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
               </div>
 
               <div className="field">
-                <label>Tentative Event Date *</label>
+                <label htmlFor={fieldId("eventDate")}>Tentative Event Date *</label>
                 <CustomDatePicker
+                  id={fieldId("eventDate")}
                   value={formData.eventDate}
                   onChange={(val) => setFormData({ ...formData, eventDate: val })}
                   placeholder="Select date"
@@ -170,8 +165,9 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
               </div>
 
               <div className="field">
-                <label>Guest Count *</label>
+                <label htmlFor={fieldId("guestCount")}>Guest Count *</label>
                 <input
+                  id={fieldId("guestCount")}
                   type="text"
                   required
                   placeholder="e.g. 50 guests"
@@ -181,8 +177,9 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
               </div>
 
               <div className="field">
-                <label>Accommodation / Rooms</label>
+                <label htmlFor={fieldId("rooms")}>Accommodation / Rooms</label>
                 <CustomSelect
+                  id={fieldId("rooms")}
                   value={formData.rooms}
                   onChange={(val) => setFormData({ ...formData, rooms: val })}
                   options={ROOM_OPTIONS}
@@ -191,7 +188,7 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
             </div>
             
             {submitError && (
-              <div className="form-error" style={{ marginTop: 20, textAlign: "center", color: "var(--danger)" }}>
+              <div className="form-error" role="alert" style={{ marginTop: 20, textAlign: "center", color: "var(--danger)" }}>
                 {submitError}
               </div>
             )}
@@ -204,7 +201,6 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
           </form>
         )}
       </div>
-    </div>,
-    document.body
+    </Modal>
   );
 }

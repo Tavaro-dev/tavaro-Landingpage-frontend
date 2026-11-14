@@ -5446,3 +5446,38 @@ button.hero-quick-nav-item {
   border-radius: 4px;
   color: var(--danger);
 }
+
+/* Shared native <dialog> modal (components/ui/Modal.tsx). The dialog itself
+   fills the viewport and acts as the click-to-close backdrop area. */
+.app-dialog {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 24px 16px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.app-dialog:not([open]) {
+  display: none;
+}
+
+.app-dialog[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn var(--duration-surface, 0.35s) var(--ease-luxury, var(--ease));
+}
+
+.app-dialog::backdrop {
+  background: rgba(10, 9, 8, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}

@@ -36,6 +36,15 @@ test.describe('Booking Flow', () => {
     const firstRoom = page.locator('.room-listing-card').first();
     await expect(firstRoom).toBeVisible();
 
+    // Production build (no booking backend yet): rooms link out to partner sites instead of the cart.
+    const checkRates = firstRoom.getByRole('button', { name: 'Check Rates' });
+    if (await checkRates.isVisible()) {
+      await checkRates.click();
+      await expect(page.locator('.ota-modal-card')).toBeVisible();
+      await expect(page.locator('.cart-button')).toHaveCount(0);
+      return;
+    }
+
     // 8. Select/add a room to the cart
     // Use toPass to handle potential React hydration race condition where the first click might be lost
     await expect(async () => {
