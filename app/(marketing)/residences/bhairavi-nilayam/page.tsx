@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { PageHero } from "@/components/shared/PageHero";
+import heroPhoto from "@/public/images/heroes/bhairavi-nilayam-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
 import { SplitSection } from "@/components/shared/SplitSection";
@@ -123,7 +124,7 @@ export default function BhairavPage() {
   return (
     <>
       <PageHero
-        photoSrc="/images/heroes/bhairavi-nilayam-hero.jpg"
+        photoSrc={heroPhoto}
         photoAlt="Bhairavi Nilayam — exterior view"
         placeholder="ph-4"
         breadcrumbLabel="Bhairavi Nilayam"

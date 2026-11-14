@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/shared/PageHero";
+import heroPhoto from "@/public/images/heroes/residences-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
 import { BandQuote } from "@/components/shared/BandQuote";
@@ -42,7 +43,7 @@ export default function ResidencesPage() {
   return (
     <>
       <PageHero
-        photoSrc="/images/heroes/residences-hero.jpg"
+        photoSrc={heroPhoto}
         photoAlt="Leela by Tavaro Residences — terraces wrapped in greenery"
         placeholder="ph-2"
         breadcrumbLabel="Residences"

@@ -1,4 +1,5 @@
 import { PageHero } from "@/components/shared/PageHero";
+import heroPhoto from "@/public/images/heroes/residences-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { pageMetadata } from "@/lib/metadata";
 import ResidenceInterestForm from "@/features/residences/components/ResidenceInterestForm";
@@ -14,7 +15,7 @@ export default function ResidencesRegisterPage() {
   return (
     <>
       <PageHero
-        photoSrc="/images/heroes/residences-hero.jpg"
+        photoSrc={heroPhoto}
         photoAlt="A Tavaro Residence"
         placeholder="ph-2"
         breadcrumbLabel="Register Your Interest"

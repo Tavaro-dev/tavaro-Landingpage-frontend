@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { Icon, type IconName } from "@/components/ui/Icon";
@@ -27,7 +27,8 @@ export function PageHero({
   topRightCta,
   quickNav,
 }: {
-  photoSrc: string;
+  /** A static import gets a hashed, long-cached URL and a blur placeholder. */
+  photoSrc: string | StaticImageData;
   photoAlt: string;
   /** CSS object-position for the photo, e.g. "68% center" to keep a subject in a narrow (phone) crop. */
   photoPosition?: string;
@@ -49,7 +50,7 @@ export function PageHero({
   return (
     <section className="page-hero" style={style}>
       <div className={`${styles["hero-media"]} ${placeholder}`}>
-        <Image src={photoSrc} alt={photoAlt} fill preload sizes="100vw" quality={90} style={photoPosition ? { objectPosition: photoPosition } : undefined} />
+        <Image src={photoSrc} alt={photoAlt} fill preload sizes="100vw" placeholder={typeof photoSrc === "string" ? "empty" : "blur"} style={photoPosition ? { objectPosition: photoPosition } : undefined} />
       </div>
       <div className={styles["hero-scrim"]} />
       <div className="page-hero-inner container">

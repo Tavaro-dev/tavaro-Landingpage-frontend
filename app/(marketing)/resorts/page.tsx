@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHero } from "@/components/shared/PageHero";
+import heroPhoto from "@/public/images/heroes/resorts-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
 import { SplitSection } from "@/components/shared/SplitSection";
@@ -24,7 +25,7 @@ export default function ResortsPage() {
   return (
     <>
       <PageHero
-        photoSrc="/images/heroes/resorts-hero.jpg"
+        photoSrc={heroPhoto}
         photoAlt="Horses on the grounds at Tavaro Resorts, Kokapet"
         placeholder="ph-1"
         breadcrumbLabel="Tavaro Resorts"

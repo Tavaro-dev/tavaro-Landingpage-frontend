@@ -1,4 +1,5 @@
 import Image from "next/image";
+import poster from "@/public/photos/home-hero-poster.jpg";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { HeroVideo } from "./HeroVideo";
@@ -17,12 +18,12 @@ export function HomeHero() {
     <section className={`hero ${styles["home-hero"]}`}>
       <div className={`${styles["hero-media"]} ph-1`}>
         <Image
-          src="/photos/home-hero-poster.jpg"
+          src={poster}
           alt="Aerial view of the Tavaro resort lit up at night"
           fill
           preload
           sizes="100vw"
-          quality={90}
+          placeholder="blur"
         />
       </div>
       <HeroVideo src="/videos/home-hero" />

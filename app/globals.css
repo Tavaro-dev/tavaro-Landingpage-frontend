@@ -1503,6 +1503,39 @@ button,
   aspect-ratio: 16/10;
 }
 
+/* Desktop: the photo fills its whole half — out to the screen edge, and top to
+   bottom of the section when the split is the section's only content. */
+@media (min-width: 861px) {
+  .split:has(> .split-media) {
+    /* split edge -> viewport edge; assumes the split spans the .container (body clips 100vw's scrollbar overshoot) */
+    --bleed: calc((100vw - min(100vw, var(--container))) / 2 + var(--pad));
+    align-items: stretch;
+  }
+
+  .split > .split-media {
+    aspect-ratio: auto;
+    min-height: clamp(460px, 40vw, 640px);
+    margin-left: calc(-1 * var(--bleed));
+  }
+
+  .split.reverse > .split-media {
+    margin-left: 0;
+    margin-right: calc(-1 * var(--bleed));
+  }
+
+  .split:has(> .split-media) > .split-body {
+    align-self: center;
+  }
+
+  :is(.section, .offer-block):has(> .container > .split:only-child > .split-media) {
+    padding-block: 0;
+  }
+
+  .container > .split:only-child:has(> .split-media) > .split-body {
+    padding-block: clamp(48px, 5vw, 72px);
+  }
+}
+
 .split-body .eyebrow {
   margin-bottom: 12px;
 }

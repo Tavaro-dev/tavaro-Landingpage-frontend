@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/shared/PageHero";
+import heroPhoto from "@/public/images/heroes/experiences-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
 import { SplitSection } from "@/components/shared/SplitSection";
@@ -63,7 +64,7 @@ export default function ExperiencesPage() {
   return (
     <>
       <PageHero
-        photoSrc="/images/heroes/experiences-hero.jpg"
+        photoSrc={heroPhoto}
         photoAlt="An evening concert under the sun arch stage at Tavaro"
         placeholder="ph-3"
         breadcrumbLabel="Tavaro / Experiences"

@@ -1,4 +1,5 @@
 import { PageHero } from "@/components/shared/PageHero";
+import heroPhoto from "@/public/images/heroes/wellness-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
 import { TriGrid, type TriCardData } from "@/components/shared/TriGrid";
@@ -78,7 +79,7 @@ export default function WellnessPage() {
   return (
     <>
       <PageHero
-        photoSrc="/images/heroes/wellness-hero.jpg"
+        photoSrc={heroPhoto}
         photoAlt="A yoga session on the lawn at Tavaro"
         placeholder="ph-green"
         breadcrumbLabel="Wellness"
