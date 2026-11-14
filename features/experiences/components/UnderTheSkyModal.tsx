@@ -1,9 +1,9 @@
 "use client";
-import { lockScroll } from "@/lib/scrollLock";
 
-import { useState, useEffect, useRef, useSyncExternalStore } from "react";
-import { createPortal } from "react-dom";
+import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { Modal } from "@/components/ui/Modal";
+import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
 import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import {
@@ -12,64 +12,23 @@ import {
   PLANNING_TYPES,
   SETTING_PREFERENCES,
 } from "../content/underTheSkyForm";
+import "./UnderTheSkyModal.css";
 
 interface UnderTheSkyModalProps {
   isOpen: boolean;
   onClose: () => void;
-  triggerRef?: React.RefObject<HTMLButtonElement | null>;
 }
-
-const emptySubscribe = () => () => {};
 
 const PLANNING_SELECT_OPTIONS = PLANNING_TYPES.map((pt) => ({
   value: pt,
   label: pt,
 }));
 
-export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyModalProps) {
+export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
   const [step, setStep] = useState<1 | 2>(1);
-  const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState<UnderTheSkyFormData>(INITIAL_UNDER_THE_SKY_FORM_DATA);
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false);
-
-  // Lock body scroll and set focus when open
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const unlockScroll = lockScroll();
-
-    const timeout = setTimeout(() => {
-      closeBtnRef.current?.focus();
-    }, 50);
-
-    return () => {
-      unlockScroll();
-      clearTimeout(timeout);
-    };
-  }, [isOpen]);
-
-  // Keyboard Escape listener
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-        triggerRef?.current?.focus();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose, triggerRef]);
-
-  const handleClose = () => {
-    onClose();
-    triggerRef?.current?.focus();
-  };
+  const { submit, reset, isSubmitting, submitted, error: submitError, isDemo } = useEnquirySubmit();
 
   const handleCheckboxToggle = (value: string) => {
     setFormData((prev) => {
@@ -120,306 +79,16 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateStep2()) {
-      setSubmitted(true);
+      await submit({ type: "under_the_sky", data: formData });
     }
   };
 
-  if (!isClient || !isOpen) return null;
-
-  return createPortal(
-    <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        .uts-modal-backdrop {
-          position: fixed;
-          inset: 0;
-          z-index: 2000;
-          background: rgba(10, 9, 8, 0.75);
-          backdrop-filter: blur(8px);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 20px;
-          overflow-y: auto;
-          overflow-x: hidden;
-          animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes modalFadeIn {
-          from { opacity: 0; transform: scale(0.98); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .uts-modal-card {
-          position: relative;
-          width: 100%;
-          max-width: min(680px, calc(100vw - 24px));
-          max-height: 90vh;
-          background: var(--surface);
-          color: var(--on-surface);
-          border: 1px solid var(--surface-line);
-          border-radius: 2px;
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-          margin: auto;
-          transition: background-color 0.3s, color 0.3s;
-        }
-        .uts-modal-header {
-          padding: 24px 30px 18px;
-          border-bottom: 1px solid var(--surface-line);
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          background: var(--surface);
-        }
-        .uts-modal-header-text h2 {
-          font-family: var(--font-display);
-          font-size: clamp(20px, 2.5vw, 24px);
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-          margin: 0 0 4px 0;
-          color: var(--on-surface);
-        }
-        .uts-modal-header-text .uts-subtitle {
-          font-family: var(--font-sans);
-          font-size: 13px;
-          font-style: italic;
-          font-weight: 500;
-          color: var(--gold);
-          margin-top: 2px;
-          margin-bottom: 6px;
-        }
-        [data-theme="light"] .uts-modal-header-text .uts-subtitle {
-          color: var(--gold-dark);
-        }
-        .uts-modal-header-text .uts-desc {
-          font-family: var(--font-sans);
-          font-size: 12.5px;
-          color: var(--on-surface-muted);
-          line-height: 1.5;
-          margin: 0;
-        }
-        .uts-modal-close-btn {
-          background: var(--surface-2);
-          border: 1px solid var(--surface-line);
-          color: var(--on-surface);
-          width: 38px;
-          height: 38px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.2s var(--ease);
-          outline: none;
-          flex-shrink: 0;
-        }
-        .uts-modal-close-btn:hover {
-          background: var(--gold);
-          color: var(--black);
-          border-color: var(--gold);
-          transform: scale(1.05);
-        }
-        [data-theme="light"] .uts-modal-close-btn:hover {
-          background: var(--gold-dark);
-          color: #ffffff;
-          border-color: var(--gold-dark);
-        }
-        .uts-modal-close-btn svg {
-          width: 18px;
-          height: 18px;
-        }
-        .uts-modal-body {
-          padding: 24px 30px 32px;
-          overflow-y: auto;
-          overflow-x: hidden;
-          flex: 1;
-          min-width: 0;
-          width: 100%;
-          box-sizing: border-box;
-        }
-        .uts-step-bar {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 24px;
-          padding-bottom: 12px;
-          border-bottom: 1px solid var(--surface-line);
-          font-family: var(--font-sans);
-          font-size: 11px;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: var(--gold);
-          font-weight: 700;
-        }
-        [data-theme="light"] .uts-step-bar {
-          color: var(--gold-dark);
-        }
-        .uts-form-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 20px;
-        }
-        .uts-form-group {
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-          margin-bottom: 22px;
-        }
-        .uts-form-group.full {
-          grid-column: 1 / -1;
-        }
-        .uts-label {
-          font-family: var(--font-sans);
-          font-size: 11.5px;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: var(--on-surface);
-          margin-bottom: 4px;
-        }
-        .uts-label .required {
-          color: var(--gold);
-          margin-left: 4px;
-        }
-        [data-theme="light"] .uts-label .required {
-          color: var(--gold-dark);
-        }
-        .uts-label .optional {
-          color: var(--on-surface-muted);
-          font-weight: 400;
-          text-transform: none;
-          margin-left: 4px;
-          font-size: 11px;
-        }
-        .uts-input, .uts-textarea {
-          width: 100%;
-          background: #ffffff;
-          border: 1px solid rgba(28, 23, 18, 0.2);
-          color: var(--on-surface);
-          padding: 11px 14px;
-          border-radius: 2px;
-          font-family: var(--font-sans);
-          font-size: 14px;
-          outline: none;
-          transition: border-color 0.25s var(--ease);
-          box-sizing: border-box;
-        }
-        [data-theme="dark"] .uts-input,
-        [data-theme="dark"] .uts-textarea {
-          background: rgba(255, 255, 255, 0.04);
-          border-color: var(--surface-line);
-        }
-        .uts-input:focus, .uts-textarea:focus {
-          border-color: var(--gold-dark);
-        }
-        [data-theme="dark"] .uts-input:focus,
-        [data-theme="dark"] .uts-textarea:focus {
-          border-color: var(--gold);
-        }
-        .uts-pill-grid {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          margin-top: 4px;
-        }
-        .uts-pill {
-          padding: 9px 15px;
-          font-family: var(--font-sans);
-          font-size: 13px;
-          border: 1px solid rgba(28, 23, 18, 0.16);
-          border-radius: 2px;
-          background: #ffffff;
-          color: var(--on-surface);
-          cursor: pointer;
-          transition: all 0.2s var(--ease);
-          user-select: none;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-        }
-        [data-theme="dark"] .uts-pill {
-          background: rgba(255, 255, 255, 0.04);
-          border-color: var(--surface-line);
-        }
-        .uts-pill:hover {
-          border-color: var(--gold-dark);
-          background: rgba(156, 124, 62, 0.06);
-        }
-        [data-theme="dark"] .uts-pill:hover {
-          border-color: var(--gold);
-        }
-        .uts-pill.selected {
-          background: var(--gold);
-          color: var(--black);
-          border-color: var(--gold);
-          font-weight: 600;
-        }
-        [data-theme="light"] .uts-pill.selected {
-          background: var(--gold-dark);
-          color: #ffffff;
-          border-color: var(--gold-dark);
-        }
-        .uts-pill svg {
-          width: 14px;
-          height: 14px;
-          flex-shrink: 0;
-        }
-        .uts-error-msg {
-          font-family: var(--font-sans);
-          font-size: 11px;
-          color: #e54d42;
-          margin-top: 4px;
-        }
-        .uts-footer-actions {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 16px;
-          margin-top: 28px;
-          padding-top: 20px;
-          border-top: 1px solid var(--surface-line);
-        }
-        .uts-success-box {
-          text-align: center;
-          padding: 40px 20px;
-        }
-        @media (max-width: 640px) {
-          .uts-modal-backdrop {
-            padding: 12px;
-          }
-          .uts-modal-card {
-            max-height: 94vh;
-          }
-          .uts-modal-header {
-            padding: 16px 18px;
-          }
-          .uts-modal-body {
-            padding: 18px 16px 24px;
-            overflow-x: hidden;
-          }
-          .uts-step-bar {
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            flex-wrap: wrap;
-            gap: 4px;
-          }
-          .uts-form-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
-          }
-        }
-      `}} />
-
-      <div
-        className="uts-modal-backdrop"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="uts-modal-title"
-        onClick={handleClose}
-      >
+  return (
+    <Modal open={isOpen} onClose={onClose} labelledBy="uts-modal-title" bare>
+      <div className="uts-modal-backdrop" onClick={onClose}>
         <div className="uts-modal-card" onClick={(e) => e.stopPropagation()}>
           <header className="uts-modal-header">
             <div className="uts-modal-header-text">
@@ -434,9 +103,8 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
             </div>
             <button
               type="button"
-              ref={closeBtnRef}
               className="uts-modal-close-btn"
-              onClick={handleClose}
+              onClick={onClose}
               aria-label="Close enquiry form"
             >
               <Icon name="close" />
@@ -453,12 +121,17 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
                 <p className="lede" style={{ color: "var(--on-surface-muted)", maxWidth: "500px", margin: "0 auto" }}>
                   We’ll be in touch soon and start figuring out all the good bits!
                 </p>
+                {isDemo && (
+                  <p className="order-summary-muted" style={{ marginTop: 16, color: "var(--gold-dark)" }}>
+                    (Demo: No real enquiry was delivered.)
+                  </p>
+                )}
                 <button
                   type="button"
                   className="btn solid"
                   style={{ marginTop: 32 }}
                   onClick={() => {
-                    setSubmitted(false);
+                    reset();
                     setStep(1);
                     setFormData(INITIAL_UNDER_THE_SKY_FORM_DATA);
                     onClose();
@@ -641,16 +314,21 @@ export function UnderTheSkyModal({ isOpen, onClose, triggerRef }: UnderTheSkyMod
                     <div />
                   )}
 
-                  <button type="submit" className="btn solid" style={{ padding: "12px 28px" }}>
-                    {step === 1 ? "Next: About You →" : "Submit Enquiry"}
+                  <button type="submit" className="btn solid" style={{ padding: "12px 28px" }} disabled={isSubmitting}>
+                    {step === 1 ? "Next: About You →" : isSubmitting ? "Submitting..." : "Submit Enquiry"}
                   </button>
                 </div>
+
+                {submitError && (
+                  <div className="form-error" role="alert" style={{ marginTop: 20, textAlign: "center", color: "var(--danger)" }}>
+                    {submitError}
+                  </div>
+                )}
               </form>
             )}
           </div>
         </div>
       </div>
-    </>,
-    document.body
+    </Modal>
   );
 }

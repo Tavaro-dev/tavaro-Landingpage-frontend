@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
+import "./HeroSquareTilesBackground.css";
 
 export interface HeroSlideItem {
   image: string;
@@ -352,97 +353,6 @@ export function HeroSquareTilesBackground({
       }}
       aria-label={`Hero background displaying ${slides[currentIndex]?.title}`}
     >
-      <style>{`
-        .hero-square-tiles-canvas {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          display: block;
-          z-index: 1;
-        }
-
-        .hero-static-fallback {
-          position: absolute;
-          inset: 0;
-          z-index: 0;
-          opacity: 0.98;
-          transition: opacity 0.8s ease;
-        }
-
-        .hero-subsection-indicators {
-          position: absolute;
-          bottom: 24px;
-          right: clamp(20px, 4vw, 48px);
-          z-index: 5;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: rgba(15, 13, 10, 0.55);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 999px;
-          padding: 6px 12px;
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-        }
-
-        .hero-indicator-btn {
-          background: transparent;
-          border: none;
-          cursor: pointer;
-          font-family: var(--font-sans, sans-serif);
-          font-size: 11px;
-          font-weight: 600;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: rgba(255, 255, 255, 0.6);
-          padding: 4px 10px;
-          border-radius: 999px;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-        }
-
-        .hero-indicator-btn:hover {
-          color: #ffffff;
-        }
-
-        .hero-indicator-btn.active {
-          color: #ffffff;
-          background: rgba(197, 160, 89, 0.28);
-          border: 1px solid rgba(197, 160, 89, 0.6);
-        }
-
-        .hero-indicator-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.4);
-          transition: all 0.3s ease;
-        }
-
-        .hero-indicator-btn.active .hero-indicator-dot {
-          background: var(--gold, #c5a059);
-          transform: scale(1.4);
-          box-shadow: 0 0 8px rgba(197, 160, 89, 0.8);
-        }
-
-        @media (max-width: 640px) {
-          .hero-subsection-indicators {
-            bottom: 16px;
-            right: 16px;
-            padding: 4px 8px;
-            gap: 4px;
-          }
-
-          .hero-indicator-btn {
-            font-size: 9.5px;
-            padding: 3px 7px;
-          }
-        }
-      `}</style>
 
       {/* Fallback Next.js Image for immediate SSR rendering */}
       <div className="hero-static-fallback">

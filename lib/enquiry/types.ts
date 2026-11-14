@@ -10,19 +10,6 @@ export const ContactEnquirySchema = z.object({
   message: z.string().max(2000).optional(),
 }).strict();
 
-export const EventEnquirySchema = z.object({
-  name: z.string().min(1, "Name is required").max(100),
-  email: z.string().email("Invalid email address").max(100),
-  phone: z.string().min(1, "Phone is required").max(50),
-  eventType: z.string().max(100),
-  eventDate: z.string().max(100),
-  guestCount: z.number().int().min(1).max(10000),
-  budget: z.string().max(100).optional(),
-  venueKey: z.string().max(100).nullable(),
-  withFood: z.boolean().nullable(),
-  selectedItems: z.array(z.number().int()).max(100),
-}).strict();
-
 export const DiningEnquirySchema = z.object({
   planningType: z.string().max(100),
   requestType: z.string().max(100),
@@ -63,12 +50,24 @@ export const OffsiteEnquirySchema = z.object({
   designation: z.string().min(1, "Designation is required").max(100),
 }).strict();
 
+export const UnderTheSkyEnquirySchema = z.object({
+  planningType: z.string().min(1).max(100),
+  planningOtherText: z.string().max(200).optional(),
+  occasionDetails: z.string().max(2000).optional(),
+  preferredDate: z.string().min(1).max(100),
+  expectedGuests: z.string().min(1).max(100),
+  settingPreferences: z.array(z.string().max(100)).min(1).max(20),
+  name: z.string().min(1, "Name is required").max(100),
+  phoneNumber: z.string().min(1, "Phone is required").max(50),
+  emailAddress: z.union([z.string().email("Invalid email address").max(100), z.literal("")]).optional(),
+}).strict();
+
 export const EnquiryPayloadSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("contact"), data: ContactEnquirySchema }).strict(),
-  z.object({ type: z.literal("event"), data: EventEnquirySchema }).strict(),
   z.object({ type: z.literal("dining"), data: DiningEnquirySchema }).strict(),
   z.object({ type: z.literal("plan_event"), data: PlanEventSchema }).strict(),
   z.object({ type: z.literal("offsite"), data: OffsiteEnquirySchema }).strict(),
+  z.object({ type: z.literal("under_the_sky"), data: UnderTheSkyEnquirySchema }).strict(),
 ]);
 
 export type EnquiryPayload = z.infer<typeof EnquiryPayloadSchema>;

@@ -71,11 +71,10 @@ test.describe('Accessibility Regressions', () => {
     await expect(trigger).toBeVisible();
     await trigger.click();
 
-    // Verify dialog role and attributes
+    // Exposed as a named dialog (native <dialog> opened with showModal(), so it is modal by definition)
     const modal = page.locator('.ttd-modal-container');
     await expect(modal).toBeVisible();
-    await expect(modal).toHaveAttribute('role', 'dialog');
-    await expect(modal).toHaveAttribute('aria-modal', 'true');
+    await expect(page.getByRole('dialog', { name: 'How would you like to spend your time?' })).toBeVisible();
 
     // Test Escape key closes modal and restores focus
     await page.keyboard.press('Escape');

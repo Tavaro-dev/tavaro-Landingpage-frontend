@@ -1,25 +1,20 @@
 "use client";
-import { lockScroll } from "@/lib/scrollLock";
 
-import { useEffect, useState, useRef, useCallback, useSyncExternalStore } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
+import { Modal } from "@/components/ui/Modal";
 import { ResortMediaCategory } from "../content/resortMedia";
+import "./MediaViewer.css";
 
 interface MediaViewerProps {
   isOpen: boolean;
   category: ResortMediaCategory | null;
   onClose: () => void;
-  triggerRef?: React.RefObject<HTMLButtonElement | null>;
 }
 
-const emptySubscribe = () => () => {};
-
-export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaViewerProps) {
+export function MediaViewer({ isOpen, category, onClose }: MediaViewerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   const items = category?.items ?? [];
   const currentItem = items[currentIndex];
@@ -35,32 +30,12 @@ export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaView
     setCurrentIndex((prev) => (prev - 1 + totalCount) % totalCount);
   }, [totalCount]);
 
-  // Lock body scroll and focus close button on open
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const unlockScroll = lockScroll();
-
-    // Focus close button
-    const timeout = setTimeout(() => {
-      closeBtnRef.current?.focus();
-    }, 50);
-
-    return () => {
-      unlockScroll();
-      clearTimeout(timeout);
-    };
-  }, [isOpen]);
-
-  // Handle keyboard events (Escape, ArrowLeft, ArrowRight)
+  // Arrow keys step through photos (Escape is handled by the dialog).
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-        triggerRef?.current?.focus();
-      } else if (e.key === "ArrowRight") {
+      if (e.key === "ArrowRight") {
         handleNext();
       } else if (e.key === "ArrowLeft") {
         handlePrev();
@@ -69,176 +44,13 @@ export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaView
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose, handleNext, handlePrev, triggerRef]);
+  }, [isOpen, handleNext, handlePrev]);
 
-  const handleClose = () => {
-    onClose();
-    triggerRef?.current?.focus();
-  };
+  if (!category || !currentItem) return null;
 
-  if (!isClient || !isOpen || !category || !currentItem) return null;
-
-  return createPortal(
-    <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        .media-viewer-backdrop {
-          position: fixed;
-          inset: 0;
-          z-index: 2000;
-          background: rgba(10, 9, 8, 0.94);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          display: flex;
-          flex-direction: column;
-          animation: fadeIn 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        .media-viewer-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 20px clamp(20px, 4vw, 40px);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-          color: var(--cream);
-          z-index: 10;
-        }
-        .media-viewer-title-group {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-        }
-        .media-viewer-title {
-          font-family: var(--font-display);
-          font-size: clamp(16px, 1.8vw, 22px);
-          letter-spacing: 0.05em;
-          text-transform: uppercase;
-          margin: 0;
-          color: #ffffff;
-        }
-        .media-viewer-count {
-          font-family: var(--font-sans);
-          font-size: 12px;
-          letter-spacing: 0.15em;
-          color: var(--gold);
-          font-weight: 600;
-        }
-        .media-viewer-close-btn {
-          background: transparent;
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: var(--cream);
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
-          outline: none;
-        }
-        .media-viewer-close-btn:hover,
-        .media-viewer-close-btn:focus-visible {
-          background: var(--gold);
-          border-color: var(--gold);
-          color: var(--black);
-        }
-        .media-viewer-close-btn svg {
-          width: 18px;
-          height: 18px;
-          display: block;
-        }
-        .media-viewer-body {
-          flex: 1;
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 20px clamp(20px, 4vw, 40px);
-          overflow: hidden;
-        }
-        .media-viewer-image-container {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          max-width: 1200px;
-          max-height: 75vh;
-          border-radius: 4px;
-          overflow: hidden;
-          box-shadow: 0 16px 40px rgba(0,0,0,0.5);
-          animation: mediaViewerScale 0.35s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-        }
-        @keyframes mediaViewerScale {
-          from {
-            opacity: 0;
-            transform: scale(0.96) translateY(6px);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
-        }
-        .media-viewer-image-container img {
-          transition: opacity 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .media-viewer-backdrop,
-          .media-viewer-image-container {
-            animation: none !important;
-          }
-          .media-viewer-image-container img {
-            transition: none !important;
-          }
-        }
-        .media-viewer-nav-btn {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 10;
-          background: rgba(10, 9, 8, 0.65);
-          backdrop-filter: blur(8px);
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          color: var(--cream);
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.25s var(--ease);
-          outline: none;
-        }
-        .media-viewer-nav-btn:hover,
-        .media-viewer-nav-btn:focus-visible {
-          background: var(--gold);
-          border-color: var(--gold);
-          color: var(--black);
-        }
-        .media-viewer-nav-btn.prev {
-          left: clamp(10px, 3vw, 30px);
-        }
-        .media-viewer-nav-btn.next {
-          right: clamp(10px, 3vw, 30px);
-        }
-        .media-viewer-footer {
-          padding: 16px clamp(20px, 4vw, 40px);
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-          text-align: center;
-          color: rgba(255, 255, 255, 0.75);
-          font-family: var(--font-sans);
-          font-size: 13px;
-          letter-spacing: 0.03em;
-        }
-      `}} />
-      <div
-        className="media-viewer-backdrop"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="media-viewer-title"
-      >
+  return (
+    <Modal open={isOpen} onClose={onClose} labelledBy="media-viewer-title" bare>
+      <div className="media-viewer-backdrop">
         <header className="media-viewer-header">
           <div className="media-viewer-title-group">
             <h2 id="media-viewer-title" className="media-viewer-title">
@@ -252,9 +64,8 @@ export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaView
           </div>
           <button
             type="button"
-            ref={closeBtnRef}
             className="media-viewer-close-btn"
-            onClick={handleClose}
+            onClick={onClose}
             aria-label="Close photo gallery"
           >
             <Icon name="x" />
@@ -302,7 +113,6 @@ export function MediaViewer({ isOpen, category, onClose, triggerRef }: MediaView
           </footer>
         )}
       </div>
-    </>,
-    document.body
+    </Modal>
   );
 }

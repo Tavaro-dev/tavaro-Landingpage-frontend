@@ -1,9 +1,8 @@
 "use client";
-import { lockScroll } from "@/lib/scrollLock";
 
-import { useState, useEffect, useRef, useSyncExternalStore } from "react";
-import { createPortal } from "react-dom";
+import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { Modal } from "@/components/ui/Modal";
 import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import {
@@ -16,15 +15,13 @@ import {
   DURATION_OPTIONS,
   CREATIVE_DIRECTIONS,
 } from "../content/offsiteEditForm";
-import { submitEnquiryAction } from "@/app/actions/enquiry";
+import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
+import "./OffsiteEditModal.css";
 
 interface OffsiteEditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  triggerRef?: React.RefObject<HTMLButtonElement | null>;
 }
-
-const emptySubscribe = () => () => {};
 
 const PLANNING_SELECT_OPTIONS = PLANNING_TYPES.map((pt) => ({
   value: pt.value,
@@ -46,53 +43,11 @@ const CREATIVE_SELECT_OPTIONS = CREATIVE_DIRECTIONS.map((c) => ({
   label: c,
 }));
 
-export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditModalProps) {
+export function OffsiteEditModal({ isOpen, onClose }: OffsiteEditModalProps) {
   const [step, setStep] = useState<1 | 2>(1);
-  const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState<OffsiteEditFormData>(INITIAL_OFFSITE_FORM_DATA);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [isDemo, setIsDemo] = useState(false);
-
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const isClient = useSyncExternalStore(emptySubscribe, () => true, () => false);
-
-  // Lock body scroll and set focus when open
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const unlockScroll = lockScroll();
-
-    const timeout = setTimeout(() => {
-      closeBtnRef.current?.focus();
-    }, 50);
-
-    return () => {
-      unlockScroll();
-      clearTimeout(timeout);
-    };
-  }, [isOpen]);
-
-  // Keyboard Escape listener
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-        triggerRef?.current?.focus();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose, triggerRef]);
-
-  const handleClose = () => {
-    onClose();
-    triggerRef?.current?.focus();
-  };
+  const { submit, reset, isSubmitting, submitted, error: submitError, isDemo } = useEnquirySubmit();
 
   const handleCheckboxToggle = (field: "purpose" | "targetAudience", value: string) => {
     setFormData((prev) => {
@@ -154,381 +109,13 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateStep2()) {
-      setIsSubmitting(true);
-      setSubmitError(null);
-      const result = await submitEnquiryAction({
-        type: "offsite",
-        data: formData,
-      });
-      setIsSubmitting(false);
-
-      if (result.success) {
-        setIsDemo(!!result.isDemo);
-        setSubmitted(true);
-      } else {
-        setSubmitError(result.message);
-      }
+      await submit({ type: "offsite", data: formData });
     }
   };
 
-  if (!isClient || !isOpen) return null;
-
-  return createPortal(
-    <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        .offsite-modal-backdrop {
-          position: fixed;
-          inset: 0;
-          z-index: 2000;
-          background: rgba(10, 9, 8, 0.75);
-          backdrop-filter: blur(8px);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 20px;
-          overflow-y: auto;
-          overflow-x: hidden;
-          animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes modalFadeIn {
-          from { opacity: 0; transform: scale(0.98); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .offsite-modal-card {
-          position: relative;
-          width: 100%;
-          max-width: min(680px, calc(100vw - 24px));
-          max-height: 90vh;
-          background: var(--surface);
-          color: var(--on-surface);
-          border: 1px solid var(--surface-line);
-          border-radius: 2px;
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-          margin: auto;
-          transition: background-color 0.3s, color 0.3s;
-        }
-        .offsite-modal-header {
-          padding: 24px 30px 18px;
-          border-bottom: 1px solid var(--surface-line);
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          background: var(--surface);
-        }
-        .offsite-modal-header-text h2 {
-          font-family: var(--font-display);
-          font-size: clamp(20px, 2.5vw, 24px);
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-          margin: 0 0 4px 0;
-          color: var(--on-surface);
-        }
-        .offsite-modal-header-text p {
-          font-family: var(--font-sans);
-          font-size: 13px;
-          color: var(--on-surface-muted);
-          margin: 0;
-        }
-        .offsite-modal-close-btn {
-          background: var(--surface-2);
-          border: 1px solid var(--surface-line);
-          color: var(--on-surface);
-          width: 38px;
-          height: 38px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.2s var(--ease);
-          outline: none;
-          flex-shrink: 0;
-        }
-        .offsite-modal-close-btn:hover {
-          background: var(--gold);
-          color: var(--black);
-          border-color: var(--gold);
-          transform: scale(1.05);
-        }
-        [data-theme="light"] .offsite-modal-close-btn:hover {
-          background: var(--gold-dark);
-          color: #ffffff;
-          border-color: var(--gold-dark);
-        }
-        .offsite-modal-close-btn svg {
-          width: 18px;
-          height: 18px;
-        }
-        .offsite-modal-header-text .offsite-subtitle {
-          font-family: var(--font-sans);
-          font-size: 13px;
-          font-weight: 500;
-          color: var(--on-surface-muted);
-          margin-top: 4px;
-          margin-bottom: 4px;
-        }
-        .offsite-modal-header-text .offsite-desc {
-          font-family: var(--font-sans);
-          font-size: 12.5px;
-          color: var(--on-surface-muted);
-          line-height: 1.5;
-          margin: 0;
-        }
-        .offsite-modal-body {
-          padding: 24px 30px 32px;
-          overflow-y: auto;
-          overflow-x: hidden;
-          flex: 1;
-          min-width: 0;
-          width: 100%;
-          box-sizing: border-box;
-        }
-        .offsite-step-bar {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 24px;
-          padding-bottom: 12px;
-          border-bottom: 1px solid var(--surface-line);
-          font-family: var(--font-sans);
-          font-size: 11px;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: var(--gold);
-          font-weight: 700;
-        }
-        [data-theme="light"] .offsite-step-bar {
-          color: var(--gold-dark);
-        }
-        .offsite-form-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 28px 24px;
-        }
-        .offsite-form-group {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          margin-bottom: 24px;
-          min-width: 0;
-          width: 100%;
-          box-sizing: border-box;
-        }
-        .offsite-form-group.full {
-          grid-column: 1 / -1;
-        }
-        .offsite-label {
-          font-family: var(--font-sans);
-          font-size: 11.5px;
-          font-weight: 700;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: var(--on-surface);
-          margin-bottom: 4px;
-          word-break: break-word;
-        }
-        .offsite-label .required {
-          color: var(--gold);
-          margin-left: 4px;
-        }
-        [data-theme="light"] .offsite-label .required {
-          color: var(--gold-dark);
-        }
-        .offsite-input, .offsite-textarea {
-          width: 100%;
-          max-width: 100%;
-          background: #ffffff;
-          border: 1px solid rgba(28, 23, 18, 0.2);
-          color: var(--on-surface);
-          padding: 13px 14px;
-          border-radius: 2px;
-          font-family: var(--font-sans);
-          font-size: 14px;
-          outline: none;
-          transition: border-color 0.25s var(--ease);
-          box-sizing: border-box;
-        }
-        [data-theme="dark"] .offsite-input,
-        [data-theme="dark"] .offsite-textarea {
-          background: rgba(255, 255, 255, 0.04);
-          border-color: var(--surface-line);
-        }
-        .offsite-input:focus, .offsite-textarea:focus {
-          border-color: var(--gold-dark);
-        }
-        [data-theme="dark"] .offsite-input:focus,
-        [data-theme="dark"] .offsite-textarea:focus {
-          border-color: var(--gold);
-        }
-        .offsite-pill-grid {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          margin-top: 4px;
-          max-width: 100%;
-        }
-        .offsite-pill {
-          padding: 9px 15px;
-          font-family: var(--font-sans);
-          font-size: 13px;
-          border: 1px solid rgba(28, 23, 18, 0.16);
-          border-radius: 2px;
-          background: #ffffff;
-          color: var(--on-surface);
-          cursor: pointer;
-          transition: all 0.2s var(--ease);
-          user-select: none;
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          max-width: 100%;
-          box-sizing: border-box;
-          word-break: break-word;
-        }
-        [data-theme="dark"] .offsite-pill {
-          background: rgba(255, 255, 255, 0.04);
-          border-color: var(--surface-line);
-        }
-        .offsite-pill:hover {
-          border-color: var(--gold-dark);
-          background: rgba(156, 124, 62, 0.06);
-        }
-        .offsite-pill.selected {
-          background: var(--gold);
-          color: var(--black);
-          border-color: var(--gold);
-          font-weight: 600;
-        }
-        [data-theme="light"] .offsite-pill.selected {
-          background: var(--gold-dark);
-          color: #ffffff;
-          border-color: var(--gold-dark);
-        }
-        .offsite-pill svg {
-          width: 14px;
-          height: 14px;
-          flex-shrink: 0;
-        }
-        .offsite-checkbox-row {
-          display: flex;
-          align-items: flex-start;
-          gap: 12px;
-          padding: 14px 16px;
-          border: 1px solid rgba(28, 23, 18, 0.16);
-          border-radius: 2px;
-          background: #ffffff;
-          cursor: pointer;
-          transition: border-color 0.2s var(--ease);
-          user-select: none;
-          margin-top: 4px;
-          max-width: 100%;
-          box-sizing: border-box;
-          min-width: 0;
-        }
-        .offsite-checkbox-row > div {
-          flex: 1;
-          min-width: 0;
-          word-break: break-word;
-        }
-        .offsite-checkbox-row input[type="checkbox"] {
-          accent-color: var(--gold);
-          width: 18px;
-          height: 18px;
-          margin-top: 2px;
-          cursor: pointer;
-          flex-shrink: 0;
-        }
-        .offsite-checkbox-title {
-          font-family: var(--font-sans);
-          font-size: 13.5px;
-          font-weight: 600;
-          color: var(--on-surface);
-          display: block;
-          word-break: break-word;
-        }
-        .offsite-checkbox-desc {
-          font-family: var(--font-sans);
-          font-size: 12px;
-          color: var(--on-surface-muted);
-          display: block;
-          margin-top: 2px;
-          word-break: break-word;
-        }
-        [data-theme="dark"] .offsite-checkbox-row {
-          background: rgba(255, 255, 255, 0.04);
-          border-color: var(--surface-line);
-        }
-        .offsite-checkbox-row:hover {
-          border-color: var(--gold-dark);
-        }
-        [data-theme="dark"] .offsite-checkbox-row:hover {
-          border-color: var(--gold);
-        }
-        .offsite-error-msg {
-          font-family: var(--font-sans);
-          font-size: 11px;
-          color: #e54d42;
-          margin-top: 4px;
-        }
-        .offsite-footer-actions {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 16px;
-          margin-top: 28px;
-          padding-top: 20px;
-          border-top: 1px solid var(--surface-line);
-        }
-        .offsite-success-box {
-          text-align: center;
-          padding: 40px 20px;
-        }
-        @media (max-width: 640px) {
-          .offsite-modal-backdrop {
-            padding: 12px;
-          }
-          .offsite-modal-card {
-            max-height: 94vh;
-          }
-          .offsite-modal-header {
-            padding: 16px 18px;
-          }
-          .offsite-modal-body {
-            padding: 18px 16px 24px;
-            overflow-x: hidden;
-          }
-          .offsite-step-bar {
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            flex-wrap: wrap;
-            gap: 4px;
-          }
-          .offsite-form-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
-          }
-          .offsite-checkbox-row {
-            padding: 12px;
-          }
-          .offsite-checkbox-title {
-            font-size: 12.5px;
-          }
-          .offsite-checkbox-desc {
-            font-size: 11.5px;
-          }
-        }
-      `}} />
-
-      <div
-        className="offsite-modal-backdrop"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="offsite-modal-title"
-        onClick={handleClose}
-      >
+  return (
+    <Modal open={isOpen} onClose={onClose} labelledBy="offsite-modal-title" bare>
+      <div className="offsite-modal-backdrop" onClick={onClose}>
         <div className="offsite-modal-card" onClick={(e) => e.stopPropagation()}>
           <header className="offsite-modal-header">
             <div className="offsite-modal-header-text">
@@ -543,9 +130,8 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
             </div>
             <button
               type="button"
-              ref={closeBtnRef}
               className="offsite-modal-close-btn"
-              onClick={handleClose}
+              onClick={onClose}
               aria-label="Close enquiry form"
             >
               <Icon name="close" />
@@ -573,7 +159,7 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
                   className="btn solid"
                   style={{ marginTop: 32 }}
                   onClick={() => {
-                    setSubmitted(false);
+                    reset();
                     setStep(1);
                     setFormData(INITIAL_OFFSITE_FORM_DATA);
                     onClose();
@@ -877,7 +463,6 @@ export function OffsiteEditModal({ isOpen, onClose, triggerRef }: OffsiteEditMod
           </div>
         </div>
       </div>
-    </>,
-    document.body
+    </Modal>
   );
 }

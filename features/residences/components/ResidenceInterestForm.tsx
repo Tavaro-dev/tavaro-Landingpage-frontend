@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { CustomSelect } from "@/components/ui/CustomSelect";
-import { submitEnquiryAction } from "@/app/actions/enquiry";
+import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
 
 const RESIDENCE_OPTIONS = [
   { value: "Leela by Tavaro Residences", label: "Leela by Tavaro Residences" },
@@ -22,10 +22,7 @@ export default function ResidenceInterestForm({
 }: {
   defaultResidence?: string;
 }) {
-  const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [isDemo, setIsDemo] = useState(false);
+  const { submit, isSubmitting, submitted, error: submitError, isDemo } = useEnquirySubmit();
   const [residence, setResidence] = useState(defaultResidence ?? RESIDENCE_OPTIONS[0].value);
   const [intents, setIntents] = useState<string[]>([]);
 
@@ -44,11 +41,9 @@ export default function ResidenceInterestForm({
       suppressHydrationWarning
       onSubmit={async (e) => {
         e.preventDefault();
-        setIsSubmitting(true);
-        setSubmitError(null);
 
         const form = new FormData(e.currentTarget);
-        const result = await submitEnquiryAction({
+        await submit({
           type: "contact",
           data: {
             name: String(form.get("name") || ""),
@@ -60,15 +55,6 @@ export default function ResidenceInterestForm({
               : undefined,
           },
         });
-
-        setIsSubmitting(false);
-
-        if (result.success) {
-          setIsDemo(!!result.isDemo);
-          setSubmitted(true);
-        } else {
-          setSubmitError(result.message);
-        }
       }}
     >
       <div className="form-grid">

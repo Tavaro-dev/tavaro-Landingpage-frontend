@@ -12,6 +12,8 @@ type ModalProps = {
   /** Accessible name; or pass labelledBy pointing at the visible title. */
   label?: string;
   labelledBy?: string;
+  /** Behaviour only: no backdrop/padding/fade, for components that render their own full-screen overlay. */
+  bare?: boolean;
   children: ReactNode;
 };
 
@@ -21,7 +23,7 @@ type ModalProps = {
  * `open` stays the source of truth; Escape/backdrop clicks call onClose.
  * Portaled to <body> so section-level theme tokens don't leak into it.
  */
-export function Modal({ open, onClose, label, labelledBy, children }: ModalProps) {
+export function Modal({ open, onClose, label, labelledBy, bare = false, children }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
@@ -41,7 +43,7 @@ export function Modal({ open, onClose, label, labelledBy, children }: ModalProps
   return createPortal(
     <dialog
       ref={ref}
-      className="app-dialog"
+      className={bare ? "app-dialog bare" : "app-dialog"}
       aria-label={label}
       aria-labelledby={labelledBy}
       onCancel={(e) => {

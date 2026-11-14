@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { ThingsToDoModal } from "./ThingsToDoModal";
 
 interface ThingsToDoButtonProps {
@@ -15,12 +15,10 @@ export function ThingsToDoButton({
   children,
 }: ThingsToDoButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   return (
     <>
       <button
-        ref={triggerRef}
         type="button"
         className={className}
         style={style}
@@ -36,7 +34,6 @@ export function ThingsToDoButton({
       <ThingsToDoModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        triggerRef={triggerRef}
       />
     </>
   );

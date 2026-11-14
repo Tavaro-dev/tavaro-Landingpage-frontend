@@ -58,6 +58,32 @@ describe("Validation Schemas", () => {
     expect(parsed.success).toBe(false);
   });
 
+  it("accepts an Under the Sky enquiry and requires a setting preference", () => {
+    const data = {
+      planningType: "Private dinner",
+      preferredDate: "2026-12-20",
+      expectedGuests: "12",
+      settingPreferences: ["Under the trees"],
+      name: "Test Guest",
+      phoneNumber: "9000000000",
+      emailAddress: "",
+    };
+    expect(EnquiryPayloadSchema.safeParse({ type: "under_the_sky", data }).success).toBe(true);
+    expect(
+      EnquiryPayloadSchema.safeParse({ type: "under_the_sky", data: { ...data, settingPreferences: [] } }).success
+    ).toBe(false);
+  });
+
+  it("rejects unknown fields on plan_event (strict schema)", () => {
+    const data = {
+      name: "Test Guest", phone: "9000000000", email: "test@example.com",
+      eventType: "Wedding", eventDate: "2026-12-20", guestCount: "50", rooms: "",
+    };
+    expect(EnquiryPayloadSchema.safeParse({ type: "plan_event", data }).success).toBe(true);
+    // PlanEventModal used to send this extra field, which made every submission fail.
+    expect(EnquiryPayloadSchema.safeParse({ type: "plan_event", data: { ...data, needCatering: false } }).success).toBe(false);
+  });
+
   it("validates valid payment request", () => {
     const valid = { quoteId: "mock-quote-12345" };
     const parsed = PaymentRequestSchema.safeParse(valid);

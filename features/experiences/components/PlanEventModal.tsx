@@ -5,7 +5,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
-import { submitEnquiryAction } from "@/app/actions/enquiry";
+import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
 
 interface PlanEventModalProps {
   isOpen: boolean;
@@ -34,7 +34,6 @@ const ROOM_OPTIONS = [
 export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps) {
   const uid = useId();
   const fieldId = (field: string) => `${uid}-${field}`;
-  const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -44,9 +43,7 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
     guestCount: "",
     rooms: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [isDemo, setIsDemo] = useState(false);
+  const { submit, reset, isSubmitting, submitted, error: submitError, isDemo } = useEnquirySubmit();
 
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy={fieldId("title")}>
@@ -78,7 +75,7 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
               className="btn solid"
               style={{ marginTop: 28 }}
               onClick={() => {
-                setSubmitted(false);
+                reset();
                 onClose();
               }}
             >
@@ -89,21 +86,11 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
           <form
             onSubmit={async (e) => {
               e.preventDefault();
-              setIsSubmitting(true);
-              setSubmitError(null);
               
-              const result = await submitEnquiryAction({
+              await submit({
                 type: "plan_event",
                 data: formData,
               });
-              setIsSubmitting(false);
-
-              if (result.success) {
-                setIsDemo(!!result.isDemo);
-                setSubmitted(true);
-              } else {
-                setSubmitError(result.message);
-              }
             }}
             className="event-modal-body"
           >

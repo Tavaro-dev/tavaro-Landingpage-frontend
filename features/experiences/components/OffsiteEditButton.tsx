@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { OffsiteEditModal } from "./OffsiteEditModal";
 
 interface OffsiteEditButtonProps {
@@ -15,12 +15,10 @@ export function OffsiteEditButton({
   children,
 }: OffsiteEditButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   return (
     <>
       <button
-        ref={triggerRef}
         type="button"
         className={className}
         style={style}
@@ -35,7 +33,6 @@ export function OffsiteEditButton({
       <OffsiteEditModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        triggerRef={triggerRef}
       />
     </>
   );

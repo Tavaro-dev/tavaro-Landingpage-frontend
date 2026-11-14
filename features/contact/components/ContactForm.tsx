@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { CustomSelect } from "@/components/ui/CustomSelect";
-import { submitEnquiryAction } from "@/app/actions/enquiry";
+import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
 
 const INTEREST_OPTIONS = [
   { value: "Booking a Stay", label: "Booking a Stay" },
@@ -25,13 +25,10 @@ const ROOM_OPTIONS = [
 ];
 
 export default function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
   const [interest, setInterest] = useState("Booking a Stay");
   const [rooms, setRooms] = useState("");
   const [needCatering, setNeedCatering] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [isDemo, setIsDemo] = useState(false);
+  const { submit, isSubmitting, submitted, error: submitError, isDemo } = useEnquirySubmit();
 
   const uid = useId();
   const fieldId = (field: string) => `${uid}-${field}`;
@@ -43,11 +40,9 @@ export default function ContactForm() {
       className="split-body"
       onSubmit={async (e) => {
         e.preventDefault();
-        setIsSubmitting(true);
-        setSubmitError(null);
         
         const form = new FormData(e.currentTarget);
-        const result = await submitEnquiryAction({
+        await submit({
           type: "contact",
           data: {
             name: String(form.get("name") || ""),
@@ -59,14 +54,6 @@ export default function ContactForm() {
             message: String(form.get("message") || ""),
           },
         });
-        setIsSubmitting(false);
-
-        if (result.success) {
-          setIsDemo(!!result.isDemo);
-          setSubmitted(true);
-        } else {
-          setSubmitError(result.message);
-        }
       }}
     >
       <div className="form-grid">
