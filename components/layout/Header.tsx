@@ -21,7 +21,6 @@ export default function Header() {
   const noHero =
     pathname === "/resorts/accommodations" ||
     pathname.startsWith("/checkout") ||
-    pathname === "/resorts/location" ||
     pathname.endsWith("/book");
 
   // The scrolled look is driven by <html data-scrolled>, set by the inline
