@@ -12,7 +12,7 @@ export function InteractiveLocationMap() {
   return (
     <>
       <div className="location-map">
-        <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+        <svg className="tw:absolute tw:top-[0] tw:left-[0] tw:w-full tw:h-full tw:pointer-events-none">
           {tavaro && RESORT_LOCATION_POINTS.map((point) => {
             if (point.id === tavaro.id) return null;
             const isActive = activeId === point.id;
@@ -26,7 +26,7 @@ export function InteractiveLocationMap() {
                 stroke={isActive ? "var(--ink)" : "var(--surface-line)"}
                 strokeWidth={isActive ? "2" : "1.5"}
                 strokeDasharray={isActive ? "none" : "4 4"}
-                style={{ transition: "all 0.3s ease" }}
+                className="tw:transition-all tw:duration-300 tw:ease-[ease]"
               />
             );
           })}

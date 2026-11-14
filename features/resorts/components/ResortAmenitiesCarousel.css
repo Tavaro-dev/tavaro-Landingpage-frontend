@@ -1,3 +1,7 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
 .amenities-carousel-section {
   position: relative;
   background: var(--surface);
@@ -252,3 +256,5 @@
     scroll-snap-align: start;
   }
 }
+
+} /* @layer components */

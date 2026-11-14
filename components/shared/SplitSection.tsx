@@ -8,7 +8,6 @@ export function SplitSection({
   placeholder,
   src,
   alt,
-  priority = false,
   children,
 }: {
   reverse?: boolean;
@@ -16,7 +15,6 @@ export function SplitSection({
   placeholder: string;
   src: string;
   alt: string;
-  priority?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -26,7 +24,6 @@ export function SplitSection({
           src={src}
           alt={alt}
           fill
-          priority={priority}
           sizes="(min-width: 861px) 50vw, 100vw"
         />
       </div>

@@ -114,8 +114,8 @@ export default function ResidenceInterestForm({
       </div>
 
       {/* Optional intents */}
-      <div className="residence-intent-group" style={{ marginTop: 28 }}>
-        <p className="eyebrow no-line" style={{ marginBottom: 14, fontSize: 10 }}>
+      <div className="residence-intent-group tw:mt-[28px]">
+        <p className="eyebrow no-line tw:mb-[14px] tw:text-[10px]">
           I would like to (optional)
         </p>
         <div className="residence-intent-options">
@@ -136,7 +136,7 @@ export default function ResidenceInterestForm({
       </div>
 
       {submitError && (
-        <div className="form-error" style={{ marginTop: 20, color: "var(--danger)" }}>
+        <div className="form-error tw:mt-[20px] tw:text-(color:--danger)">
           {submitError}
         </div>
       )}
@@ -144,8 +144,7 @@ export default function ResidenceInterestForm({
       <button
         type="submit"
         id="residence-register-submit"
-        className="btn solid"
-        style={{ marginTop: 32 }}
+        className="btn solid tw:mt-[32px]"
         disabled={submitted || isSubmitting}
         suppressHydrationWarning
       >
@@ -154,23 +153,14 @@ export default function ResidenceInterestForm({
       </button>
 
       {submitted && (
-        <div
-          className="form-success"
-          style={{
-            marginTop: 20,
-            padding: 18,
-            border: "1px solid var(--gold-dark)",
-            background: "var(--surface-overlay)",
-          }}
-        >
-          <p style={{ fontSize: 14, lineHeight: 1.7, color: "var(--on-surface)" }}>
+        <div className="form-success">
+          <p className="tw:text-[14px] tw:leading-[1.7] tw:text-(color:--on-surface)">
             Thank you for your interest. We&apos;ll be in touch discreetly and personally
             — exactly as a home of this nature deserves.
           </p>
           {isDemo && (
             <p
-              className="order-summary-muted"
-              style={{ marginTop: 12, color: "var(--gold-dark)" }}
+              className="order-summary-muted tw:mt-[12px] tw:text-(color:--gold-dark)"
             >
               (Demo: No real enquiry was delivered.)
             </p>

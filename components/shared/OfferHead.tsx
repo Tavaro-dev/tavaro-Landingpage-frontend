@@ -18,11 +18,11 @@ export function OfferHead({
     <Reveal className="offer-head">
       <div>
         {label}
-        <h2 className="display-2" style={{ marginTop: 18 }}>
+        <h2 className="display-2 tw:mt-[18px]">
           {heading}
         </h2>
       </div>
-      {lede && <p className="lede" style={{ maxWidth: "38ch" }}>{lede}</p>}
+      {lede && <p className="lede tw:max-w-[38ch]">{lede}</p>}
     </Reveal>
   );
 }

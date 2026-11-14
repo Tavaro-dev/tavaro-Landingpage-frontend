@@ -37,7 +37,7 @@ export function ResortDining() {
               <li>Wedding, corporate &amp; social event catering</li>
               <li>Seasonal menus &amp; chef-led experiences</li>
             </ul>
-            <div style={{ marginTop: "24px" }}>
+            <div className="tw:mt-[24px]">
               <button
                 type="button"
                 onClick={() => setModalOpen(true)}

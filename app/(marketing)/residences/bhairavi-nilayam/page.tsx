@@ -186,7 +186,7 @@ export default function BhairavPage() {
               architecture that is deeply responsive to its setting. The residence balances
               contemporary forms with traditional craft, vastu-conscious planning with modern living.
             </p>
-            <ul className="split-list" style={{ marginTop: 20 }}>
+            <ul className="split-list tw:mt-[20px]">
               <li>Praveen Architects — West Hyderabad</li>
               <li>Vastu conscious contemporary planning</li>
               <li>North-facing glass wall — landscape connection</li>
@@ -209,7 +209,7 @@ export default function BhairavPage() {
               </>
             }
           />
-          <Reveal stagger className="principles-grid" style={{ marginTop: 40 }}>
+          <Reveal stagger className="principles-grid tw:mt-[40px]">
             {DESIGN_PRINCIPLES.map((p) => (
               <div className="principle-item" key={p.label}>
                 <p className="eyebrow no-line">{p.label}</p>
@@ -234,7 +234,7 @@ export default function BhairavPage() {
             }
             lede="These spaces are not a list of amenities. They are the parts of a home designed around how a family actually lives — across mornings, evenings, weekends and years."
           />
-          <Reveal stagger className="living-spaces-grid" style={{ marginTop: 40 }}>
+          <Reveal stagger className="living-spaces-grid tw:mt-[40px]">
             {LIVING_SPACES.map((space) => (
               <div className="living-space-item" key={space.label}>
                 <p className="eyebrow no-line">{space.label}</p>
@@ -257,7 +257,7 @@ export default function BhairavPage() {
               </>
             }
           />
-          <Reveal className="residence-specs-block" style={{ marginTop: 40 }}>
+          <Reveal className="residence-specs-block tw:mt-[40px]">
             <div className="residence-specs-table">
               {RESIDENCE_SPECS.map((spec) => (
                 <div className="spec-row" key={spec.label}>
@@ -291,7 +291,7 @@ export default function BhairavPage() {
               </>
             }
           />
-          <Reveal stagger className="gallery-strip" style={{ marginTop: 32 }}>
+          <Reveal stagger className="gallery-strip tw:mt-[32px]">
             {GALLERY_IMAGES.map((item) => (
               <div
                 className={`gallery-item ${item.tall ? "tall " : ""}${item.placeholder}`}
@@ -321,11 +321,11 @@ export default function BhairavPage() {
                 <br />
                 for a private conversation
               </h2>
-              <p className="lede" style={{ marginTop: 16 }}>
+              <p className="lede tw:mt-[16px]">
                 Bhairavi Nilayam is a residence of singular character. If it speaks to you, we&apos;d
                 like to speak with you — personally, discreetly, at your pace.
               </p>
-              <div className="residence-details-mini" style={{ marginTop: 28 }}>
+              <div className="residence-details-mini tw:mt-[28px]">
                 {RESIDENCE_SPECS.map((spec) => (
                   <div key={spec.label} className="mini-spec">
                     <span className="mini-spec-label">{spec.label}</span>

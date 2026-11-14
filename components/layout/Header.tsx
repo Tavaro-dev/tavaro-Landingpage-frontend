@@ -1,10 +1,10 @@
 "use client";
-import { lockScroll } from "@/lib/scrollLock";
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
+import { Modal } from "@/components/ui/Modal";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { CartButton } from "@/features/booking/components/CartButton";
 import { NAV_ITEMS } from "@/lib/nav";
@@ -25,8 +25,6 @@ export default function Header() {
     pathname === "/resorts/photos" ||
     pathname.endsWith("/book");
 
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
   const topSentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -104,29 +102,7 @@ export default function Header() {
     };
   }, [isHome, pathname]);
 
-  useEffect(() => {
-    if (!mobileOpen) return;
-    const unlockScroll = lockScroll();
-    requestAnimationFrame(() => closeBtnRef.current?.focus());
-    return unlockScroll;
-  }, [mobileOpen]);
-
-  useEffect(() => {
-    if (!mobileOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setMobileOpen(false);
-        triggerRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [mobileOpen]);
-
-  const closeMobile = () => {
-    setMobileOpen(false);
-    triggerRef.current?.focus();
-  };
+  const closeMobile = () => setMobileOpen(false);
 
   return (
     <>
@@ -134,15 +110,6 @@ export default function Header() {
         ref={topSentinelRef}
         aria-hidden="true"
         className="header-scroll-sentinel"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "40px",
-          pointerEvents: "none",
-          visibility: "hidden",
-        }}
       />
       <header
         className={[
@@ -180,7 +147,6 @@ export default function Header() {
         </nav>
         <button
           type="button"
-          ref={triggerRef}
           className={`nav-toggle${mobileOpen ? " open" : ""}`}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
@@ -193,33 +159,35 @@ export default function Header() {
           <span></span>
         </button>
       </header>
-      <div id="mobile-nav" className={`mobile-nav${mobileOpen ? " open" : ""}`} aria-hidden={!mobileOpen}>
-        <button type="button" ref={closeBtnRef} className="mobile-close-btn" aria-label="Close menu" onClick={closeMobile}>
-          <Icon name="x" />
-        </button>
-        <Link href="/" onClick={closeMobile}>
-          Home
-        </Link>
-        {NAV_ITEMS.map((item) => (
-          <Link key={item.href} href={item.href} onClick={closeMobile}>
-            {item.label}
+      <Modal open={mobileOpen} onClose={closeMobile} label="Menu" bare exitMs={400}>
+        <div id="mobile-nav" className={`mobile-nav${mobileOpen ? " open" : ""}`}>
+          <button type="button" className="mobile-close-btn" aria-label="Close menu" onClick={closeMobile}>
+            <Icon name="x" />
+          </button>
+          <Link href="/" onClick={closeMobile}>
+            Home
           </Link>
-        ))}
-        <div className="mobile-sub">
-          <div className="mobile-sub-buttons">
-            <Link href="/about" className={`nav-cta${pathname === "/about" ? " active" : ""}`} onClick={closeMobile}>
-              About
+          {NAV_ITEMS.map((item) => (
+            <Link key={item.href} href={item.href} onClick={closeMobile}>
+              {item.label}
             </Link>
-            <Link href="/contact" className="nav-cta outline" onClick={closeMobile}>
-              Enquire
-            </Link>
-          </div>
-          <div className="mobile-sub-icons">
-            {showCart && <CartButton />}
-            <ThemeToggle />
+          ))}
+          <div className="mobile-sub">
+            <div className="mobile-sub-buttons">
+              <Link href="/about" className={`nav-cta${pathname === "/about" ? " active" : ""}`} onClick={closeMobile}>
+                About
+              </Link>
+              <Link href="/contact" className="nav-cta outline" onClick={closeMobile}>
+                Enquire
+              </Link>
+            </div>
+            <div className="mobile-sub-icons">
+              {showCart && <CartButton />}
+              <ThemeToggle />
+            </div>
           </div>
         </div>
-      </div>
+      </Modal>
     </>
   );
 }

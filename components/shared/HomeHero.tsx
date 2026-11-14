@@ -18,7 +18,7 @@ export function HomeHero() {
           src="/photos/drone-hero.jpg"
           alt="Aerial view of a Tavaro celebration at dusk"
           fill
-          priority
+          preload
           sizes="100vw"
         />
       </div>

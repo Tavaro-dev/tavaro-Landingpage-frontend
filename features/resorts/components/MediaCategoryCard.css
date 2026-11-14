@@ -1,3 +1,7 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
 .media-card {
   position: relative;
   width: 100%;
@@ -148,3 +152,5 @@
   .media-card.variant-hero .media-card-title,
   .media-card.variant-wide .media-card-title { font-size: 20px; }
 }
+
+} /* @layer components */

@@ -136,7 +136,7 @@ export default function LeelaPage() {
             }
             lede="Each of Tavaro's residential principles is expressed through Leela's architecture — in the way it meets its landscape, handles light and creates space for living."
           />
-          <Reveal stagger className="principles-grid" style={{ marginTop: 40 }}>
+          <Reveal stagger className="principles-grid tw:mt-[40px]">
             {ARCHITECTURAL_PRINCIPLES.map((p) => (
               <div className="principle-item" key={p.label}>
                 <p className="eyebrow no-line">{p.label}</p>
@@ -163,37 +163,37 @@ export default function LeelaPage() {
           />
 
           {/* Plan categories overview */}
-          <Reveal stagger className="principles-grid" style={{ marginTop: 40, marginBottom: 32 }}>
+          <Reveal stagger className="principles-grid tw:mt-[40px] tw:mb-[32px]">
             <div className="principle-item">
-              <p className="eyebrow no-line" style={{ color: "var(--gold)" }}>
+              <p className="eyebrow no-line tw:text-(color:--gold)">
                 01 — Typical Floor Plan
               </p>
-              <p style={{ marginTop: 8, fontWeight: 500, color: "var(--on-surface)" }}>
+              <p className="tw:mt-[8px] tw:font-[500] tw:text-(color:--on-surface)">
                 Living &amp; Bedroom Suites
               </p>
-              <p style={{ marginTop: 8 }}>
+              <p className="tw:mt-[8px]">
                 Generous social living pavilions seamlessly opening onto deep perimeter verandas, with private family sanctuaries buffered from entertaining zones.
               </p>
             </div>
             <div className="principle-item">
-              <p className="eyebrow no-line" style={{ color: "var(--gold)" }}>
+              <p className="eyebrow no-line tw:text-(color:--gold)">
                 02 — Terrace Plan
               </p>
-              <p style={{ marginTop: 8, fontWeight: 500, color: "var(--on-surface)" }}>
+              <p className="tw:mt-[8px] tw:font-[500] tw:text-(color:--on-surface)">
                 Sky Pavilion &amp; Landscape Deck
               </p>
-              <p style={{ marginTop: 8 }}>
+              <p className="tw:mt-[8px]">
                 Open-to-sky entertaining terrace with shaded pergolas, lush planters, and panoramic vistas celebrating morning sun and twilight breezes.
               </p>
             </div>
             <div className="principle-item">
-              <p className="eyebrow no-line" style={{ color: "var(--gold)" }}>
+              <p className="eyebrow no-line tw:text-(color:--gold)">
                 03 — Isometric &amp; 3D Plans
               </p>
-              <p style={{ marginTop: 8, fontWeight: 500, color: "var(--on-surface)" }}>
+              <p className="tw:mt-[8px] tw:font-[500] tw:text-(color:--on-surface)">
                 Volumetric Spatial Flow
               </p>
-              <p style={{ marginTop: 8 }}>
+              <p className="tw:mt-[8px]">
                 Double-height light shafts, deliberate thermal cross-ventilation pathways, and intuitive circulation connecting every level.
               </p>
             </div>
@@ -202,13 +202,13 @@ export default function LeelaPage() {
           <Reveal className="floor-plan-display">
             <div className="floor-plan-placeholder ph-2">
               <div className="floor-plan-overlay">
-                <p className="eyebrow no-line" style={{ color: "var(--gold-light)" }}>
+                <p className="eyebrow no-line tw:text-(color:--gold-light)">
                   Detailed Architectural Plans &amp; Brochure
                 </p>
-                <p style={{ marginTop: 10, fontSize: 13, color: "var(--muted-on-dark)", maxWidth: "46ch", marginInline: "auto" }}>
+                <p className="tw:mt-[10px] tw:text-[13px] tw:text-(color:--muted-on-dark) tw:max-w-[46ch] tw:mx-auto">
                   Comprehensive architectural schematics including floor-wise layouts, dimensioned room configurations, terrace layouts, and orientation studies are available upon enquiry.
                 </p>
-                <Link href="#register" className="btn solid" style={{ marginTop: 22 }}>
+                <Link href="#register" className="btn solid tw:mt-[22px]">
                   Request Complete Floor Plans <span className="btn-arrow">→</span>
                 </Link>
               </div>
@@ -262,7 +262,7 @@ export default function LeelaPage() {
               to nature. Materials are chosen for how they age — warm, honest and quietly luxurious.
               Each space is designed for the life that happens within it.
             </p>
-            <ul className="split-list" style={{ marginTop: 20 }}>
+            <ul className="split-list tw:mt-[20px]">
               <li>Refined contemporary materiality</li>
               <li>Natural textures and honest finishes</li>
               <li>Generous light through considered openings</li>
@@ -285,7 +285,7 @@ export default function LeelaPage() {
               </>
             }
           />
-          <Reveal stagger className="gallery-strip" style={{ marginTop: 32 }}>
+          <Reveal stagger className="gallery-strip tw:mt-[32px]">
             {GALLERY_IMAGES.map((item) => (
               <div
                 className={`gallery-item ${item.tall ? "tall " : ""}${item.placeholder}`}
@@ -318,21 +318,20 @@ export default function LeelaPage() {
             }
             lede="Leela is positioned to offer genuine connection to nature while remaining close to the rhythms of city life."
           />
-          <Reveal className="location-proximity-grid" style={{ marginTop: 40 }}>
+          <Reveal className="location-proximity-grid tw:mt-[40px]">
             <div className="proximity-map-placeholder ph-1">
               <div className="proximity-map-label">
-                <p className="eyebrow no-line" style={{ color: "var(--gold-light)" }}>
+                <p className="eyebrow no-line tw:text-(color:--gold-light)">
                   Location
                 </p>
-                <p style={{ fontSize: 12, color: "var(--muted-on-dark)", marginTop: 6 }}>
+                <p className="tw:text-[12px] tw:text-(color:--muted-on-dark) tw:mt-[6px]">
                   Interactive map available on enquiry
                 </p>
               </div>
             </div>
             <div className="proximity-list">
               <p
-                className="eyebrow no-line"
-                style={{ marginBottom: 20, color: "var(--on-surface-muted)" }}
+                className="eyebrow no-line tw:mb-[20px] tw:text-(color:--on-surface-muted)"
               >
                 Key Destinations
               </p>
@@ -348,7 +347,7 @@ export default function LeelaPage() {
                   <span className="proximity-time">{item.time}</span>
                 </div>
               ))}
-              <p style={{ fontSize: 11, color: "var(--muted-on-dark)", marginTop: 16 }}>
+              <p className="tw:text-[11px] tw:text-(color:--muted-on-dark) tw:mt-[16px]">
                 Travel times are indicative. Verified times available on request.
               </p>
             </div>
@@ -365,11 +364,11 @@ export default function LeelaPage() {
               <h2 className="display-3">A discreet enquiry,
                 <br />at your pace
               </h2>
-              <p className="lede" style={{ marginTop: 16 }}>
+              <p className="lede tw:mt-[16px]">
                 Tell us what you&apos;d like to know. We&apos;ll follow up personally and without
                 pressure — a conversation, not a sales call.
               </p>
-              <p style={{ marginTop: 24, fontSize: 13, color: "var(--muted-on-dark)", lineHeight: 1.7 }}>
+              <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--muted-on-dark) tw:leading-[1.7]">
                 Whether you&apos;d like the brochure, pricing information, a private viewing or simply
                 a conversation with our team — we&apos;re here to help you understand if Leela is
                 right for you.

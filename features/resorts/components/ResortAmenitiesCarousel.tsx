@@ -68,8 +68,7 @@ function AmenityCard({ item }: { item: AmenityItem }) {
           src={item.heroImage}
           alt={item.heroAlt}
           fill
-          sizes="(max-width: 768px) 280px, 360px"
-          style={{ objectFit: "cover" }}
+          sizes="(max-width: 768px) 280px, 360px" className="tw:object-cover"
         />
       </div>
       <div className="amenity-card-scrim" />

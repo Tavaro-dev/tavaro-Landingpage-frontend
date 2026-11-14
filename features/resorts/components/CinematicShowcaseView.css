@@ -1,3 +1,7 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
 .cinematic-showcase {
   position: relative;
   background: var(--surface, #0f0d0a);
@@ -417,3 +421,5 @@
     text-align: center;
   }
 }
+
+} /* @layer components */

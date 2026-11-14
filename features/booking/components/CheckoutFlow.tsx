@@ -149,17 +149,17 @@ export function CheckoutFlow() {
 
   if (items.length === 0 && !isConfirmed) {
     return (
-      <div className="center-col" style={{ padding: "60px 0" }}>
-        <p className="eyebrow center no-line" style={{ display: "flex", justifyContent: "center" }}>
+      <div className="center-col checkout-status">
+        <p className="eyebrow center no-line status-eyebrow">
           Checkout
         </p>
-        <h1 className="display-2" style={{ marginTop: 18 }}>
+        <h1 className="display-2 step-title">
           Your cart is empty
         </h1>
-        <p className="lede" style={{ marginTop: 20 }}>
+        <p className="lede step-lede wide">
           Add a room from Accommodations before checking out.
         </p>
-        <div style={{ marginTop: 32 }}>
+        <div className="status-actions">
           <Link href="/resorts/accommodations" className="btn solid">
             Browse Accommodations
           </Link>
@@ -170,21 +170,21 @@ export function CheckoutFlow() {
 
   if (isConfirmed) {
     return (
-      <div className="center-col" style={{ padding: "60px 0" }}>
-        <p className="eyebrow center no-line" style={{ display: "flex", justifyContent: "center" }}>
+      <div className="center-col checkout-status">
+        <p className="eyebrow center no-line status-eyebrow">
           Booking Received
         </p>
-        <h1 className="display-2 italic" style={{ marginTop: 18 }}>
+        <h1 className="display-2 italic step-title">
           Thank you for choosing Tavaro.
         </h1>
-        <p className="lede" style={{ marginTop: 20, maxWidth: "52ch", marginLeft: "auto", marginRight: "auto" }}>
+        <p className="lede step-lede wide narrow">
           This is a demo checkout — no real payment has been processed and no card details were transmitted or
           stored. Our reservations team will be in touch shortly to confirm availability and arrange secure
           payment.
           <br /><br />
           Booking Reference: <strong>{bookingResult?.reference}</strong>
         </p>
-        <div style={{ marginTop: 32 }}>
+        <div className="status-actions">
           <Link href="/" className="btn solid">
             Back to Home
           </Link>
@@ -204,16 +204,16 @@ export function CheckoutFlow() {
           {step === 1 && (
             <div>
               <p className="eyebrow">Step 1</p>
-              <h1 className="display-2" style={{ marginTop: 18 }}>
+              <h1 className="display-2 step-title">
                 Enhance your stay
               </h1>
-              <p className="lede" style={{ marginTop: 16 }}>
+              <p className="lede step-lede">
                 Treat yourself to something special so you can relax when you get here.
               </p>
 
               {ENHANCEMENT_CATEGORIES.map((category) => (
-                <div key={category} style={{ marginTop: 40 }}>
-                  <p className="display-3 italic" style={{ fontSize: 20, marginBottom: 20 }}>
+                <div key={category} className="enhance-group">
+                  <p className="display-3 italic enhance-group-title">
                     {category}
                   </p>
                   {ENHANCEMENTS.filter((e) => e.category === category).map((enhancement) => {
@@ -238,7 +238,7 @@ export function CheckoutFlow() {
                 </div>
               ))}
 
-              <div style={{ marginTop: 40, display: "flex", gap: 18, flexWrap: "wrap" }}>
+              <div className="step-actions">
                 <button type="button" className="btn solid" onClick={() => setStep(2)}>
                   Continue
                 </button>
@@ -252,11 +252,11 @@ export function CheckoutFlow() {
           {step === 2 && (
             <form onSubmit={handleGuestSubmit}>
               <p className="eyebrow">Step 2</p>
-              <h1 className="display-2" style={{ marginTop: 18 }}>
+              <h1 className="display-2 step-title">
                 Guest &amp; payment details
               </h1>
 
-              <div className="form-grid" style={{ marginTop: 30 }}>
+              <div className="form-grid step-form">
                 <div className="field">
                   <label htmlFor={fieldId("name")}>Full Name</label>
                   <input id={fieldId("name")} name="name" defaultValue={guestDetails.name} type="text" autoComplete="name" required />
@@ -271,15 +271,15 @@ export function CheckoutFlow() {
                 </div>
               </div>
 
-              <div style={{ marginTop: 40, padding: 24, border: "1px dashed var(--border)", borderRadius: 4, background: "var(--background-alt)" }}>
+              <div className="demo-payment-box">
                 <p className="eyebrow no-line">Demo Payment</p>
-                <p className="lede" style={{ marginTop: 8, fontSize: 16 }}>
+                <p className="lede demo-payment-text">
                   No payment provider is currently connected. Real card details are not collected or stored. 
                   Continuing will simulate a successful transaction.
                 </p>
               </div>
 
-              <div style={{ marginTop: 40, display: "flex", gap: 18, flexWrap: "wrap" }}>
+              <div className="step-actions">
                 <button type="button" className="btn" onClick={() => setStep(1)}>
                   Back
                 </button>
@@ -293,17 +293,17 @@ export function CheckoutFlow() {
           {step === 3 && (
             <div>
               <p className="eyebrow">Step 3</p>
-              <h1 className="display-2" style={{ marginTop: 18 }}>
+              <h1 className="display-2 step-title">
                 Confirm your booking
               </h1>
-              <p className="lede" style={{ marginTop: 16 }}>
+              <p className="lede step-lede">
                 Please review your stay in the summary before confirming.
               </p>
 
               {quoteFailed && (
                 <div className="checkout-error" role="alert">
                   <p>We couldn&apos;t price your stay right now.</p>
-                  <button type="button" className="btn sm" style={{ marginTop: 12 }} onClick={() => setQuoteAttempt((n) => n + 1)}>
+                  <button type="button" className="btn sm checkout-error-retry" onClick={() => setQuoteAttempt((n) => n + 1)}>
                     Try again
                   </button>
                 </div>
@@ -315,7 +315,7 @@ export function CheckoutFlow() {
                 </div>
               )}
 
-              <div style={{ marginTop: 40, display: "flex", gap: 18, flexWrap: "wrap", alignItems: "center" }}>
+              <div className="step-actions">
                 <button type="button" className="btn" onClick={() => setStep(2)} disabled={processing}>
                   Back
                 </button>

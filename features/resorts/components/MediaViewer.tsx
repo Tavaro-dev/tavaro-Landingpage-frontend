@@ -89,9 +89,8 @@ export function MediaViewer({ isOpen, category, onClose }: MediaViewerProps) {
               src={currentItem.src}
               alt={currentItem.alt}
               fill
-              priority
-              sizes="(max-width: 1280px) 100vw, 1200px"
-              style={{ objectFit: "contain" }}
+              loading="eager"
+              sizes="(max-width: 1280px) 100vw, 1200px" className="tw:object-contain"
             />
           </div>
 
@@ -109,7 +108,7 @@ export function MediaViewer({ isOpen, category, onClose }: MediaViewerProps) {
 
         {currentItem.caption && (
           <footer className="media-viewer-footer">
-            <p style={{ margin: 0 }}>{currentItem.caption}</p>
+            <p className="tw:m-[0]">{currentItem.caption}</p>
           </footer>
         )}
       </div>

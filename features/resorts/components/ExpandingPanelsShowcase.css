@@ -1,3 +1,7 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
 /* ==========================================================================
    SCROLL-DRIVEN EXPANDING PANELS (Exact Interaction)
    ========================================================================== */
@@ -793,3 +797,30 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Closing CTAs keep their colours on hover (they used to be inline styles). */
+.btn.showcase-closing-primary,
+.btn.showcase-closing-primary:hover {
+  background: var(--gold);
+  color: #0f0d0a;
+}
+
+.btn.showcase-closing-secondary,
+.btn.showcase-closing-secondary:hover {
+  border: 1px solid var(--surface-line);
+  color: var(--on-surface);
+}
+
+.btn.showcase-closing-primary,
+.btn.showcase-closing-secondary {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px 24px;
+}
+
+.btn.showcase-closing-primary {
+  font-weight: 700;
+}
+
+} /* @layer components */

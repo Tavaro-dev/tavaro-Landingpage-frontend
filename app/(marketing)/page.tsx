@@ -96,13 +96,13 @@ export default function HomePage() {
           <Reveal className="offer-head">
             <div>
               <p className="eyebrow">The Tavaro World</p>
-              <h2 className="display-2" style={{ marginTop: 18 }}>
+              <h2 className="display-2 tw:mt-[18px]">
                 Five expressions.
                 <br />
                 One philosophy.
               </h2>
             </div>
-            <p className="lede" style={{ maxWidth: "38ch" }}>
+            <p className="lede tw:max-w-[38ch]">
               Stay at a resort. Live in a residence. Gather through an experience. Restore through wellness.
               Connect at Màre — different ways into the same way of living.
             </p>
@@ -112,7 +112,7 @@ export default function HomePage() {
         <Reveal stagger className="pillar-cards">
           {PILLAR_CARDS.map((card) => (
             <Link className="pillar-card" href={card.href} key={card.href}>
-              <div className={card.placeholder} style={{ position: "absolute", inset: 0 }} />
+              <div className={`${card.placeholder} tw:absolute tw:inset-0`} />
               <Image src={card.src} alt={card.alt} fill sizes="(min-width: 861px) 20vw, 50vw" />
               <div className="pillar-card-body">
                 <span className="pillar-card-num">{card.num}</span>
@@ -235,17 +235,16 @@ export default function HomePage() {
         <div className="container">
           <Reveal>
             <p
-              className="eyebrow center no-line"
-              style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}
+              className="eyebrow center no-line tw:flex tw:justify-center tw:mb-[16px]"
             >
               The Core Tavaro Experience
             </p>
-            <h2 className="display-2" style={{ textAlign: "center", maxWidth: "22ch", margin: "0 auto" }}>
+            <h2 className="display-2 tw:text-center tw:max-w-[22ch] tw:my-[0] tw:mx-auto">
               A world where you can
             </h2>
           </Reveal>
         </div>
-        <div className="container" style={{ marginTop: 56 }}>
+        <div className="container tw:mt-[56px]">
           <Verbs
             items={[
               { word: "Stay", sub: "at a Tavaro resort" },

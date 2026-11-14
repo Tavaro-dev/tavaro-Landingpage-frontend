@@ -1,3 +1,7 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
 .activity-block {
   padding: clamp(48px, 6vw, 84px) 0;
   border-bottom: 1px solid var(--surface-line);
@@ -153,3 +157,5 @@
     grid-template-columns: 1fr;
   }
 }
+
+} /* @layer components */

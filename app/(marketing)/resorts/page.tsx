@@ -123,13 +123,12 @@ export default function ResortsPage() {
         <div className="container">
           <SplitSection
             wide
-            priority
             placeholder="ph-gold"
             src="/images/unsplash/mare-community-coffee-house.jpg"
             alt="Màre Coffee House at Tavaro Resorts"
           >
             <OfferHead num="04 — Coffee & Community" heading="Màre Coffee House" />
-            <p className="italic display-3" style={{ marginBottom: 16 }}>
+            <p className="italic display-3 tw:mb-[16px]">
               Where life comes together.
             </p>
             <p>
@@ -166,27 +165,24 @@ export default function ResortsPage() {
       <ThingsToDoSection />
 
       {/* Leaf by Tavaro */}
-      <section className="section leaf-section" id="leaf" style={{ color: "var(--cream)" }}>
+      <section className="section leaf-section tw:text-(color:--cream)" id="leaf">
         <div className="container">
           <Reveal className="two-col-text">
             <div>
               <span className="coming-soon-tag">Coming Soon</span>
-              <p className="eyebrow" style={{ color: "#a9c2a6" }}>
+              <p className="eyebrow tw:text-[#a9c2a6]">
                 Leaf by Tavaro — Mahalingapuram
               </p>
             </div>
             <div>
-              <p
-                className="lede italic"
-                style={{ fontFamily: "var(--font-display)", fontSize: "clamp(20px,2.4vw,28px)", color: "var(--cream)" }}
-              >
+              <p className="lede italic tw:font-(family-name:--font-display) tw:text-[length:clamp(20px,2.4vw,28px)] tw:text-(color:--cream)">
                 Moving wellness beyond clinics and into restorative resort experiences.
               </p>
-              <p style={{ marginTop: 22, color: "var(--muted-on-dark)" }}>
+              <p className="tw:mt-[22px] tw:text-(color:--muted-on-dark)">
                 A quiet, restorative retreat built around concept, architecture and a wellness proposition
                 designed for the way people want to heal, rest and return to themselves.
               </p>
-              <Link href="/wellness" className="text-link" style={{ marginTop: 26, display: "inline-flex" }}>
+              <Link href="/wellness" className="text-link tw:mt-[26px] tw:inline-flex">
                 Discover Leaf <Icon name="arrow" className="icon-arrow" />
               </Link>
             </div>

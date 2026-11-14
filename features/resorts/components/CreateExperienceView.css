@@ -1,3 +1,7 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
 /* Editorial Luxury Tokens & Typography */
 .create-page {
   background: var(--surface);
@@ -143,3 +147,5 @@
     padding-bottom: 40px;
   }
 }
+
+} /* @layer components */

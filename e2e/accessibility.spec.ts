@@ -97,19 +97,19 @@ test.describe('Accessibility Regressions', () => {
     const menuBtn = page.getByRole('button', { name: 'Open menu' });
     await menuBtn.click();
     
-    const mobileNav = page.locator('#mobile-nav');
-    await expect(mobileNav).toHaveAttribute('aria-hidden', 'false');
+    const mobileNav = page.getByRole('dialog', { name: 'Menu' });
+    await expect(mobileNav).toBeVisible();
+    await expect(mobileNav.getByRole('button', { name: 'Close menu' })).toBeFocused();
     
     // Close button works
-    const closeBtn = page.locator('.mobile-close-btn');
-    await closeBtn.click();
-    await expect(mobileNav).toHaveAttribute('aria-hidden', 'true');
+    await mobileNav.getByRole('button', { name: 'Close menu' }).click();
+    await expect(mobileNav).toBeHidden();
     
     // Escape closes it
     await menuBtn.click();
-    await expect(mobileNav).toHaveAttribute('aria-hidden', 'false');
+    await expect(mobileNav).toBeVisible();
     await page.keyboard.press('Escape');
-    await expect(mobileNav).toHaveAttribute('aria-hidden', 'true');
+    await expect(mobileNav).toBeHidden();
     
     // Focus returns
     await expect(menuBtn).toBeFocused();

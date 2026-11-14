@@ -91,7 +91,7 @@ export default function ContactForm() {
                 onChange={(val) => setRooms(val)}
               />
             </div>
-            <div className="field checkbox-field" style={{ alignSelf: "flex-end", paddingBottom: 10 }}>
+            <div className="field checkbox-field tw:self-end tw:pb-[10px]">
               <label className="checkbox-label">
                 <input
                   type="checkbox"
@@ -113,23 +113,23 @@ export default function ContactForm() {
       </div>
       
       {submitError && (
-        <div className="form-error" style={{ marginTop: 20, color: "var(--danger)" }}>
+        <div className="form-error tw:mt-[20px] tw:text-(color:--danger)">
           {submitError}
         </div>
       )}
 
-      <button type="submit" className="btn solid" style={{ marginTop: 28 }} disabled={submitted || isSubmitting} suppressHydrationWarning>
+      <button type="submit" className="btn solid tw:mt-[28px]" disabled={submitted || isSubmitting} suppressHydrationWarning>
         {isSubmitting ? "SUBMITTING..." : "ENQUIRE"} <span className="btn-arrow">→</span>
       </button>
       {submitted && (
-        <div className="form-success" style={{ marginTop: 20, padding: 18, border: "1px solid var(--gold-dark)", background: "var(--surface-overlay)" }}>
-          <p style={{ fontSize: 14, lineHeight: 1.6, color: "var(--on-surface)" }}>
+        <div className="form-success">
+          <p className="tw:text-[14px] tw:leading-[1.6] tw:text-(color:--on-surface)">
             Thank You for Reaching Out. We&apos;re delighted to hear from you. Your enquiry has been received, and
             our team will be in touch with you shortly to help bring your plans to life. We look forward to welcoming
             you to Tavaro.
           </p>
           {isDemo && (
-            <p className="order-summary-muted" style={{ marginTop: 12, color: "var(--gold-dark)" }}>
+            <p className="order-summary-muted tw:mt-[12px] tw:text-(color:--gold-dark)">
               (Demo: No real enquiry was delivered.)
             </p>
           )}

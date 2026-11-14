@@ -21,26 +21,25 @@ export function RoomAvailability() {
   return (
     <section className="section on-panel tight" id="availability">
       <div className="container">
-        <Reveal className="offer-head" style={{ alignItems: "flex-start" }}>
+        <Reveal className="offer-head tw:items-start">
           <div>
             <p className="eyebrow">Book Your Stay</p>
-            <h2 className="display-2" style={{ marginTop: 18 }}>
+            <h2 className="display-2 tw:mt-[18px]">
               Come away for a while.
             </h2>
           </div>
-          <div style={{ maxWidth: "48ch" }}>
+          <div className="tw:max-w-[48ch]">
             <p className="lede">
               13 keys across the resort. Check your dates, then explore the spaces made for celebrations.
             </p>
-            <div style={{ marginTop: 28 }}>
+            <div className="tw:mt-[28px]">
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="btn solid"
-                style={{ padding: "16px 36px", fontSize: "12px", letterSpacing: "0.2em" }}
+                className="btn solid tw:py-[16px] tw:px-[36px] tw:text-[12px] tw:tracking-[0.2em]"
               >
                 <span>Check Availability</span>
-                <span aria-hidden="true" style={{ fontSize: "14px" }}>&rarr;</span>
+                <span aria-hidden="true" className="tw:text-[14px]">&rarr;</span>
               </button>
             </div>
           </div>
@@ -52,13 +51,13 @@ export function RoomAvailability() {
 
             1. Room Search Bar with Check-in, Check-out, Guests, and Room Type:
             ------------------------------------------------------------------
-            <Reveal className="availability-panel" style={{ marginTop: 36 }}>
+            <Reveal className="availability-panel tw:mt-[36px]">
               <RoomSearchForm />
             </Reveal>
 
             2. Room Cards Grid (Executive Rooms, Suites, Tavaro House):
             ----------------------------------------------------------
-            <div style={{ marginTop: 56 }}>
+            <div className="tw:mt-[56px]">
               <RoomCards />
             </div>
             ========================================================================= */}

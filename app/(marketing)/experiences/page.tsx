@@ -104,7 +104,7 @@ export default function ExperiencesPage() {
             alt="Corporate offsite and brand activation experience at Tavaro"
           >
             <OfferHead num="Featured Experience" heading="The Offsite Edit" />
-            <p className="italic display-3" style={{ marginBottom: 16 }}>
+            <p className="italic display-3 tw:mb-[16px]">
               Create your day.
             </p>
             <p>
@@ -138,7 +138,7 @@ export default function ExperiencesPage() {
             lede="A living calendar of gatherings — updated as new experiences are announced."
           />
           <EventsSection />
-          <div style={{ textAlign: "center", marginTop: 56 }}>
+          <div className="tw:text-center tw:mt-[56px]">
             <Link href="/mare#events" className="text-link">
               See More <Icon name="arrow" className="icon-arrow" />
             </Link>
@@ -154,23 +154,23 @@ export default function ExperiencesPage() {
             heading="Experiences Gallery"
             lede="A look back at moments, gatherings, and celebrations created at Tavaro."
           />
-          <Reveal stagger style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20, marginTop: 40 }}>
-            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+          <Reveal stagger className="tw:grid tw:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] tw:gap-[20px] tw:mt-[40px]">
+            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
               <Image src="/photos/experiences-cars.jpg" alt="Curated Car Meet" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
-            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
               <Image src="/images/unsplash/resorts-wedding-celebration.jpg" alt="Outdoor Lawn Celebration" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
-            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
               <Image src="/images/unsplash/monsoon-table-culinary.jpg" alt="Private Dining Experience" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
-            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
               <Image src="/images/unsplash/mare-community-coffee-house.jpg" alt="Màre Social Gathering" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
-            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
               <Image src="/images/unsplash/resorts-sol-pilates.jpg" alt="Wellness Movement Retreat" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
-            <div className="split-media" style={{ aspectRatio: "4/3", borderRadius: 4 }}>
+            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
               <Image src="/photos/resorts-horses.jpg" alt="Estate Sunset Walk" fill sizes="(min-width: 768px) 33vw, 100vw" />
             </div>
           </Reveal>

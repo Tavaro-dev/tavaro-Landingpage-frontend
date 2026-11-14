@@ -95,7 +95,7 @@ export function RoomListing({ availability }: { availability: readonly RoomAvail
   const [bookingOpen, setBookingOpen] = useState(false);
   return (
     <div className="room-listings">
-      <h2 className="display-3" style={{ marginBottom: 30 }}>
+      <h2 className="display-3 tw:mb-[30px]">
         Guest Rooms ({availability.length})
       </h2>
       {availability.map((av) => (

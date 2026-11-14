@@ -14,19 +14,19 @@ export const metadata = {
 
 export default function CheckoutPage() {
   return (
-    <section className="section on-dark" style={{ paddingTop: 170 }}>
+    <section className="section on-dark tw:pt-[170px]">
       <div className="container">
         {DEMO_SERVICES ? (
           <CheckoutFlow />
         ) : (
           // No booking backend yet: online checkout is off in production.
-          <div className="center-col" style={{ padding: "60px 0" }}>
+          <div className="center-col tw:py-[60px] tw:px-[0]">
             <h1 className="display-2">Online booking is coming soon</h1>
-            <p className="lede" style={{ marginTop: 20, maxWidth: "52ch", marginLeft: "auto", marginRight: "auto" }}>
+            <p className="lede tw:mt-[20px] tw:max-w-[52ch] tw:ml-auto tw:mr-auto">
               Check live rates with our booking partners, or reach our reservations team on {CONTACT.phone} /{" "}
               {CONTACT.email}.
             </p>
-            <div style={{ marginTop: 32, display: "flex", gap: 18, justifyContent: "center", flexWrap: "wrap" }}>
+            <div className="tw:mt-[32px] tw:flex tw:gap-[18px] tw:justify-center tw:flex-wrap">
               <Link href="/resorts#availability" className="btn solid">
                 Check Availability
               </Link>

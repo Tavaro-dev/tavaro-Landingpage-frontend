@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FormField } from "@/components/ui/FormField";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
 import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
@@ -47,6 +48,12 @@ export function OffsiteEditModal({ isOpen, onClose }: OffsiteEditModalProps) {
   const [step, setStep] = useState<1 | 2>(1);
   const [formData, setFormData] = useState<OffsiteEditFormData>(INITIAL_OFFSITE_FORM_DATA);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Update one field and clear its error.
+  const setField = <K extends keyof OffsiteEditFormData>(key: K, value: OffsiteEditFormData[K]) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    setErrors((prev) => (prev[key as string] ? { ...prev, [key]: "" } : prev));
+  };
   const { submit, reset, isSubmitting, submitted, error: submitError, isDemo } = useEnquirySubmit();
 
   const handleCheckboxToggle = (field: "purpose" | "targetAudience", value: string) => {
@@ -119,7 +126,7 @@ export function OffsiteEditModal({ isOpen, onClose }: OffsiteEditModalProps) {
         <div className="offsite-modal-card" onClick={(e) => e.stopPropagation()}>
           <header className="offsite-modal-header">
             <div className="offsite-modal-header-text">
-              <span className="eyebrow no-line" style={{ fontSize: "10px" }}>
+              <span className="eyebrow no-line tw:text-[10px]">
                 The Offsite Edit
               </span>
               <h2 id="offsite-modal-title">Create your day</h2>
@@ -142,22 +149,21 @@ export function OffsiteEditModal({ isOpen, onClose }: OffsiteEditModalProps) {
             {submitted ? (
               <div className="offsite-success-box">
                 <span className="eyebrow center no-line">Brief Submitted</span>
-                <h3 className="display-3" style={{ marginTop: 12, marginBottom: 16, color: "var(--on-surface)" }}>
+                <h3 className="display-3 tw:mt-[12px] tw:mb-[16px] tw:text-(color:--on-surface)">
                   Thank You for Your Brief
                 </h3>
-                <p className="lede" style={{ color: "var(--on-surface-muted)", maxWidth: "500px", margin: "0 auto" }}>
+                <p className="lede tw:text-(color:--on-surface-muted) tw:max-w-[500px] tw:my-[0] tw:mx-auto">
                   We&apos;ve received your requirements for <strong>{formData.company || "your team"}</strong>.
                   Our experiences curation team will review the details and reach out shortly to help shape the experience.
                 </p>
                 {isDemo && (
-                  <p className="order-summary-muted" style={{ marginTop: 16, color: "var(--gold-dark)" }}>
+                  <p className="order-summary-muted tw:mt-[16px] tw:text-(color:--gold-dark)">
                     (Demo: No real enquiry was delivered.)
                   </p>
                 )}
                 <button
                   type="button"
-                  className="btn solid"
-                  style={{ marginTop: 32 }}
+                  className="btn solid tw:mt-[32px]"
                   onClick={() => {
                     reset();
                     setStep(1);
@@ -177,32 +183,26 @@ export function OffsiteEditModal({ isOpen, onClose }: OffsiteEditModalProps) {
                 {step === 1 && (
                   <>
                     {/* 1. Planning Type */}
-                    <div className="offsite-form-group">
-                      <label className="offsite-label">
-                        1. What are you planning?<span className="required">*</span>
-                      </label>
-                      <CustomSelect
-                        value={formData.planningType}
-                        onChange={(val) => {
-                          setFormData({ ...formData, planningType: val });
-                          if (errors.planningType) setErrors({ ...errors, planningType: "" });
-                        }}
-                        options={PLANNING_SELECT_OPTIONS}
-                        placeholder="Select planning type"
-                      />
-                      {errors.planningType && <p className="offsite-error-msg">{errors.planningType}</p>}
-                    </div>
+                    <FormField ui="offsite" label="1. What are you planning?" required error={errors.planningType}>
+                      {(field) => (
+                        <CustomSelect
+                          id={field.id}
+                          value={formData.planningType}
+                          onChange={(val) => setField("planningType", val)}
+                          options={PLANNING_SELECT_OPTIONS}
+                          placeholder="Select planning type"
+                        />
+                      )}
+                    </FormField>
 
                     {/* 2. After Hours Addon */}
                     <div className="offsite-form-group">
-                      <label className="offsite-label">
-                        2. Include After Hours?
-                      </label>
+                      <span className="offsite-label">2. Include After Hours?</span>
                       <label className="offsite-checkbox-row">
                         <input
                           type="checkbox"
                           checked={formData.afterHoursAddon}
-                          onChange={(e) => setFormData({ ...formData, afterHoursAddon: e.target.checked })}
+                          onChange={(e) => setField("afterHoursAddon", e.target.checked)}
                         />
                         <div>
                           <span className="offsite-checkbox-title">
@@ -216,142 +216,124 @@ export function OffsiteEditModal({ isOpen, onClose }: OffsiteEditModalProps) {
                     </div>
 
                     {/* 3. Event Purpose */}
-                    <div className="offsite-form-group">
-                      <label className="offsite-label">
-                        3. Primary purpose of the event?<span className="required">*</span>
-                      </label>
-                      <div className="offsite-pill-grid">
-                        {EVENT_PURPOSES.map((purpose) => {
-                          const isSelected = formData.purpose.includes(purpose);
-                          return (
-                            <button
-                              type="button"
-                              key={purpose}
-                              className={`offsite-pill${isSelected ? " selected" : ""}`}
-                              onClick={() => handleCheckboxToggle("purpose", purpose)}
-                            >
-                              {isSelected && <Icon name="check" />}
-                              <span>{purpose}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                      {formData.purpose.includes("Other") && (
-                        <input
-                          type="text"
-                          className="offsite-input"
-                          style={{ marginTop: 10 }}
-                          placeholder="Please specify other purpose..."
-                          value={formData.purposeOtherText}
-                          onChange={(e) => setFormData({ ...formData, purposeOtherText: e.target.value })}
-                        />
+                    <FormField ui="offsite" label="3. Primary purpose of the event?" required group error={[errors.purpose, errors.purposeOtherText]}>
+                      {(field) => (
+                        <>
+                          <div className="offsite-pill-grid" {...field}>
+                            {EVENT_PURPOSES.map((purpose) => {
+                              const isSelected = formData.purpose.includes(purpose);
+                              return (
+                                <button
+                                  type="button"
+                                  key={purpose}
+                                  className={`offsite-pill${isSelected ? " selected" : ""}`}
+                                  onClick={() => handleCheckboxToggle("purpose", purpose)}
+                                >
+                                  {isSelected && <Icon name="check" />}
+                                  <span>{purpose}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                          {formData.purpose.includes("Other") && (
+                            <input
+                              type="text"
+                              className="offsite-input tw:mt-[10px]"
+                              placeholder="Please specify other purpose..."
+                              aria-label="Please specify other purpose"
+                              value={formData.purposeOtherText}
+                              onChange={(e) => setField("purposeOtherText", e.target.value)}
+                            />
+                          )}
+                        </>
                       )}
-                      {errors.purpose && <p className="offsite-error-msg">{errors.purpose}</p>}
-                      {errors.purposeOtherText && <p className="offsite-error-msg">{errors.purposeOtherText}</p>}
-                    </div>
+                    </FormField>
 
                     {/* 4. Target Audience */}
-                    <div className="offsite-form-group">
-                      <label className="offsite-label">
-                        4. Who is this experience for?<span className="required">*</span>
-                      </label>
-                      <div className="offsite-pill-grid">
-                        {TARGET_AUDIENCES.map((aud) => {
-                          const isSelected = formData.targetAudience.includes(aud);
-                          return (
-                            <button
-                              type="button"
-                              key={aud}
-                              className={`offsite-pill${isSelected ? " selected" : ""}`}
-                              onClick={() => handleCheckboxToggle("targetAudience", aud)}
-                            >
-                              {isSelected && <Icon name="check" />}
-                              <span>{aud}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                      {formData.targetAudience.includes("Other") && (
-                        <input
-                          type="text"
-                          className="offsite-input"
-                          style={{ marginTop: 10 }}
-                          placeholder="Please specify other audience..."
-                          value={formData.audienceOtherText}
-                          onChange={(e) => setFormData({ ...formData, audienceOtherText: e.target.value })}
-                        />
+                    <FormField ui="offsite" label="4. Who is this experience for?" required group error={[errors.targetAudience, errors.audienceOtherText]}>
+                      {(field) => (
+                        <>
+                          <div className="offsite-pill-grid" {...field}>
+                            {TARGET_AUDIENCES.map((aud) => {
+                              const isSelected = formData.targetAudience.includes(aud);
+                              return (
+                                <button
+                                  type="button"
+                                  key={aud}
+                                  className={`offsite-pill${isSelected ? " selected" : ""}`}
+                                  onClick={() => handleCheckboxToggle("targetAudience", aud)}
+                                >
+                                  {isSelected && <Icon name="check" />}
+                                  <span>{aud}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                          {formData.targetAudience.includes("Other") && (
+                            <input
+                              type="text"
+                              className="offsite-input tw:mt-[10px]"
+                              placeholder="Please specify other audience..."
+                              aria-label="Please specify other audience"
+                              value={formData.audienceOtherText}
+                              onChange={(e) => setField("audienceOtherText", e.target.value)}
+                            />
+                          )}
+                        </>
                       )}
-                      {errors.targetAudience && <p className="offsite-error-msg">{errors.targetAudience}</p>}
-                      {errors.audienceOtherText && <p className="offsite-error-msg">{errors.audienceOtherText}</p>}
-                    </div>
+                    </FormField>
 
                     {/* 5. Expected Guests & Duration in 2 columns */}
                     <div className="offsite-form-grid">
-                      <div className="offsite-form-group">
-                        <label className="offsite-label">
-                          5. Expected Guests<span className="required">*</span>
-                        </label>
-                        <CustomSelect
-                          value={formData.expectedGuests}
-                          onChange={(val) => {
-                            setFormData({ ...formData, expectedGuests: val });
-                            if (errors.expectedGuests) setErrors({ ...errors, expectedGuests: "" });
-                          }}
-                          options={GUEST_SELECT_OPTIONS}
-                          placeholder="Select guest count"
-                        />
-                        {errors.expectedGuests && <p className="offsite-error-msg">{errors.expectedGuests}</p>}
-                      </div>
+                      <FormField ui="offsite" label="5. Expected Guests" required error={errors.expectedGuests}>
+                        {(field) => (
+                          <CustomSelect
+                            id={field.id}
+                            value={formData.expectedGuests}
+                            onChange={(val) => setField("expectedGuests", val)}
+                            options={GUEST_SELECT_OPTIONS}
+                            placeholder="Select guest count"
+                          />
+                        )}
+                      </FormField>
 
-                      <div className="offsite-form-group">
-                        <label className="offsite-label">
-                          Event Duration<span className="required">*</span>
-                        </label>
-                        <CustomSelect
-                          value={formData.eventDuration}
-                          onChange={(val) => {
-                            setFormData({ ...formData, eventDuration: val });
-                            if (errors.eventDuration) setErrors({ ...errors, eventDuration: "" });
-                          }}
-                          options={DURATION_SELECT_OPTIONS}
-                          placeholder="Select duration"
-                        />
-                        {errors.eventDuration && <p className="offsite-error-msg">{errors.eventDuration}</p>}
-                      </div>
+                      <FormField ui="offsite" label="Event Duration" required error={errors.eventDuration}>
+                        {(field) => (
+                          <CustomSelect
+                            id={field.id}
+                            value={formData.eventDuration}
+                            onChange={(val) => setField("eventDuration", val)}
+                            options={DURATION_SELECT_OPTIONS}
+                            placeholder="Select duration"
+                          />
+                        )}
+                      </FormField>
                     </div>
 
                     {/* 6 & 7. Event Date & Creative Direction side-by-side in 2 columns */}
                     <div className="offsite-form-grid">
-                      <div className="offsite-form-group">
-                        <label className="offsite-label">
-                          6. Tentative Event Date<span className="required">*</span>
-                        </label>
-                        <CustomDatePicker
-                          value={formData.eventDate}
-                          onChange={(date) => {
-                            setFormData({ ...formData, eventDate: date });
-                            if (errors.eventDate) setErrors({ ...errors, eventDate: "" });
-                          }}
-                          placeholder="Select event date"
-                        />
-                        {errors.eventDate && <p className="offsite-error-msg">{errors.eventDate}</p>}
-                      </div>
+                      <FormField ui="offsite" label="6. Tentative Event Date" required error={errors.eventDate}>
+                        {(field) => (
+                          <CustomDatePicker
+                            id={field.id}
+                            value={formData.eventDate}
+                            onChange={(date) => setField("eventDate", date)}
+                            placeholder="Select event date"
+                          />
+                        )}
+                      </FormField>
 
-                      <div className="offsite-form-group">
-                        <label className="offsite-label">
-                          7. Creative Direction<span className="required">*</span>
-                        </label>
-                        <CustomSelect
-                          value={formData.creativeDirection}
-                          onChange={(val) => {
-                            setFormData({ ...formData, creativeDirection: val });
-                            if (errors.creativeDirection) setErrors({ ...errors, creativeDirection: "" });
-                          }}
-                          options={CREATIVE_SELECT_OPTIONS}
-                          placeholder="Select creative direction"
-                        />
-                        {errors.creativeDirection && <p className="offsite-error-msg">{errors.creativeDirection}</p>}
-                      </div>
+                      <FormField ui="offsite" label="7. Creative Direction" required error={errors.creativeDirection}>
+                        {(field) => (
+                          <CustomSelect
+                            id={field.id}
+                            value={formData.creativeDirection}
+                            onChange={(val) => setField("creativeDirection", val)}
+                            options={CREATIVE_SELECT_OPTIONS}
+                            placeholder="Select creative direction"
+                          />
+                        )}
+                      </FormField>
                     </div>
                   </>
                 )}
@@ -359,75 +341,70 @@ export function OffsiteEditModal({ isOpen, onClose }: OffsiteEditModalProps) {
 
                 {step === 2 && (
                   <div className="offsite-form-grid">
-                    <div className="offsite-form-group">
-                      <label className="offsite-label">
-                        Your Full Name<span className="required">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="offsite-input"
-                        placeholder="e.g. Ananya Sharma"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      />
-                      {errors.name && <p className="offsite-error-msg">{errors.name}</p>}
-                    </div>
+                    <FormField ui="offsite" label="Your Full Name" required error={errors.name}>
+                      {(field) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="offsite-input"
+                          placeholder="e.g. Ananya Sharma"
+                          value={formData.name}
+                          onChange={(e) => setField("name", e.target.value)}
+                        />
+                      )}
+                    </FormField>
 
-                    <div className="offsite-form-group">
-                      <label className="offsite-label">
-                        Company Name<span className="required">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="offsite-input"
-                        placeholder="e.g. Acme Tech Innovations"
-                        value={formData.company}
-                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      />
-                      {errors.company && <p className="offsite-error-msg">{errors.company}</p>}
-                    </div>
+                    <FormField ui="offsite" label="Company Name" required error={errors.company}>
+                      {(field) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="offsite-input"
+                          placeholder="e.g. Acme Tech Innovations"
+                          value={formData.company}
+                          onChange={(e) => setField("company", e.target.value)}
+                        />
+                      )}
+                    </FormField>
 
-                    <div className="offsite-form-group">
-                      <label className="offsite-label">
-                        Contact Number<span className="required">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        className="offsite-input"
-                        placeholder="e.g. +91 98765 43210"
-                        value={formData.contactNumber}
-                        onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
-                      />
-                      {errors.contactNumber && <p className="offsite-error-msg">{errors.contactNumber}</p>}
-                    </div>
+                    <FormField ui="offsite" label="Contact Number" required error={errors.contactNumber}>
+                      {(field) => (
+                        <input
+                          {...field}
+                          type="tel"
+                          className="offsite-input"
+                          placeholder="e.g. +91 98765 43210"
+                          value={formData.contactNumber}
+                          onChange={(e) => setField("contactNumber", e.target.value)}
+                        />
+                      )}
+                    </FormField>
 
-                    <div className="offsite-form-group">
-                      <label className="offsite-label">
-                        Email ID<span className="required">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        className="offsite-input"
-                        placeholder="e.g. ananya@acmetech.com"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      />
-                      {errors.email && <p className="offsite-error-msg">{errors.email}</p>}
-                    </div>
+                    <FormField ui="offsite" label="Email ID" required error={errors.email}>
+                      {(field) => (
+                        <input
+                          {...field}
+                          type="email"
+                          className="offsite-input"
+                          placeholder="e.g. ananya@acmetech.com"
+                          value={formData.email}
+                          onChange={(e) => setField("email", e.target.value)}
+                        />
+                      )}
+                    </FormField>
 
-                    <div className="offsite-form-group full">
-                      <label className="offsite-label">
-                        Designation / Role<span className="required">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="offsite-input"
-                        placeholder="e.g. Head of People &amp; Culture"
-                        value={formData.designation}
-                        onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                      />
-                      {errors.designation && <p className="offsite-error-msg">{errors.designation}</p>}
-                    </div>
+                    <FormField ui="offsite" label="Designation / Role" required full error={errors.designation}>
+                      {(field) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="offsite-input"
+                          placeholder="e.g. Head of People &amp; Culture"
+                          value={formData.designation}
+                          onChange={(e) => setField("designation", e.target.value)}
+                        />
+                      )}
+                    </FormField>
                   </div>
                 )}
 
@@ -435,8 +412,7 @@ export function OffsiteEditModal({ isOpen, onClose }: OffsiteEditModalProps) {
                   {step === 2 ? (
                     <button
                       type="button"
-                      className="btn outline"
-                      style={{ padding: "12px 24px" }}
+                      className="btn outline tw:py-[12px] tw:px-[24px]"
                       onClick={() => {
                         setStep(1);
                         setErrors({});
@@ -448,13 +424,13 @@ export function OffsiteEditModal({ isOpen, onClose }: OffsiteEditModalProps) {
                     <div />
                   )}
 
-                  <button type="submit" className="btn solid" style={{ padding: "12px 28px" }} disabled={isSubmitting}>
+                  <button type="submit" className="btn solid tw:py-[12px] tw:px-[28px]" disabled={isSubmitting}>
                     {step === 1 ? "Next: Your Details →" : (isSubmitting ? "Submitting Brief..." : "Submit Brief")}
                   </button>
                 </div>
                 
                 {submitError && (
-                  <div className="form-error" style={{ marginTop: 20, textAlign: "center", color: "var(--danger)" }}>
+                  <div className="form-error tw:mt-[20px] tw:text-center tw:text-(color:--danger)">
                     {submitError}
                   </div>
                 )}

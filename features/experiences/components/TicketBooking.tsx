@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useId, useState, type FormEvent } from "react";
 import { Stepper } from "@/components/ui/Stepper";
-import { type EventItem, getBookingDates, formatEventDate, formatTime } from "@/lib/content/events";
+import { type EventItem, type TicketType, getBookingDates, formatEventDate, formatTime } from "@/lib/content/events";
 import { formatInr } from "@/lib/format";
 import { createTicketBookingAction } from "@/app/actions/transaction";
 
@@ -22,6 +22,78 @@ function makeBookingRef() {
   const stamp = Date.now().toString(36).slice(-4);
   const rand = Math.random().toString(36).slice(2, 6);
   return `TVR-${(stamp + rand).toUpperCase()}`;
+}
+
+type TicketLine = { type: TicketType; count: number };
+
+function QtyStepper({ name, count, onChange }: { name: string; count: number; onChange: (count: number) => void }) {
+  return (
+    <span className="cart-stepper">
+      <button type="button" onClick={() => onChange(count - 1)} aria-label={`Remove one ${name}`}>
+        −
+      </button>
+      <span>{count}</span>
+      <button type="button" onClick={() => onChange(count + 1)} aria-label={`Add one ${name}`}>
+        +
+      </button>
+    </span>
+  );
+}
+
+/** Side panel while booking; with `bookedBy` it becomes the confirmation receipt. */
+function TicketSummary({
+  event,
+  date,
+  time,
+  items,
+  total,
+  bookedBy,
+}: {
+  event: EventItem;
+  date: string;
+  time?: string;
+  items: TicketLine[];
+  total: number;
+  bookedBy?: string;
+}) {
+  const receipt = bookedBy !== undefined;
+  return (
+    <aside className={receipt ? "order-summary ticket-receipt" : "order-summary"}>
+      <h2 className="display-3 order-summary-title">{event.title}</h2>
+      <p className="order-summary-muted order-summary-when">
+        {formatEventDate(date)}
+        {time ? ` · ${formatTime(time)}` : ""}
+      </p>
+      {event.venue && <p className="order-summary-muted">{event.venue}</p>}
+
+      <p className="order-summary-label">{receipt ? "Your Tickets" : "Tickets"}</p>
+      {items.length === 0 ? (
+        <p className="order-summary-muted">No tickets selected yet.</p>
+      ) : (
+        <ul className="order-summary-items">
+          {items.map((line) => (
+            <li key={line.type.id}>
+              <span>
+                {line.type.name} ({line.count})
+              </span>
+              <span>{formatInr(line.count * line.type.price)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {receipt && (
+        <div className="order-summary-row">
+          <span>Booked by</span>
+          <span>{bookedBy}</span>
+        </div>
+      )}
+
+      <div className="order-summary-total">
+        <span>{receipt ? "Paid" : "Total"}</span>
+        <span>{formatInr(total)}</span>
+      </div>
+    </aside>
+  );
 }
 
 export function TicketBooking({ event }: { event: EventItem }) {
@@ -128,89 +200,26 @@ export function TicketBooking({ event }: { event: EventItem }) {
     URL.revokeObjectURL(url);
   };
 
-  const summary = (
-    <aside className="order-summary">
-      <h2 className="display-3" style={{ fontSize: 22 }}>
-        {event.title}
-      </h2>
-      <p className="order-summary-muted" style={{ marginTop: 8 }}>
-        {formatEventDate(date)}
-        {time ? ` · ${formatTime(time)}` : ""}
-      </p>
-      {event.venue && <p className="order-summary-muted">{event.venue}</p>}
-
-      <p className="order-summary-label">Tickets</p>
-      {items.length === 0 ? (
-        <p className="order-summary-muted">No tickets selected yet.</p>
-      ) : (
-        <ul className="order-summary-items">
-          {items.map((line) => (
-            <li key={line.type.id}>
-              <span>
-                {line.type.name} ({line.count})
-              </span>
-              <span>{formatInr(line.count * line.type.price)}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <div className="order-summary-total">
-        <span>Total</span>
-        <span>{formatInr(total)}</span>
-      </div>
-    </aside>
-  );
-
   if (step === 5) {
     return (
       <>
         <Stepper steps={STEPS} current={5} />
-        <div className="center-col" style={{ padding: "20px 0 40px" }}>
-          <p className="eyebrow center no-line" style={{ display: "flex", justifyContent: "center" }}>
+        <div className="center-col ticket-confirm">
+          <p className="eyebrow center no-line status-eyebrow">
             Booking Confirmed
           </p>
-          <h1 className="display-2 italic" style={{ marginTop: 18 }}>
+          <h1 className="display-2 italic step-title">
             Thank you. Your tickets are booked.
           </h1>
-          <p className="lede" style={{ marginTop: 20 }}>
+          <p className="lede step-lede wide">
             A confirmation has been sent to {details.email}. Your booking reference is{" "}
-            <strong style={{ color: "var(--gold)" }}>{bookingRef}</strong>.
+            <strong className="booking-ref">{bookingRef}</strong>.
           </p>
         </div>
 
-        <div className="order-summary" style={{ maxWidth: 560, margin: "0 auto", position: "static" }}>
-          <h2 className="display-3" style={{ fontSize: 22 }}>
-            {event.title}
-          </h2>
-          <p className="order-summary-muted" style={{ marginTop: 8 }}>
-            {formatEventDate(date)}
-            {time ? ` · ${formatTime(time)}` : ""}
-          </p>
-          {event.venue && <p className="order-summary-muted">{event.venue}</p>}
+        <TicketSummary event={event} date={date} time={time} items={items} total={total} bookedBy={details.name} />
 
-          <p className="order-summary-label">Your Tickets</p>
-          <ul className="order-summary-items">
-            {items.map((line) => (
-              <li key={line.type.id}>
-                <span>
-                  {line.type.name} ({line.count})
-                </span>
-                <span>{formatInr(line.count * line.type.price)}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="order-summary-row">
-            <span>Booked by</span>
-            <span>{details.name}</span>
-          </div>
-          <div className="order-summary-total">
-            <span>Paid</span>
-            <span>{formatInr(total)}</span>
-          </div>
-        </div>
-
-        <div style={{ marginTop: 36, display: "flex", gap: 18, flexWrap: "wrap", justifyContent: "center" }}>
+        <div className="step-actions center ticket-receipt-actions">
           <button type="button" className="btn solid" onClick={downloadTickets}>
             Download Tickets
           </button>
@@ -219,7 +228,7 @@ export function TicketBooking({ event }: { event: EventItem }) {
           </Link>
         </div>
 
-        <p className="checkout-demo-notice" style={{ maxWidth: 560, margin: "36px auto 0" }}>
+        <p className="checkout-demo-notice ticket-receipt-notice">
           This is a demo booking flow. No payment was processed and this ticket is not valid for entry.
         </p>
       </>
@@ -235,14 +244,14 @@ export function TicketBooking({ event }: { event: EventItem }) {
           {step === 1 && (
             <div>
               <p className="eyebrow">Step 1</p>
-              <h1 className="display-2" style={{ marginTop: 18 }}>
+              <h1 className="display-2 step-title">
                 Select your tickets
               </h1>
 
-              <p className="order-summary-label" style={{ marginTop: 40 }}>
+              <p className="order-summary-label first">
                 Select Date
               </p>
-              <div className="events-tabs" style={{ marginBottom: 24 }}>
+              <div className="events-tabs ticket-tabs">
                 {dates.map((d) => (
                   <button
                     key={d}
@@ -259,7 +268,7 @@ export function TicketBooking({ event }: { event: EventItem }) {
               {times.length > 0 && (
                 <>
                   <p className="order-summary-label">Select Time</p>
-                  <div className="events-tabs" style={{ marginBottom: 24 }}>
+                  <div className="events-tabs ticket-tabs">
                     {times.map((t) => (
                       <button
                         key={t}
@@ -290,21 +299,13 @@ export function TicketBooking({ event }: { event: EventItem }) {
                         + Add
                       </button>
                     ) : (
-                      <span className="cart-stepper">
-                        <button type="button" onClick={() => setCount(type.id, count - 1)} aria-label={`Remove one ${type.name}`}>
-                          −
-                        </button>
-                        <span>{count}</span>
-                        <button type="button" onClick={() => setCount(type.id, count + 1)} aria-label={`Add one ${type.name}`}>
-                          +
-                        </button>
-                      </span>
+                      <QtyStepper name={type.name} count={count} onChange={(n) => setCount(type.id, n)} />
                     )}
                   </div>
                 );
               })}
 
-              <div style={{ marginTop: 40 }}>
+              <div className="step-actions">
                 <button type="button" className="btn solid" disabled={ticketCount === 0} onClick={() => goTo(2)}>
                   {ticketCount === 0 ? "Select a Ticket" : `Add to Cart · ${formatInr(total)}`}
                 </button>
@@ -315,16 +316,16 @@ export function TicketBooking({ event }: { event: EventItem }) {
           {step === 2 && (
             <div>
               <p className="eyebrow">Step 2</p>
-              <h1 className="display-2" style={{ marginTop: 18 }}>
+              <h1 className="display-2 step-title">
                 Review your cart
               </h1>
 
               {items.length === 0 ? (
                 <>
-                  <p className="lede" style={{ marginTop: 20 }}>
+                  <p className="lede step-lede wide">
                     Your cart is empty. Go back and choose your tickets.
                   </p>
-                  <div style={{ marginTop: 32 }}>
+                  <div className="status-actions">
                     <button type="button" className="btn solid" onClick={() => goTo(1)}>
                       Back to Tickets
                     </button>
@@ -332,7 +333,7 @@ export function TicketBooking({ event }: { event: EventItem }) {
                 </>
               ) : (
                 <>
-                  <p className="lede" style={{ marginTop: 16 }}>
+                  <p className="lede step-lede">
                     {formatEventDate(date)}
                     {time ? ` · ${formatTime(time)}` : ""}
                     {event.venue ? ` · ${event.venue}` : ""}
@@ -348,24 +349,8 @@ export function TicketBooking({ event }: { event: EventItem }) {
                         </p>
                         <p className="enhance-item-price">{formatInr(line.count * line.type.price)}</p>
                       </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-                        <span className="cart-stepper">
-                          <button
-                            type="button"
-                            onClick={() => setCount(line.type.id, line.count - 1)}
-                            aria-label={`Remove one ${line.type.name}`}
-                          >
-                            −
-                          </button>
-                          <span>{line.count}</span>
-                          <button
-                            type="button"
-                            onClick={() => setCount(line.type.id, line.count + 1)}
-                            aria-label={`Add one ${line.type.name}`}
-                          >
-                            +
-                          </button>
-                        </span>
+                      <div className="ticket-line-controls">
+                        <QtyStepper name={line.type.name} count={line.count} onChange={(n) => setCount(line.type.id, n)} />
                         <button type="button" className="cart-remove" onClick={() => setCount(line.type.id, 0)}>
                           Remove
                         </button>
@@ -373,7 +358,7 @@ export function TicketBooking({ event }: { event: EventItem }) {
                     </div>
                   ))}
 
-                  <div style={{ marginTop: 40, display: "flex", gap: 18, flexWrap: "wrap" }}>
+                  <div className="step-actions">
                     <button type="button" className="btn" onClick={() => goTo(1)}>
                       Back
                     </button>
@@ -389,10 +374,10 @@ export function TicketBooking({ event }: { event: EventItem }) {
           {step === 3 && (
             <form onSubmit={handleDetails}>
               <p className="eyebrow">Step 3</p>
-              <h1 className="display-2" style={{ marginTop: 18 }}>
+              <h1 className="display-2 step-title">
                 Enter your details
               </h1>
-              <p className="lede" style={{ marginTop: 16 }}>
+              <p className="lede step-lede">
                 We&apos;ll email your tickets and invoice to the address below.
               </p>
 
@@ -461,14 +446,12 @@ export function TicketBooking({ event }: { event: EventItem }) {
                 </div>
               </div>
 
-              <label
-                style={{ display: "flex", gap: 12, alignItems: "flex-start", marginTop: 30, fontSize: 13.5 }}
-              >
-                <input type="checkbox" name="terms" required style={{ marginTop: 4 }} />
+              <label className="terms-check">
+                <input type="checkbox" name="terms" required />
                 <span>I have read and accept the terms and conditions.</span>
               </label>
 
-              <div style={{ marginTop: 40, display: "flex", justifyContent: "center", gap: 18, flexWrap: "wrap" }}>
+              <div className="step-actions center">
                 <button type="button" className="btn" onClick={() => goTo(2)}>
                   Back
                 </button>
@@ -482,22 +465,22 @@ export function TicketBooking({ event }: { event: EventItem }) {
           {step === 4 && (
             <div>
               <p className="eyebrow">Step 4</p>
-              <h1 className="display-2" style={{ marginTop: 18 }}>
+              <h1 className="display-2 step-title">
                 Payment
               </h1>
-              <p className="lede" style={{ marginTop: 16 }}>
+              <p className="lede step-lede">
                 Paying {formatInr(total)} for {ticketCount} {ticketCount === 1 ? "ticket" : "tickets"} to{" "}
                 {event.title}.
               </p>
 
               <p className="order-summary-label">Payment Method</p>
               {PAYMENT_METHODS.map((option) => (
-                <label className="enhance-item" key={option.id} style={{ cursor: "pointer" }}>
+                <label className="enhance-item pay-method" key={option.id}>
                   <span>
-                    <span className="enhance-item-name" style={{ display: "block" }}>
+                    <span className="enhance-item-name">
                       {option.name}
                     </span>
-                    <span className="enhance-item-desc" style={{ display: "block" }}>
+                    <span className="enhance-item-desc">
                       {option.description}
                     </span>
                   </span>
@@ -507,7 +490,6 @@ export function TicketBooking({ event }: { event: EventItem }) {
                     value={option.id}
                     checked={method === option.id}
                     onChange={() => setMethod(option.id)}
-                    style={{ accentColor: "var(--gold)", width: 18, height: 18, flexShrink: 0 }}
                   />
                 </label>
               ))}
@@ -518,12 +500,12 @@ export function TicketBooking({ event }: { event: EventItem }) {
               </p>
 
               {paymentError && (
-                <div className="form-error" style={{ marginTop: 24, padding: "16px", backgroundColor: "var(--surface-error, #fef2f2)", color: "var(--text-error, #991b1b)", borderRadius: "8px", border: "1px solid var(--border-error, #f87171)" }}>
+                <div className="checkout-error" role="alert">
                   <p>{paymentError}</p>
                 </div>
               )}
 
-              <div style={{ marginTop: 40, display: "flex", gap: 18, flexWrap: "wrap" }}>
+              <div className="step-actions">
                 <button type="button" className="btn" onClick={() => goTo(3)} disabled={isProcessing}>
                   Back
                 </button>
@@ -535,7 +517,7 @@ export function TicketBooking({ event }: { event: EventItem }) {
           )}
         </div>
 
-        {summary}
+        <TicketSummary event={event} date={date} time={time} items={items} total={total} />
       </div>
     </>
   );

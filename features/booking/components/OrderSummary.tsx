@@ -4,8 +4,8 @@ import type { BookingQuote } from "@/lib/booking/types";
 export function OrderSummary({ quote, loading }: { quote: BookingQuote | null; loading?: boolean }) {
   if (!quote) {
     return (
-      <div className="order-summary" style={{ opacity: 0.5 }}>
-        <p className="eyebrow center no-line" style={{ display: "flex", justifyContent: "center" }}>
+      <div className="order-summary tw:opacity-[0.5]">
+        <p className="eyebrow center no-line tw:flex tw:justify-center">
           Tavaro Resorts, Kokapet
         </p>
         <p className="order-summary-label">Calculating your stay...</p>
@@ -15,7 +15,7 @@ export function OrderSummary({ quote, loading }: { quote: BookingQuote | null; l
 
   return (
     <div className={`order-summary ${loading ? "loading" : ""}`}>
-      <p className="eyebrow center no-line" style={{ display: "flex", justifyContent: "center" }}>
+      <p className="eyebrow center no-line tw:flex tw:justify-center">
         Tavaro Resorts, Kokapet
       </p>
 

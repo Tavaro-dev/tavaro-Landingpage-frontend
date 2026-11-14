@@ -95,7 +95,7 @@ export function ExperienceEnquiryModal({
                   team will review your preferences and contact you shortly.
                 </p>
                 {isDemo && (
-                  <p style={{ fontSize: "12px", color: "var(--gold)", marginBottom: "20px" }}>
+                  <p className="tw:text-[12px] tw:text-(color:--gold) tw:mb-[20px]">
                     (Demo Mode: Request validated and recorded successfully)
                   </p>
                 )}
@@ -208,12 +208,11 @@ export function ExperienceEnquiryModal({
                   />
                 </div>
 
-                <div style={{ marginTop: "24px" }}>
+                <div className="tw:mt-[24px]">
                   <button
                     type="submit"
-                    className="btn solid"
+                    className="btn solid tw:w-full tw:justify-center"
                     disabled={isSubmitting}
-                    style={{ width: "100%", justifyContent: "center" }}
                     suppressHydrationWarning
                   >
                     {isSubmitting ? "Submitting..." : "Send Experience Request"}

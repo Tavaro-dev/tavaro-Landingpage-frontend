@@ -1,9 +1,8 @@
 "use client";
-import { lockScroll } from "@/lib/scrollLock";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { Modal } from "@/components/ui/Modal";
 import { useCart } from "@/features/booking/cart/CartProvider";
 import { formatInr } from "@/lib/format";
 import { Icon } from "@/components/ui/Icon";
@@ -11,23 +10,10 @@ import { Icon } from "@/components/ui/Icon";
 export function CartDrawer() {
   const { items, removeItem, setNights, total, isOpen, close } = useCart();
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
-    };
-    window.addEventListener("keydown", onKeyDown);
-    const unlockScroll = lockScroll();
-    return () => {
-      window.removeEventListener("keydown", onKeyDown);
-      unlockScroll();
-    };
-  }, [isOpen, close]);
-
   return (
-    <>
-      <div className={`cart-overlay${isOpen ? " open" : ""}`} onClick={close} aria-hidden={!isOpen} />
-      <aside className={`cart-drawer${isOpen ? " open" : ""}`} aria-hidden={!isOpen}>
+    <Modal open={isOpen} onClose={close} label="Your Stay" bare exitMs={400}>
+      <div className={`cart-overlay${isOpen ? " open" : ""}`} onClick={close} aria-hidden="true" />
+      <aside className={`cart-drawer${isOpen ? " open" : ""}`}>
         <div className="cart-drawer-head">
           <h3>Your Stay</h3>
           <button type="button" className="cart-close" onClick={close} aria-label="Close cart">
@@ -73,12 +59,12 @@ export function CartDrawer() {
               <span>Total</span>
               <span>{formatInr(total)}</span>
             </div>
-            <Link href="/checkout" className="btn solid" style={{ width: "100%", justifyContent: "center" }} onClick={close}>
+            <Link href="/checkout" className="btn solid cart-checkout-btn" onClick={close}>
               Book Now
             </Link>
           </div>
         )}
       </aside>
-    </>
+    </Modal>
   );
 }

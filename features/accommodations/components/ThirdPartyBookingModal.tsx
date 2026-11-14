@@ -132,7 +132,7 @@ export function ThirdPartyBookingModal({
 
             <div className="ota-options-label">
               <span>Verified Booking Partners</span>
-              <span style={{ fontSize: "10px", opacity: 0.85 }}>Instant confirmation</span>
+              <span className="tw:text-[10px] tw:opacity-[0.85]">Instant confirmation</span>
             </div>
 
             {/* Options List */}

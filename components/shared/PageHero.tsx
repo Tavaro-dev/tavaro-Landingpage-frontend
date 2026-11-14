@@ -45,24 +45,24 @@ export function PageHero({
   return (
     <section className="page-hero" style={style}>
       <div className={`hero-media ${placeholder}`}>
-        <Image src={photoSrc} alt={photoAlt} fill priority sizes="100vw" />
+        <Image src={photoSrc} alt={photoAlt} fill preload sizes="100vw" />
       </div>
       <div className="hero-scrim" />
       <div className="page-hero-inner container">
-        <div className="page-hero-top-row" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", zIndex: 10, marginBottom: 20 }}>
-          <div className="breadcrumb" style={{ margin: 0 }}>
+        <div className="page-hero-top-row tw:flex tw:items-center tw:justify-between tw:w-full tw:z-[10] tw:mb-[20px]">
+          <div className="breadcrumb tw:m-[0]">
             <span>{breadcrumbLabel}</span>
           </div>
           {topRightCta && <div className="hero-top-right">{topRightCta}</div>}
         </div>
 
-        <div className="page-hero-content" style={{ width: "100%" }}>
+        <div className="page-hero-content tw:w-full">
           <p className="eyebrow">{eyebrow}</p>
           <h1 className="hero-title" style={{ fontSize: titleSize, maxWidth: titleMaxWidth }}>
             {title}
           </h1>
           {lede && (
-            <p className="lede" style={{ marginTop: 24, maxWidth: "52ch" }}>
+            <p className="lede tw:mt-[24px] tw:max-w-[52ch]">
               {lede}
             </p>
           )}

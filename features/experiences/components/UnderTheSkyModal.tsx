@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FormField } from "@/components/ui/FormField";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
@@ -28,6 +29,12 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
   const [step, setStep] = useState<1 | 2>(1);
   const [formData, setFormData] = useState<UnderTheSkyFormData>(INITIAL_UNDER_THE_SKY_FORM_DATA);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Update one field and clear its error.
+  const setField = <K extends keyof UnderTheSkyFormData>(key: K, value: UnderTheSkyFormData[K]) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    setErrors((prev) => (prev[key as string] ? { ...prev, [key]: "" } : prev));
+  };
   const { submit, reset, isSubmitting, submitted, error: submitError, isDemo } = useEnquirySubmit();
 
   const handleCheckboxToggle = (value: string) => {
@@ -92,7 +99,7 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
         <div className="uts-modal-card" onClick={(e) => e.stopPropagation()}>
           <header className="uts-modal-header">
             <div className="uts-modal-header-text">
-              <span className="eyebrow no-line" style={{ fontSize: "10px" }}>
+              <span className="eyebrow no-line tw:text-[10px]">
                 Under the Sky
               </span>
               <h2 id="uts-modal-title">Under the Sky</h2>
@@ -115,21 +122,20 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
             {submitted ? (
               <div className="uts-success-box">
                 <span className="eyebrow center no-line">Enquiry Received</span>
-                <h3 className="display-3" style={{ marginTop: 12, marginBottom: 16, color: "var(--on-surface)" }}>
+                <h3 className="display-3 tw:mt-[12px] tw:mb-[16px] tw:text-(color:--on-surface)">
                   Thank You for Your Enquiry
                 </h3>
-                <p className="lede" style={{ color: "var(--on-surface-muted)", maxWidth: "500px", margin: "0 auto" }}>
+                <p className="lede tw:text-(color:--on-surface-muted) tw:max-w-[500px] tw:my-[0] tw:mx-auto">
                   We’ll be in touch soon and start figuring out all the good bits!
                 </p>
                 {isDemo && (
-                  <p className="order-summary-muted" style={{ marginTop: 16, color: "var(--gold-dark)" }}>
+                  <p className="order-summary-muted tw:mt-[16px] tw:text-(color:--gold-dark)">
                     (Demo: No real enquiry was delivered.)
                   </p>
                 )}
                 <button
                   type="button"
-                  className="btn solid"
-                  style={{ marginTop: 32 }}
+                  className="btn solid tw:mt-[32px]"
                   onClick={() => {
                     reset();
                     setStep(1);
@@ -149,151 +155,135 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                 {step === 1 && (
                   <>
                     {/* 1. What are you planning? */}
-                    <div className="uts-form-group">
-                      <label className="uts-label">
-                        1. What are you planning?<span className="required">*</span>
-                      </label>
-                      <CustomSelect
-                        value={formData.planningType}
-                        onChange={(val) => {
-                          setFormData({ ...formData, planningType: val });
-                          if (errors.planningType) setErrors({ ...errors, planningType: "" });
-                        }}
-                        options={PLANNING_SELECT_OPTIONS}
-                        placeholder="Select what you are planning"
-                      />
-                      {formData.planningType === "Other" && (
-                        <input
-                          type="text"
-                          className="uts-input"
-                          style={{ marginTop: 10 }}
-                          placeholder="Please specify what you are planning..."
-                          value={formData.planningOtherText}
-                          onChange={(e) => setFormData({ ...formData, planningOtherText: e.target.value })}
-                        />
+                    <FormField ui="uts" label="1. What are you planning?" required error={[errors.planningType, errors.planningOtherText]}>
+                      {(field) => (
+                        <>
+                          <CustomSelect
+                            id={field.id}
+                            value={formData.planningType}
+                            onChange={(val) => setField("planningType", val)}
+                            options={PLANNING_SELECT_OPTIONS}
+                            placeholder="Select what you are planning"
+                          />
+                          {formData.planningType === "Other" && (
+                            <input
+                              type="text"
+                              className="uts-input tw:mt-[10px]"
+                              placeholder="Please specify what you are planning..."
+                              aria-label="Please specify what you are planning"
+                              value={formData.planningOtherText}
+                              onChange={(e) => setField("planningOtherText", e.target.value)}
+                            />
+                          )}
+                        </>
                       )}
-                      {errors.planningType && <p className="uts-error-msg">{errors.planningType}</p>}
-                      {errors.planningOtherText && <p className="uts-error-msg">{errors.planningOtherText}</p>}
-                    </div>
+                    </FormField>
 
                     {/* 2. Tell us a little about the occasion */}
-                    <div className="uts-form-group">
-                      <label className="uts-label">
-                        2. Tell us a little about the occasion<span className="optional">(optional)</span>
-                      </label>
-                      <textarea
-                        rows={3}
-                        className="uts-textarea"
-                        placeholder="Tell us a little about the occasion..."
-                        value={formData.occasionDetails}
-                        onChange={(e) => setFormData({ ...formData, occasionDetails: e.target.value })}
-                      />
-                    </div>
+                    <FormField ui="uts" label="2. Tell us a little about the occasion" optional>
+                      {(field) => (
+                        <textarea
+                          {...field}
+                          rows={3}
+                          className="uts-textarea"
+                          placeholder="Tell us a little about the occasion..."
+                          value={formData.occasionDetails}
+                          onChange={(e) => setField("occasionDetails", e.target.value)}
+                        />
+                      )}
+                    </FormField>
 
                     {/* 3 & 4. Preferred Date & Expected Guests in 2 columns */}
                     <div className="uts-form-grid">
-                      <div className="uts-form-group">
-                        <label className="uts-label">
-                          3. Preferred date<span className="required">*</span>
-                        </label>
-                        <CustomDatePicker
-                          value={formData.preferredDate}
-                          onChange={(date) => {
-                            setFormData({ ...formData, preferredDate: date });
-                            if (errors.preferredDate) setErrors({ ...errors, preferredDate: "" });
-                          }}
-                          placeholder="Select preferred date"
-                        />
-                        {errors.preferredDate && <p className="uts-error-msg">{errors.preferredDate}</p>}
-                      </div>
+                      <FormField ui="uts" label="3. Preferred date" required error={errors.preferredDate}>
+                        {(field) => (
+                          <CustomDatePicker
+                            id={field.id}
+                            value={formData.preferredDate}
+                            onChange={(date) => setField("preferredDate", date)}
+                            placeholder="Select preferred date"
+                          />
+                        )}
+                      </FormField>
 
-                      <div className="uts-form-group">
-                        <label className="uts-label">
-                          4. How many people expecting?<span className="required">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          className="uts-input"
-                          placeholder="e.g. 25"
-                          value={formData.expectedGuests}
-                          onChange={(e) => {
-                            setFormData({ ...formData, expectedGuests: e.target.value });
-                            if (errors.expectedGuests) setErrors({ ...errors, expectedGuests: "" });
-                          }}
-                        />
-                        {errors.expectedGuests && <p className="uts-error-msg">{errors.expectedGuests}</p>}
-                      </div>
+                      <FormField ui="uts" label="4. How many people expecting?" required error={errors.expectedGuests}>
+                        {(field) => (
+                          <input
+                            {...field}
+                            type="text"
+                            className="uts-input"
+                            placeholder="e.g. 25"
+                            value={formData.expectedGuests}
+                            onChange={(e) => setField("expectedGuests", e.target.value)}
+                          />
+                        )}
+                      </FormField>
                     </div>
 
                     {/* 5. What kind of setting are you drawn to? */}
-                    <div className="uts-form-group">
-                      <label className="uts-label">
-                        5. What kind of setting are you drawn to?<span className="required">*</span>
-                      </label>
-                      <div className="uts-pill-grid">
-                        {SETTING_PREFERENCES.map((setting) => {
-                          const isSelected = formData.settingPreferences.includes(setting);
-                          return (
-                            <button
-                              type="button"
-                              key={setting}
-                              className={`uts-pill${isSelected ? " selected" : ""}`}
-                              onClick={() => handleCheckboxToggle(setting)}
-                            >
-                              {isSelected && <Icon name="check" />}
-                              <span>{setting}</span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                      {errors.settingPreferences && <p className="uts-error-msg">{errors.settingPreferences}</p>}
-                    </div>
+                    <FormField ui="uts" label="5. What kind of setting are you drawn to?" required group error={errors.settingPreferences}>
+                      {(field) => (
+                        <div className="uts-pill-grid" {...field}>
+                          {SETTING_PREFERENCES.map((setting) => {
+                            const isSelected = formData.settingPreferences.includes(setting);
+                            return (
+                              <button
+                                type="button"
+                                key={setting}
+                                className={`uts-pill${isSelected ? " selected" : ""}`}
+                                onClick={() => handleCheckboxToggle(setting)}
+                              >
+                                {isSelected && <Icon name="check" />}
+                                <span>{setting}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </FormField>
                   </>
                 )}
 
                 {step === 2 && (
                   <div className="uts-form-grid">
-                    <div className="uts-form-group full">
-                      <label className="uts-label">
-                        Name<span className="required">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="uts-input"
-                        placeholder="e.g. Ananya Sharma"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      />
-                      {errors.name && <p className="uts-error-msg">{errors.name}</p>}
-                    </div>
+                    <FormField ui="uts" label="Name" required full error={errors.name}>
+                      {(field) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="uts-input"
+                          placeholder="e.g. Ananya Sharma"
+                          value={formData.name}
+                          onChange={(e) => setField("name", e.target.value)}
+                        />
+                      )}
+                    </FormField>
 
-                    <div className="uts-form-group">
-                      <label className="uts-label">
-                        Phone number<span className="required">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        className="uts-input"
-                        placeholder="e.g. +91 98765 43210"
-                        value={formData.phoneNumber}
-                        onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                      />
-                      {errors.phoneNumber && <p className="uts-error-msg">{errors.phoneNumber}</p>}
-                    </div>
+                    <FormField ui="uts" label="Phone number" required error={errors.phoneNumber}>
+                      {(field) => (
+                        <input
+                          {...field}
+                          type="tel"
+                          className="uts-input"
+                          placeholder="e.g. +91 98765 43210"
+                          value={formData.phoneNumber}
+                          onChange={(e) => setField("phoneNumber", e.target.value)}
+                        />
+                      )}
+                    </FormField>
 
-                    <div className="uts-form-group">
-                      <label className="uts-label">
-                        Email address<span className="optional">(optional)</span>
-                      </label>
-                      <input
-                        type="email"
-                        className="uts-input"
-                        placeholder="e.g. ananya@example.com"
-                        value={formData.emailAddress}
-                        onChange={(e) => setFormData({ ...formData, emailAddress: e.target.value })}
-                      />
-                      {errors.emailAddress && <p className="uts-error-msg">{errors.emailAddress}</p>}
-                    </div>
+                    <FormField ui="uts" label="Email address" optional error={errors.emailAddress}>
+                      {(field) => (
+                        <input
+                          {...field}
+                          type="email"
+                          className="uts-input"
+                          placeholder="e.g. ananya@example.com"
+                          value={formData.emailAddress}
+                          onChange={(e) => setField("emailAddress", e.target.value)}
+                        />
+                      )}
+                    </FormField>
                   </div>
                 )}
 
@@ -301,8 +291,7 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                   {step === 2 ? (
                     <button
                       type="button"
-                      className="btn outline"
-                      style={{ padding: "12px 24px" }}
+                      className="btn outline tw:py-[12px] tw:px-[24px]"
                       onClick={() => {
                         setStep(1);
                         setErrors({});
@@ -314,13 +303,13 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                     <div />
                   )}
 
-                  <button type="submit" className="btn solid" style={{ padding: "12px 28px" }} disabled={isSubmitting}>
+                  <button type="submit" className="btn solid tw:py-[12px] tw:px-[28px]" disabled={isSubmitting}>
                     {step === 1 ? "Next: About You →" : isSubmitting ? "Submitting..." : "Submit Enquiry"}
                   </button>
                 </div>
 
                 {submitError && (
-                  <div className="form-error" role="alert" style={{ marginTop: 20, textAlign: "center", color: "var(--danger)" }}>
+                  <div className="form-error tw:mt-[20px] tw:text-center tw:text-(color:--danger)" role="alert">
                     {submitError}
                   </div>
                 )}

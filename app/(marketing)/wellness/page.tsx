@@ -137,11 +137,11 @@ export default function WellnessPage() {
             }
           />
 
-          <div style={{ marginBottom: 70 }}>
+          <div className="tw:mb-[70px]">
             <SplitSection placeholder="ph-green" src="/images/unsplash/wellness-leaf-by-tavaro.jpg" alt="Leaf by Tavaro">
               <span className="coming-soon-tag">Coming Soon</span>
               <p className="eyebrow">Leaf by Tavaro — Mahalingapuram</p>
-              <p className="lede italic" style={{ fontFamily: "var(--font-display)", fontSize: 22, margin: "16px 0" }}>
+              <p className="lede italic tw:font-(family-name:--font-display) tw:text-[22px] tw:my-[16px] tw:mx-[0]">
                 Moving wellness beyond clinics and into restorative resort experiences.
               </p>
               <Link href="/resorts#leaf" className="btn">
@@ -152,7 +152,7 @@ export default function WellnessPage() {
 
           <SplitSection reverse placeholder="ph-6" src="/images/unsplash/resorts-sol-pilates.jpg" alt="Sol Pilates Studio">
             <p className="eyebrow">Sol Pilates Studio</p>
-            <p className="lede" style={{ marginTop: 16 }}>
+            <p className="lede tw:mt-[16px]">
               Movement at the heart of Tavaro Resorts — Pilates, mobility and guided fitness within the
               calm of the grounds.
             </p>

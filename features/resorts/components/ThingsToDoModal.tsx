@@ -71,7 +71,7 @@ export function ThingsToDoModal({ isOpen, onClose }: ThingsToDoModalProps) {
                 alt={explore.modalImageAlt}
                 fill
                 sizes="(max-width: 860px) 100vw, 600px"
-                priority
+                loading="eager"
                 className="ttd-panel-img"
               />
               <div className="ttd-panel-scrim" />
@@ -102,7 +102,7 @@ export function ThingsToDoModal({ isOpen, onClose }: ThingsToDoModalProps) {
                 alt={create.modalImageAlt}
                 fill
                 sizes="(max-width: 860px) 100vw, 600px"
-                priority
+                loading="eager"
                 className="ttd-panel-img"
               />
               <div className="ttd-panel-scrim" />

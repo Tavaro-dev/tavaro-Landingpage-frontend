@@ -230,7 +230,7 @@ export function CustomDatePicker({
           {MONTH_NAMES[viewMonth]} {viewYear}
         </span>
         <button type="button" className="datepicker-nav-btn" onClick={handleNextMonth} aria-label="Next Month">
-          <span style={{ display: "inline-block", transform: "rotate(180deg)" }}>
+          <span className="tw:inline-block tw:rotate-180">
             <Icon name="chevron-left" />
           </span>
         </button>

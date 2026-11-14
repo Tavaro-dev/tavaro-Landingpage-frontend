@@ -54,7 +54,7 @@ export function EventsSection() {
                   <Link href={`/experiences/${event.id}`}>{event.title}</Link>
                 </h3>
                 <p className="event-meta">{event.description}</p>
-                <Link href={`/experiences/${event.id}`} className="btn sm" style={{ marginTop: 18 }}>
+                <Link href={`/experiences/${event.id}`} className="btn sm tw:mt-[18px]">
                   Book Tickets
                 </Link>
               </article>
@@ -64,7 +64,7 @@ export function EventsSection() {
       )}
 
       {showPast && (
-        <Reveal stagger className="event-grid" style={{ marginTop: showUpcoming ? 40 : 0 }}>
+        <Reveal stagger className={`event-grid ${showUpcoming ? "tw:mt-[40px]" : "tw:mt-[0]"}`}>
           {pastEvents.map((event) => (
             <article className="event-card" key={event.id}>
               <Link href={`/experiences/${event.id}`} className={`event-media ${event.placeholder}`}>
@@ -83,7 +83,7 @@ export function EventsSection() {
                 <Link href={`/experiences/${event.id}`}>{event.title}</Link>
               </h3>
               <p className="event-quote">&ldquo;{event.quote}&rdquo;</p>
-              <Link href={`/experiences/${event.id}`} className="btn sm" style={{ marginTop: 4 }}>
+              <Link href={`/experiences/${event.id}`} className="btn sm tw:mt-[4px]">
                 Watch Recap
               </Link>
             </article>

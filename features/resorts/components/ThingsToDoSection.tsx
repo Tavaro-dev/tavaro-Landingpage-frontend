@@ -20,12 +20,12 @@ export function ThingsToDoSection() {
             num="06 — Discovery & Activities"
             heading="Things to Do at Tavaro"
           />
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "16px", marginTop: "12px" }}>
-            <p style={{ color: "var(--on-surface-muted)", maxWidth: "600px", margin: 0, fontSize: "15px", lineHeight: "1.6" }}>
+          <div className="tw:flex tw:justify-between tw:items-baseline tw:flex-wrap tw:gap-[16px] tw:mt-[12px]">
+            <p className="tw:text-(color:--on-surface-muted) tw:max-w-[600px] tw:m-[0] tw:text-[15px] tw:leading-[1.6]">
               Whether wandering through quiet mango trails at your own pace or arranging a curated
               experience with our team, discover two distinct ways to experience Tavaro.
             </p>
-            <ThingsToDoButton className="btn" style={{ padding: "8px 18px", fontSize: "11.5px" }}>
+            <ThingsToDoButton className="btn tw:px-[18px] tw:py-[8px] tw:text-[11.5px]">
               Choose Experience Mode
             </ThingsToDoButton>
           </div>

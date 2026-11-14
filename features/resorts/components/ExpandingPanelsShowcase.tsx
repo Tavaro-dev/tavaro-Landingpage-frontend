@@ -180,13 +180,7 @@ export function ExpandingPanelsShowcase({
         {/* STICKY VISUAL SHOWCASE STAGE */}
         <div ref={stickyRef} className="showcase-sticky-stage">
           <div
-            className="container"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              width: "100%",
-            }}
+            className="container tw:flex tw:flex-col tw:h-full tw:w-full"
           >
             {/* HEADER CONTROLLER (CATEGORY QUICK NAVIGATION & OPTION BUTTON) */}
             <div className="showcase-header">
@@ -273,7 +267,7 @@ export function ExpandingPanelsShowcase({
                         alt={cat.imageAlt}
                         fill
                         sizes="(max-width: 900px) 100vw, 70vw"
-                        priority={idx === 0}
+                        loading={idx === 0 ? "eager" : undefined}
                         className="showcase-panel-image"
                       />
                       <div className="showcase-panel-overlay" />
@@ -293,14 +287,7 @@ export function ExpandingPanelsShowcase({
                           <span className="showcase-badge-pill">
                             {cat.number} &bull; {cat.badge}
                           </span>
-                          <span
-                            style={{
-                              fontSize: "11px",
-                              opacity: 0.65,
-                              fontFamily: "var(--font-sans, sans-serif)",
-                              letterSpacing: "0.08em",
-                            }}
-                          >
+                          <span className="tw:text-[11px] tw:opacity-[0.65] tw:font-(family-name:--font-sans) tw:tracking-[0.08em]">
                             {cat.activities.length} Experiences
                           </span>
                         </div>
@@ -402,33 +389,15 @@ export function ExpandingPanelsShowcase({
             {closing.onPrimaryBtnClick ? (
               <button
                 type="button"
-                className="btn solid"
+                className="btn solid showcase-closing-primary"
                 onClick={closing.onPrimaryBtnClick}
-                style={{
-                  background: "var(--gold, #c5a059)",
-                  color: "#0f0d0a",
-                  fontWeight: 700,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  fontSize: "11px",
-                  padding: "12px 24px",
-                }}
               >
                 {closing.primaryBtnText} &rarr;
               </button>
             ) : (
               <Link
                 href={closing.primaryBtnHref || "#"}
-                className="btn solid"
-                style={{
-                  background: "var(--gold, #c5a059)",
-                  color: "#0f0d0a",
-                  fontWeight: 700,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  fontSize: "11px",
-                  padding: "12px 24px",
-                }}
+                className="btn solid showcase-closing-primary"
               >
                 {closing.primaryBtnText} &rarr;
               </Link>
@@ -436,15 +405,7 @@ export function ExpandingPanelsShowcase({
 
             <Link
               href={closing.secondaryBtnHref}
-              className="btn"
-              style={{
-                border: "1px solid var(--surface-line, rgba(255, 255, 255, 0.2))",
-                color: "var(--on-surface)",
-                fontSize: "11px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                padding: "12px 24px",
-              }}
+              className="btn showcase-closing-secondary"
             >
               {closing.secondaryBtnText}
             </Link>

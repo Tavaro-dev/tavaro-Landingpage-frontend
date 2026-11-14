@@ -56,25 +56,25 @@ export default async function ExperienceDetailPage(props: PageProps<"/experience
 
       <section className="section on-dark">
         <div className="container">
-          <Link href="/experiences" className="text-link" style={{ marginBottom: 30, display: "inline-flex" }}>
+          <Link href="/experiences" className="text-link tw:mb-[30px] tw:inline-flex">
             ← Back to Experiences
           </Link>
 
           <div className="checkout-layout">
             <div className="checkout-main">
               <h2 className="display-3">About</h2>
-              <p className="lede" style={{ marginTop: 18 }}>
+              <p className="lede tw:mt-[18px]">
                 {event.about}
               </p>
 
               {facts.length > 0 && (
                 <>
-                  <h2 className="display-3" style={{ marginTop: 56 }}>
+                  <h2 className="display-3 tw:mt-[56px]">
                     Things to Know
                   </h2>
-                  <ul className="room-listing-specs" style={{ marginTop: 22, flexDirection: "row", flexWrap: "wrap", gap: "18px 40px" }}>
+                  <ul className="room-listing-specs tw:mt-[22px] tw:flex-row tw:flex-wrap tw:gap-y-[18px] tw:gap-x-[40px]">
                     {facts.map((fact) => (
-                      <li key={fact.label} style={{ flex: "0 0 auto" }}>
+                      <li key={fact.label} className="tw:flex-none">
                         {fact.label}: {fact.value}
                       </li>
                     ))}
@@ -86,42 +86,41 @@ export default async function ExperienceDetailPage(props: PageProps<"/experience
             <div className="order-summary">
               {bookable ? (
                 <>
-                  <p className="room-listing-price" style={{ marginBottom: 20 }}>
+                  <p className="room-listing-price tw:mb-[20px]">
                     <span>Price</span>
                     <strong>{formatInr(fromPrice!)} onwards</strong>
                   </p>
                   <Link
                     href={`/experiences/${event.id}/book`}
-                    className="btn solid"
-                    style={{ width: "100%", justifyContent: "center" }}
+                    className="btn solid tw:w-full tw:justify-center"
                   >
                     Book Tickets
                   </Link>
-                  <p className="order-summary-muted" style={{ marginTop: 14 }}>
+                  <p className="order-summary-muted tw:mt-[14px]">
                     This is a demo booking flow — no payment is taken.
                   </p>
                 </>
               ) : event.stat ? (
                 <>
-                  <p className="order-summary-label" style={{ margin: 0 }}>
+                  <p className="order-summary-label tw:m-[0]">
                     {event.stat}
                   </p>
-                  <p className="lede" style={{ marginTop: 14, fontStyle: "italic" }}>
+                  <p className="lede tw:mt-[14px] tw:italic">
                     &ldquo;{event.quote}&rdquo;
                   </p>
-                  <Link href="/contact" className="btn solid" style={{ width: "100%", justifyContent: "center", marginTop: 20 }}>
+                  <Link href="/contact" className="btn solid tw:w-full tw:justify-center tw:mt-[20px]">
                     Watch Recap
                   </Link>
                 </>
               ) : (
                 <>
-                  <p className="order-summary-label" style={{ margin: 0 }}>
+                  <p className="order-summary-label tw:m-[0]">
                     Tickets Coming Soon
                   </p>
-                  <p className="lede" style={{ marginTop: 14 }}>
+                  <p className="lede tw:mt-[14px]">
                     Booking opens closer to the date.
                   </p>
-                  <Link href="/contact" className="btn solid" style={{ width: "100%", justifyContent: "center", marginTop: 20 }}>
+                  <Link href="/contact" className="btn solid tw:w-full tw:justify-center tw:mt-[20px]">
                     Enquire
                   </Link>
                 </>

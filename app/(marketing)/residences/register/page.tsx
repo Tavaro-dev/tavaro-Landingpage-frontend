@@ -40,18 +40,12 @@ export default function ResidencesRegisterPage() {
                 <br />
                 Bhairavi Nilayam
               </h2>
-              <p style={{ marginTop: 18, lineHeight: 1.8, color: "var(--muted-on-dark)" }}>
+              <p className="tw:mt-[18px] tw:leading-[1.8] tw:text-(color:--muted-on-dark)">
                 Whether you&apos;d like the brochure, pricing information, a private viewing or
                 simply a conversation with our team — we&apos;re here to help you understand which
                 residence is right for you.
               </p>
-              <p
-                style={{
-                  marginTop: 24,
-                  fontSize: 13,
-                  color: "var(--muted-on-dark)",
-                  lineHeight: 1.7,
-                }}
+              <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--muted-on-dark) tw:leading-[1.7]"
               >
                 Your enquiry is handled with complete discretion. We will never share your
                 information or contact you without your permission.

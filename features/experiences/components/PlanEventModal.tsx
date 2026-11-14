@@ -57,23 +57,22 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
         </div>
 
         {submitted ? (
-          <div className="event-modal-body" style={{ textAlign: "center", padding: "40px 20px" }}>
+          <div className="event-modal-body tw:text-center tw:py-[40px] tw:px-[20px]">
             <span className="eyebrow center no-line">Enquiry Sent</span>
-            <h4 className="display-3" style={{ marginTop: 12, marginBottom: 16 }}>
+            <h4 className="display-3 tw:mt-[12px] tw:mb-[16px]">
               Thank You
             </h4>
-            <p className="lede" style={{ color: "var(--on-surface-muted)", maxWidth: "420px", margin: "0 auto" }}>
+            <p className="lede tw:text-(color:--on-surface-muted) tw:max-w-[420px] tw:my-[0] tw:mx-auto">
               We&apos;ve received your celebration details. Our events team will reach out shortly.
             </p>
             {isDemo && (
-              <p className="order-summary-muted" style={{ marginTop: 12, color: "var(--gold-dark)" }}>
+              <p className="order-summary-muted tw:mt-[12px] tw:text-(color:--gold-dark)">
                 (Demo: No real enquiry was delivered.)
               </p>
             )}
             <button
               type="button"
-              className="btn solid"
-              style={{ marginTop: 28 }}
+              className="btn solid tw:mt-[28px]"
               onClick={() => {
                 reset();
                 onClose();
@@ -175,13 +174,13 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
             </div>
             
             {submitError && (
-              <div className="form-error" role="alert" style={{ marginTop: 20, textAlign: "center", color: "var(--danger)" }}>
+              <div className="form-error tw:mt-[20px] tw:text-center tw:text-(color:--danger)" role="alert">
                 {submitError}
               </div>
             )}
 
-            <div className="event-modal-foot" style={{ marginTop: 24, display: "flex", justifyContent: "center" }}>
-              <button type="submit" className="btn solid" style={{ padding: "14px 28px" }} disabled={isSubmitting}>
+            <div className="event-modal-foot tw:mt-[24px] tw:flex tw:justify-center">
+              <button type="submit" className="btn solid tw:py-[14px] tw:px-[28px]" disabled={isSubmitting}>
                 {isSubmitting ? "Submitting..." : "Submit Enquiry →"}
               </button>
             </div>

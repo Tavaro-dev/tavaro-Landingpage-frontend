@@ -242,10 +242,11 @@ export function CustomSelect({
   ) : null;
 
   return (
-    <div className={`custom-select-container${isOpen ? " active-field" : ""}`} ref={containerRef} id={id}>
+    <div className={`custom-select-container${isOpen ? " active-field" : ""}`} ref={containerRef}>
       <input type="hidden" name={name} value={value} />
       <button
         type="button"
+        id={id}
         ref={triggerRef}
         disabled={disabled}
         className={`custom-select-trigger${isOpen ? " open" : ""}`}

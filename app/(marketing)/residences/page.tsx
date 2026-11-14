@@ -72,22 +72,22 @@ export default function ResidencesPage() {
               philosophy, expressed through the way we choose to live within our homes.
             </p>
           </Reveal>
-          <Reveal style={{ marginTop: 40, maxWidth: "68ch" }}>
-            <p style={{ lineHeight: 1.8, color: "var(--muted-on-dark)" }}>
+          <Reveal className="tw:mt-[40px] tw:max-w-[68ch]">
+            <p className="tw:leading-[1.8] tw:text-(color:--muted-on-dark)">
               We believe a home should belong to its place, responding to its landscape, light,
               climate and surroundings rather than existing apart from them.
             </p>
-            <p style={{ marginTop: 20, lineHeight: 1.8, color: "var(--muted-on-dark)" }}>
+            <p className="tw:mt-[20px] tw:leading-[1.8] tw:text-(color:--muted-on-dark)">
               We design for the life that happens after the architecture is finished. For changing
               seasons, morning light, long conversations, quiet evenings, family gatherings and the
               many ways a home evolves with the people who inhabit it.
             </p>
-            <p style={{ marginTop: 20, lineHeight: 1.8, color: "var(--muted-on-dark)" }}>
+            <p className="tw:mt-[20px] tw:leading-[1.8] tw:text-(color:--muted-on-dark)">
               We believe true luxury is not simply having more space, but having the freedom to
               experience it in your own way. To open the home to nature, retreat into privacy,
               gather with others, or simply slow down.
             </p>
-            <p style={{ marginTop: 20, lineHeight: 1.8, color: "var(--on-surface)" }}>
+            <p className="tw:mt-[20px] tw:leading-[1.8] tw:text-(color:--on-surface)">
               Wellbeing is embedded in the rhythm of the home, in the spaces to move, rest, work,
               eat, connect and be still.
             </p>
@@ -137,7 +137,7 @@ export default function ResidencesPage() {
       </section>
 
       {/* Leela */}
-      <section className="offer-block on-dark" id="leela" style={{ paddingTop: 0 }}>
+      <section className="offer-block on-dark tw:pt-[0]" id="leela">
         <div className="container">
           <div className="residence-card-pair">
             <Reveal className="residence-feature-card">
@@ -157,18 +157,18 @@ export default function ResidencesPage() {
                   <br />
                   by stillness
                 </h2>
-                <p style={{ marginTop: 16 }}>
+                <p className="tw:mt-[16px]">
                   Leela is a residence built around calm — considered architecture, natural materials
                   and light that changes through the day. Every detail, from the amenities to the
                   landscaping, is designed to make ordinary days feel unhurried.
                 </p>
-                <ul className="split-list" style={{ marginTop: 20 }}>
+                <ul className="split-list tw:mt-[20px]">
                   <li>Architecture &amp; design story</li>
                   <li>Floor plans &amp; area information</li>
                   <li>Curated interiors &amp; gallery</li>
                   <li>Location &amp; proximity</li>
                 </ul>
-                <Link href="/residences/leela" className="btn" style={{ marginTop: 28 }}>
+                <Link href="/residences/leela" className="btn tw:mt-[28px]">
                   Explore Leela <span className="btn-arrow">→</span>
                 </Link>
               </div>
@@ -191,18 +191,18 @@ export default function ResidencesPage() {
                   <br />
                   built for living
                 </h2>
-                <p style={{ marginTop: 16 }}>
+                <p className="tw:mt-[16px]">
                   A 15,000 sq. ft. private residence on the outskirts of West Hyderabad — surrounded
                   by farmland, shaped by light, and designed around the full rhythms of family
                   living.
                 </p>
-                <ul className="split-list" style={{ marginTop: 20 }}>
+                <ul className="split-list tw:mt-[20px]">
                   <li>Project story &amp; philosophy</li>
                   <li>Architecture &amp; residence plans</li>
                   <li>Location &amp; surrounds</li>
                   <li>Gallery &amp; enquiry</li>
                 </ul>
-                <Link href="/residences/bhairavi-nilayam" className="btn" style={{ marginTop: 28 }}>
+                <Link href="/residences/bhairavi-nilayam" className="btn tw:mt-[28px]">
                   Discover Bhairavi Nilayam <span className="btn-arrow">→</span>
                 </Link>
               </div>

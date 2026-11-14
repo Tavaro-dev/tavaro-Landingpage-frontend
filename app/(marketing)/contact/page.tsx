@@ -72,15 +72,14 @@ export default function ContactPage() {
             <div className="split-body">
               <p className="eyebrow">Enquire</p>
               <h3 className="display-3">Send us a message</h3>
-              <p className="lede" style={{ marginTop: 16 }}>
+              <p className="lede tw:mt-[16px]">
                 Tell us what brings you to Tavaro, and the right team will be in touch within one business
                 day.
               </p>
-              <div style={{ marginTop: 40, display: "flex", flexDirection: "column", gap: 16 }}>
+              <div className="tw:mt-[40px] tw:flex tw:flex-col tw:gap-[16px]">
                 <a
                   href="tel:+919989983029"
-                  className="text-link"
-                  style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+                  className="text-link tw:inline-flex tw:items-center tw:gap-[8px]"
                 >
                   +91 998 998 3029
                 </a>
@@ -88,26 +87,24 @@ export default function ContactPage() {
                   href="https://wa.me/919989983029"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-link"
-                  style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+                  className="text-link tw:inline-flex tw:items-center tw:gap-[8px]"
                 >
-                  <Icon name="whatsapp" style={{ width: 16, height: 16 }} /> WhatsApp: +91 998 998 3029
+                  <Icon name="whatsapp" className="tw:w-[16px] tw:h-[16px]" /> WhatsApp: +91 998 998 3029
                 </a>
                 <a
                   href="mailto:celebrate@tavaro.in"
-                  className="text-link"
-                  style={{ textTransform: "none", display: "inline-flex", alignItems: "center", gap: 8 }}
+                  className="text-link tw:normal-case tw:inline-flex tw:items-center tw:gap-[8px]"
                 >
-                  <Icon name="mail" style={{ width: 16, height: 16 }} /> celebrate@tavaro.in
+                  <Icon name="mail" className="tw:w-[16px] tw:h-[16px]" /> celebrate@tavaro.in
                 </a>
-                <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
+                <div className="tw:flex tw:gap-[16px] tw:mt-[12px]">
                   <a
                     href="https://www.instagram.com/tavaro.resorts?stkn=anQwdWZkbmd1NmE5"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Instagram"
                   >
-                    <Icon name="instagram" style={{ width: 20, height: 20 }} />
+                    <Icon name="instagram" className="tw:w-[20px] tw:h-[20px]" />
                   </a>
                   <a
                     href="https://www.facebook.com/p/Tavaro-Resorts-61588547362755/"
@@ -115,7 +112,7 @@ export default function ContactPage() {
                     rel="noopener noreferrer"
                     aria-label="Facebook"
                   >
-                    <Icon name="facebook" style={{ width: 20, height: 20 }} />
+                    <Icon name="facebook" className="tw:w-[20px] tw:h-[20px]" />
                   </a>
                   <a
                     href="https://wa.me/919989983029"
@@ -123,16 +120,16 @@ export default function ContactPage() {
                     rel="noopener noreferrer"
                     aria-label="WhatsApp"
                   >
-                    <Icon name="whatsapp" style={{ width: 20, height: 20 }} />
+                    <Icon name="whatsapp" className="tw:w-[20px] tw:h-[20px]" />
                   </a>
                   <a
                     href="mailto:celebrate@tavaro.in"
                     aria-label="Email"
                   >
-                    <Icon name="mail" style={{ width: 20, height: 20 }} />
+                    <Icon name="mail" className="tw:w-[20px] tw:h-[20px]" />
                   </a>
                 </div>
-                <span style={{ fontSize: 13, color: "var(--muted)", marginTop: 4 }}>
+                <span className="tw:text-[13px] tw:text-(color:--muted) tw:mt-[4px]">
                   Kokapet, Hyderabad
                 </span>
               </div>

@@ -1,3 +1,7 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
 .ota-modal-overlay {
   position: fixed;
   inset: 0;
@@ -433,3 +437,5 @@
     display: none;
   }
 }
+
+} /* @layer components */

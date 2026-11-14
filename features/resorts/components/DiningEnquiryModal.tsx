@@ -118,7 +118,7 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
           <div className="event-modal-body">
             {view === "discover" ? (
               <div className="discover-dining-view">
-                <div className="event-grid discover-grid" style={{ marginBottom: "40px" }}>
+                <div className="event-grid discover-grid tw:mb-[40px]">
                   {EXPERIENCES.map((exp) => (
                     <article className="event-card" key={exp.title}>
                       <div className={`event-media ${exp.placeholder}`}>
@@ -129,12 +129,12 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
                           sizes="(max-width: 768px) 100vw, 25vw"
                         />
                       </div>
-                      <h3 className="event-title" style={{ marginTop: "16px", padding: "0 16px" }}>{exp.title}</h3>
-                      <p className="event-meta" style={{ marginTop: "8px", padding: "0 16px", paddingBottom: "16px" }}>{exp.description}</p>
+                      <h3 className="event-title tw:mt-[16px] tw:py-[0] tw:px-[16px]">{exp.title}</h3>
+                      <p className="event-meta tw:mt-[8px] tw:py-[0] tw:px-[16px] tw:pb-[16px]">{exp.description}</p>
                     </article>
                   ))}
                 </div>
-                <div style={{ textAlign: "center" }}>
+                <div className="tw:text-center">
                   <button type="button" onClick={() => setView("form")} className="btn solid">
                     Plan your dining Experience <span className="btn-arrow">→</span>
                   </button>
@@ -149,14 +149,13 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
                   with you shortly to help bring your plans to life. We look forward to welcoming you to Tavaro.
                 </p>
                 {isDemo && (
-                  <p className="order-summary-muted" style={{ marginTop: 16, color: "var(--gold-dark)" }}>
+                  <p className="order-summary-muted tw:mt-[16px] tw:text-(color:--gold-dark)">
                     (Demo: No real enquiry was delivered.)
                   </p>
                 )}
                 <button
                   type="button"
-                  className="btn solid"
-                  style={{ marginTop: 28 }}
+                  className="btn solid tw:mt-[28px]"
                   onClick={close}
                 >
                   Close
@@ -274,7 +273,7 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
                 </div>
 
                 {submitError && (
-                  <div className="form-error" style={{ marginBottom: 20, color: "var(--danger)" }}>
+                  <div className="form-error tw:mb-[20px] tw:text-(color:--danger)">
                     {submitError}
                   </div>
                 )}

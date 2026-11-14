@@ -105,13 +105,7 @@ export function CinematicShowcaseView({
           <div>
             <Link
               href="/resorts/things-to-do/create"
-              className="cinematic-change-btn"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                textDecoration: "none",
-              }}
+              className="cinematic-change-btn tw:inline-flex tw:items-center tw:gap-[6px] tw:no-underline"
             >
               Create your experience <span className="btn-arrow" aria-hidden="true">→</span>
             </Link>

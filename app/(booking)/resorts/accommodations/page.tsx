@@ -36,9 +36,9 @@ export default async function AccommodationsPage(props: PageProps<"/resorts/acco
   });
 
   return (
-    <section className="section on-dark" style={{ paddingTop: 170 }}>
+    <section className="section on-dark tw:pt-[170px]">
       <div className="container">
-        <Link href="/resorts" className="text-link" style={{ marginBottom: 30, display: "inline-flex" }}>
+        <Link href="/resorts" className="text-link tw:mb-[30px] tw:inline-flex">
           ← Back to Resorts
         </Link>
         <OfferHead
@@ -51,7 +51,7 @@ export default async function AccommodationsPage(props: PageProps<"/resorts/acco
           }
         />
         <RoomListing availability={availableRooms} />
-        <p className="lede" style={{ marginTop: 40, maxWidth: "60ch" }}>
+        <p className="lede tw:mt-[40px] tw:max-w-[60ch]">
           {DEMO_SERVICES
             ? "This is a demo availability search — add rooms to your cart, then book now. Real-time pricing and confirmed availability are handled by our reservations team."
             : "Prices shown are indicative. Live rates and confirmed availability are provided by our booking partners."}

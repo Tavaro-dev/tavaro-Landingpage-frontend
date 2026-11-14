@@ -32,9 +32,7 @@ export function TriGrid({ cards }: { cards: TriCardData[] }) {
                 src="/images/experiences/golden-society.png"
                 alt="The Golden Society — Weddings & Celebrations"
                 fill
-                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                style={{ objectFit: "contain" }}
-                priority
+                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" className="tw:object-contain"
               />
             </div>
           ) : (
@@ -69,7 +67,7 @@ export function TriGrid({ cards }: { cards: TriCardData[] }) {
                 )}
 
                 {card.cta && (
-                  <div style={{ marginTop: "auto", paddingTop: 16 }}>
+                  <div className="tw:mt-auto tw:pt-[16px]">
                     <Link href={card.cta.href} className="text-link">
                       {card.cta.label} <Icon name="arrow" className="icon-arrow" />
                     </Link>

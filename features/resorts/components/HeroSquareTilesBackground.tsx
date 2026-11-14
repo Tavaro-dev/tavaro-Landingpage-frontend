@@ -360,9 +360,8 @@ export function HeroSquareTilesBackground({
           src={slides[currentIndex]?.image || slides[0].image}
           alt={slides[currentIndex]?.alt || slides[0].alt}
           fill
-          priority
-          sizes="100vw"
-          style={{ objectFit: "cover", objectPosition: "center 40%" }}
+          preload
+          sizes="100vw" className="tw:object-cover tw:object-[center_40%]"
         />
       </div>
 

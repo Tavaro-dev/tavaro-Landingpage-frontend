@@ -168,8 +168,10 @@ export const EVENTS: readonly EventItem[] = [
   },
 ] as const;
 
+/** Upcoming until the end of its last date, so multi-date events stay bookable. */
 function isUpcoming(event: EventItem, now: Date) {
-  return new Date(`${event.date}T23:59:59`) >= now;
+  const lastDate = getBookingDates(event).at(-1);
+  return new Date(`${lastDate}T23:59:59`) >= now;
 }
 
 export function getUpcomingEvents(now = new Date()): EventItem[] {

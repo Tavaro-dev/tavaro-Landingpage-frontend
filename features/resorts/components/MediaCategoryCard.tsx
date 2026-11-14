@@ -9,14 +9,15 @@ interface MediaCategoryCardProps {
   category: ResortMediaCategory;
   onSelect: (e: React.MouseEvent<HTMLButtonElement>) => void;
   variant?: "hero" | "standard" | "wide";
-  priority?: boolean;
+  /** Preload the first image (the card is above the fold). */
+  preload?: boolean;
 }
 
 export function MediaCategoryCard({
   category,
   onSelect,
   variant = "standard",
-  priority = false,
+  preload = false,
 }: MediaCategoryCardProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -43,7 +44,7 @@ export function MediaCategoryCard({
               src={item.src}
               alt={item.alt}
               fill
-              priority={priority && index === 0}
+              preload={preload && index === 0}
               sizes={
                 variant === "hero" || variant === "wide"
                   ? "(max-width: 768px) 100vw, 1200px"

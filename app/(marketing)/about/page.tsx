@@ -63,15 +63,15 @@ export default function AboutPage() {
       <section className="section on-dark">
         <div className="container">
           <Reveal className="center-col">
-            <p className="eyebrow center no-line" style={{ display: "flex", justifyContent: "center" }}>
+            <p className="eyebrow center no-line tw:flex tw:justify-center">
               Why Tavaro
             </p>
-            <p className="display-2" style={{ marginTop: 24, maxWidth: "22ch", marginInline: "auto" }}>
+            <p className="display-2 tw:mt-[24px] tw:max-w-[22ch] tw:mx-auto">
               Tavaro creates places for people
               <br />
               to stay, live, gather and grow.
             </p>
-            <p className="lede" style={{ marginTop: 28, maxWidth: "56ch", marginLeft: "auto", marginRight: "auto" }}>
+            <p className="lede tw:mt-[28px] tw:max-w-[56ch] tw:ml-auto tw:mr-auto">
               Resorts, Residences, Experiences, Wellness and Màre can look like five different businesses.
               At Tavaro, they are five expressions of the same idea — that where and how you spend your
               time should bring you closer to yourself, not further away.
@@ -97,8 +97,7 @@ export default function AboutPage() {
             <div className="idea-card" key={idea.num}>
               <div className="idea-num">{idea.num}</div>
               <span
-                className="tri-icon"
-                style={{ width: 30, height: 30, color: "var(--gold)", marginBottom: 18, display: "inline-block" }}
+                className="tri-icon tw:w-[30px] tw:h-[30px] tw:text-(color:--gold) tw:mb-[18px] tw:inline-block"
               >
                 <Icon name={idea.icon} />
               </span>

@@ -14,6 +14,8 @@ type ModalProps = {
   labelledBy?: string;
   /** Behaviour only: no backdrop/padding/fade, for components that render their own full-screen overlay. */
   bare?: boolean;
+  /** Keep children mounted and close this many ms late, so a CSS exit transition (keyed on `open`) can play. */
+  exitMs?: number;
   children: ReactNode;
 };
 
@@ -23,20 +25,23 @@ type ModalProps = {
  * `open` stays the source of truth; Escape/backdrop clicks call onClose.
  * Portaled to <body> so section-level theme tokens don't leak into it.
  */
-export function Modal({ open, onClose, label, labelledBy, bare = false, children }: ModalProps) {
+export function Modal({ open, onClose, label, labelledBy, bare = false, exitMs, children }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
+  const closeTimer = useRef<number | undefined>(undefined);
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   useEffect(() => {
     const dialog = ref.current;
     if (!open || !dialog) return;
-    dialog.showModal();
+    window.clearTimeout(closeTimer.current); // reopened mid-exit
+    if (!dialog.open) dialog.showModal();
     const unlockScroll = lockScroll();
     return () => {
       unlockScroll();
-      dialog.close();
+      if (exitMs) closeTimer.current = window.setTimeout(() => dialog.close(), exitMs);
+      else dialog.close();
     };
-  }, [open, mounted]);
+  }, [open, mounted, exitMs]);
 
   if (!mounted) return null;
 
@@ -54,7 +59,7 @@ export function Modal({ open, onClose, label, labelledBy, bare = false, children
         if (e.target === e.currentTarget) onClose(); // backdrop click
       }}
     >
-      {open && children}
+      {(open || exitMs !== undefined) && children}
     </dialog>,
     document.body
   );

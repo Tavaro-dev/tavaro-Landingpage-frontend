@@ -25,9 +25,9 @@ export default async function BookTicketsPage(props: PageProps<"/experiences/[sl
   if (!event || !isBookable(event)) notFound();
 
   return (
-    <section className="section on-dark" style={{ paddingTop: 170 }}>
+    <section className="section on-dark tw:pt-[170px]">
       <div className="container">
-        <Link href={`/experiences/${event.id}`} className="text-link" style={{ marginBottom: 40, display: "inline-flex" }}>
+        <Link href={`/experiences/${event.id}`} className="text-link tw:mb-[40px] tw:inline-flex">
           ← Back to {event.title}
         </Link>
         <TicketBooking event={event} />

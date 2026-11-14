@@ -29,10 +29,10 @@ export function ResortMediaGallery({ isStandalone = false }: ResortMediaGalleryP
         <div className="container">
           <Reveal className="resort-media-header">
             <span className="eyebrow center">PHOTOS & VIDEOS</span>
-            <h2 className="display-2" style={{ marginTop: 12, marginBottom: 16 }}>
+            <h2 className="display-2 tw:mt-[12px] tw:mb-[16px]">
               A visual glimpse of Tavaro
             </h2>
-            <p className="lede" style={{ color: "var(--muted-on-light)" }}>
+            <p className="lede tw:text-(color:--muted-on-light)">
               Explore the expansive grounds, grand celebration venues, bespoke dining experiences and peaceful accommodation retreats.
             </p>
           </Reveal>
@@ -43,7 +43,7 @@ export function ResortMediaGallery({ isStandalone = false }: ResortMediaGalleryP
                 <MediaCategoryCard
                   category={overview}
                   variant="hero"
-                  priority
+                  preload
                   onSelect={() => handleSelectCategory(overview)}
                 />
               </Reveal>

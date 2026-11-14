@@ -135,18 +135,10 @@ export function EditorialStoryboard({
             })}
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div className="tw:flex tw:items-center tw:gap-[10px]">
             <Link
               href="/resorts/things-to-do/create"
-              className="storyboard-tab-btn"
-              style={{
-                border: "1px solid rgba(197, 160, 89, 0.4)",
-                color: "var(--gold)",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                textDecoration: "none",
-              }}
+              className="storyboard-tab-btn tw:border tw:border-solid tw:border-[rgba(197,160,89,0.4)] tw:text-(color:--gold) tw:inline-flex tw:items-center tw:gap-[6px] tw:no-underline"
             >
               Create your experience <span className="btn-arrow" aria-hidden="true">→</span>
             </Link>
@@ -186,7 +178,7 @@ export function EditorialStoryboard({
                       <div className="storyboard-media-overlay" />
                       <div className="storyboard-media-badge">
                         <span>{ch.locationTag}</span>
-                        <span style={{ color: "var(--gold)" }}>{ch.timeLabel}</span>
+                        <span className="tw:text-(color:--gold)">{ch.timeLabel}</span>
                       </div>
                     </div>
                   </div>
@@ -217,7 +209,7 @@ export function EditorialStoryboard({
                       <div className="storyboard-activities-block">
                         <div className="storyboard-activities-header">
                           <span>Select an experience to spotlight:</span>
-                          <span style={{ fontSize: "10px", opacity: 0.7 }}>
+                          <span className="tw:text-[10px] tw:opacity-[0.7]">
                             {ch.activities.length} Curated Moments
                           </span>
                         </div>
