@@ -8,7 +8,7 @@ export const NAV_ITEMS = [
 
 export const FOOTER_JOURNEYS = [
   { label: "Book a Stay", href: "/resorts#stay" },
-  { label: "Plan an Event", href: "/resorts#celebrate" },
+  { label: "Plan an Event", href: "/resorts/venues" },
   { label: "Corporate Experience", href: "/experiences#corporate" },
   { label: "Register Interest", href: "/residences/register" },
 ] as const;

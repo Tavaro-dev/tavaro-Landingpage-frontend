@@ -1,0 +1,228 @@
+@layer components {
+  .spaces {
+    background: var(--surface);
+    color: var(--on-surface);
+    padding: clamp(64px, 9vw, 120px) 0;
+    overflow-x: clip; /* the phone rows bleed to the screen edge */
+  }
+  .head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 24px clamp(32px, 6vw, 96px);
+    align-items: end;
+    margin-bottom: clamp(28px, 4vw, 44px);
+  }
+  .title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(34px, 4.4vw, 60px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+  }
+  .lede {
+    margin: 0;
+    max-width: 34em;
+    color: var(--on-surface-muted);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ---------- Guest-count filter ---------- */
+  .filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 18px;
+    margin-bottom: clamp(24px, 3vw, 36px);
+    font-size: 14px;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chips button {
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--on-surface);
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  .chips button[aria-pressed="true"] {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--black);
+  }
+  .chips button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .chips button:not([aria-pressed="true"]):hover {
+      border-color: var(--gold);
+    }
+  }
+  .count {
+    margin: 0;
+    color: var(--on-surface-muted);
+  }
+
+  /* ---------- Cards ---------- */
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2vw, 28px);
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface-2);
+    transition: opacity 0.4s var(--ease), filter 0.4s var(--ease);
+  }
+  .card[data-fits="false"] {
+    opacity: 0.38;
+    filter: grayscale(0.8);
+  }
+  .photo {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .photo img {
+    object-fit: cover;
+    transition: transform 1s var(--ease-luxury);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .card[data-fits="true"]:hover .photo img {
+      transform: scale(1.04);
+    }
+  }
+  .body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 22px clamp(18px, 2vw, 26px) 26px;
+  }
+  .kind {
+    margin: 0 0 6px;
+    color: var(--gold);
+    font-size: 13px;
+  }
+  .name {
+    margin: 0 0 18px;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(24px, 2.2vw, 30px);
+    line-height: 1.1;
+  }
+  .cap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin: 0 0 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 30%, transparent);
+  }
+  .cap dt {
+    color: var(--on-surface-muted);
+    font-size: 12px;
+  }
+  .cap dd {
+    margin: 2px 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(28px, 2.6vw, 36px);
+    line-height: 1;
+  }
+  .best {
+    margin: 0;
+    color: var(--on-surface-2);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .note {
+    margin: clamp(24px, 3vw, 36px) 0 0;
+    max-width: 52em;
+    color: var(--on-surface-muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 1024px) {
+    .head {
+      grid-template-columns: 1fr;
+    }
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* Phones: the cards become a swipeable row; the filter stays above it. */
+  @media (max-width: 600px) {
+    .grid {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding: 0 var(--pad);
+      margin: 0 calc(var(--pad) * -1);
+      padding: 0 var(--pad) 6px;
+      scrollbar-width: none;
+    }
+    .grid::-webkit-scrollbar {
+      display: none;
+    }
+    .card {
+      flex: none;
+      width: 84%;
+      scroll-snap-align: start;
+    }
+    .chips {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin: 0 calc(var(--pad) * -1);
+      padding: 0 var(--pad);
+      scrollbar-width: none;
+    }
+    .chips::-webkit-scrollbar {
+      display: none;
+    }
+    .chips button {
+      flex: none;
+    }
+    .cap {
+      gap: 12px 18px;
+    }
+    .cap dd {
+      font-size: 24px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .photo img {
+      transition: none;
+    }
+  }
+}
+
+@layer components {
+  .more {
+    color: var(--gold);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    white-space: nowrap;
+  }
+  .download {
+    margin-top: 20px;
+  }
+  .more:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+}

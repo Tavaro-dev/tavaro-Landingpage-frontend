@@ -13,6 +13,7 @@ const ROUTES = [
   "/resorts/accommodations",
   "/resorts/location",
   "/resorts/photos",
+  "/resorts/venues",
   "/resorts/things-to-do/explore",
   "/resorts/things-to-do/create",
   "/residences/leela",

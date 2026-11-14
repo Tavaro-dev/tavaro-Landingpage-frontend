@@ -44,9 +44,10 @@ export default function ResortsPage() {
           { label: "Plan Your Event", href: "#celebrate" },
         ]}
         quickNav={[
+          { label: "Venues", href: "/resorts/venues", icon: "venue" },
           { label: "Location", href: "/resorts/location", icon: "location" },
           { label: "Photos & Videos", href: "/resorts/photos", icon: "photos" },
-          { label: "Facilities & Amenities", href: "#facilities", icon: "facilities" },
+          { label: "Amenities & Services", href: "#facilities", icon: "facilities" },
           { label: "Dining", href: "#culinary", icon: "dining" },
           { label: "Things to do", href: "#things-to-do", icon: "compass", isThingsToDoModal: true },
         ]}
@@ -86,10 +87,15 @@ export default function ResortsPage() {
             <ul className="split-list">
               <li>Weddings &amp; social celebrations</li>
               <li>Corporate events &amp; offsites</li>
-              <li>Multiple venues, varying capacities</li>
-              <li>End-to-end event planning support</li>
+              <li>Six spaces, from 50 to 4,000 guests</li>
+              <li>In-house catering and décor, or your own vendors</li>
             </ul>
-            <PlanEventButton />
+            <div className="tw:flex tw:flex-wrap tw:gap-[12px]">
+              <PlanEventButton />
+              <Link href="/resorts/venues" className="btn">
+                See the venues <span className="btn-arrow">→</span>
+              </Link>
+            </div>
           </SplitSection>
         </div>
       </section>
@@ -105,7 +111,7 @@ export default function ResortsPage() {
               to offer.
             </p>
             <ul className="split-list">
-              <li>Garden &amp; pool-facing rooms and suites</li>
+              <li>13 rooms: 6 suites and 7 executive rooms</li>
               <li>Curated in-room amenities</li>
               <li>Daily dining, coffee and wellness access</li>
               <li>Flexible rates and seasonal offers</li>

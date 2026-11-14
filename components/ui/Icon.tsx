@@ -141,6 +141,17 @@ const SVG_ICONS = {
       <circle cx="28" cy="41" r="1.2" fill="currentColor" />
     </svg>
   ),
+  /* A mandap: canopy, draped garland and pillars. */
+  venue: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 8.5 12 3l9 5.5" />
+      <path d="M4 8.5h16" />
+      <path d="M6 8.5c2 3 4 3 6 0 2 3 4 3 6 0" />
+      <path d="M6 8.5V20M18 8.5V20" />
+      <path d="M3 20h18" />
+      <path d="M12 3V1.5" />
+    </svg>
+  ),
   location: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
       <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />

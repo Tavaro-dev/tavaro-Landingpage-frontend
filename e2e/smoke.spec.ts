@@ -9,6 +9,7 @@ const publicRoutes = [
   '/residences',
   '/resorts',
   '/resorts/accommodations',
+  '/resorts/venues',
   '/resorts/things-to-do/explore',
   '/resorts/things-to-do/create',
   '/wellness'
