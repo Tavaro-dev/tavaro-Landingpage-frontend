@@ -10,6 +10,7 @@ import type { BookingQuote, BookingResult } from "@/lib/booking/types";
 import { processPaymentAction, createBookingAction, createQuoteAction } from "@/app/actions/transaction";
 
 import { DomainError } from "@/lib/api/errors";
+import styles from "./booking.module.css";
 
 const STEPS = ["Enhance", "Complete", "Confirm"] as const;
 
@@ -149,7 +150,7 @@ export function CheckoutFlow() {
 
   if (items.length === 0 && !isConfirmed) {
     return (
-      <div className="center-col checkout-status">
+      <div className={`center-col ${styles["checkout-status"]}`}>
         <p className="eyebrow center no-line status-eyebrow">
           Checkout
         </p>
@@ -170,7 +171,7 @@ export function CheckoutFlow() {
 
   if (isConfirmed) {
     return (
-      <div className="center-col checkout-status">
+      <div className={`center-col ${styles["checkout-status"]}`}>
         <p className="eyebrow center no-line status-eyebrow">
           Booking Received
         </p>
@@ -212,8 +213,8 @@ export function CheckoutFlow() {
               </p>
 
               {ENHANCEMENT_CATEGORIES.map((category) => (
-                <div key={category} className="enhance-group">
-                  <p className="display-3 italic enhance-group-title">
+                <div key={category} className={styles["enhance-group"]}>
+                  <p className={`display-3 italic ${styles["enhance-group-title"]}`}>
                     {category}
                   </p>
                   {ENHANCEMENTS.filter((e) => e.category === category).map((enhancement) => {
@@ -256,7 +257,7 @@ export function CheckoutFlow() {
                 Guest &amp; payment details
               </h1>
 
-              <div className="form-grid step-form">
+              <div className={`form-grid ${styles["step-form"]}`}>
                 <div className="field">
                   <label htmlFor={fieldId("name")}>Full Name</label>
                   <input id={fieldId("name")} name="name" defaultValue={guestDetails.name} type="text" autoComplete="name" required />
@@ -271,9 +272,9 @@ export function CheckoutFlow() {
                 </div>
               </div>
 
-              <div className="demo-payment-box">
+              <div className={styles["demo-payment-box"]}>
                 <p className="eyebrow no-line">Demo Payment</p>
-                <p className="lede demo-payment-text">
+                <p className={`lede ${styles["demo-payment-text"]}`}>
                   No payment provider is currently connected. Real card details are not collected or stored. 
                   Continuing will simulate a successful transaction.
                 </p>
@@ -303,7 +304,7 @@ export function CheckoutFlow() {
               {quoteFailed && (
                 <div className="checkout-error" role="alert">
                   <p>We couldn&apos;t price your stay right now.</p>
-                  <button type="button" className="btn sm checkout-error-retry" onClick={() => setQuoteAttempt((n) => n + 1)}>
+                  <button type="button" className={`btn sm ${styles["checkout-error-retry"]}`} onClick={() => setQuoteAttempt((n) => n + 1)}>
                     Try again
                   </button>
                 </div>

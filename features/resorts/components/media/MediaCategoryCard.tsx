@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ResortMediaCategory } from "../content/resortMedia";
+import { ResortMediaCategory } from "../../content/resortMedia";
 import styles from "./MediaCategoryCard.module.css";
 
 interface MediaCategoryCardProps {

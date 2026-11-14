@@ -2,6 +2,7 @@
 
 import { useCart } from "@/features/booking/cart/CartProvider";
 import { Icon } from "@/components/ui/Icon";
+import styles from "./booking.module.css";
 
 export function CartButton({ className }: { className?: string }) {
   const { count, open, hydrated } = useCart();
@@ -15,7 +16,7 @@ export function CartButton({ className }: { className?: string }) {
       suppressHydrationWarning
     >
       <Icon name="bag" />
-      {hydrated && count > 0 && <span className="cart-count">{count}</span>}
+      {hydrated && count > 0 && <span className={styles["cart-count"]}>{count}</span>}
     </button>
   );
 }

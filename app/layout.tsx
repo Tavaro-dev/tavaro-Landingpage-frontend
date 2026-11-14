@@ -1,3 +1,5 @@
+// Global styles first: every CSS Module must load after them to override them.
+import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
@@ -7,7 +9,6 @@ import { PageTransition } from "@/components/layout/PageTransition";
 import { CartDrawer } from "@/features/booking/components/CartDrawer";
 import { CartProvider } from "@/features/booking/cart/CartProvider";
 import { SITE_URL } from "@/lib/metadata";
-import "./globals.css";
 
 const hypatia = localFont({
   src: "./fonts/HypatiaSansPro-SemiBold.otf",

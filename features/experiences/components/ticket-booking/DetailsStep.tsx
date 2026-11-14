@@ -1,5 +1,6 @@
 import { useId, type FormEvent } from "react";
 import { type Details } from "./shared";
+import styles from "./ticket-booking.module.css";
 
 type Field = { name: keyof Details; label: string; type: string; autoComplete: string; full?: boolean; inputMode?: "numeric" };
 
@@ -49,7 +50,7 @@ export function DetailsStep({ details, onSubmit, onBack }: { details: Details; o
       <p className="order-summary-label">Billing Address</p>
       {grid(BILLING)}
 
-      <label className="terms-check">
+      <label className={styles["terms-check"]}>
         <input type="checkbox" name="terms" required />
         <span>I have read and accept the terms and conditions.</span>
       </label>

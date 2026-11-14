@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Reveal } from "@/components/shared/Reveal";
-import { RESORT_MEDIA_CATEGORIES, ResortMediaCategory } from "../content/resortMedia";
+import { RESORT_MEDIA_CATEGORIES, ResortMediaCategory } from "../../content/resortMedia";
 import { MediaCategoryCard } from "./MediaCategoryCard";
 import { MediaViewer } from "./MediaViewer";
 import styles from "./ResortMediaGallery.module.css";

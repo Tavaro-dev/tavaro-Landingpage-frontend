@@ -10,6 +10,7 @@ import { DEMO_SERVICES } from "@/lib/env";
 import { ThirdPartyBookingModal } from "./ThirdPartyBookingModal";
 
 import type { RoomAvailability } from "@/lib/booking/types";
+import styles from "./accommodations.module.css";
 
 function RoomListingCard({ availability, onBook }: { availability: RoomAvailability; onBook: () => void }) {
   const { room } = availability;
@@ -30,26 +31,26 @@ function RoomListingCard({ availability, onBook }: { availability: RoomAvailabil
 
   return (
     <article className="room-listing-card" id={room.slug}>
-      <div className={`room-listing-media ${room.placeholder}`}>
+      <div className={`${styles["room-listing-media"]} ${room.placeholder}`}>
         <Image src={room.images[imageIndex]} alt={room.alt} fill sizes="(min-width: 861px) 45vw, 100vw" />
         {room.images.length > 1 && (
           <>
-            <button type="button" className="room-listing-nav prev" onClick={prev} aria-label="Previous photo">
+            <button type="button" className={`${styles["room-listing-nav"]} prev`} onClick={prev} aria-label="Previous photo">
               <Icon name="chevron-left" />
             </button>
-            <button type="button" className="room-listing-nav next" onClick={next} aria-label="Next photo">
+            <button type="button" className={`${styles["room-listing-nav"]} next`} onClick={next} aria-label="Next photo">
               <Icon name="chevron-right" />
             </button>
-            <span className="room-listing-counter">
+            <span className={styles["room-listing-counter"]}>
               {imageIndex + 1} / {room.images.length}
             </span>
           </>
         )}
       </div>
 
-      <div className="room-listing-details">
+      <div className={styles["room-listing-details"]}>
         <div>
-          <h3 className="room-listing-name">{room.name}</h3>
+          <h3 className={styles["room-listing-name"]}>{room.name}</h3>
           <ul className="room-listing-specs">
             <li>
               <Icon name="bed" /> {room.bed}
@@ -66,10 +67,10 @@ function RoomListingCard({ availability, onBook }: { availability: RoomAvailabil
           </Link>
         </div>
 
-        <div className="room-listing-rate">
+        <div className={styles["room-listing-rate"]}>
           <div>
-            <p className="room-listing-rate-name">{room.rate}</p>
-            <p className="room-listing-refund">{room.refundNote}</p>
+            <p className={styles["room-listing-rate-name"]}>{room.rate}</p>
+            <p className={styles["room-listing-refund"]}>{room.refundNote}</p>
           </div>
           <div className="room-listing-price">
             <span>Avg. price per night</span>
@@ -94,7 +95,7 @@ function RoomListingCard({ availability, onBook }: { availability: RoomAvailabil
 export function RoomListing({ availability }: { availability: readonly RoomAvailability[] }) {
   const [bookingOpen, setBookingOpen] = useState(false);
   return (
-    <div className="room-listings">
+    <div className={styles["room-listings"]}>
       <h2 className="display-3 tw:mb-[30px]">
         Guest Rooms ({availability.length})
       </h2>

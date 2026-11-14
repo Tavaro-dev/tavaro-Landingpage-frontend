@@ -4,6 +4,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Verbs } from "@/components/shared/Verbs";
 import { BandQuote } from "@/components/shared/BandQuote";
 import { pageMetadata } from "@/lib/metadata";
+import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
   title: "About Tavaro — A Hospitality & Lifestyle Group",
@@ -92,10 +93,10 @@ export default function AboutPage() {
             </h2>
           </Reveal>
         </div>
-        <Reveal stagger className="idea-grid">
+        <Reveal stagger className={styles["idea-grid"]}>
           {IDEAS.map((idea) => (
-            <div className="idea-card" key={idea.num}>
-              <div className="idea-num">{idea.num}</div>
+            <div className={styles["idea-card"]} key={idea.num}>
+              <div className={styles["idea-num"]}>{idea.num}</div>
               <span
                 className="tri-icon tw:w-[30px] tw:h-[30px] tw:text-(color:--gold) tw:mb-[18px] tw:inline-block"
               >

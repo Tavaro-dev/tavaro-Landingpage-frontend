@@ -1,8 +1,8 @@
 import { Reveal } from "@/components/shared/Reveal";
 import { pageMetadata } from "@/lib/metadata";
 import { THINGS_TO_DO_DATA } from "@/features/resorts/content/thingsToDoData";
-import { HeroSquareTilesBackground } from "@/features/resorts/components/HeroSquareTilesBackground";
-import { ExpandingPanelsShowcase } from "@/features/resorts/components/ExpandingPanelsShowcase";
+import { HeroSquareTilesBackground } from "@/features/resorts/components/things-to-do/HeroSquareTilesBackground";
+import { ExpandingPanelsShowcase } from "@/features/resorts/components/things-to-do/ExpandingPanelsShowcase";
 import { EXPLORE_SHOWCASE_CATEGORIES } from "@/features/resorts/content/showcaseData";
 import StickyCta from "@/components/shared/StickyCta";
 import styles from "./explore.module.css";

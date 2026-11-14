@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { Reveal } from "@/components/shared/Reveal";
-import { THINGS_TO_DO_DATA } from "../content/thingsToDoData";
+import { THINGS_TO_DO_DATA } from "../../content/thingsToDoData";
 import { ExperienceEnquiryModal } from "./ExperienceEnquiryModal";
 import { HeroSquareTilesBackground } from "./HeroSquareTilesBackground";
 import { ExpandingPanelsShowcase } from "./ExpandingPanelsShowcase";
-import { CREATE_SHOWCASE_CATEGORIES } from "../content/showcaseData";
+import { CREATE_SHOWCASE_CATEGORIES } from "../../content/showcaseData";
 import StickyCta from "@/components/shared/StickyCta";
 import styles from "./CreateExperienceView.module.css";
 

@@ -1,5 +1,5 @@
 import { pageMetadata } from "@/lib/metadata";
-import { ResortMediaGallery } from "@/features/resorts/components/ResortMediaGallery";
+import { ResortMediaGallery } from "@/features/resorts/components/media/ResortMediaGallery";
 
 export const metadata = pageMetadata({
   title: "Photos & Videos — Tavaro Resorts | Tavaro",

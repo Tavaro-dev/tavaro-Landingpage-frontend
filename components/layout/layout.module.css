@@ -1,0 +1,440 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
+:global(.site-header):global(.scrolled) .nav-toggle span,
+:global(.site-header):global(.no-hero):not(:global(.scrolled)) .nav-toggle span {
+  background: var(--on-surface);
+}
+
+.logo-word {
+  margin-top: 0;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 6px;
+  z-index: 1100;
+}
+
+.nav-toggle span {
+  width: 24px;
+  height: 1px;
+  background: var(--cream);
+  transition: 0.35s var(--ease);
+}
+
+.nav-toggle:global(.open) span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle:global(.open) span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle:global(.open) span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.mobile-nav {
+  position: fixed;
+  inset: 0;
+  background: var(--surface);
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-surface, 0.4s) var(--ease-luxury, var(--ease)),
+              visibility var(--duration-surface, 0.4s) var(--ease-luxury, var(--ease));
+}
+
+.mobile-nav:global(.open) {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-nav > a,
+.mobile-nav .mobile-sub {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--duration-card, 0.5s) var(--ease-luxury, var(--ease)),
+              transform var(--duration-card, 0.5s) var(--ease-luxury, var(--ease));
+}
+
+.mobile-nav:global(.open) > a,
+.mobile-nav:global(.open) .mobile-sub {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-nav:global(.open) > a:nth-of-type(1) { transition-delay: 0.05s; }
+
+.mobile-nav:global(.open) > a:nth-of-type(2) { transition-delay: 0.10s; }
+
+.mobile-nav:global(.open) > a:nth-of-type(3) { transition-delay: 0.15s; }
+
+.mobile-nav:global(.open) > a:nth-of-type(4) { transition-delay: 0.20s; }
+
+.mobile-nav:global(.open) > a:nth-of-type(5) { transition-delay: 0.25s; }
+
+.mobile-nav:global(.open) > a:nth-of-type(6) { transition-delay: 0.30s; }
+
+.mobile-nav:global(.open) .mobile-sub { transition-delay: 0.35s; }
+
+@starting-style {
+.mobile-nav:global(.open) { opacity: 0; }
+
+.mobile-nav:global(.open) > a,
+  .mobile-nav:global(.open) .mobile-sub { opacity: 0; transform: translateY(14px); }
+}
+
+.header-scroll-sentinel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.mobile-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--on-surface);
+  cursor: pointer;
+  z-index: 1060;
+  transition: transform var(--duration-micro, 0.25s) var(--ease-luxury, var(--ease)),
+              color var(--duration-micro, 0.25s) var(--ease-luxury, var(--ease));
+}
+
+@media (hover: hover) and (pointer: fine) {
+.mobile-close-btn:hover {
+    transform: scale(1.1);
+    color: var(--gold);
+  }
+}
+
+.mobile-close-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.mobile-nav a {
+  font-family: var(--font-display);
+  font-size: 30px;
+  color: var(--on-surface);
+}
+
+.mobile-nav .mobile-sub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.mobile-nav .mobile-sub-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  align-items: center;
+}
+
+.mobile-nav .mobile-sub-buttons :global(.nav-cta) {
+  width: 100%;
+  max-width: 280px;
+}
+
+.mobile-nav .mobile-sub-icons {
+  display: flex;
+  gap: 26px;
+  justify-content: center;
+}
+
+.mobile-nav .mobile-sub a {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--on-surface-muted);
+}
+
+.mobile-nav .mobile-sub a:global(.nav-cta) {
+  color: var(--black);
+}
+
+.mobile-nav .mobile-sub a:global(.nav-cta):global(.outline) {
+  color: var(--on-surface);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line-dark);
+  border-radius: 50%;
+  background: none;
+  color: var(--cream);
+  transition: border-color 0.3s, color 0.3s;
+}
+
+:global(.site-header):global(.scrolled) .theme-toggle,
+:global(.site-header):global(.no-hero):not(:global(.scrolled)) .theme-toggle {
+  color: var(--on-surface);
+  border-color: var(--surface-line);
+}
+
+.theme-toggle:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.mobile-nav .theme-toggle {
+  color: var(--on-surface);
+  border-color: var(--surface-line);
+}
+
+.mobile-nav :global(.cart-button) {
+  color: var(--on-surface);
+  border-color: var(--surface-line);
+}
+
+.site-footer {
+  background: var(--surface-2);
+  color: var(--on-surface);
+  border-top: 1px solid var(--surface-line);
+  padding: 80px 0 30px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(4, 1fr);
+  gap: 40px;
+  padding-bottom: 60px;
+}
+
+.footer-brand :global(.logo) {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 19px;
+  margin-bottom: 18px;
+  width: fit-content;
+  color: var(--on-surface);
+}
+
+.footer-brand :global(.logo) svg,
+.footer-brand :global(.logo) img {
+  width: 32px;
+}
+
+.footer-brand p {
+  color: var(--on-surface-muted);
+  font-size: 14px;
+  max-width: 34ch;
+  line-height: 1.7;
+}
+
+.footer-social {
+  display: flex;
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.footer-social a {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--surface-line);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: 0.3s;
+}
+
+.footer-social a:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.footer-social a svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.footer-col h5 {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+.footer-col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-col a {
+  font-size: 14px;
+  color: var(--on-surface-muted);
+  transition: color 0.3s;
+}
+
+.footer-col a:hover {
+  color: var(--on-surface-emphasis);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--surface-line);
+  padding-top: 26px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.footer-bottom p {
+  font-size: 12px;
+  color: var(--on-surface-muted);
+}
+
+.footer-bottom :global(.footer-legal) {
+  display: flex;
+  gap: 22px;
+}
+
+.footer-bottom :global(.footer-legal) a {
+  font-size: 12px;
+  color: var(--on-surface-muted);
+}
+
+.page-transition {
+  /* Opacity-only: a lingering non-"none" transform here (even translateY(0)
+     held via fill-mode) would make this the containing block for every
+     position:fixed descendant, breaking their viewport-anchored positioning. */
+  animation: pageEnter 0.55s var(--ease) both;
+}
+
+@media (max-width: 1080px) {
+.footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+
+.main-nav {
+    display: none;
+  }
+
+.nav-toggle {
+    display: flex;
+  }
+}
+
+@media (max-width: 860px) {
+.main-nav {
+    display: none;
+  }
+
+.nav-toggle {
+    display: flex;
+  }
+
+.site-footer {
+    padding: 44px 0 24px;
+  }
+
+.footer-top {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 20px;
+    padding-bottom: 32px;
+  }
+
+.footer-brand {
+    grid-column: span 2;
+  }
+
+.footer-brand p {
+    max-width: 100%;
+    font-size: 13px;
+  }
+
+.footer-social {
+    margin-top: 18px;
+  }
+
+.footer-col h5 {
+    margin-bottom: 12px;
+    font-size: 10.5px;
+  }
+
+.footer-col ul {
+    gap: 8px;
+  }
+
+.footer-col a {
+    font-size: 13px;
+  }
+
+.footer-bottom {
+    padding-top: 20px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+
+body:global(.has-sticky-cta) .site-footer {
+    padding-bottom: 86px;
+  }
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+}

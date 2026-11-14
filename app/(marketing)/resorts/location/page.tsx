@@ -1,5 +1,5 @@
 import { pageMetadata } from "@/lib/metadata";
-import { ResortLocation } from "@/features/resorts/components/ResortLocation";
+import { ResortLocation } from "@/features/resorts/components/location/ResortLocation";
 
 export const metadata = pageMetadata({
   title: "Location — Tavaro Resorts | Tavaro",

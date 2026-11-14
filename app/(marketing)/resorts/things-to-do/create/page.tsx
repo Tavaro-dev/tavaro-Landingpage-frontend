@@ -1,5 +1,5 @@
 import { pageMetadata } from "@/lib/metadata";
-import { CreateExperienceView } from "@/features/resorts/components/CreateExperienceView";
+import { CreateExperienceView } from "@/features/resorts/components/things-to-do/CreateExperienceView";
 
 export const metadata = pageMetadata({
   title: "Create Your Experience — Tavaro Resorts | Tavaro",

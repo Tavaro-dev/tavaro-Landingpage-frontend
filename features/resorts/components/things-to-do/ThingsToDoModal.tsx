@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Modal } from "@/components/ui/Modal";
-import { THINGS_TO_DO_DATA } from "../content/thingsToDoData";
+import { THINGS_TO_DO_DATA } from "../../content/thingsToDoData";
 import styles from "./ThingsToDoModal.module.css";
 
 interface ThingsToDoModalProps {

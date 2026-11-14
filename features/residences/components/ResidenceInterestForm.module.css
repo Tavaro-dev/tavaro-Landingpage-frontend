@@ -1,0 +1,11 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
+.residence-intent-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+}

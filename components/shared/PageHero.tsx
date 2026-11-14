@@ -7,7 +7,8 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { PlanEventButton } from "@/features/experiences/components/PlanEventButton";
 import { OffsiteEditButton } from "@/features/experiences/components/OffsiteEditButton";
 import { UnderTheSkyButton } from "@/features/experiences/components/UnderTheSkyButton";
-import { ThingsToDoButton } from "@/features/resorts/components/ThingsToDoButton";
+import { ThingsToDoButton } from "@/features/resorts/components/things-to-do/ThingsToDoButton";
+import styles from "./shared.module.css";
 
 export function PageHero({
   photoSrc,
@@ -44,21 +45,21 @@ export function PageHero({
 
   return (
     <section className="page-hero" style={style}>
-      <div className={`hero-media ${placeholder}`}>
+      <div className={`${styles["hero-media"]} ${placeholder}`}>
         <Image src={photoSrc} alt={photoAlt} fill preload sizes="100vw" />
       </div>
-      <div className="hero-scrim" />
+      <div className={styles["hero-scrim"]} />
       <div className="page-hero-inner container">
         <div className="page-hero-top-row tw:flex tw:items-center tw:justify-between tw:w-full tw:z-[10] tw:mb-[20px]">
-          <div className="breadcrumb tw:m-[0]">
+          <div className={`${styles.breadcrumb} tw:m-[0]`}>
             <span>{breadcrumbLabel}</span>
           </div>
-          {topRightCta && <div className="hero-top-right">{topRightCta}</div>}
+          {topRightCta && <div className={styles["hero-top-right"]}>{topRightCta}</div>}
         </div>
 
-        <div className="page-hero-content tw:w-full">
+        <div className={`${styles["page-hero-content"]} tw:w-full`}>
           <p className="eyebrow">{eyebrow}</p>
-          <h1 className="hero-title" style={{ fontSize: titleSize, maxWidth: titleMaxWidth }}>
+          <h1 className={styles["hero-title"]} style={{ fontSize: titleSize, maxWidth: titleMaxWidth }}>
             {title}
           </h1>
           {lede && (
@@ -112,7 +113,7 @@ export function PageHero({
           )}
           {quickNav && (
             <div
-              className={`hero-quick-nav${quickNav.some((i) => i.desc) ? " with-desc" : ""}`}
+              className={`${styles["hero-quick-nav"]}${quickNav.some((i) => i.desc) ? ` ${styles["with-desc"]}` : ""}`}
               style={{
                 gridTemplateColumns: `repeat(${quickNav.length}, 1fr)`,
                 maxWidth: "820px",
@@ -138,42 +139,42 @@ export function PageHero({
 
                 if (isOffsite) {
                   return (
-                    <OffsiteEditButton key={item.label} className="hero-quick-nav-item">
+                    <OffsiteEditButton key={item.label} className={styles["hero-quick-nav-item"]}>
                       {item.icon && (
                         <span className="hero-quick-icon">
                           <Icon name={item.icon} />
                         </span>
                       )}
                       <span className="hero-quick-label">{item.label}</span>
-                      {item.desc && <span className="hero-quick-desc">{item.desc}</span>}
+                      {item.desc && <span className={styles["hero-quick-desc"]}>{item.desc}</span>}
                     </OffsiteEditButton>
                   );
                 }
 
                 if (isUnderTheSky) {
                   return (
-                    <UnderTheSkyButton key={item.label} className="hero-quick-nav-item">
+                    <UnderTheSkyButton key={item.label} className={styles["hero-quick-nav-item"]}>
                       {item.icon && (
                         <span className="hero-quick-icon">
                           <Icon name={item.icon} />
                         </span>
                       )}
                       <span className="hero-quick-label">{item.label}</span>
-                      {item.desc && <span className="hero-quick-desc">{item.desc}</span>}
+                      {item.desc && <span className={styles["hero-quick-desc"]}>{item.desc}</span>}
                     </UnderTheSkyButton>
                   );
                 }
 
                 if (isThingsToDo) {
                   return (
-                    <ThingsToDoButton key={item.label} className="hero-quick-nav-item">
+                    <ThingsToDoButton key={item.label} className={styles["hero-quick-nav-item"]}>
                       {item.icon && (
                         <span className="hero-quick-icon">
                           <Icon name={item.icon} />
                         </span>
                       )}
                       <span className="hero-quick-label">{item.label}</span>
-                      {item.desc && <span className="hero-quick-desc">{item.desc}</span>}
+                      {item.desc && <span className={styles["hero-quick-desc"]}>{item.desc}</span>}
                     </ThingsToDoButton>
                   );
                 }
@@ -183,7 +184,7 @@ export function PageHero({
                     <a
                       key={item.label}
                       href={item.href}
-                      className="hero-quick-nav-item"
+                      className={styles["hero-quick-nav-item"]}
                       onClick={(e) => {
                         e.preventDefault();
                         const id = item.href!.slice(1);
@@ -207,7 +208,7 @@ export function PageHero({
                         </span>
                       )}
                       <span className="hero-quick-label">{item.label}</span>
-                      {item.desc && <span className="hero-quick-desc">{item.desc}</span>}
+                      {item.desc && <span className={styles["hero-quick-desc"]}>{item.desc}</span>}
                     </a>
                   );
                 }
@@ -216,7 +217,7 @@ export function PageHero({
                   <Link
                     key={item.label}
                     href={item.href || "#"}
-                    className="hero-quick-nav-item"
+                    className={styles["hero-quick-nav-item"]}
                   >
                     {item.icon && (
                       <span className="hero-quick-icon">
@@ -224,7 +225,7 @@ export function PageHero({
                       </span>
                     )}
                     <span className="hero-quick-label">{item.label}</span>
-                    {item.desc && <span className="hero-quick-desc">{item.desc}</span>}
+                    {item.desc && <span className={styles["hero-quick-desc"]}>{item.desc}</span>}
                   </Link>
                 );
               })}

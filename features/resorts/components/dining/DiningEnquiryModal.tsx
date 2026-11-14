@@ -8,6 +8,7 @@ import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
 import { Modal } from "@/components/ui/Modal";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
 import styles from "./DiningEnquiryModal.module.css";
+import gstyles from "../enquiry.module.css";
 
 interface DiningEnquiryModalProps {
   isOpen: boolean;
@@ -100,7 +101,7 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
 
   return (
     <Modal open={isOpen} onClose={close} labelledBy="dining-enquiry-title" bare>
-      <div className="event-modal-overlay" onClick={close}>
+      <div className={gstyles["event-modal-overlay"]} onClick={close}>
         <div
           className={`event-modal-card ${view === "discover" ? "wide" : ""}`}
           onClick={(e) => e.stopPropagation()}
@@ -141,10 +142,10 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
                 </div>
               </div>
             ) : submitted ? (
-              <div className="event-success-box">
+              <div className={gstyles["event-success-box"]}>
                 <p className="eyebrow center no-line">Enquiry Received</p>
-                <h4 className="event-success-heading">Thank You for Reaching Out</h4>
-                <p className="event-success-body">
+                <h4 className={gstyles["event-success-heading"]}>Thank You for Reaching Out</h4>
+                <p className={gstyles["event-success-body"]}>
                   We&apos;re delighted to hear from you. Your enquiry has been received, and our team will be in touch
                   with you shortly to help bring your plans to life. We look forward to welcoming you to Tavaro.
                 </p>
@@ -278,8 +279,8 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
                   </div>
                 )}
 
-                <div className="event-form-actions">
-                  <button type="submit" className="btn solid event-submit-btn" disabled={isSubmitting}>
+                <div className={gstyles["event-form-actions"]}>
+                  <button type="submit" className={`btn solid ${gstyles["event-submit-btn"]}`} disabled={isSubmitting}>
                     {isSubmitting ? "SUBMITTING..." : "SUBMIT ENQUIRY"} <span className="btn-arrow">→</span>
                   </button>
                 </div>

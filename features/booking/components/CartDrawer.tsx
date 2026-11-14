@@ -6,6 +6,7 @@ import { Modal } from "@/components/ui/Modal";
 import { useCart } from "@/features/booking/cart/CartProvider";
 import { formatInr } from "@/lib/format";
 import { Icon } from "@/components/ui/Icon";
+import styles from "./booking.module.css";
 
 export function CartDrawer() {
   const { items, removeItem, setNights, total, isOpen, close } = useCart();
@@ -14,26 +15,26 @@ export function CartDrawer() {
     <Modal open={isOpen} onClose={close} label="Your Stay" bare exitMs={400}>
       <div className={`cart-overlay${isOpen ? " open" : ""}`} onClick={close} aria-hidden="true" />
       <aside className={`cart-drawer${isOpen ? " open" : ""}`}>
-        <div className="cart-drawer-head">
+        <div className={styles["cart-drawer-head"]}>
           <h3>Your Stay</h3>
-          <button type="button" className="cart-close" onClick={close} aria-label="Close cart">
+          <button type="button" className={styles["cart-close"]} onClick={close} aria-label="Close cart">
             <Icon name="close" />
           </button>
         </div>
 
         {items.length === 0 ? (
-          <p className="cart-empty">No rooms added yet. Add a room to start planning your stay.</p>
+          <p className={styles["cart-empty"]}>No rooms added yet. Add a room to start planning your stay.</p>
         ) : (
-          <ul className="cart-items">
+          <ul className={styles["cart-items"]}>
             {items.map((item) => (
-              <li className="cart-item" key={item.slug}>
-                <div className="cart-item-media">
+              <li className={styles["cart-item"]} key={item.slug}>
+                <div className={styles["cart-item-media"]}>
                   <Image src={item.image} alt="" fill sizes="80px" />
                 </div>
-                <div className="cart-item-body">
-                  <p className="cart-item-name">{item.name}</p>
-                  <p className="cart-item-price">{formatInr(item.pricePerNight)} / night</p>
-                  <div className="cart-item-controls">
+                <div className={styles["cart-item-body"]}>
+                  <p className={styles["cart-item-name"]}>{item.name}</p>
+                  <p className={styles["cart-item-price"]}>{formatInr(item.pricePerNight)} / night</p>
+                  <div className={styles["cart-item-controls"]}>
                     <div className="cart-stepper">
                       <button type="button" onClick={() => setNights(item.slug, item.nights - 1)} aria-label="Fewer nights">
                         −
@@ -54,12 +55,12 @@ export function CartDrawer() {
         )}
 
         {items.length > 0 && (
-          <div className="cart-drawer-foot">
-            <div className="cart-total">
+          <div className={styles["cart-drawer-foot"]}>
+            <div className={styles["cart-total"]}>
               <span>Total</span>
               <span>{formatInr(total)}</span>
             </div>
-            <Link href="/checkout" className="btn solid cart-checkout-btn" onClick={close}>
+            <Link href="/checkout" className={`btn solid ${styles["cart-checkout-btn"]}`} onClick={close}>
               Book Now
             </Link>
           </div>

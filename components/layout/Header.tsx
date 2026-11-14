@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { CartButton } from "@/features/booking/components/CartButton";
 import { NAV_ITEMS } from "@/lib/nav";
 import { DEMO_SERVICES } from "@/lib/env";
+import styles from "./layout.module.css";
 
 export default function Header() {
   const pathname = usePathname();
@@ -109,7 +110,7 @@ export default function Header() {
       <div
         ref={topSentinelRef}
         aria-hidden="true"
-        className="header-scroll-sentinel"
+        className={styles["header-scroll-sentinel"]}
       />
       <header
         className={[
@@ -126,9 +127,9 @@ export default function Header() {
           <span>
             <Icon name="logo" />
           </span>
-          <span className="logo-word">TAVARO</span>
+          <span className={styles["logo-word"]}>TAVARO</span>
         </Link>
-        <nav className="main-nav">
+        <nav className={styles["main-nav"]}>
           <div className="nav-links">
             {NAV_ITEMS.map((item) => (
               <Link key={item.href} href={item.href} className={pathname === item.href || pathname.startsWith(`${item.href}/`) ? "active" : ""}>
@@ -147,7 +148,7 @@ export default function Header() {
         </nav>
         <button
           type="button"
-          className={`nav-toggle${mobileOpen ? " open" : ""}`}
+          className={`${styles["nav-toggle"]}${mobileOpen ? " open" : ""}`}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
           aria-controls="mobile-nav"
@@ -160,8 +161,8 @@ export default function Header() {
         </button>
       </header>
       <Modal open={mobileOpen} onClose={closeMobile} label="Menu" bare exitMs={400}>
-        <div id="mobile-nav" className={`mobile-nav${mobileOpen ? " open" : ""}`}>
-          <button type="button" className="mobile-close-btn" aria-label="Close menu" onClick={closeMobile}>
+        <div id="mobile-nav" className={`${styles["mobile-nav"]}${mobileOpen ? " open" : ""}`}>
+          <button type="button" className={styles["mobile-close-btn"]} aria-label="Close menu" onClick={closeMobile}>
             <Icon name="x" />
           </button>
           <Link href="/" onClick={closeMobile}>
@@ -172,8 +173,8 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
-          <div className="mobile-sub">
-            <div className="mobile-sub-buttons">
+          <div className={styles["mobile-sub"]}>
+            <div className={styles["mobile-sub-buttons"]}>
               <Link href="/about" className={`nav-cta${pathname === "/about" ? " active" : ""}`} onClick={closeMobile}>
                 About
               </Link>
@@ -181,7 +182,7 @@ export default function Header() {
                 Enquire
               </Link>
             </div>
-            <div className="mobile-sub-icons">
+            <div className={styles["mobile-sub-icons"]}>
               {showCart && <CartButton />}
               <ThemeToggle />
             </div>

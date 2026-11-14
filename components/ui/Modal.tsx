@@ -3,6 +3,7 @@
 import { useEffect, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { lockScroll } from "@/lib/scrollLock";
+import styles from "./ui.module.css";
 
 const emptySubscribe = () => () => {};
 
@@ -48,7 +49,7 @@ export function Modal({ open, onClose, label, labelledBy, bare = false, exitMs, 
   return createPortal(
     <dialog
       ref={ref}
-      className={bare ? "app-dialog bare" : "app-dialog"}
+      className={bare ? `${styles["app-dialog"]} bare` : `${styles["app-dialog"]}`}
       aria-label={label}
       aria-labelledby={labelledBy}
       onCancel={(e) => {

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/shared/Reveal";
+import styles from "./shared.module.css";
 
 export function BandQuote({
   label,
@@ -13,7 +14,7 @@ export function BandQuote({
 }) {
   return (
     <div className="container">
-      <Reveal className="band-quote">
+      <Reveal className={styles["band-quote"]}>
         <p
           className="eyebrow center no-line tw:flex tw:justify-center tw:mb-[26px]"
         >

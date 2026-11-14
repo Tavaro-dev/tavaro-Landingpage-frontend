@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Reveal } from "@/components/shared/Reveal";
 import { Icon } from "@/components/ui/Icon";
 import { getUpcomingEvents, getPastEvents, formatEventBadge } from "@/lib/content/events";
+import styles from "./experiences.module.css";
 
 const TABS = ["All", "Upcoming", "Past"] as const;
 type Tab = (typeof TABS)[number];
@@ -19,12 +20,12 @@ export function EventsSection() {
 
   return (
     <>
-      <div className="events-tabs">
+      <div className={styles["events-tabs"]}>
         {TABS.map((t) => (
           <button
             key={t}
             type="button"
-            className={`events-tab${tab === t ? " active" : ""}`}
+            className={`${styles["events-tab"]}${tab === t ? " active" : ""}`}
             onClick={() => setTab(t)}
           >
             {t}
@@ -39,7 +40,7 @@ export function EventsSection() {
             return (
               <article className="event-card" key={event.id}>
                 <Link href={`/experiences/${event.id}`} className={`event-media ${event.placeholder}`}>
-                  <span className="event-date-badge">
+                  <span className={styles["event-date-badge"]}>
                     <span>{day}</span> {month}
                   </span>
                   <Image
@@ -49,7 +50,7 @@ export function EventsSection() {
                     sizes="(min-width: 1081px) 33vw, (min-width: 521px) 50vw, 100vw"
                   />
                 </Link>
-                <p className="event-category">{event.category}</p>
+                <p className={styles["event-category"]}>{event.category}</p>
                 <h3 className="event-title">
                   <Link href={`/experiences/${event.id}`}>{event.title}</Link>
                 </h3>
@@ -74,15 +75,15 @@ export function EventsSection() {
                   fill
                   sizes="(min-width: 1081px) 33vw, (min-width: 521px) 50vw, 100vw"
                 />
-                <span className="event-play-badge">
+                <span className={styles["event-play-badge"]}>
                   <Icon name="play" />
                 </span>
               </Link>
-              <p className="event-category">{event.stat}</p>
+              <p className={styles["event-category"]}>{event.stat}</p>
               <h3 className="event-title">
                 <Link href={`/experiences/${event.id}`}>{event.title}</Link>
               </h3>
-              <p className="event-quote">&ldquo;{event.quote}&rdquo;</p>
+              <p className={styles["event-quote"]}>&ldquo;{event.quote}&rdquo;</p>
               <Link href={`/experiences/${event.id}`} className="btn sm tw:mt-[4px]">
                 Watch Recap
               </Link>

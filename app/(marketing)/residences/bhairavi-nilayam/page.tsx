@@ -7,6 +7,8 @@ import { BandQuote } from "@/components/shared/BandQuote";
 import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
 import BhairavDynamicForm from "./BhairavDynamicForm";
+import styles from "../residences.module.css";
+import gstyles from "./page.module.css";
 
 export const metadata = pageMetadata({
   title: "Bhairavi Nilayam — A Private Residence Shaped by Light | Tavaro",
@@ -209,9 +211,9 @@ export default function BhairavPage() {
               </>
             }
           />
-          <Reveal stagger className="principles-grid tw:mt-[40px]">
+          <Reveal stagger className={`${styles["principles-grid"]} tw:mt-[40px]`}>
             {DESIGN_PRINCIPLES.map((p) => (
-              <div className="principle-item" key={p.label}>
+              <div className={styles["principle-item"]} key={p.label}>
                 <p className="eyebrow no-line">{p.label}</p>
                 <p>{p.body}</p>
               </div>
@@ -234,9 +236,9 @@ export default function BhairavPage() {
             }
             lede="These spaces are not a list of amenities. They are the parts of a home designed around how a family actually lives — across mornings, evenings, weekends and years."
           />
-          <Reveal stagger className="living-spaces-grid tw:mt-[40px]">
+          <Reveal stagger className={`${gstyles["living-spaces-grid"]} tw:mt-[40px]`}>
             {LIVING_SPACES.map((space) => (
-              <div className="living-space-item" key={space.label}>
+              <div className={gstyles["living-space-item"]} key={space.label}>
                 <p className="eyebrow no-line">{space.label}</p>
                 <p>{space.body}</p>
               </div>
@@ -257,16 +259,16 @@ export default function BhairavPage() {
               </>
             }
           />
-          <Reveal className="residence-specs-block tw:mt-[40px]">
-            <div className="residence-specs-table">
+          <Reveal className={`${gstyles["residence-specs-block"]} tw:mt-[40px]`}>
+            <div className={gstyles["residence-specs-table"]}>
               {RESIDENCE_SPECS.map((spec) => (
-                <div className="spec-row" key={spec.label}>
-                  <span className="spec-key">{spec.label}</span>
-                  <span className="spec-val">{spec.value}</span>
+                <div className={gstyles["spec-row"]} key={spec.label}>
+                  <span className={gstyles["spec-key"]}>{spec.label}</span>
+                  <span className={gstyles["spec-val"]}>{spec.value}</span>
                 </div>
               ))}
             </div>
-            <div className="residence-specs-media ph-4">
+            <div className={`${gstyles["residence-specs-media"]} ph-4`}>
               <Image
                 src="/images/unsplash/residences-bhairavi-nilayam.jpg"
                 alt="Bhairavi Nilayam"
@@ -291,10 +293,10 @@ export default function BhairavPage() {
               </>
             }
           />
-          <Reveal stagger className="gallery-strip tw:mt-[32px]">
+          <Reveal stagger className={`${styles["gallery-strip"]} tw:mt-[32px]`}>
             {GALLERY_IMAGES.map((item) => (
               <div
-                className={`gallery-item ${item.tall ? "tall " : ""}${item.placeholder}`}
+                className={`${styles["gallery-item"]} ${item.tall ? "tall " : ""}${item.placeholder}`}
                 key={item.src}
               >
                 <Image
@@ -303,7 +305,7 @@ export default function BhairavPage() {
                   fill
                   sizes="(min-width: 521px) 25vw, 50vw"
                 />
-                <span className="gallery-item-caption">{item.caption}</span>
+                <span className={styles["gallery-item-caption"]}>{item.caption}</span>
               </div>
             ))}
           </Reveal>
@@ -325,11 +327,11 @@ export default function BhairavPage() {
                 Bhairavi Nilayam is a residence of singular character. If it speaks to you, we&apos;d
                 like to speak with you — personally, discreetly, at your pace.
               </p>
-              <div className="residence-details-mini tw:mt-[28px]">
+              <div className={`${gstyles["residence-details-mini"]} tw:mt-[28px]`}>
                 {RESIDENCE_SPECS.map((spec) => (
-                  <div key={spec.label} className="mini-spec">
-                    <span className="mini-spec-label">{spec.label}</span>
-                    <span className="mini-spec-value">{spec.value}</span>
+                  <div key={spec.label} className={gstyles["mini-spec"]}>
+                    <span className={gstyles["mini-spec-label"]}>{spec.label}</span>
+                    <span className={gstyles["mini-spec-value"]}>{spec.value}</span>
                   </div>
                 ))}
               </div>

@@ -1,12 +1,14 @@
 import { type TicketType, formatEventDate, formatTime } from "@/lib/content/events";
 import { formatInr } from "@/lib/format";
 import { QtyStepper } from "./shared";
+import styles from "../experiences.module.css";
+import gstyles from "./ticket-booking.module.css";
 
 function ChoiceTabs({ options, value, onChange, format }: { options: readonly string[]; value?: string; onChange: (v: string) => void; format: (v: string) => string }) {
   return (
-    <div className="events-tabs ticket-tabs">
+    <div className={`${styles["events-tabs"]} ${gstyles["ticket-tabs"]}`}>
       {options.map((o) => (
-        <button key={o} type="button" className={`events-tab${o === value ? " active" : ""}`} aria-pressed={o === value} onClick={() => onChange(o)}>
+        <button key={o} type="button" className={`${styles["events-tab"]}${o === value ? " active" : ""}`} aria-pressed={o === value} onClick={() => onChange(o)}>
           {format(o)}
         </button>
       ))}

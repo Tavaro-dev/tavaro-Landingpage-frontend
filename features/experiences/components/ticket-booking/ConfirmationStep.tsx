@@ -2,6 +2,7 @@ import Link from "next/link";
 import { formatEventDate, formatTime } from "@/lib/content/events";
 import { formatInr } from "@/lib/format";
 import { type Details, PAYMENT_METHODS, type Selection, TicketSummary, lineTotal } from "./shared";
+import styles from "./ticket-booking.module.css";
 
 function downloadTickets({ event, date, time, items, total }: Selection, details: Details, bookingRef: string, method: string) {
   const methodName = PAYMENT_METHODS.find((m) => m.id === method)?.name ?? method;
@@ -37,18 +38,18 @@ function downloadTickets({ event, date, time, items, total }: Selection, details
 export function ConfirmationStep({ selection, details, bookingRef, method }: { selection: Selection; details: Details; bookingRef: string; method: string }) {
   return (
     <>
-      <div className="center-col ticket-confirm">
+      <div className={`center-col ${styles["ticket-confirm"]}`}>
         <p className="eyebrow center no-line status-eyebrow">Booking Confirmed</p>
         <h1 className="display-2 italic step-title">Thank you. Your tickets are booked.</h1>
         <p className="lede step-lede wide">
           A confirmation has been sent to {details.email}. Your booking reference is{" "}
-          <strong className="booking-ref">{bookingRef}</strong>.
+          <strong className={styles["booking-ref"]}>{bookingRef}</strong>.
         </p>
       </div>
 
       <TicketSummary {...selection} bookedBy={details.name} />
 
-      <div className="step-actions center ticket-receipt-actions">
+      <div className={`step-actions center ${styles["ticket-receipt-actions"]}`}>
         <button type="button" className="btn solid" onClick={() => downloadTickets(selection, details, bookingRef, method)}>
           Download Tickets
         </button>
@@ -57,7 +58,7 @@ export function ConfirmationStep({ selection, details, bookingRef, method }: { s
         </Link>
       </div>
 
-      <p className="checkout-demo-notice ticket-receipt-notice">
+      <p className={`${styles["checkout-demo-notice"]} ${styles["ticket-receipt-notice"]}`}>
         This is a demo booking flow. No payment was processed and this ticket is not valid for entry.
       </p>
     </>

@@ -106,6 +106,8 @@ for (const vp of [{ tag: 'desktop', width: 1280, height: 800 }, { tag: 'mobile',
       test(`dialog ${d.name}`, async ({ page }) => {
         await load(page, d.path);
         await d.open(page);
+        // The opening click leaves the pointer over the dialog; park it so no hover state is captured.
+        await page.mouse.move(0, 0);
         await settle(page);
         // Card only: the page behind a dialog is not what this compares.
         await expect(page.locator(d.card).last()).toHaveScreenshot(`${vp.tag}-dialog-${d.name}.png`, { animations: 'disabled', maxDiffPixelRatio: 0.002 });

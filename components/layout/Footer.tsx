@@ -1,24 +1,25 @@
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
 import { NAV_ITEMS, FOOTER_JOURNEYS } from "@/lib/nav";
+import styles from "./layout.module.css";
 
 export default function Footer() {
   return (
-    <footer className="site-footer">
+    <footer className={styles["site-footer"]}>
       <div className="container">
-        <div className="footer-top">
-          <div className="footer-brand">
+        <div className={styles["footer-top"]}>
+          <div className={styles["footer-brand"]}>
             <Link href="/" className="logo">
               <span>
                 <Icon name="logo" />
               </span>
-              <span className="logo-word">TAVARO</span>
+              <span className={styles["logo-word"]}>TAVARO</span>
             </Link>
             <p>
               Discover the world between worlds. A hospitality and lifestyle group creating places and
               experiences around a more meaningful way of living.
             </p>
-            <div className="footer-social">
+            <div className={styles["footer-social"]}>
               <a
                 href="https://www.instagram.com/tavaro.resorts"
                 target="_blank"
@@ -51,7 +52,7 @@ export default function Footer() {
               </a>
             </div>
           </div>
-          <div className="footer-col">
+          <div className={styles["footer-col"]}>
             <h5>Explore</h5>
             <ul>
               {NAV_ITEMS.map((item) => (
@@ -61,7 +62,7 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-          <div className="footer-col">
+          <div className={styles["footer-col"]}>
             <h5>Tavaro</h5>
             <ul>
               <li>
@@ -78,7 +79,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-          <div className="footer-col">
+          <div className={styles["footer-col"]}>
             <h5>Journeys</h5>
             <ul>
               {FOOTER_JOURNEYS.map((item) => (
@@ -88,7 +89,7 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-          <div className="footer-col">
+          <div className={styles["footer-col"]}>
             <h5>Reach Us</h5>
             <ul>
               <li>
@@ -112,7 +113,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="footer-bottom">
+        <div className={styles["footer-bottom"]}>
           <p>© {new Date().getFullYear()} Tavaro Group. All rights reserved.</p>
           {/* TODO: restore Privacy Policy / Terms links once those pages exist */}
         </div>

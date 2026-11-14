@@ -7,10 +7,11 @@ import { Icon } from "@/components/ui/Icon";
 import { RoomAvailability } from "@/features/accommodations/components/RoomAvailability";
 import StickyCta from "@/components/shared/StickyCta";
 import { PlanEventButton } from "@/features/experiences/components/PlanEventButton";
-import { ResortDining } from "@/features/resorts/components/ResortDining";
-import { ResortAmenitiesCarousel } from "@/features/resorts/components/ResortAmenitiesCarousel";
-import { ThingsToDoSection } from "@/features/resorts/components/ThingsToDoSection";
+import { ResortDining } from "@/features/resorts/components/dining/ResortDining";
+import { ResortAmenitiesCarousel } from "@/features/resorts/components/amenities/ResortAmenitiesCarousel";
+import { ThingsToDoSection } from "@/features/resorts/components/things-to-do/ThingsToDoSection";
 import { pageMetadata } from "@/lib/metadata";
+import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
   title: "Resorts — A World Away, Yet Close to You | Tavaro",
@@ -165,7 +166,7 @@ export default function ResortsPage() {
       <ThingsToDoSection />
 
       {/* Leaf by Tavaro */}
-      <section className="section leaf-section tw:text-(color:--cream)" id="leaf">
+      <section className={`section ${styles["leaf-section"]} tw:text-(color:--cream)`} id="leaf">
         <div className="container">
           <Reveal className="two-col-text">
             <div>

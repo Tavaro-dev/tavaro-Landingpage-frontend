@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
+import styles from "./ContactForm.module.css";
 
 const INTEREST_OPTIONS = [
   { value: "Booking a Stay", label: "Booking a Stay" },
@@ -91,8 +92,8 @@ export default function ContactForm() {
                 onChange={(val) => setRooms(val)}
               />
             </div>
-            <div className="field checkbox-field tw:self-end tw:pb-[10px]">
-              <label className="checkbox-label">
+            <div className={`field ${styles["checkbox-field"]} tw:self-end tw:pb-[10px]`}>
+              <label className={styles["checkbox-label"]}>
                 <input
                   type="checkbox"
                   checked={needCatering}

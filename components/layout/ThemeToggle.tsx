@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
+import styles from "./layout.module.css";
 
 const emptySubscribe = () => () => {};
 
@@ -11,7 +12,7 @@ export function ThemeToggle({ className }: { className?: string }) {
 
   if (!mounted) {
     // Return a placeholder with the same dimensions to avoid layout shift
-    return <button type="button" className={`theme-toggle ${className ?? ""}`.trim()} aria-hidden="true" />;
+    return <button type="button" className={`${styles["theme-toggle"]} ${className ?? ""}`.trim()} aria-hidden="true" />;
   }
 
   const toggle = () => {
@@ -21,7 +22,7 @@ export function ThemeToggle({ className }: { className?: string }) {
   return (
     <button
       type="button"
-      className={`theme-toggle ${className ?? ""}`.trim()}
+      className={`${styles["theme-toggle"]} ${className ?? ""}`.trim()}
       onClick={toggle}
       aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
     >

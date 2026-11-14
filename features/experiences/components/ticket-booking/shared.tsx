@@ -1,5 +1,6 @@
 import { type EventItem, type TicketType, formatEventDate, formatTime } from "@/lib/content/events";
 import { formatInr } from "@/lib/format";
+import styles from "./ticket-booking.module.css";
 
 export const PAYMENT_METHODS = [
   { id: "upi", name: "UPI", description: "Pay with any UPI app — GPay, PhonePe, Paytm or CRED." },
@@ -37,9 +38,9 @@ export function QtyStepper({ name, count, onChange }: { name: string; count: num
 export function TicketSummary({ event, date, time, items, total, bookedBy }: Selection & { bookedBy?: string }) {
   const receipt = bookedBy !== undefined;
   return (
-    <aside className={receipt ? "order-summary ticket-receipt" : "order-summary"}>
-      <h2 className="display-3 order-summary-title">{event.title}</h2>
-      <p className="order-summary-muted order-summary-when">{whenLabel(date, time)}</p>
+    <aside className={receipt ? `order-summary ${styles["ticket-receipt"]}` : "order-summary"}>
+      <h2 className={`display-3 ${styles["order-summary-title"]}`}>{event.title}</h2>
+      <p className={`order-summary-muted ${styles["order-summary-when"]}`}>{whenLabel(date, time)}</p>
       {event.venue && <p className="order-summary-muted">{event.venue}</p>}
 
       <p className="order-summary-label">{receipt ? "Your Tickets" : "Tickets"}</p>

@@ -1,4 +1,4 @@
-import { ShowcaseCategory } from "../components/ExpandingPanelsShowcase";
+import { ShowcaseCategory } from "../components/things-to-do/ExpandingPanelsShowcase";
 
 export const EXPLORE_SHOWCASE_CATEGORIES: ShowcaseCategory[] = [
   {

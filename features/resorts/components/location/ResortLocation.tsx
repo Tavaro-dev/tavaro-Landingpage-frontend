@@ -1,6 +1,6 @@
 import { Reveal } from "@/components/shared/Reveal";
 import styles from "./ResortLocation.module.css";
-import { RESORT_LOCATION_POINTS } from "../content/resortLocation";
+import { RESORT_LOCATION_POINTS } from "../../content/resortLocation";
 
 export function ResortLocation() {
   const landmarks = RESORT_LOCATION_POINTS.filter((p) => p.type === "landmark");

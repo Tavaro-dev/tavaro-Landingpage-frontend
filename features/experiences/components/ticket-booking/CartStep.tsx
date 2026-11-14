@@ -1,5 +1,6 @@
 import { formatInr } from "@/lib/format";
 import { QtyStepper, type Selection, lineTotal, whenLabel } from "./shared";
+import styles from "./ticket-booking.module.css";
 
 export function CartStep({
   selection: { event, date, time, items },
@@ -42,7 +43,7 @@ export function CartStep({
                 </p>
                 <p className="enhance-item-price">{formatInr(lineTotal(line))}</p>
               </div>
-              <div className="ticket-line-controls">
+              <div className={styles["ticket-line-controls"]}>
                 <QtyStepper name={line.type.name} count={line.count} onChange={(n) => setCount(line.type.id, n)} />
                 <button type="button" className="cart-remove" onClick={() => setCount(line.type.id, 0)}>
                   Remove

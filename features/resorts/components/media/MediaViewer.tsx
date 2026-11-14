@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
-import { ResortMediaCategory } from "../content/resortMedia";
+import { ResortMediaCategory } from "../../content/resortMedia";
 import styles from "./MediaViewer.module.css";
 
 interface MediaViewerProps {

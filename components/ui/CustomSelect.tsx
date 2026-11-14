@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback, useSyncExternalStore, KeyboardEvent, useId } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "@/components/ui/Icon";
+import styles from "./ui.module.css";
 
 export interface CustomSelectOption {
   value: string;
@@ -202,7 +203,7 @@ export function CustomSelect({
   const dropdownPortal = isOpen && mounted && typeof document !== "undefined" ? (
     createPortal(
       <ul
-        className="custom-select-dropdown portal-floating"
+        className={`${styles["custom-select-dropdown"]} ${styles["portal-floating"]}`}
         role="listbox"
         id={listboxId}
         ref={listboxRef}
@@ -225,7 +226,7 @@ export function CustomSelect({
             <li
               key={option.value}
               id={`${listboxId}-option-${index}`}
-              className={`custom-select-option${isActive ? " active" : ""}`}
+              className={`${styles["custom-select-option"]}${isActive ? " active" : ""}`}
               onClick={() => handleOptionClick(option.value)}
               onMouseEnter={() => setActiveIndex(index)}
               role="option"
@@ -242,7 +243,7 @@ export function CustomSelect({
   ) : null;
 
   return (
-    <div className={`custom-select-container${isOpen ? " active-field" : ""}`} ref={containerRef}>
+    <div className={`${styles["custom-select-container"]}${isOpen ? ` ${styles["active-field"]}` : ""}`} ref={containerRef}>
       <input type="hidden" name={name} value={value} />
       <button
         type="button"
@@ -269,7 +270,7 @@ export function CustomSelect({
         <span className={selectedOption ? "selected-text" : "placeholder-text"}>
           {selectedOption ? selectedOption.label : placeholder}
         </span>
-        <span className={`select-arrow${isOpen ? " rotated" : ""}`}>
+        <span className={`${styles["select-arrow"]}${isOpen ? ` ${styles.rotated}` : ""}`}>
           <Icon name="chevron-left" />
         </span>
       </button>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Reveal } from "@/components/shared/Reveal";
-import { AMENITIES_DATA, AmenityItem } from "../content/amenitiesData";
+import { AMENITIES_DATA, AmenityItem } from "../../content/amenitiesData";
 import styles from "./ResortAmenitiesCarousel.module.css";
 
 export function ResortAmenitiesCarousel() {

@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { Reveal } from "@/components/shared/Reveal";
+import styles from "./shared.module.css";
 
 export type TriCardData = {
   id?: string;
@@ -19,15 +20,15 @@ export type TriCardData = {
 export function TriGrid({ cards }: { cards: TriCardData[] }) {
   const colsClass = cards.length === 4 ? " cols-4" : "";
   return (
-    <Reveal stagger className={`tri-grid${colsClass}`}>
+    <Reveal stagger className={`${styles["tri-grid"]}${colsClass}`}>
       {cards.map((card) => (
         <div
-          className={`tri-card${card.bgImage ? " with-bg" : ""}${card.isGoldenSociety ? " golden-society-card" : ""}`}
+          className={`${styles["tri-card"]}${card.bgImage ? ` ${styles["with-bg"]}` : ""}${card.isGoldenSociety ? ` ${styles["golden-society-card"]}` : ""}`}
           id={card.id}
           key={card.heading}
         >
           {card.isGoldenSociety ? (
-            <div className="golden-society-card-visual">
+            <div className={styles["golden-society-card-visual"]}>
               <Image
                 src="/images/experiences/golden-society.png"
                 alt="The Golden Society — Weddings & Celebrations"
@@ -38,16 +39,16 @@ export function TriGrid({ cards }: { cards: TriCardData[] }) {
           ) : (
             <>
               {card.bgImage && (
-                <div className="tri-card-bg-wrap">
+                <div className={styles["tri-card-bg-wrap"]}>
                   <Image src={card.bgImage} alt={card.heading} fill sizes="(min-width: 768px) 25vw, 100vw" />
-                  <div className="tri-card-scrim" />
+                  <div className={styles["tri-card-scrim"]} />
                 </div>
               )}
 
-              <div className="tri-card-inner">
-                <div className="tri-card-header">
-                  <h3 className="tri-card-title">{card.heading}</h3>
-                  {card.subtitle && <p className="tri-card-subtitle">{card.subtitle}</p>}
+              <div className={styles["tri-card-inner"]}>
+                <div className={styles["tri-card-header"]}>
+                  <h3 className={styles["tri-card-title"]}>{card.heading}</h3>
+                  {card.subtitle && <p className={styles["tri-card-subtitle"]}>{card.subtitle}</p>}
                 </div>
 
                 {card.icon && (
@@ -56,7 +57,7 @@ export function TriGrid({ cards }: { cards: TriCardData[] }) {
                   </span>
                 )}
 
-                {card.body && <p className="tri-card-body">{card.body}</p>}
+                {card.body && <p className={styles["tri-card-body"]}>{card.body}</p>}
 
                 {card.tags && (
                   <div className="tags">

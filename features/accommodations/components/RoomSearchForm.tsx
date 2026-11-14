@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
 import { CustomSelect } from "@/components/ui/CustomSelect";
+import styles from "./accommodations.module.css";
 
 const ROOM_TYPE_OPTIONS = [
   { value: "Any", label: "Any Room Type" },
@@ -52,7 +53,7 @@ export function RoomSearchForm({ onSearchSubmit }: RoomSearchFormProps = {}) {
 
   return (
     <form
-      className="availability-search"
+      className={styles["availability-search"]}
       action="/resorts/accommodations"
       method="get"
       onSubmit={handleSubmit}
@@ -94,7 +95,7 @@ export function RoomSearchForm({ onSearchSubmit }: RoomSearchFormProps = {}) {
           onChange={(val) => setRoomType(val)}
         />
       </div>
-      <button type="submit" className="btn solid availability-submit" suppressHydrationWarning>
+      <button type="submit" className={`btn solid ${styles["availability-submit"]}`} suppressHydrationWarning>
         Check Availability
       </button>
     </form>

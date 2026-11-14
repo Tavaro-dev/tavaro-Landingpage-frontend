@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/ui/Icon";
+import styles from "./shared.module.css";
 
 const PILLARS: { label: string; href: string; icon: IconName }[] = [
   { label: "Resorts", href: "/resorts", icon: "resorts" },
@@ -12,8 +13,8 @@ const PILLARS: { label: string; href: string; icon: IconName }[] = [
 
 export function HomeHero() {
   return (
-    <section className="hero home-hero">
-      <div className="hero-media ph-1">
+    <section className={`hero ${styles["home-hero"]}`}>
+      <div className={`${styles["hero-media"]} ph-1`}>
         <Image
           src="/photos/drone-hero.jpg"
           alt="Aerial view of a Tavaro celebration at dusk"
@@ -22,11 +23,11 @@ export function HomeHero() {
           sizes="100vw"
         />
       </div>
-      <div className="hero-scrim" />
+      <div className={styles["hero-scrim"]} />
 
       <div className="hero-inner container">
-        <p className="eyebrow hero-eyebrow">Tavaro Group</p>
-        <h1 className="hero-title">
+        <p className={`eyebrow ${styles["hero-eyebrow"]}`}>Tavaro Group</p>
+        <h1 className={styles["hero-title"]}>
           Discover
           <br />
           the world
@@ -44,17 +45,17 @@ export function HomeHero() {
         </div>
       </div>
 
-      <span className="scroll-cue">Scroll to discover</span>
+      <span className={styles["scroll-cue"]}>Scroll to discover</span>
 
       <div className="pillar-strip">
         <div className="container">
-          <div className="pillar-grid">
+          <div className={styles["pillar-grid"]}>
             {PILLARS.map((pillar) => (
-              <Link className="pillar-item" href={pillar.href} key={pillar.href}>
-                <span className="pillar-icon">
+              <Link className={styles["pillar-item"]} href={pillar.href} key={pillar.href}>
+                <span className={styles["pillar-icon"]}>
                   <Icon name={pillar.icon} />
                 </span>
-                <span className="pillar-label">{pillar.label}</span>
+                <span className={styles["pillar-label"]}>{pillar.label}</span>
               </Link>
             ))}
           </div>

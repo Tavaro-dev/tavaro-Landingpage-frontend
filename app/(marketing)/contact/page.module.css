@@ -1,0 +1,40 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
+.journey-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--surface-line);
+  margin-top: 20px;
+}
+
+.journey-item {
+  background: var(--surface);
+  padding: 26px 22px;
+  transition: transform 0.4s var(--ease), background 0.4s var(--ease);
+}
+
+.journey-grid .journey-item:hover {
+  transform: translateY(-6px);
+  background: var(--surface-2);
+}
+
+.journey-item :global(.eyebrow) {
+  margin-bottom: 10px;
+}
+
+.journey-item p {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+@media (max-width: 860px) {
+.journey-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+}

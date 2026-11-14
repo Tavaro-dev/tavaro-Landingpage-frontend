@@ -1,0 +1,22 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
+.leaf-section :global(.text-link) {
+  border-bottom-color: var(--line-dark);
+}
+
+.leaf-section {
+  background: linear-gradient(180deg, #141a15, #0c100d);
+}
+
+[data-theme="light"] .leaf-section :global(.coming-soon-tag) {
+  --coming-soon-color: #a9c2a6;
+  --coming-soon-border: rgba(169, 194, 166, 0.4);
+}
+
+.leaf-section :global(.two-col-text) :global(.lede) {
+  color: var(--cream);
+}
+
+}

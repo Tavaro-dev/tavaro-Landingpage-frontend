@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
-import { THINGS_TO_DO_DATA } from "../content/thingsToDoData";
+import { THINGS_TO_DO_DATA } from "../../content/thingsToDoData";
 import { ThingsToDoButton } from "./ThingsToDoButton";
 import styles from "./ThingsToDoSection.module.css";
 

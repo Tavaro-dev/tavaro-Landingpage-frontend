@@ -1,12 +1,13 @@
 "use client";
 
 import { Icon } from "@/components/ui/Icon";
+import styles from "./experiences.module.css";
 
 export function GalleryHeroButton() {
   return (
     <a
       href="#gallery"
-      className="hero-gallery-square-btn"
+      className={styles["hero-gallery-square-btn"]}
       onClick={(e) => {
         e.preventDefault();
         document.getElementById("gallery")?.scrollIntoView({ behavior: "smooth" });

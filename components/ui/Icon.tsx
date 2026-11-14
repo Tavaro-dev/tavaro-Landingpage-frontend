@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
+import styles from "./ui.module.css";
 
 const BRAND_ICONS = {
   logo: { src: "/icons/logo-mark.png", width: 300, height: 242 },
@@ -234,7 +235,7 @@ export function Icon({
   const svg = SVG_ICONS[name as SvgIconName] ?? SVG_ICONS.close;
   return (
     <span
-      className={`ui-icon ui-icon-${String(name)}${className ? ` ${className}` : ""}`}
+      className={`${styles["ui-icon"]} ui-icon-${String(name)}${className ? ` ${className}` : ""}`}
       style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", ...style }}
     >
       {svg}

@@ -4,6 +4,7 @@ import { Reveal } from "@/components/shared/Reveal";
 import ContactForm from "@/features/contact/components/ContactForm";
 import { Icon } from "@/components/ui/Icon";
 import { pageMetadata } from "@/lib/metadata";
+import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
   path: "/contact",
@@ -54,9 +55,9 @@ export default function ContactPage() {
               </>
             }
           />
-          <Reveal stagger className="journey-grid">
+          <Reveal stagger className={styles["journey-grid"]}>
             {JOURNEYS.map((journey) => (
-              <div className="journey-item" key={journey.label}>
+              <div className={styles["journey-item"]} key={journey.label}>
                 <p className="eyebrow no-line">{journey.label}</p>
                 <p>{journey.body}</p>
               </div>

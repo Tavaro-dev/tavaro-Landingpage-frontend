@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { Icon } from "@/components/ui/Icon";
+import styles from "./ui.module.css";
 
 interface CustomDatePickerProps {
   id?: string;
@@ -222,34 +223,34 @@ export function CustomDatePicker({
 
   const calendarBody = (
     <>
-      <div className="datepicker-header">
-        <button type="button" className="datepicker-nav-btn" onClick={handlePrevMonth} aria-label="Previous Month">
+      <div className={styles["datepicker-header"]}>
+        <button type="button" className={styles["datepicker-nav-btn"]} onClick={handlePrevMonth} aria-label="Previous Month">
           <Icon name="chevron-left" />
         </button>
-        <span className="datepicker-title" aria-live="polite">
+        <span className={styles["datepicker-title"]} aria-live="polite">
           {MONTH_NAMES[viewMonth]} {viewYear}
         </span>
-        <button type="button" className="datepicker-nav-btn" onClick={handleNextMonth} aria-label="Next Month">
+        <button type="button" className={styles["datepicker-nav-btn"]} onClick={handleNextMonth} aria-label="Next Month">
           <span className="tw:inline-block tw:rotate-180">
             <Icon name="chevron-left" />
           </span>
         </button>
       </div>
 
-      <div className="datepicker-weekdays" aria-hidden="true">
+      <div className={styles["datepicker-weekdays"]} aria-hidden="true">
         {WEEKDAYS.map((day) => (
-          <span key={day} className="datepicker-weekday">
+          <span key={day} className={styles["datepicker-weekday"]}>
             {day}
           </span>
         ))}
       </div>
 
-      <div className="datepicker-days">
+      <div className={styles["datepicker-days"]}>
         {/* Empty slots before first day */}
         {Array.from({ length: firstDayOfWeek }).map((_, i) => {
           const dayNum = prevMonthDays - firstDayOfWeek + i + 1;
           return (
-            <span key={`prev-${i}`} className="datepicker-day muted" aria-hidden="true">
+            <span key={`prev-${i}`} className={`${styles["datepicker-day"]} ${styles.muted}`} aria-hidden="true">
               {dayNum}
             </span>
           );
@@ -271,7 +272,7 @@ export function CustomDatePicker({
               aria-label={ariaLabel}
               aria-pressed={selected}
               aria-current={today ? "date" : undefined}
-              className={`datepicker-day${selected ? " selected" : ""}${today ? " today" : ""}${
+              className={`${styles["datepicker-day"]}${selected ? " selected" : ""}${today ? ` ${styles.today}` : ""}${
                 disabled ? " disabled" : ""
               }`}
               onClick={() => {
@@ -295,24 +296,24 @@ export function CustomDatePicker({
     createPortal(
       position.isMobileModal ? (
         <div 
-          className="datepicker-portal-backdrop"
+          className={styles["datepicker-portal-backdrop"]}
           onClick={() => setIsOpen(false)}
           role="presentation"
         >
           <div 
             id={calendarId} 
             ref={popoverRef}
-            className="custom-datepicker-popover portal-mobile-sheet" 
+            className={`${styles["custom-datepicker-popover"]} ${styles["portal-mobile-sheet"]}`} 
             role="dialog" 
             aria-modal="true"
             aria-label={`${MONTH_NAMES[viewMonth]} ${viewYear}`}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="datepicker-mobile-top">
-              <span className="datepicker-mobile-title">Select Date</span>
+            <div className={styles["datepicker-mobile-top"]}>
+              <span className={styles["datepicker-mobile-title"]}>Select Date</span>
               <button 
                 type="button" 
-                className="datepicker-mobile-close" 
+                className={styles["datepicker-mobile-close"]} 
                 onClick={() => setIsOpen(false)}
                 aria-label="Close date picker"
               >
@@ -326,7 +327,7 @@ export function CustomDatePicker({
         <div 
           id={calendarId} 
           ref={popoverRef}
-          className="custom-datepicker-popover portal-floating" 
+          className={`${styles["custom-datepicker-popover"]} ${styles["portal-floating"]}`} 
           role="dialog" 
           aria-label={`${MONTH_NAMES[viewMonth]} ${viewYear}`}
           style={{
@@ -347,7 +348,7 @@ export function CustomDatePicker({
 
   return (
     <div 
-      className={`custom-datepicker-container${isOpen ? " active-field" : ""}`} 
+      className={`${styles["custom-datepicker-container"]}${isOpen ? ` ${styles["active-field"]}` : ""}`} 
       ref={containerRef}
       onKeyDown={handleKeyDown}
     >
@@ -365,7 +366,7 @@ export function CustomDatePicker({
         <span className={value ? "selected-text" : "placeholder-text"}>
           {value ? formatDisplayDate(value) : placeholder}
         </span>
-        <span className="datepicker-icon">
+        <span className={styles["datepicker-icon"]}>
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
             <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.4" />
             <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />

@@ -6,6 +6,7 @@ import { OfferHead } from "@/components/shared/OfferHead";
 import { BandQuote } from "@/components/shared/BandQuote";
 import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
+import styles from "./residences.module.css";
 
 export const metadata = pageMetadata({
   title: "Residences — Come Home to Yourself | Tavaro",
@@ -108,9 +109,9 @@ export default function ResidencesPage() {
               </>
             }
           />
-          <Reveal stagger className="principles-grid">
+          <Reveal stagger className={styles["principles-grid"]}>
             {PRINCIPLES.map((p) => (
-              <div className="principle-item" key={p.label}>
+              <div className={styles["principle-item"]} key={p.label}>
                 <p className="eyebrow no-line">{p.label}</p>
                 <p>{p.body}</p>
               </div>
@@ -139,19 +140,19 @@ export default function ResidencesPage() {
       {/* Leela */}
       <section className="offer-block on-dark tw:pt-[0]" id="leela">
         <div className="container">
-          <div className="residence-card-pair">
-            <Reveal className="residence-feature-card">
-              <div className="residence-card-media ph-2">
+          <div className={styles["residence-card-pair"]}>
+            <Reveal className={styles["residence-feature-card"]}>
+              <div className={`${styles["residence-card-media"]} ph-2`}>
                 <Image
                   src="/images/unsplash/residences-leela.jpg"
                   alt="Leela by Tavaro Residences"
                   fill
                   sizes="(min-width: 860px) 55vw, 100vw"
                 />
-                <div className="residence-card-scrim" />
-                <span className="residence-card-tag">01 — Leela</span>
+                <div className={styles["residence-card-scrim"]} />
+                <span className={styles["residence-card-tag"]}>01 — Leela</span>
               </div>
-              <div className="residence-card-body">
+              <div className={styles["residence-card-body"]}>
                 <h2 className="display-3">
                   A home shaped
                   <br />
@@ -174,18 +175,18 @@ export default function ResidencesPage() {
               </div>
             </Reveal>
 
-            <Reveal className="residence-feature-card reverse">
-              <div className="residence-card-media ph-4">
+            <Reveal className={`${styles["residence-feature-card"]} reverse`}>
+              <div className={`${styles["residence-card-media"]} ph-4`}>
                 <Image
                   src="/images/unsplash/residences-bhairavi-nilayam.jpg"
                   alt="Bhairavi Nilayam residence"
                   fill
                   sizes="(min-width: 860px) 55vw, 100vw"
                 />
-                <div className="residence-card-scrim" />
-                <span className="residence-card-tag">02 — Bhairavi Nilayam</span>
+                <div className={styles["residence-card-scrim"]} />
+                <span className={styles["residence-card-tag"]}>02 — Bhairavi Nilayam</span>
               </div>
-              <div className="residence-card-body">
+              <div className={styles["residence-card-body"]}>
                 <h2 className="display-3">
                   Rooted in place,
                   <br />

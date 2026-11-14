@@ -5,6 +5,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
 import styles from "./ExperienceEnquiryModal.module.css";
+import gstyles from "../enquiry.module.css";
 
 interface ExperienceEnquiryModalProps {
   isOpen: boolean;
@@ -70,7 +71,7 @@ export function ExperienceEnquiryModal({
 
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy="exp-modal-title" bare>
-      <div className="event-modal-overlay" onClick={onClose}>
+      <div className={gstyles["event-modal-overlay"]} onClick={onClose}>
         <div className={styles["exp-modal-card"]} onClick={(e) => e.stopPropagation()}>
           <div className={styles["exp-modal-head"]}>
             <h3 id="exp-modal-title" className={styles["exp-modal-title"]}>

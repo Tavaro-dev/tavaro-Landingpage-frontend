@@ -8,6 +8,8 @@ import { BandQuote } from "@/components/shared/BandQuote";
 import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
 import LeelaDynamicForm from "./LeelaDynamicForm";
+import styles from "../residences.module.css";
+import gstyles from "./page.module.css";
 
 export const metadata = pageMetadata({
   title: "Leela by Tavaro Residences — A Home Shaped by Stillness | Tavaro",
@@ -136,9 +138,9 @@ export default function LeelaPage() {
             }
             lede="Each of Tavaro's residential principles is expressed through Leela's architecture — in the way it meets its landscape, handles light and creates space for living."
           />
-          <Reveal stagger className="principles-grid tw:mt-[40px]">
+          <Reveal stagger className={`${styles["principles-grid"]} tw:mt-[40px]`}>
             {ARCHITECTURAL_PRINCIPLES.map((p) => (
-              <div className="principle-item" key={p.label}>
+              <div className={styles["principle-item"]} key={p.label}>
                 <p className="eyebrow no-line">{p.label}</p>
                 <p>{p.body}</p>
               </div>
@@ -163,8 +165,8 @@ export default function LeelaPage() {
           />
 
           {/* Plan categories overview */}
-          <Reveal stagger className="principles-grid tw:mt-[40px] tw:mb-[32px]">
-            <div className="principle-item">
+          <Reveal stagger className={`${styles["principles-grid"]} tw:mt-[40px] tw:mb-[32px]`}>
+            <div className={styles["principle-item"]}>
               <p className="eyebrow no-line tw:text-(color:--gold)">
                 01 — Typical Floor Plan
               </p>
@@ -175,7 +177,7 @@ export default function LeelaPage() {
                 Generous social living pavilions seamlessly opening onto deep perimeter verandas, with private family sanctuaries buffered from entertaining zones.
               </p>
             </div>
-            <div className="principle-item">
+            <div className={styles["principle-item"]}>
               <p className="eyebrow no-line tw:text-(color:--gold)">
                 02 — Terrace Plan
               </p>
@@ -186,7 +188,7 @@ export default function LeelaPage() {
                 Open-to-sky entertaining terrace with shaded pergolas, lush planters, and panoramic vistas celebrating morning sun and twilight breezes.
               </p>
             </div>
-            <div className="principle-item">
+            <div className={styles["principle-item"]}>
               <p className="eyebrow no-line tw:text-(color:--gold)">
                 03 — Isometric &amp; 3D Plans
               </p>
@@ -199,9 +201,9 @@ export default function LeelaPage() {
             </div>
           </Reveal>
 
-          <Reveal className="floor-plan-display">
-            <div className="floor-plan-placeholder ph-2">
-              <div className="floor-plan-overlay">
+          <Reveal className={gstyles["floor-plan-display"]}>
+            <div className={`${gstyles["floor-plan-placeholder"]} ph-2`}>
+              <div className={gstyles["floor-plan-overlay"]}>
                 <p className="eyebrow no-line tw:text-(color:--gold-light)">
                   Detailed Architectural Plans &amp; Brochure
                 </p>
@@ -213,26 +215,26 @@ export default function LeelaPage() {
                 </Link>
               </div>
             </div>
-            <div className="floor-plan-specs">
-              <div className="spec-item">
-                <span className="spec-label">Configuration</span>
-                <span className="spec-value">Curated multi-level layouts</span>
+            <div className={gstyles["floor-plan-specs"]}>
+              <div className={gstyles["spec-item"]}>
+                <span className={gstyles["spec-label"]}>Configuration</span>
+                <span className={gstyles["spec-value"]}>Curated multi-level layouts</span>
               </div>
-              <div className="spec-item">
-                <span className="spec-label">Floor Plans</span>
-                <span className="spec-value">Typical, Terrace &amp; Sky Deck</span>
+              <div className={gstyles["spec-item"]}>
+                <span className={gstyles["spec-label"]}>Floor Plans</span>
+                <span className={gstyles["spec-value"]}>Typical, Terrace &amp; Sky Deck</span>
               </div>
-              <div className="spec-item">
-                <span className="spec-label">Spatial Models</span>
-                <span className="spec-value">Isometric &amp; 3D Volumetric</span>
+              <div className={gstyles["spec-item"]}>
+                <span className={gstyles["spec-label"]}>Spatial Models</span>
+                <span className={gstyles["spec-value"]}>Isometric &amp; 3D Volumetric</span>
               </div>
-              <div className="spec-item">
-                <span className="spec-label">Orientation</span>
-                <span className="spec-value">Solar &amp; wind-path aligned</span>
+              <div className={gstyles["spec-item"]}>
+                <span className={gstyles["spec-label"]}>Orientation</span>
+                <span className={gstyles["spec-value"]}>Solar &amp; wind-path aligned</span>
               </div>
-              <div className="spec-item">
-                <span className="spec-label">Area Information</span>
-                <span className="spec-value">Provided in brochure</span>
+              <div className={gstyles["spec-item"]}>
+                <span className={gstyles["spec-label"]}>Area Information</span>
+                <span className={gstyles["spec-value"]}>Provided in brochure</span>
               </div>
             </div>
           </Reveal>
@@ -285,10 +287,10 @@ export default function LeelaPage() {
               </>
             }
           />
-          <Reveal stagger className="gallery-strip tw:mt-[32px]">
+          <Reveal stagger className={`${styles["gallery-strip"]} tw:mt-[32px]`}>
             {GALLERY_IMAGES.map((item) => (
               <div
-                className={`gallery-item ${item.tall ? "tall " : ""}${item.placeholder}`}
+                className={`${styles["gallery-item"]} ${item.tall ? "tall " : ""}${item.placeholder}`}
                 key={item.src}
               >
                 <Image
@@ -297,7 +299,7 @@ export default function LeelaPage() {
                   fill
                   sizes="(min-width: 521px) 25vw, 50vw"
                 />
-                <span className="gallery-item-caption">{item.caption}</span>
+                <span className={styles["gallery-item-caption"]}>{item.caption}</span>
               </div>
             ))}
           </Reveal>
@@ -318,9 +320,9 @@ export default function LeelaPage() {
             }
             lede="Leela is positioned to offer genuine connection to nature while remaining close to the rhythms of city life."
           />
-          <Reveal className="location-proximity-grid tw:mt-[40px]">
-            <div className="proximity-map-placeholder ph-1">
-              <div className="proximity-map-label">
+          <Reveal className={`${gstyles["location-proximity-grid"]} tw:mt-[40px]`}>
+            <div className={`${gstyles["proximity-map-placeholder"]} ph-1`}>
+              <div className={gstyles["proximity-map-label"]}>
                 <p className="eyebrow no-line tw:text-(color:--gold-light)">
                   Location
                 </p>
@@ -329,7 +331,7 @@ export default function LeelaPage() {
                 </p>
               </div>
             </div>
-            <div className="proximity-list">
+            <div className={gstyles["proximity-list"]}>
               <p
                 className="eyebrow no-line tw:mb-[20px] tw:text-(color:--on-surface-muted)"
               >
@@ -342,9 +344,9 @@ export default function LeelaPage() {
                 { place: "Gachibowli", time: "10 min" },
                 { place: "Outer Ring Road Access", time: "5 min" },
               ].map((item) => (
-                <div className="proximity-item" key={item.place}>
-                  <span className="proximity-place">{item.place}</span>
-                  <span className="proximity-time">{item.time}</span>
+                <div className={gstyles["proximity-item"]} key={item.place}>
+                  <span className={gstyles["proximity-place"]}>{item.place}</span>
+                  <span className={gstyles["proximity-time"]}>{item.time}</span>
                 </div>
               ))}
               <p className="tw:text-[11px] tw:text-(color:--muted-on-dark) tw:mt-[16px]">

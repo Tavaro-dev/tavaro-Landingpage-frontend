@@ -2,6 +2,7 @@ import { useId, useState } from "react";
 import { formatInr } from "@/lib/format";
 import { createTicketBookingAction } from "@/app/actions/transaction";
 import { PAYMENT_METHODS } from "./shared";
+import styles from "./ticket-booking.module.css";
 
 export function PaymentStep({
   eventTitle,
@@ -52,7 +53,7 @@ export function PaymentStep({
 
       <p className="order-summary-label">Payment Method</p>
       {PAYMENT_METHODS.map((option) => (
-        <label className="enhance-item pay-method" key={option.id}>
+        <label className={`enhance-item ${styles["pay-method"]}`} key={option.id}>
           <span>
             <span className="enhance-item-name">{option.name}</span>
             <span className="enhance-item-desc">{option.description}</span>
@@ -61,7 +62,7 @@ export function PaymentStep({
         </label>
       ))}
 
-      <p className="checkout-demo-notice">
+      <p className={styles["checkout-demo-notice"]}>
         This is a demo payment step. No payment is taken and no card, UPI or bank details are collected, transmitted or
         stored.
       </p>

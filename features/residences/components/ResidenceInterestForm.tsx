@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
+import styles from "./ResidenceInterestForm.module.css";
 
 const RESIDENCE_OPTIONS = [
   { value: "Leela by Tavaro Residences", label: "Leela by Tavaro Residences" },
@@ -118,7 +119,7 @@ export default function ResidenceInterestForm({
         <p className="eyebrow no-line tw:mb-[14px] tw:text-[10px]">
           I would like to (optional)
         </p>
-        <div className="residence-intent-options">
+        <div className={styles["residence-intent-options"]}>
           {INTENT_OPTIONS.map((opt) => (
             <button
               key={opt.value}

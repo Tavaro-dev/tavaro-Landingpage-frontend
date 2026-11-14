@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import styles from "./shared.module.css";
 
 export default function StickyCta({
   text,
@@ -32,7 +33,7 @@ export default function StickyCta({
   }, []);
 
   return (
-    <div className={`sticky-cta${show ? " show" : ""}`}>
+    <div className={`${styles["sticky-cta"]}${show ? " show" : ""}`}>
       <span>{text}</span>
       {onCtaClick ? (
         <button
