@@ -23,6 +23,8 @@ export function MediaCategoryCard({
 
   useEffect(() => {
     if (category.items.length <= 1) return;
+    // No auto-advancing slideshow for reduced motion (WCAG 2.2.2).
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const interval = setInterval(() => {
       setActiveIndex((current) => (current + 1) % category.items.length);
     }, 4000 + Math.random() * 2000); 

@@ -20,35 +20,35 @@ export const metadata = pageMetadata({
 
 const GALLERY_IMAGES = [
   {
-    src: "/images/unsplash/residences-leela.jpg",
+    src: "/images/residences/leela-exterior.jpg",
     alt: "Architecture — Leela by Tavaro Residences",
     placeholder: "ph-2",
     tall: true,
     caption: "Architecture",
   },
   {
-    src: "/images/unsplash/residences-gallery-living-room.jpg",
+    src: "/images/residences/leela-living-room.jpg",
     alt: "Interiors — living room",
     placeholder: "ph-3",
     tall: false,
     caption: "Interiors",
   },
   {
-    src: "/images/unsplash/residences-gallery-courtyard.jpg",
-    alt: "Landscape — central courtyard",
+    src: "/images/residences/leela-elevation.jpg",
+    alt: "Architecture — the full elevation",
     placeholder: "ph-5",
     tall: true,
     caption: "Landscape",
   },
   {
-    src: "/images/unsplash/residences-gallery-architectural-detail.jpg",
+    src: "/images/residences/leela-detail.jpg",
     alt: "Details — materiality and craft",
     placeholder: "ph-4",
     tall: false,
     caption: "Details",
   },
   {
-    src: "/images/unsplash/residences-gallery-balcony.jpg",
+    src: "/images/residences/leela-terrace.jpg",
     alt: "Terrace — open-air living",
     placeholder: "ph-1",
     tall: false,
@@ -83,7 +83,7 @@ export default function LeelaPage() {
   return (
     <>
       <PageHero
-        photoSrc="/images/unsplash/residences-leela.jpg"
+        photoSrc="/images/heroes/residences-hero.jpg"
         photoAlt="Leela by Tavaro Residences — architectural exterior"
         placeholder="ph-2"
         breadcrumbLabel="Leela by Tavaro Residences"
@@ -246,7 +246,7 @@ export default function LeelaPage() {
         <div className="container">
           <SplitSection
             placeholder="ph-2"
-            src="/images/unsplash/residences-gallery-living-room.jpg"
+            src="/images/residences/leela-living-room.jpg"
             alt="Leela interiors — living space"
           >
             <OfferHead

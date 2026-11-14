@@ -14,7 +14,7 @@ export default function ResidencesRegisterPage() {
   return (
     <>
       <PageHero
-        photoSrc="/photos/residences-villa.jpg"
+        photoSrc="/images/heroes/residences-hero.jpg"
         photoAlt="A Tavaro Residence"
         placeholder="ph-2"
         breadcrumbLabel="Register Your Interest"

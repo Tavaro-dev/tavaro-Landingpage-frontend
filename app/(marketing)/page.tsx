@@ -19,7 +19,7 @@ const PILLAR_CARDS = [
   {
     href: "/resorts",
     placeholder: "ph-1",
-    src: "/photos/resorts-horses.jpg",
+    src: "/images/home/resorts.jpg",
     alt: "Tavaro Resorts",
     num: "01 — Resorts",
     title: "Resorts",
@@ -28,7 +28,7 @@ const PILLAR_CARDS = [
   {
     href: "/residences",
     placeholder: "ph-2",
-    src: "/photos/residences-villa.jpg",
+    src: "/images/residences/leela-exterior.jpg",
     alt: "Tavaro Residences",
     num: "02 — Residences",
     title: "Residences",
@@ -37,7 +37,7 @@ const PILLAR_CARDS = [
   {
     href: "/experiences",
     placeholder: "ph-3",
-    src: "/photos/experiences-cars.jpg",
+    src: "/images/home/experiences.jpg",
     alt: "Tavaro Experiences",
     num: "03 — Experiences",
     title: "Experiences",
@@ -46,7 +46,7 @@ const PILLAR_CARDS = [
   {
     href: "/wellness",
     placeholder: "ph-green",
-    src: "/photos/wellness-hands.jpg",
+    src: "/images/home/wellness.jpg",
     alt: "Wellness at Tavaro",
     num: "04 — Wellness",
     title: "Wellness",
@@ -55,7 +55,7 @@ const PILLAR_CARDS = [
   {
     href: "/mare",
     placeholder: "ph-gold",
-    src: "/photos/mare-cover.jpg",
+    src: "/images/home/mare.jpg",
     alt: "Màre Coffee House",
     num: "05 — Màre",
     title: "Màre",
@@ -128,7 +128,7 @@ export default function HomePage() {
       {/* Featured: Resorts */}
       <section className="section on-panel">
         <div className="container">
-          <SplitSection placeholder="ph-1" src="/photos/resorts-horses.jpg" alt="Tavaro Resorts, Kokapet">
+          <SplitSection placeholder="ph-1" src="/images/home/resorts.jpg" alt="Tavaro Resorts, Kokapet">
             <p className="eyebrow">Resorts</p>
             <h3 className="display-3">
               A world away,
@@ -149,7 +149,7 @@ export default function HomePage() {
       {/* Featured: Residences */}
       <section className="section on-dark">
         <div className="container">
-          <SplitSection reverse placeholder="ph-2" src="/photos/residences-villa.jpg" alt="Tavaro Residences">
+          <SplitSection reverse placeholder="ph-2" src="/images/residences/leela-exterior.jpg" alt="Tavaro Residences">
             <p className="eyebrow">Residences</p>
             <h3 className="display-3">
               Come home
@@ -170,7 +170,7 @@ export default function HomePage() {
       {/* Featured: Experiences */}
       <section className="section on-panel">
         <div className="container">
-          <SplitSection placeholder="ph-3" src="/photos/experiences-cars.jpg" alt="Tavaro Experiences">
+          <SplitSection placeholder="ph-3" src="/images/home/experiences.jpg" alt="Tavaro Experiences">
             <p className="eyebrow">Experiences</p>
             <h3 className="display-3">
               Moments made
@@ -191,7 +191,7 @@ export default function HomePage() {
       {/* Featured: Wellness */}
       <section className="section on-dark">
         <div className="container">
-          <SplitSection reverse placeholder="ph-green" src="/photos/wellness-hands.jpg" alt="Wellness at Tavaro">
+          <SplitSection reverse placeholder="ph-green" src="/images/home/wellness.jpg" alt="Wellness at Tavaro">
             <p className="eyebrow">Wellness</p>
             <h3 className="display-3">
               A Tavaro way
@@ -212,7 +212,7 @@ export default function HomePage() {
       {/* Featured: Màre */}
       <section className="section on-panel">
         <div className="container">
-          <SplitSection placeholder="ph-gold" src="/photos/mare-cover.jpg" alt="Màre Coffee House">
+          <SplitSection placeholder="ph-gold" src="/images/home/mare.jpg" alt="Màre Coffee House">
             <p className="eyebrow">Màre Coffee House</p>
             <h3 className="display-3">
               Where life

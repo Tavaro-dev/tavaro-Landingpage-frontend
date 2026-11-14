@@ -90,29 +90,29 @@ const LIVING_SPACES = [
 
 const GALLERY_IMAGES = [
   {
-    src: "/images/unsplash/residences-bhairavi-nilayam.jpg",
+    src: "/images/residences/bhairavi-nilayam-exterior.jpg",
     alt: "Bhairavi Nilayam exterior",
     placeholder: "ph-4",
     tall: true,
     caption: "Architecture",
   },
   {
-    src: "/images/unsplash/residences-gallery-living-room.jpg",
+    src: "/images/residences/bhairavi-nilayam-living-room.jpg",
     alt: "Living space",
     placeholder: "ph-2",
     tall: false,
     caption: "Interiors",
   },
   {
-    src: "/images/unsplash/residences-gallery-balcony.jpg",
+    src: "/images/residences/bhairavi-nilayam-terrace.jpg",
     alt: "Open terrace",
     placeholder: "ph-1",
     tall: false,
     caption: "Terrace",
   },
   {
-    src: "/images/unsplash/residences-gallery-courtyard.jpg",
-    alt: "Landscaped grounds",
+    src: "/images/residences/bhairavi-nilayam-gate.jpg",
+    alt: "Gated, landscaped entrance",
     placeholder: "ph-5",
     tall: true,
     caption: "Landscape",
@@ -123,7 +123,7 @@ export default function BhairavPage() {
   return (
     <>
       <PageHero
-        photoSrc="/images/unsplash/residences-bhairavi-nilayam.jpg"
+        photoSrc="/images/heroes/bhairavi-nilayam-hero.jpg"
         photoAlt="Bhairavi Nilayam — exterior view"
         placeholder="ph-4"
         breadcrumbLabel="Bhairavi Nilayam"
@@ -170,7 +170,7 @@ export default function BhairavPage() {
         <div className="container">
           <SplitSection
             placeholder="ph-4"
-            src="/images/unsplash/residences-bhairavi-nilayam.jpg"
+            src="/images/residences/bhairavi-nilayam-exterior.jpg"
             alt="Bhairavi Nilayam — architectural view"
           >
             <OfferHead
@@ -270,7 +270,7 @@ export default function BhairavPage() {
             </div>
             <div className={`${gstyles["residence-specs-media"]} ph-4`}>
               <Image
-                src="/images/unsplash/residences-bhairavi-nilayam.jpg"
+                src="/images/residences/bhairavi-nilayam-exterior.jpg"
                 alt="Bhairavi Nilayam"
                 fill
                 sizes="(min-width: 860px) 40vw, 100vw"

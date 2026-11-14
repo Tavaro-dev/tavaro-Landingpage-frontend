@@ -24,7 +24,7 @@ export default function ResortsPage() {
   return (
     <>
       <PageHero
-        photoSrc="/photos/resorts-horses.jpg"
+        photoSrc="/images/heroes/resorts-hero.jpg"
         photoAlt="Horses on the grounds at Tavaro Resorts, Kokapet"
         placeholder="ph-1"
         breadcrumbLabel="Tavaro Resorts"
@@ -74,7 +74,7 @@ export default function ResortsPage() {
             reverse
             wide
             placeholder="ph-4"
-            src="/images/unsplash/resorts-wedding-celebration.jpg"
+            src="/images/resorts/wedding-celebration.jpg"
             alt="A wedding celebration at Tavaro Resorts"
           >
             <OfferHead num="01 — Celebrate With Us" heading="Events & Venues" />
@@ -96,7 +96,7 @@ export default function ResortsPage() {
       {/* 02 — Rooms & Stays */}
       <section className="offer-block on-dark" id="stay">
         <div className="container">
-          <SplitSection wide placeholder="ph-1" src="/images/unsplash/resorts-suite.jpg" alt="A Tavaro Resorts suite">
+          <SplitSection wide placeholder="ph-1" src="/images/resorts/suite.jpg" alt="A Tavaro Resorts suite">
             <OfferHead num="02 — Stay With Us" heading="Rooms & Stays" />
             <p>
               Rooms and suites designed for rest — natural materials, soft light and views that slow the
@@ -125,7 +125,7 @@ export default function ResortsPage() {
           <SplitSection
             wide
             placeholder="ph-gold"
-            src="/images/unsplash/mare-community-coffee-house.jpg"
+            src="/images/mare/coffee-house-arch.jpg"
             alt="Màre Coffee House at Tavaro Resorts"
           >
             <OfferHead num="04 — Coffee & Community" heading="Màre Coffee House" />

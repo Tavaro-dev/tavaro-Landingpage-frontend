@@ -42,8 +42,8 @@ export default function ResidencesPage() {
   return (
     <>
       <PageHero
-        photoSrc="/photos/residences-villa.jpg"
-        photoAlt="A Tavaro Residence exterior in the evening"
+        photoSrc="/images/heroes/residences-hero.jpg"
+        photoAlt="Leela by Tavaro Residences — terraces wrapped in greenery"
         placeholder="ph-2"
         breadcrumbLabel="Residences"
         eyebrow="Tavaro Residences"
@@ -144,7 +144,7 @@ export default function ResidencesPage() {
             <Reveal className={styles["residence-feature-card"]}>
               <div className={`${styles["residence-card-media"]} ph-2`}>
                 <Image
-                  src="/images/unsplash/residences-leela.jpg"
+                  src="/images/residences/leela-exterior.jpg"
                   alt="Leela by Tavaro Residences"
                   fill
                   sizes="(min-width: 860px) 55vw, 100vw"
@@ -178,7 +178,7 @@ export default function ResidencesPage() {
             <Reveal className={`${styles["residence-feature-card"]} reverse`}>
               <div className={`${styles["residence-card-media"]} ph-4`}>
                 <Image
-                  src="/images/unsplash/residences-bhairavi-nilayam.jpg"
+                  src="/images/residences/bhairavi-nilayam-exterior.jpg"
                   alt="Bhairavi Nilayam residence"
                   fill
                   sizes="(min-width: 860px) 55vw, 100vw"

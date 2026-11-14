@@ -27,7 +27,8 @@ export default defineConfig({
       name: 'visual',
       testMatch: /visual\/.*\.spec\.ts/,
       retries: 0,
-      use: { ...devices['Desktop Chrome'] },
+      // Reduced motion: the home hero shows its poster, not a video frame at a random time.
+      use: { ...devices['Desktop Chrome'], contextOptions: { reducedMotion: 'reduce' } },
     },
   ],
 

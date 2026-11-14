@@ -31,25 +31,25 @@ const EXPERIENCES = [
   {
     title: "CELEBRATION CATERING",
     description: "Weddings, social occasions & grand celebrations",
-    image: "/images/unsplash/resorts-wedding-celebration.jpg",
+    image: "/images/resorts/wedding-celebration.jpg",
     placeholder: "ph-1",
   },
   {
     title: "EVENT CATERING",
     description: "Corporate & large-scale events",
-    image: "/images/unsplash/mare-sunday-market.jpg",
+    image: "/images/mare/sunday-market.jpg",
     placeholder: "ph-2",
   },
   {
     title: "UNDER THE SKY",
     description: "Intimate outdoor & poolside dining",
-    image: "/images/unsplash/wellness-future-retreat.jpg",
+    image: "/images/wellness/future-retreat.jpg",
     placeholder: "ph-3",
   },
   {
     title: "PRIVATE DINING",
     description: "Bespoke tables & menus",
-    image: "/images/unsplash/monsoon-table-culinary.jpg",
+    image: "/images/resorts/monsoon-table.jpg",
     placeholder: "ph-4",
   },
 ];

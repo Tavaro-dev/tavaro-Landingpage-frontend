@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1"],
   images: {
     formats: ["image/avif", "image/webp"],
+    // 90 for full-bleed heroes, where 75 visibly softens detail; 75 everywhere else.
+    qualities: [75, 90],
   },
   // ponytail: baseline headers only; add a CSP once third-party scripts/embeds are settled
   async headers() {

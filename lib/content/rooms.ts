@@ -19,7 +19,7 @@ export const ROOMS: readonly Room[] = [
   {
     slug: "executive-rooms",
     name: "Executive Rooms",
-    images: ["/images/unsplash/resorts-executive-room.jpg", "/images/unsplash/resorts-executive-room-2.jpg"],
+    images: ["/images/resorts/executive-room.jpg", "/images/resorts/executive-room-2.jpg"],
     alt: "An Executive Room at Tavaro Resorts",
     placeholder: "ph-1",
     bed: "One King Bed. Extra bed(s): one crib on request",
@@ -33,7 +33,7 @@ export const ROOMS: readonly Room[] = [
   {
     slug: "suites",
     name: "Suites",
-    images: ["/images/unsplash/resorts-suite.jpg", "/images/unsplash/resorts-suite-2.jpg"],
+    images: ["/images/resorts/suite.jpg", "/images/resorts/suite-2.jpg"],
     alt: "A Suite at Tavaro Resorts",
     placeholder: "ph-5",
     bed: "One King Bed. Extra bed(s): one rollaway on request",
@@ -47,7 +47,7 @@ export const ROOMS: readonly Room[] = [
   {
     slug: "tavaro-house",
     name: "Tavaro House",
-    images: ["/images/unsplash/resorts-tavaro-house.jpg", "/images/unsplash/resorts-tavaro-house-2.jpg"],
+    images: ["/images/resorts/tavaro-house.jpg", "/images/resorts/tavaro-house-2.jpg"],
     alt: "Tavaro House, the estate's exclusive villa",
     placeholder: "ph-gold",
     bed: "Four King Beds across four bedrooms",

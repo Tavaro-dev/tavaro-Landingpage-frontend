@@ -46,21 +46,21 @@ export const AMENITIES_DATA: AmenityItem[] = [
       "A welcoming space for artisanal brews, slow mornings, and conversation set within the natural calm of the resort grounds.",
     details:
       "Set amid the natural greenery of Tavaro Resorts, the Coffee House offers a warm space for slow mornings, afternoon conversations, and artisanal coffees crafted with carefully selected beans.",
-    heroImage: "/images/unsplash/mare-community-coffee-house.jpg",
+    heroImage: "/images/mare/coffee-house-arch.jpg",
     heroAlt: "Màre Coffee House at Tavaro Resorts",
     gallery: [
       {
-        src: "/images/unsplash/mare-coffee.jpg",
+        src: "/images/mare/coffee.jpg",
         alt: "Freshly brewed pour-over coffee at the Coffee House",
         caption: "Artisanal coffee brewed fresh daily",
       },
       {
-        src: "/images/unsplash/mare-interior.jpg",
+        src: "/images/mare/interior.jpg",
         alt: "Warm interior seating and natural light at the Coffee House",
         caption: "Inviting seating for quiet mornings and gatherings",
       },
       {
-        src: "/images/unsplash/mare-community-coffee-house.jpg",
+        src: "/images/mare/coffee-house-arch.jpg",
         alt: "Sunlit verandah at the Coffee House",
         caption: "Open verandah surrounded by native greenery",
       },
@@ -89,7 +89,7 @@ export const AMENITIES_DATA: AmenityItem[] = [
         caption: "Mindful physical movement sessions",
       },
       {
-        src: "/images/unsplash/stillness-retreat.jpg",
+        src: "/images/wellness/stillness-retreat.jpg",
         alt: "Calm wellness environment and dedicated mats",
         caption: "Serene ambience designed for focus and breathing",
       },
@@ -114,7 +114,7 @@ export const AMENITIES_DATA: AmenityItem[] = [
       "An expansive outdoor swimming pool nestled in lush greenery, offering refreshing laps and tranquil waterside lounging.",
     details:
       "Framed by native greenery and open skies, the resort swimming pool offers an idyllic escape for morning laps or quiet afternoon unwinding under the sun.",
-    heroImage: "/images/unsplash/resorts-poolside-service.jpg",
+    heroImage: "/images/resorts/poolside.jpg",
     heroAlt: "Swimming pool at Tavaro Resorts",
     gallery: [
       {
@@ -123,12 +123,12 @@ export const AMENITIES_DATA: AmenityItem[] = [
         caption: "Tranquil waterside rest",
       },
       {
-        src: "/images/unsplash/resorts-tavaro-house-2.jpg",
+        src: "/images/resorts/tavaro-house-2.jpg",
         alt: "Lush landscape surrounding the pool deck",
         caption: "Lush landscape framing the pool terrace",
       },
       {
-        src: "/images/unsplash/resorts-poolside-service.jpg",
+        src: "/images/resorts/poolside.jpg",
         alt: "Sun loungers by the resort swimming pool",
         caption: "Sun loungers and poolside service",
       },
@@ -182,7 +182,7 @@ export const AMENITIES_DATA: AmenityItem[] = [
       "Sun-drenched loungers and shaded daybeds with attentive beverage service for peaceful daytime relaxation.",
     details:
       "The poolside terrace combines generous shaded loungers, poolside refreshments, and panoramic views of the water, making it a favorite retreat throughout the day.",
-    heroImage: "/images/unsplash/resorts-poolside-service.jpg",
+    heroImage: "/images/resorts/poolside.jpg",
     heroAlt: "Poolside loungers and butler service at Tavaro Resorts",
     gallery: [
       {
@@ -191,12 +191,12 @@ export const AMENITIES_DATA: AmenityItem[] = [
         caption: "Leisurely poolside relaxation",
       },
       {
-        src: "/images/unsplash/monsoon-table-culinary.jpg",
+        src: "/images/resorts/monsoon-table.jpg",
         alt: "Chilled beverages and light snacks served poolside",
         caption: "Attentive beverage and culinary service",
       },
       {
-        src: "/images/unsplash/resorts-poolside-service.jpg",
+        src: "/images/resorts/poolside.jpg",
         alt: "Poolside attendants and loungers",
         caption: "Comfortable loungers beneath open skies",
       },
@@ -216,11 +216,11 @@ export const AMENITIES_DATA: AmenityItem[] = [
       "Carefully curated menus delivered directly to your room or private terrace for intimate, leisurely dining.",
     details:
       "Experience the flavours of Tavaro's culinary kitchen from the privacy of your suite or terrace. Each meal is prepared fresh and presented with thoughtful table service.",
-    heroImage: "/images/unsplash/resorts-suite.jpg",
+    heroImage: "/images/resorts/suite.jpg",
     heroAlt: "In-room dining service inside a Tavaro Resorts suite",
     gallery: [
       {
-        src: "/images/unsplash/monsoon-table-culinary.jpg",
+        src: "/images/resorts/monsoon-table.jpg",
         alt: "Fine dining meal served in private comfort",
         caption: "Chef-prepared culinary dishes",
       },
@@ -230,7 +230,7 @@ export const AMENITIES_DATA: AmenityItem[] = [
         caption: "Seasonal ingredients and attentive presentation",
       },
       {
-        src: "/images/unsplash/resorts-suite.jpg",
+        src: "/images/resorts/suite.jpg",
         alt: "Private terrace dining setting overlooking greenery",
         caption: "Intimate dining in suite privacy",
       },
@@ -250,7 +250,7 @@ export const AMENITIES_DATA: AmenityItem[] = [
       "Bespoke catering and live banquet counters tailored for weddings, corporate retreats, and private celebrations.",
     details:
       "From intimate dinners to multi-day celebrations, our dedicated culinary team crafts customized menus using seasonal ingredients, served seamlessly across our event venues.",
-    heroImage: "/images/unsplash/monsoon-table-culinary.jpg",
+    heroImage: "/images/resorts/monsoon-table.jpg",
     heroAlt: "Culinary catering presentation at Tavaro Resorts",
     gallery: [
       {
@@ -259,12 +259,12 @@ export const AMENITIES_DATA: AmenityItem[] = [
         caption: "Customized banquet menus",
       },
       {
-        src: "/images/unsplash/resorts-wedding-celebration.jpg",
+        src: "/images/resorts/wedding-celebration.jpg",
         alt: "Banqueting setup at an outdoor event",
         caption: "Seamless open-air dining execution",
       },
       {
-        src: "/images/unsplash/monsoon-table-culinary.jpg",
+        src: "/images/resorts/monsoon-table.jpg",
         alt: "Gourmet dishes prepared for celebrations",
         caption: "Live culinary counters and table service",
       },
@@ -284,7 +284,7 @@ export const AMENITIES_DATA: AmenityItem[] = [
       "Seamless orchestration and dedicated on-site coordination for unforgettable weddings, offsites, and celebrations.",
     details:
       "Our seasoned event planning specialists work closely with hosts from initial concept through day-of execution, ensuring every celebration unfolds effortlessly.",
-    heroImage: "/images/unsplash/resorts-wedding-celebration.jpg",
+    heroImage: "/images/resorts/wedding-celebration.jpg",
     heroAlt: "Event planning and celebration setup at Tavaro Resorts",
     gallery: [
       {
@@ -298,7 +298,7 @@ export const AMENITIES_DATA: AmenityItem[] = [
         caption: "Smooth guest management and logistics",
       },
       {
-        src: "/images/unsplash/resorts-wedding-celebration.jpg",
+        src: "/images/resorts/wedding-celebration.jpg",
         alt: "Lawn event orchestration at Tavaro Resorts",
         caption: "Celebrations on expansive open lawns",
       },
@@ -322,12 +322,12 @@ export const AMENITIES_DATA: AmenityItem[] = [
     heroAlt: "Event décor and celebratory lighting at Tavaro Resorts",
     gallery: [
       {
-        src: "/images/unsplash/resorts-wedding-celebration.jpg",
+        src: "/images/resorts/wedding-celebration.jpg",
         alt: "Celebration floral décor on the lawn",
         caption: "Bespoke floral arrangements",
       },
       {
-        src: "/images/unsplash/resorts-tavaro-house.jpg",
+        src: "/images/resorts/tavaro-house.jpg",
         alt: "Architectural lighting and evening ambience",
         caption: "Warm evening illumination",
       },
@@ -352,7 +352,7 @@ export const AMENITIES_DATA: AmenityItem[] = [
       "Uninterrupted 24/7 power backup infrastructure ensuring seamless comfort and flawless events across all grounds.",
     details:
       "The resort is equipped with high-capacity silent power backup systems to ensure round-the-clock air conditioning, lighting, sound, and technology without pause.",
-    heroImage: "/images/unsplash/resorts-tavaro-house.jpg",
+    heroImage: "/images/resorts/tavaro-house.jpg",
     heroAlt: "Tavaro House illuminated with reliable power backup",
     gallery: [
       {
@@ -361,12 +361,12 @@ export const AMENITIES_DATA: AmenityItem[] = [
         caption: "Expansive resort estate with reliable power infrastructure",
       },
       {
-        src: "/images/unsplash/resorts-suite-2.jpg",
+        src: "/images/resorts/suite-2.jpg",
         alt: "Comfortable air-conditioned suite",
         caption: "Uninterrupted climate control and lighting",
       },
       {
-        src: "/images/unsplash/resorts-tavaro-house.jpg",
+        src: "/images/resorts/tavaro-house.jpg",
         alt: "Evening lighting at the resort courtyard",
         caption: "Reliable evening power across all venues",
       },
@@ -386,21 +386,21 @@ export const AMENITIES_DATA: AmenityItem[] = [
       "Discreet, attentive daily housekeeping and turndown service maintaining pristine hygiene and guest comfort.",
     details:
       "Our housekeeping associates work with gentle attention to detail, providing fresh linens, sanitised spaces, evening turndown, and any special amenities required during your stay.",
-    heroImage: "/images/unsplash/resorts-executive-room.jpg",
+    heroImage: "/images/resorts/executive-room.jpg",
     heroAlt: "Pristine executive suite maintained by Tavaro housekeeping",
     gallery: [
       {
-        src: "/images/unsplash/resorts-suite.jpg",
+        src: "/images/resorts/suite.jpg",
         alt: "Crisp linen and immaculate suite bedroom",
         caption: "Immaculately maintained guest suites",
       },
       {
-        src: "/images/unsplash/resorts-executive-room-2.jpg",
+        src: "/images/resorts/executive-room-2.jpg",
         alt: "Spotless en-suite bath amenities",
         caption: "Carefully curated bath amenities",
       },
       {
-        src: "/images/unsplash/resorts-executive-room.jpg",
+        src: "/images/resorts/executive-room.jpg",
         alt: "Prepared guest suite ready for arrival",
         caption: "Discreet daily turndown and refreshing",
       },
@@ -424,7 +424,7 @@ export const AMENITIES_DATA: AmenityItem[] = [
     heroAlt: "Valet parking and guest arrival at Tavaro Resorts",
     gallery: [
       {
-        src: "/images/unsplash/resorts-tavaro-house.jpg",
+        src: "/images/resorts/tavaro-house.jpg",
         alt: "Grand arrival driveway and portico",
         caption: "Grand portico arrival area",
       },

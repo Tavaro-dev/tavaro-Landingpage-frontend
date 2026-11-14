@@ -42,7 +42,7 @@ const PROGRAMMES: EventCardData[] = [
     id: "stillness-project",
     tag: "Retreat",
     placeholder: "ph-green",
-    src: "/images/unsplash/stillness-retreat.jpg",
+    src: "/images/wellness/stillness-retreat.jpg",
     alt: "The Stillness Project",
     date: "One-Day Retreat",
     title: "The Stillness Project",
@@ -53,7 +53,7 @@ const PROGRAMMES: EventCardData[] = [
     id: "breath-sound-circle",
     tag: "Movement",
     placeholder: "ph-6",
-    src: "/images/unsplash/wellness-breath-sound-circle.jpg",
+    src: "/images/wellness/breath-sound-circle.jpg",
     alt: "Sound & breathwork session",
     date: "Weekly Session",
     title: "Breath & Sound Circle",
@@ -64,7 +64,7 @@ const PROGRAMMES: EventCardData[] = [
     id: "leaf-retreat",
     tag: "Retreat",
     placeholder: "ph-1",
-    src: "/images/unsplash/wellness-future-retreat.jpg",
+    src: "/images/wellness/future-retreat.jpg",
     alt: "Future wellness retreat",
     date: "Coming Soon",
     title: "Leaf Restorative Retreat",
@@ -78,8 +78,8 @@ export default function WellnessPage() {
   return (
     <>
       <PageHero
-        photoSrc="/photos/wellness-hands.jpg"
-        photoAlt="Wellness at Tavaro"
+        photoSrc="/images/heroes/wellness-hero.jpg"
+        photoAlt="A yoga session on the lawn at Tavaro"
         placeholder="ph-green"
         breadcrumbLabel="Wellness"
         eyebrow="Wellness at Tavaro"
@@ -138,7 +138,7 @@ export default function WellnessPage() {
           />
 
           <div className="tw:mb-[70px]">
-            <SplitSection placeholder="ph-green" src="/images/unsplash/wellness-leaf-by-tavaro.jpg" alt="Leaf by Tavaro">
+            <SplitSection placeholder="ph-green" src="/images/wellness/leaf-by-tavaro.jpg" alt="Leaf by Tavaro">
               <span className="coming-soon-tag">Coming Soon</span>
               <p className="eyebrow">Leaf by Tavaro — Mahalingapuram</p>
               <p className="lede italic tw:font-(family-name:--font-display) tw:text-[22px] tw:my-[16px] tw:mx-[0]">

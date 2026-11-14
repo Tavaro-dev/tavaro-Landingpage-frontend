@@ -18,8 +18,9 @@ export default function MarePage() {
   return (
     <>
       <PageHero
-        photoSrc="/photos/mare-cover.jpg"
-        photoAlt="Màre — a coffee house moment"
+        photoSrc="/images/heroes/mare-hero-cup-right.jpg"
+        photoPosition="68% center"
+        photoAlt="A cortado by the pool at Màre"
         placeholder="ph-gold"
         breadcrumbLabel="Màre"
         eyebrow="Màre Coffee House"
@@ -52,7 +53,7 @@ export default function MarePage() {
       {/* Coffee & Food */}
       <section className="offer-block on-dark" id="coffee">
         <div className="container">
-          <SplitSection placeholder="ph-1" src="/images/unsplash/mare-coffee.jpg" alt="Pour over coffee at Màre">
+          <SplitSection placeholder="ph-1" src="/images/mare/coffee.jpg" alt="A cortado at Màre">
             <OfferHead
               num="01 — Coffee &amp; Culinary"
               heading={
@@ -80,7 +81,7 @@ export default function MarePage() {
       {/* Community */}
       <section className="offer-block on-panel" id="community">
         <div className="container">
-          <SplitSection wide placeholder="ph-4" src="/images/unsplash/mare-community-coffee-house.jpg" alt="Community at Màre">
+          <SplitSection wide placeholder="ph-4" src="/images/mare/coffee-house-arch.jpg" alt="Community at Màre">
             <OfferHead
               num="02 — Community &amp; Culture"
               heading={

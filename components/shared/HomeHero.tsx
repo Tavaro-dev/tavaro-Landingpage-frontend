@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/ui/Icon";
+import { HeroVideo } from "./HeroVideo";
 import styles from "./shared.module.css";
 
 const PILLARS: { label: string; href: string; icon: IconName }[] = [
@@ -16,13 +17,15 @@ export function HomeHero() {
     <section className={`hero ${styles["home-hero"]}`}>
       <div className={`${styles["hero-media"]} ph-1`}>
         <Image
-          src="/photos/drone-hero.jpg"
-          alt="Aerial view of a Tavaro celebration at dusk"
+          src="/photos/home-hero-poster.jpg"
+          alt="Aerial view of the Tavaro resort lit up at night"
           fill
           preload
           sizes="100vw"
+          quality={90}
         />
       </div>
+      <HeroVideo src="/videos/home-hero" />
       <div className={styles["hero-scrim"]} />
 
       <div className="hero-inner container">

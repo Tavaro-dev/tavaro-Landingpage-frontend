@@ -13,6 +13,7 @@ import styles from "./shared.module.css";
 export function PageHero({
   photoSrc,
   photoAlt,
+  photoPosition,
   placeholder,
   minHeight,
   breadcrumbLabel,
@@ -28,6 +29,8 @@ export function PageHero({
 }: {
   photoSrc: string;
   photoAlt: string;
+  /** CSS object-position for the photo, e.g. "68% center" to keep a subject in a narrow (phone) crop. */
+  photoPosition?: string;
   placeholder: string;
   minHeight?: string;
   breadcrumbLabel: string;
@@ -46,7 +49,7 @@ export function PageHero({
   return (
     <section className="page-hero" style={style}>
       <div className={`${styles["hero-media"]} ${placeholder}`}>
-        <Image src={photoSrc} alt={photoAlt} fill preload sizes="100vw" />
+        <Image src={photoSrc} alt={photoAlt} fill preload sizes="100vw" quality={90} style={photoPosition ? { objectPosition: photoPosition } : undefined} />
       </div>
       <div className={styles["hero-scrim"]} />
       <div className="page-hero-inner container">

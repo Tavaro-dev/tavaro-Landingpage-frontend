@@ -20,7 +20,7 @@ export function ResortDining() {
             reverse
             wide
             placeholder="ph-5"
-            src="/images/unsplash/monsoon-table-culinary.jpg"
+            src="/images/resorts/monsoon-table.jpg"
             alt="Tavaro Dining"
           >
             <OfferHead num="03 — The Table Awaits" heading="Tavaro Dining" />

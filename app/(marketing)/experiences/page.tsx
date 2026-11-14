@@ -20,13 +20,22 @@ export const metadata = pageMetadata({
   path: "/experiences",
 });
 
+const GALLERY: [src: string, alt: string][] = [
+  ["/images/experiences/poolside-banquet.jpg", "A long banquet table set on the pool deck"],
+  ["/images/experiences/bamboo-garden-dinner.jpg", "A candlelit dinner under a lit bamboo canopy"],
+  ["/photos/experiences-cars.jpg", "A curated car meet at the glasshouse"],
+  ["/images/experiences/sound-bath.jpg", "A sound bath session in the glasshouse hall"],
+  ["/images/experiences/pool-brunch.jpg", "A brunch spread by the pool"],
+  ["/images/resorts/wedding-celebration.jpg", "A lawn wedding under a lit canopy"],
+];
+
 const CATEGORIES: TriCardData[] = [
   {
     id: "social",
     icon: "sun",
     heading: "Social & Cultural",
     subtitle: "People · Culture · Connection",
-    bgImage: "/images/unsplash/mare-sunday-market.jpg",
+    bgImage: "/images/experiences/festival-crowd.jpg",
   },
   {
     id: "corporate",
@@ -40,7 +49,7 @@ const CATEGORIES: TriCardData[] = [
     icon: "wellness",
     heading: "Wellness",
     subtitle: "Movement · Stillness · Wellbeing",
-    bgImage: "/images/unsplash/stillness-retreat.jpg",
+    bgImage: "/images/wellness/stillness-retreat.jpg",
   },
   {
     id: "golden-society",
@@ -54,8 +63,8 @@ export default function ExperiencesPage() {
   return (
     <>
       <PageHero
-        photoSrc="/photos/experiences-cars.jpg"
-        photoAlt="A curated car experience at Tavaro"
+        photoSrc="/images/heroes/experiences-hero.jpg"
+        photoAlt="An evening concert under the sun arch stage at Tavaro"
         placeholder="ph-3"
         breadcrumbLabel="Tavaro / Experiences"
         eyebrow="Experiences"
@@ -155,24 +164,11 @@ export default function ExperiencesPage() {
             lede="A look back at moments, gatherings, and celebrations created at Tavaro."
           />
           <Reveal stagger className="tw:grid tw:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] tw:gap-[20px] tw:mt-[40px]">
-            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
-              <Image src="/photos/experiences-cars.jpg" alt="Curated Car Meet" fill sizes="(min-width: 768px) 33vw, 100vw" />
-            </div>
-            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
-              <Image src="/images/unsplash/resorts-wedding-celebration.jpg" alt="Outdoor Lawn Celebration" fill sizes="(min-width: 768px) 33vw, 100vw" />
-            </div>
-            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
-              <Image src="/images/unsplash/monsoon-table-culinary.jpg" alt="Private Dining Experience" fill sizes="(min-width: 768px) 33vw, 100vw" />
-            </div>
-            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
-              <Image src="/images/unsplash/mare-community-coffee-house.jpg" alt="Màre Social Gathering" fill sizes="(min-width: 768px) 33vw, 100vw" />
-            </div>
-            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
-              <Image src="/images/unsplash/resorts-sol-pilates.jpg" alt="Wellness Movement Retreat" fill sizes="(min-width: 768px) 33vw, 100vw" />
-            </div>
-            <div className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
-              <Image src="/photos/resorts-horses.jpg" alt="Estate Sunset Walk" fill sizes="(min-width: 768px) 33vw, 100vw" />
-            </div>
+            {GALLERY.map(([src, alt]) => (
+              <div key={src} className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
+                <Image src={src} alt={alt} fill sizes="(min-width: 768px) 33vw, 100vw" />
+              </div>
+            ))}
           </Reveal>
         </div>
       </section>
