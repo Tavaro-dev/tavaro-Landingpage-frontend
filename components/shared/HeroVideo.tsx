@@ -24,10 +24,19 @@ export function HeroVideo({ src }: { src: string }) {
 
     video.muted = true; // autoplay is only allowed muted; React doesn't set the attribute
     // `${src}-{720|1080}.{webm|mp4}`: AV1 is ~half the size of H.264 at the
-    // same quality; older Safari can't play it and gets the MP4.
+    // same quality. Apple's WebKit (Safari, and every iOS browser) answers
+    // "probably" for AV1 WebM yet never loads it, so it always gets the MP4.
     const size = window.matchMedia("(max-width: 900px)").matches ? 720 : 1080;
-    const av1 = video.canPlayType('video/webm; codecs="av01.0.08M.10, opus"') !== "";
-    video.src = `${src}-${size}.${av1 ? "webm" : "mp4"}`;
+    const mp4 = `${src}-${size}.mp4`;
+    const apple = navigator.vendor.startsWith("Apple");
+    const av1 = !apple && video.canPlayType('video/webm; codecs="av01.0.08M.10, opus"') === "probably";
+    video.src = av1 ? `${src}-${size}.webm` : mp4;
+    // A browser that claims AV1 but fails to decode it still gets the video.
+    video.onerror = () => {
+      if (video.src.endsWith(".mp4")) return;
+      video.src = mp4;
+      video.play().catch(() => {});
+    };
     video.play().catch(() => {}); // blocked (e.g. low-power mode): the poster stays
 
     // Don't decode frames nobody can see.
