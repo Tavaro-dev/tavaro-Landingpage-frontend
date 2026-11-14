@@ -390,6 +390,26 @@ select {
   transform: translateX(4px);
 }
 
+/* Desktop sub-sections: outline buttons rest filled gold and clear on hover
+   (the reverse of the default). Phones already show them filled. */
+@media (min-width: 769px) and (hover: hover) {
+  .split-body .btn:not(.solid):not(:disabled) {
+    color: var(--black);
+  }
+
+  .split-body .btn:not(.solid):not(:disabled)::before {
+    transform: translateX(0);
+  }
+
+  .split-body .btn:not(.solid):not(:disabled):hover {
+    color: var(--on-surface);
+  }
+
+  .split-body .btn:not(.solid):not(:disabled):hover::before {
+    transform: translateX(101%);
+  }
+}
+
 /* Universal guarantee that NO button in mobile or tab view displays in 2 lines */
 @media (max-width: 1024px) {
 button,

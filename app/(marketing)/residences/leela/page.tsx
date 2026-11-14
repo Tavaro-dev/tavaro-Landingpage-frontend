@@ -243,7 +243,7 @@ export default function LeelaPage() {
       </section>
 
       {/* D. Interiors */}
-      <section className="section on-panel" id="interiors">
+      <section className="offer-block on-panel" id="interiors">
         <div className="container">
           <SplitSection
             placeholder="ph-2"

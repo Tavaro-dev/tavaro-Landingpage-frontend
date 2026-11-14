@@ -56,27 +56,42 @@
   color: var(--on-surface-muted);
 }
 
-/* MARQUEE TRACKS */
+/* MARQUEE TRACKS
+   One card size per breakpoint, same 7:5 shape everywhere; speed stays ~50px/s. */
 .marquee-wrapper {
+  --card-gap: 18px;
+  --card-w: 280px;
+  --card-h: 200px;
+  --fade: 96px;
+  --marquee-duration: 34s;
   position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: clamp(18px, 2.5vw, 28px);
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 6%,
-    black 94%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 6%,
-    black 94%,
-    transparent 100%
-  );
+  gap: 20px;
+}
+
+/* Edge fades as overlays, not mask-image: Safari repaints a mask over animated
+   content every frame, which made the marquee stutter on iOS/macOS. */
+.marquee-wrapper::before,
+.marquee-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--fade);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marquee-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, var(--surface), transparent);
+}
+
+.marquee-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, var(--surface), transparent);
 }
 
 .marquee-row {
@@ -88,75 +103,59 @@
 
 .marquee-track {
   display: flex;
-  gap: clamp(16px, 2vw, 24px);
   width: max-content;
   will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Each copy carries its own trailing gap, so translating by -50% loops seamlessly. */
+.marquee-set {
+  display: flex;
+  gap: var(--card-gap);
+  padding: 6px var(--card-gap) 6px 0;
+  margin: 0;
+  list-style: none;
 }
 
 .track-left {
-  animation: marqueeScrollLeft 38s linear infinite;
+  animation: marqueeScrollLeft var(--marquee-duration) linear infinite;
 }
 
 .track-right {
-  animation: marqueeScrollRight 38s linear infinite;
+  animation: marqueeScrollRight var(--marquee-duration) linear infinite;
 }
 
-/* Pause on hover or focus within */
-.marquee-row:hover .marquee-track,
-.marquee-row:focus-within .marquee-track {
+/* Pause off-screen. */
+.marquee-wrapper[data-paused] .marquee-track {
   animation-play-state: paused;
 }
 
 @keyframes marqueeScrollLeft {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
 }
 
 @keyframes marqueeScrollRight {
-  0% {
-    transform: translate3d(-50%, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
 }
 
 /* AMENITY CARD */
 .amenity-marquee-card {
   position: relative;
-  flex: 0 0 clamp(280px, 25vw, 360px);
-  height: clamp(210px, 18vw, 250px);
+  flex: 0 0 var(--card-w);
+  height: var(--card-h);
   border-radius: 6px;
   overflow: hidden;
   background: #141715;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  display: block;
-  outline-offset: 4px;
-  cursor: default;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.4s ease,
-              box-shadow 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 [data-theme="light"] .amenity-marquee-card {
   background: #ffffff;
   border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
-
-.amenity-marquee-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--gold);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 20px rgba(201, 164, 90, 0.2);
-}
-
-[data-theme="light"] .amenity-marquee-card:hover {
-  border-color: var(--gold-dark, #9c7c3e);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.12), 0 0 16px rgba(156, 124, 62, 0.18);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .amenity-card-image-wrap {
@@ -165,95 +164,186 @@
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.amenity-marquee-card:hover .amenity-card-image-wrap {
-  transform: scale(1.06);
-}
-
 .amenity-card-scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(13, 15, 14, 0.1) 0%,
-    rgba(13, 15, 14, 0.4) 45%,
-    rgba(13, 15, 14, 0.94) 100%
-  );
   z-index: 2;
-  transition: background 0.3s ease;
-}
-
-.amenity-marquee-card:hover .amenity-card-scrim {
-  background: linear-gradient(
-    180deg,
-    rgba(13, 15, 14, 0.05) 0%,
-    rgba(13, 15, 14, 0.3) 40%,
-    rgba(13, 15, 14, 0.97) 100%
-  );
+  background: linear-gradient(180deg, rgba(13, 15, 14, 0.05) 0%, rgba(13, 15, 14, 0.35) 45%, rgba(13, 15, 14, 0.94) 100%);
 }
 
 .amenity-card-content {
   position: absolute;
   inset: 0;
   z-index: 3;
-  padding: clamp(16px, 1.8vw, 24px);
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
 
 .amenity-card-eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
   text-transform: uppercase;
   color: var(--gold-light, #e6cf9e);
-  margin-bottom: 6px;
-  font-weight: 600;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .amenity-card-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
 }
 
 .amenity-card-title {
+  margin: 0;
   font-family: var(--font-display, "Playfair Display", Georgia, serif);
-  font-size: clamp(18px, 1.6vw, 22px);
+  font-size: 18px;
   font-weight: 400;
-  color: #f7f4ee !important;
   line-height: 1.25;
+  color: #f7f4ee !important;
 }
 
 .amenity-card-indicator {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--gold);
   opacity: 0.75;
   flex-shrink: 0;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.amenity-marquee-card:hover .amenity-card-indicator {
-  opacity: 1;
-  transform: scale(1.3);
-  box-shadow: 0 0 10px var(--gold);
+.amenity-card-summary {
+  margin: 0;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(247, 244, 238, 0.82);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, margin-top 0.5s ease;
 }
 
-/* ACCESSIBILITY: PREFERS-REDUCED-MOTION */
+/* Hover effects only for a real mouse: on iOS a tap leaves :hover stuck,
+   which froze the row and left a card lifted. */
+@media (hover: hover) and (pointer: fine) {
+  .marquee-row:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .amenity-marquee-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4), 0 0 18px rgba(201, 164, 90, 0.2);
+  }
+
+  [data-theme="light"] .amenity-marquee-card:hover {
+    border-color: var(--gold-dark, #9c7c3e);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12), 0 0 14px rgba(156, 124, 62, 0.18);
+  }
+
+  .amenity-marquee-card:hover .amenity-card-image-wrap {
+    transform: scale(1.06);
+  }
+
+  .amenity-marquee-card:hover .amenity-card-indicator {
+    opacity: 1;
+    transform: scale(1.3);
+    box-shadow: 0 0 10px var(--gold);
+  }
+
+  .amenity-marquee-card:hover .amenity-card-summary {
+    max-height: 4.5em;
+    opacity: 1;
+    margin-top: 8px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .marquee-wrapper {
+    --card-gap: 16px;
+    --card-w: 240px;
+    --card-h: 172px;
+    --fade: 56px;
+    --marquee-duration: 30s;
+    gap: 16px;
+  }
+
+  .amenity-card-content {
+    padding: 14px;
+  }
+
+  .amenity-card-title {
+    font-size: 17px;
+  }
+}
+
+/* Phone */
+@media (max-width: 600px) {
+  .marquee-wrapper {
+    --card-gap: 12px;
+    --card-w: 200px;
+    --card-h: 144px;
+    --fade: 28px;
+    --marquee-duration: 26s;
+    gap: 12px;
+  }
+
+  .amenity-card-content {
+    padding: 12px;
+  }
+
+  .amenity-card-eyebrow {
+    font-size: 9px;
+  }
+
+  .amenity-card-title {
+    font-size: 16px;
+  }
+}
+
+/* Reduced motion (a common iOS setting): a swipeable row instead of motion */
 @media (prefers-reduced-motion: reduce) {
   .track-left,
   .track-right {
     animation: none !important;
   }
+
   .marquee-row {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
   }
+
+  .marquee-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .marquee-set {
+    padding-left: var(--pad);
+  }
+
+  .marquee-set[aria-hidden] {
+    display: none;
+  }
+
   .amenity-marquee-card {
     scroll-snap-align: start;
+    scroll-margin-left: var(--pad);
   }
 }
 

@@ -137,20 +137,26 @@ export default function WellnessPage() {
               </>
             }
           />
+        </div>
+      </section>
 
-          <div className="tw:mb-[70px]">
-            <SplitSection placeholder="ph-green" src="/images/wellness/leaf-by-tavaro.jpg" alt="Leaf by Tavaro">
-              <span className="coming-soon-tag">Coming Soon</span>
-              <p className="eyebrow">Leaf by Tavaro — Mahalingapuram</p>
-              <p className="lede italic tw:font-(family-name:--font-display) tw:text-[22px] tw:my-[16px] tw:mx-[0]">
-                Moving wellness beyond clinics and into restorative resort experiences.
-              </p>
-              <Link href="/resorts#leaf" className="btn">
-                Discover Leaf <span className="btn-arrow">→</span>
-              </Link>
-            </SplitSection>
-          </div>
+      <section className="offer-block on-dark" id="leaf">
+        <div className="container">
+          <SplitSection placeholder="ph-green" src="/images/wellness/leaf-by-tavaro.jpg" alt="Leaf by Tavaro">
+            <span className="coming-soon-tag">Coming Soon</span>
+            <p className="eyebrow">Leaf by Tavaro — Mahalingapuram</p>
+            <p className="lede italic tw:font-(family-name:--font-display) tw:text-[22px] tw:my-[16px] tw:mx-[0]">
+              Moving wellness beyond clinics and into restorative resort experiences.
+            </p>
+            <Link href="/resorts#leaf" className="btn">
+              Discover Leaf <span className="btn-arrow">→</span>
+            </Link>
+          </SplitSection>
+        </div>
+      </section>
 
+      <section className="offer-block on-panel" id="sol">
+        <div className="container">
           <SplitSection reverse placeholder="ph-6" src="/images/unsplash/resorts-sol-pilates.jpg" alt="Sol Pilates Studio">
             <p className="eyebrow">Sol Pilates Studio</p>
             <p className="lede tw:mt-[16px]">

@@ -82,7 +82,7 @@ export default function MarePage() {
       {/* Community */}
       <section className="offer-block on-panel" id="community">
         <div className="container">
-          <SplitSection wide placeholder="ph-4" src="/images/mare/coffee-house-arch.jpg" alt="Community at Màre">
+          <SplitSection reverse wide placeholder="ph-4" src="/images/mare/coffee-house-arch.jpg" alt="Community at Màre">
             <OfferHead
               num="02 — Community &amp; Culture"
               heading={

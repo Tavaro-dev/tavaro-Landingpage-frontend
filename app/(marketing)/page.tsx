@@ -126,7 +126,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured: Resorts */}
-      <section className="section on-panel">
+      <section className="offer-block on-panel">
         <div className="container">
           <SplitSection placeholder="ph-1" src="/images/home/resorts.jpg" alt="Tavaro Resorts, Kokapet">
             <p className="eyebrow">Resorts</p>
@@ -147,7 +147,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured: Residences */}
-      <section className="section on-dark">
+      <section className="offer-block on-dark">
         <div className="container">
           <SplitSection reverse placeholder="ph-2" src="/images/residences/leela-exterior.jpg" alt="Tavaro Residences">
             <p className="eyebrow">Residences</p>
@@ -168,7 +168,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured: Experiences */}
-      <section className="section on-panel">
+      <section className="offer-block on-panel">
         <div className="container">
           <SplitSection placeholder="ph-3" src="/images/home/experiences.jpg" alt="Tavaro Experiences">
             <p className="eyebrow">Experiences</p>
@@ -189,7 +189,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured: Wellness */}
-      <section className="section on-dark">
+      <section className="offer-block on-dark">
         <div className="container">
           <SplitSection reverse placeholder="ph-green" src="/images/home/wellness.jpg" alt="Wellness at Tavaro">
             <p className="eyebrow">Wellness</p>
@@ -210,7 +210,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured: Màre */}
-      <section className="section on-panel">
+      <section className="offer-block on-panel">
         <div className="container">
           <SplitSection placeholder="ph-gold" src="/images/home/mare.jpg" alt="Màre Coffee House">
             <p className="eyebrow">Màre Coffee House</p>

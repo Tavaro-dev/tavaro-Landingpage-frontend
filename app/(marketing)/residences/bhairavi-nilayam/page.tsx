@@ -167,7 +167,7 @@ export default function BhairavPage() {
       </section>
 
       {/* Architecture Story */}
-      <section className="section on-panel" id="architecture">
+      <section className="offer-block on-panel" id="architecture">
         <div className="container">
           <SplitSection
             placeholder="ph-4"
