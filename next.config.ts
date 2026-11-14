@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Dev only: the dev server blocks its scripts for any host but localhost, so
+  // opening http://127.0.0.1:3000 rendered the page without React (no modals,
+  // no navbar scroll state).
+  allowedDevOrigins: ["127.0.0.1"],
   images: {
     formats: ["image/avif", "image/webp"],
   },
