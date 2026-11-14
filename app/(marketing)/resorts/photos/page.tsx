@@ -1,13 +1,13 @@
 import { pageMetadata } from "@/lib/metadata";
-import { ResortMediaGallery } from "@/features/resorts/components/media/ResortMediaGallery";
+import { ResortGallery } from "@/features/resorts/components/gallery/ResortGallery";
 
 export const metadata = pageMetadata({
-  title: "Photos & Videos — Tavaro Resorts | Tavaro",
+  title: "Gallery — Tavaro Resorts | Tavaro",
   description:
-    "Explore Tavaro Resorts through our visual gallery — grounds, celebration venues, dining experiences and restful accommodations in Kokapet, Hyderabad.",
+    "Weddings, sangeet nights, corporate offsites, dining and the spaces that hold them — a curated gallery from Tavaro Resorts in Kokapet, Hyderabad.",
   path: "/resorts/photos",
 });
 
 export default function ResortPhotosPage() {
-  return <ResortMediaGallery isStandalone />;
+  return <ResortGallery />;
 }

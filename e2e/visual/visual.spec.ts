@@ -30,8 +30,8 @@ const DIALOGS: DialogCase[] = [
     open: async (p) => { await p.locator('[aria-expanded="true"][aria-label$="Category"] .showcase-enquire-btn').click(); },
   },
   {
-    name: 'media-viewer', card: mod('media-viewer-backdrop'), path: '/resorts/photos',
-    open: async (p) => { await p.locator('.media-card').first().click(); },
+    name: 'gallery-lightbox', card: mod('lightbox'), path: '/resorts/photos',
+    open: async (p) => { await p.getByRole('button', { name: /^View photo 1 of/ }).click(); },
   },
 ];
 

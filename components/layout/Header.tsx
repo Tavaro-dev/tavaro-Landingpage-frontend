@@ -22,7 +22,6 @@ export default function Header() {
     pathname === "/resorts/accommodations" ||
     pathname.startsWith("/checkout") ||
     pathname === "/resorts/location" ||
-    pathname === "/resorts/photos" ||
     pathname.endsWith("/book");
 
   // The scrolled look is driven by <html data-scrolled>, set by the inline

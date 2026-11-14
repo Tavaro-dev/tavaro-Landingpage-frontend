@@ -1,0 +1,162 @@
+@layer components {
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    background: rgba(10, 9, 8, 0.97);
+    color: var(--cream);
+    animation: fade 0.3s var(--ease) both;
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px clamp(16px, 3vw, 32px);
+  }
+  .place {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(16px, 1.6vw, 20px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .place span {
+    margin-left: 12px;
+    color: rgba(247, 242, 231, 0.6);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .count {
+    color: #c9a45a;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+  }
+  .close,
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
+    background: rgba(10, 9, 8, 0.55);
+    color: var(--cream);
+    cursor: pointer;
+    transition: background 0.25s var(--ease), border-color 0.25s var(--ease), color 0.25s var(--ease);
+  }
+  .close svg,
+  .nav svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .close:focus-visible,
+  .nav:focus-visible {
+    background: #c9a45a;
+    border-color: #c9a45a;
+    color: var(--black);
+    outline: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .close:hover,
+    .nav:hover {
+      background: #c9a45a;
+      border-color: #c9a45a;
+      color: var(--black);
+    }
+  }
+
+  .stage {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 clamp(12px, 6vw, 96px) clamp(16px, 3vw, 32px);
+    touch-action: pan-y;
+    user-select: none;
+  }
+  .frame {
+    position: relative;
+    width: min(100%, calc(78dvh * var(--ar)));
+    aspect-ratio: var(--ar);
+    background: var(--k);
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    animation: pop 0.35s var(--ease) both;
+  }
+  .thumb,
+  .full {
+    object-fit: contain;
+  }
+  .full {
+    opacity: 0;
+    transition: opacity 0.35s var(--ease);
+  }
+  .full.ready {
+    opacity: 1;
+  }
+
+  .nav {
+    position: absolute;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    transform: translateY(-50%);
+  }
+  .prev {
+    left: clamp(10px, 2.5vw, 30px);
+  }
+  .next {
+    right: clamp(10px, 2.5vw, 30px);
+  }
+  /* Phones swipe; the buttons drop to the bottom corners, clear of the photo. */
+  @media (max-width: 600px) {
+    .nav {
+      top: auto;
+      bottom: 18px;
+      width: 44px;
+      height: 44px;
+      transform: none;
+    }
+    .stage {
+      padding-bottom: 80px;
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox,
+    .frame {
+      animation: none;
+    }
+    .full {
+      transition: none;
+    }
+  }
+}
