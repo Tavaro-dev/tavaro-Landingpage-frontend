@@ -6,16 +6,16 @@ import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
 import { THINGS_TO_DO_DATA } from "../content/thingsToDoData";
 import { ThingsToDoButton } from "./ThingsToDoButton";
-import "./ThingsToDoSection.css";
+import styles from "./ThingsToDoSection.module.css";
 
 export function ThingsToDoSection() {
   const { explore, create } = THINGS_TO_DO_DATA;
 
   return (
-    <section className="offer-block on-dark things-to-do-section" id="things-to-do">
+    <section className={`offer-block on-dark ${styles["things-to-do-section"]}`} id="things-to-do">
 
       <div className="container">
-        <Reveal className="ttd-header">
+        <Reveal className={styles["ttd-header"]}>
           <OfferHead
             num="06 — Discovery & Activities"
             heading="Things to Do at Tavaro"
@@ -31,24 +31,24 @@ export function ThingsToDoSection() {
           </div>
         </Reveal>
 
-        <div className="ttd-editorial-grid">
+        <div className={styles["ttd-editorial-grid"]}>
           {/* Option 1: Explore at Your Own Pace */}
-          <Reveal className="ttd-editorial-card">
-            <div className="ttd-editorial-media">
+          <Reveal className={styles["ttd-editorial-card"]}>
+            <div className={styles["ttd-editorial-media"]}>
               <Image
                 src={explore.modalImage}
                 alt={explore.modalImageAlt}
                 fill
                 sizes="(max-width: 860px) 100vw, 50vw"
-                className="ttd-editorial-img"
+                className={styles["ttd-editorial-img"]}
               />
             </div>
-            <div className="ttd-editorial-body">
-              <span className="ttd-editorial-tag">{explore.badge}</span>
-              <h3 className="ttd-editorial-title">{explore.title}</h3>
-              <p className="ttd-editorial-desc">{explore.cardDescription}</p>
-              <div className="ttd-editorial-preview">{explore.categoryPreview}</div>
-              <div className="ttd-editorial-action">
+            <div className={styles["ttd-editorial-body"]}>
+              <span className={styles["ttd-editorial-tag"]}>{explore.badge}</span>
+              <h3 className={styles["ttd-editorial-title"]}>{explore.title}</h3>
+              <p className={styles["ttd-editorial-desc"]}>{explore.cardDescription}</p>
+              <div className={styles["ttd-editorial-preview"]}>{explore.categoryPreview}</div>
+              <div className={styles["ttd-editorial-action"]}>
                 <Link href={explore.route} className="btn solid">
                   {explore.ctaLabel} <span className="btn-arrow">→</span>
                 </Link>
@@ -57,22 +57,22 @@ export function ThingsToDoSection() {
           </Reveal>
 
           {/* Option 2: Create Your Experience */}
-          <Reveal className="ttd-editorial-card">
-            <div className="ttd-editorial-media">
+          <Reveal className={styles["ttd-editorial-card"]}>
+            <div className={styles["ttd-editorial-media"]}>
               <Image
                 src={create.modalImage}
                 alt={create.modalImageAlt}
                 fill
                 sizes="(max-width: 860px) 100vw, 50vw"
-                className="ttd-editorial-img"
+                className={styles["ttd-editorial-img"]}
               />
             </div>
-            <div className="ttd-editorial-body">
-              <span className="ttd-editorial-tag">{create.badge}</span>
-              <h3 className="ttd-editorial-title">{create.title}</h3>
-              <p className="ttd-editorial-desc">{create.cardDescription}</p>
-              <div className="ttd-editorial-preview">{create.categoryPreview}</div>
-              <div className="ttd-editorial-action">
+            <div className={styles["ttd-editorial-body"]}>
+              <span className={styles["ttd-editorial-tag"]}>{create.badge}</span>
+              <h3 className={styles["ttd-editorial-title"]}>{create.title}</h3>
+              <p className={styles["ttd-editorial-desc"]}>{create.cardDescription}</p>
+              <div className={styles["ttd-editorial-preview"]}>{create.categoryPreview}</div>
+              <div className={styles["ttd-editorial-action"]}>
                 <Link href={create.route} className="btn solid">
                   {create.ctaLabel} <span className="btn-arrow">→</span>
                 </Link>

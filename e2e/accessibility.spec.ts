@@ -72,7 +72,7 @@ test.describe('Accessibility Regressions', () => {
     await trigger.click();
 
     // Exposed as a named dialog (native <dialog> opened with showModal(), so it is modal by definition)
-    const modal = page.locator('.ttd-modal-container');
+    const modal = page.getByRole('dialog');
     await expect(modal).toBeVisible();
     await expect(page.getByRole('dialog', { name: 'How would you like to spend your time?' })).toBeVisible();
 
@@ -85,7 +85,7 @@ test.describe('Accessibility Regressions', () => {
     await trigger.click();
     await expect(modal).toBeVisible();
     // Click outside container on the backdrop
-    await page.locator('.ttd-modal-backdrop').click({ position: { x: 10, y: 10 } });
+    await page.mouse.click(10, 10);
     await expect(modal).toBeHidden();
   });
 

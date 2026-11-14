@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
-import "./HeroSquareTilesBackground.css";
+import styles from "./HeroSquareTilesBackground.module.css";
 
 export interface HeroSlideItem {
   image: string;
@@ -355,7 +355,7 @@ export function HeroSquareTilesBackground({
     >
 
       {/* Fallback Next.js Image for immediate SSR rendering */}
-      <div className="hero-static-fallback">
+      <div className={styles["hero-static-fallback"]}>
         <Image
           src={slides[currentIndex]?.image || slides[0].image}
           alt={slides[currentIndex]?.alt || slides[0].alt}
@@ -366,7 +366,7 @@ export function HeroSquareTilesBackground({
       </div>
 
       {/* Dynamic Small Square Boxes Animation Canvas */}
-      <canvas ref={canvasRef} className="hero-square-tiles-canvas" />
+      <canvas ref={canvasRef} className={styles["hero-square-tiles-canvas"]} />
 
       {/* Visual Overlay gradient from page */}
       {overlayClassName && <div className={overlayClassName} />}
@@ -374,7 +374,7 @@ export function HeroSquareTilesBackground({
       {/* Subtle Subsection Navigation Pills */}
       {showIndicators && slides.length > 1 && (
         <nav
-          className="hero-subsection-indicators"
+          className={styles["hero-subsection-indicators"]}
           aria-label="Subsections showcase switcher"
         >
           {slides.map((slide, idx) => {
@@ -383,12 +383,12 @@ export function HeroSquareTilesBackground({
               <button
                 key={slide.title}
                 type="button"
-                className={`hero-indicator-btn ${isActive ? "active" : ""}`}
+                className={`${styles["hero-indicator-btn"]} ${isActive ? "active" : ""}`}
                 onClick={() => startBoxesTransition(idx)}
                 aria-label={`Show ${slide.title} background`}
                 aria-current={isActive ? "true" : undefined}
               >
-                <span className="hero-indicator-dot" />
+                <span className={styles["hero-indicator-dot"]} />
                 <span>{slide.title}</span>
               </button>
             );

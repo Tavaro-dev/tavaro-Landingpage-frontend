@@ -59,3 +59,7 @@ $RECYCLE.BIN/
 
 # scratch & temporary audit artifacts
 /scratch/
+
+# visual baselines: only the CI platform (linux) is committed
+/e2e/visual/__screenshots__/*
+!/e2e/visual/__screenshots__/linux/

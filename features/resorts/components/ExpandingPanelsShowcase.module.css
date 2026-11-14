@@ -63,17 +63,17 @@
     min-width: 60px;
   }
 
-  .showcase-panel:not(.active):hover {
+  .showcase-panel:not(:global(.active)):hover {
     border-color: rgba(197, 160, 89, 0.45);
     transform: translateY(-2px);
   }
 
-  .showcase-panel:not(.active):hover .showcase-panel-image {
+  .showcase-panel:not(:global(.active)):hover .showcase-panel-image {
     filter: brightness(0.85);
   }
 
   /* Active panel expands horizontally to ~68% width (6.5 / 9.5) */
-  .showcase-panel.active {
+  .showcase-panel:global(.active) {
     flex: 6.5;
     cursor: default;
     border-color: rgba(197, 160, 89, 0.35);
@@ -93,7 +93,7 @@
     pointer-events: none;
   }
 
-  .showcase-panel.active .showcase-panel-collapsed {
+  .showcase-panel:global(.active) .showcase-panel-collapsed {
     opacity: 0;
     pointer-events: none;
   }
@@ -127,7 +127,7 @@
                 visibility 0.45s ease;
   }
 
-  .showcase-panel.active .showcase-panel-expanded {
+  .showcase-panel:global(.active) .showcase-panel-expanded {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
@@ -226,14 +226,14 @@
   background: rgba(197, 160, 89, 0.14);
 }
 
-.showcase-tab-btn.active {
+.showcase-tab-btn:global(.active) {
   color: #ffffff;
   background: var(--gold, #c5a059);
   font-weight: 700;
   box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
 }
 
-[data-theme="light"] .showcase-tab-btn.active {
+[data-theme="light"] .showcase-tab-btn:global(.active) {
   color: #0f0d0a;
 }
 
@@ -262,11 +262,11 @@
   color: #ffffff;
 }
 
-.showcase-change-btn .btn-arrow {
+.showcase-change-btn :global(.btn-arrow) {
   transition: transform 0.25s ease;
 }
 
-.showcase-change-btn:hover .btn-arrow {
+.showcase-change-btn:hover :global(.btn-arrow) {
   transform: translateX(3px);
 }
 
@@ -285,7 +285,7 @@
   filter: brightness(0.72);
 }
 
-.showcase-panel.active .showcase-panel-image {
+.showcase-panel:global(.active) .showcase-panel-image {
   filter: brightness(0.88);
   transform: scale(1.03);
 }
@@ -412,7 +412,7 @@
   transform: translateY(-1px);
 }
 
-.showcase-chip.selected {
+.showcase-chip:global(.selected) {
   background: var(--gold, #c5a059);
   color: #0f0d0a;
   border-color: var(--gold, #c5a059);
@@ -426,7 +426,7 @@
   background: var(--gold, #c5a059);
 }
 
-.showcase-chip.selected .showcase-chip-dot {
+.showcase-chip:global(.selected) .showcase-chip-dot {
   background: #0f0d0a;
 }
 
@@ -515,7 +515,7 @@
   transition: all 0.25s ease;
 }
 
-.showcase-dot-btn.active {
+.showcase-dot-btn:global(.active) {
   width: 24px;
   border-radius: 999px;
   background: var(--gold, #c5a059);
@@ -601,7 +601,7 @@
     transition: flex 0.65s cubic-bezier(0.2, 0.78, 0.2, 1);
   }
 
-  .showcase-panel.active {
+  .showcase-panel:global(.active) {
     flex: 5.5 1 0%;
     cursor: default;
   }
@@ -620,7 +620,7 @@
     pointer-events: auto;
   }
 
-  .showcase-panel.active .showcase-panel-collapsed {
+  .showcase-panel:global(.active) .showcase-panel-collapsed {
     opacity: 0;
     pointer-events: none;
   }
@@ -654,7 +654,7 @@
                 visibility 0.4s ease;
   }
 
-  .showcase-panel.active .showcase-panel-expanded {
+  .showcase-panel:global(.active) .showcase-panel-expanded {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -742,7 +742,7 @@
     height: 6px;
   }
 
-  .showcase-dot-btn.active {
+  .showcase-dot-btn:global(.active) {
     width: 18px;
   }
 }
@@ -799,27 +799,27 @@
 }
 
 /* Closing CTAs keep their colours on hover (they used to be inline styles). */
-.btn.showcase-closing-primary,
-.btn.showcase-closing-primary:hover {
+:global(.btn).showcase-closing-primary,
+:global(.btn).showcase-closing-primary:hover {
   background: var(--gold);
   color: #0f0d0a;
 }
 
-.btn.showcase-closing-secondary,
-.btn.showcase-closing-secondary:hover {
+:global(.btn).showcase-closing-secondary,
+:global(.btn).showcase-closing-secondary:hover {
   border: 1px solid var(--surface-line);
   color: var(--on-surface);
 }
 
-.btn.showcase-closing-primary,
-.btn.showcase-closing-secondary {
+:global(.btn).showcase-closing-primary,
+:global(.btn).showcase-closing-secondary {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 12px 24px;
 }
 
-.btn.showcase-closing-primary {
+:global(.btn).showcase-closing-primary {
   font-weight: 700;
 }
 

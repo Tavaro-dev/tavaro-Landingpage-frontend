@@ -138,10 +138,10 @@
   border-color: var(--gold);
   color: var(--black);
 }
-.media-viewer-nav-btn.prev {
+.media-viewer-nav-btn:global(.prev) {
   left: clamp(10px, 3vw, 30px);
 }
-.media-viewer-nav-btn.next {
+.media-viewer-nav-btn:global(.next) {
   right: clamp(10px, 3vw, 30px);
 }
 .media-viewer-footer {

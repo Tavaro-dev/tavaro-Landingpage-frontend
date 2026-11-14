@@ -35,8 +35,10 @@ jobs:
     - name: Build Next.js App
       run: npm run build
 
-    - name: Run E2E Tests
-      run: npm run test:e2e
+    # Visual regression joins once Linux baselines are committed
+    # (generate them with the "Visual baselines" workflow).
+    - name: Run E2E and Visual Tests
+      run: npx playwright test --project=chromium ${{ hashFiles('e2e/visual/__screenshots__/linux/**') != '' && '--project=visual' || '' }}
       
     - name: Upload Playwright Report
       if: always()

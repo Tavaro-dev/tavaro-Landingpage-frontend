@@ -58,7 +58,7 @@
   color: #ffffff;
 }
 
-.hero-indicator-btn.active {
+.hero-indicator-btn:global(.active) {
   color: #ffffff;
   background: rgba(197, 160, 89, 0.28);
   border: 1px solid rgba(197, 160, 89, 0.6);
@@ -72,7 +72,7 @@
   transition: all 0.3s ease;
 }
 
-.hero-indicator-btn.active .hero-indicator-dot {
+.hero-indicator-btn:global(.active) .hero-indicator-dot {
   background: var(--gold, #c5a059);
   transform: scale(1.4);
   box-shadow: 0 0 8px rgba(197, 160, 89, 0.8);

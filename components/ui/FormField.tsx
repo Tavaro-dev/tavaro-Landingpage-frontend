@@ -14,11 +14,13 @@ export type FieldControlProps = {
 /**
  * Label + control + error, wired together for assistive tech: the label names
  * the control (htmlFor, or aria-labelledby for a group of buttons) and the
- * error text is linked via aria-describedby. `ui` is the form's class prefix
- * (e.g. "uts" -> uts-form-group / uts-label / uts-error-msg).
+ * error text is linked via aria-describedby. `classNames` comes from the
+ * form's CSS module, so each form keeps its own look.
  */
+export type FormFieldClassNames = { group: string; label: string; error: string };
+
 export function FormField({
-  ui,
+  classNames,
   label,
   required,
   optional,
@@ -27,7 +29,7 @@ export function FormField({
   group,
   children,
 }: {
-  ui: string;
+  classNames: FormFieldClassNames;
   label: ReactNode;
   required?: boolean;
   optional?: boolean;
@@ -59,21 +61,21 @@ export function FormField({
   ) : null;
 
   return (
-    <div className={`${ui}-form-group${full ? " full" : ""}`}>
+    <div className={full ? `${classNames.group} full` : classNames.group}>
       {group ? (
-        <span id={labelId} className={`${ui}-label`}>
+        <span id={labelId} className={classNames.label}>
           {label}
           {marker}
         </span>
       ) : (
-        <label id={labelId} htmlFor={id} className={`${ui}-label`}>
+        <label id={labelId} htmlFor={id} className={classNames.label}>
           {label}
           {marker}
         </label>
       )}
       {children(control)}
       {errors.map((message, i) => (
-        <p key={message} id={`${id}-error-${i}`} className={`${ui}-error-msg`} role="alert">
+        <p key={message} id={`${id}-error-${i}`} className={classNames.error} role="alert">
           {message}
         </p>
       ))}

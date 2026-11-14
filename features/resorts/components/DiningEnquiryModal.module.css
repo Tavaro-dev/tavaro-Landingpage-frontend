@@ -1,0 +1,22 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
+.discover-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 16px; border: none; background: transparent; }
+.discover-grid :global(.event-card) { border: none; background: transparent; }
+.discover-grid :global(.event-media) { aspect-ratio: 16 / 9; height: auto; }
+.discover-grid :global(.event-title) { font-size: 15px; }
+.discover-grid :global(.event-meta) { font-size: 14px; line-height: 1.4; padding-bottom: 0 !important; }
+
+@media (max-width: 900px) { 
+  .discover-grid { grid-template-columns: repeat(2, 1fr) !important; } 
+}
+@media (max-width: 640px) { 
+  .discover-grid { grid-template-columns: 1fr !important; gap: 12px; margin-bottom: 20px !important; } 
+  .discover-grid :global(.event-card) { text-align: center; padding: 8px 0; }
+  .discover-grid :global(.event-media) { display: none; }
+  .discover-grid :global(.event-title) { margin-top: 0 !important; padding: 0 !important; font-size: 15px; }
+  .discover-grid :global(.event-meta) { margin-top: 4px !important; padding: 0 !important; font-size: 13px; padding-bottom: 0 !important; }
+}
+
+} /* @layer components */

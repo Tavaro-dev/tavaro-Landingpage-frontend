@@ -8,21 +8,32 @@ export default defineConfig({
   workers: process.env.CI ? 1 : 2,
   reporter: 'html',
   timeout: 60000,
+  // Fonts and anti-aliasing differ per OS, so each platform keeps its own
+  // baselines. Only linux/ is committed (CI compares against it); see e2e/visual/README.md.
+  snapshotPathTemplate: '{testDir}/visual/__screenshots__/{platform}/{arg}{ext}',
   use: {
-    baseURL: 'http://localhost:3000',
+    // Own port, so a running `npm run dev` on :3000 is never tested by mistake.
+    baseURL: 'http://localhost:3123',
     trace: 'on-first-retry',
   },
 
   projects: [
     {
       name: 'chromium',
+      testIgnore: /visual\//,
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'visual',
+      testMatch: /visual\/.*\.spec\.ts/,
+      retries: 0,
       use: { ...devices['Desktop Chrome'] },
     },
   ],
 
   webServer: {
-    command: 'npm run start',
-    url: 'http://localhost:3000',
+    command: 'npm run start -- -p 3123',
+    url: 'http://localhost:3123',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },

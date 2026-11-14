@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FormField } from "@/components/ui/FormField";
+import { FormField, type FormFieldClassNames } from "@/components/ui/FormField";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
@@ -13,7 +13,9 @@ import {
   PLANNING_TYPES,
   SETTING_PREFERENCES,
 } from "../content/underTheSkyForm";
-import "./UnderTheSkyModal.css";
+import styles from "./UnderTheSkyModal.module.css";
+
+const FIELD: FormFieldClassNames = { group: styles["uts-form-group"], label: styles["uts-label"], error: styles["uts-error-msg"] };
 
 interface UnderTheSkyModalProps {
   isOpen: boolean;
@@ -95,22 +97,22 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
 
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy="uts-modal-title" bare>
-      <div className="uts-modal-backdrop" onClick={onClose}>
-        <div className="uts-modal-card" onClick={(e) => e.stopPropagation()}>
-          <header className="uts-modal-header">
-            <div className="uts-modal-header-text">
+      <div className={styles["uts-modal-backdrop"]} onClick={onClose}>
+        <div className={styles["uts-modal-card"]} onClick={(e) => e.stopPropagation()}>
+          <header className={styles["uts-modal-header"]}>
+            <div className={styles["uts-modal-header-text"]}>
               <span className="eyebrow no-line tw:text-[10px]">
                 Under the Sky
               </span>
               <h2 id="uts-modal-title">Under the Sky</h2>
-              <p className="uts-subtitle">For every celebration under the sky.</p>
-              <p className="uts-desc">
+              <p className={styles["uts-subtitle"]}>For every celebration under the sky.</p>
+              <p className={styles["uts-desc"]}>
                 An open-air dining experience set across Tavaro Resorts. Tell us a little about what you’re planning, the people you’re bringing together and how you’d like the occasion to feel. We’ll take it from there.
               </p>
             </div>
             <button
               type="button"
-              className="uts-modal-close-btn"
+              className={styles["uts-modal-close-btn"]}
               onClick={onClose}
               aria-label="Close enquiry form"
             >
@@ -118,9 +120,9 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
             </button>
           </header>
 
-          <div className="uts-modal-body">
+          <div className={styles["uts-modal-body"]}>
             {submitted ? (
-              <div className="uts-success-box">
+              <div className={styles["uts-success-box"]}>
                 <span className="eyebrow center no-line">Enquiry Received</span>
                 <h3 className="display-3 tw:mt-[12px] tw:mb-[16px] tw:text-(color:--on-surface)">
                   Thank You for Your Enquiry
@@ -148,14 +150,14 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
               </div>
             ) : (
               <form onSubmit={step === 1 ? handleNextStep : handleSubmit}>
-                <div className="uts-step-bar">
+                <div className={styles["uts-step-bar"]}>
                   <span>Step {step} of 2 — {step === 1 ? "About the Gathering" : "About You"}</span>
                 </div>
 
                 {step === 1 && (
                   <>
                     {/* 1. What are you planning? */}
-                    <FormField ui="uts" label="1. What are you planning?" required error={[errors.planningType, errors.planningOtherText]}>
+                    <FormField classNames={FIELD} label="1. What are you planning?" required error={[errors.planningType, errors.planningOtherText]}>
                       {(field) => (
                         <>
                           <CustomSelect
@@ -168,7 +170,7 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                           {formData.planningType === "Other" && (
                             <input
                               type="text"
-                              className="uts-input tw:mt-[10px]"
+                              className={`${styles["uts-input"]} tw:mt-[10px]`}
                               placeholder="Please specify what you are planning..."
                               aria-label="Please specify what you are planning"
                               value={formData.planningOtherText}
@@ -180,12 +182,12 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                     </FormField>
 
                     {/* 2. Tell us a little about the occasion */}
-                    <FormField ui="uts" label="2. Tell us a little about the occasion" optional>
+                    <FormField classNames={FIELD} label="2. Tell us a little about the occasion" optional>
                       {(field) => (
                         <textarea
                           {...field}
                           rows={3}
-                          className="uts-textarea"
+                          className={styles["uts-textarea"]}
                           placeholder="Tell us a little about the occasion..."
                           value={formData.occasionDetails}
                           onChange={(e) => setField("occasionDetails", e.target.value)}
@@ -194,8 +196,8 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                     </FormField>
 
                     {/* 3 & 4. Preferred Date & Expected Guests in 2 columns */}
-                    <div className="uts-form-grid">
-                      <FormField ui="uts" label="3. Preferred date" required error={errors.preferredDate}>
+                    <div className={styles["uts-form-grid"]}>
+                      <FormField classNames={FIELD} label="3. Preferred date" required error={errors.preferredDate}>
                         {(field) => (
                           <CustomDatePicker
                             id={field.id}
@@ -206,12 +208,12 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                         )}
                       </FormField>
 
-                      <FormField ui="uts" label="4. How many people expecting?" required error={errors.expectedGuests}>
+                      <FormField classNames={FIELD} label="4. How many people expecting?" required error={errors.expectedGuests}>
                         {(field) => (
                           <input
                             {...field}
                             type="text"
-                            className="uts-input"
+                            className={styles["uts-input"]}
                             placeholder="e.g. 25"
                             value={formData.expectedGuests}
                             onChange={(e) => setField("expectedGuests", e.target.value)}
@@ -221,16 +223,16 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                     </div>
 
                     {/* 5. What kind of setting are you drawn to? */}
-                    <FormField ui="uts" label="5. What kind of setting are you drawn to?" required group error={errors.settingPreferences}>
+                    <FormField classNames={FIELD} label="5. What kind of setting are you drawn to?" required group error={errors.settingPreferences}>
                       {(field) => (
-                        <div className="uts-pill-grid" {...field}>
+                        <div className={styles["uts-pill-grid"]} {...field}>
                           {SETTING_PREFERENCES.map((setting) => {
                             const isSelected = formData.settingPreferences.includes(setting);
                             return (
                               <button
                                 type="button"
                                 key={setting}
-                                className={`uts-pill${isSelected ? " selected" : ""}`}
+                                className={`${styles["uts-pill"]}${isSelected ? " selected" : ""}`}
                                 onClick={() => handleCheckboxToggle(setting)}
                               >
                                 {isSelected && <Icon name="check" />}
@@ -245,13 +247,13 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                 )}
 
                 {step === 2 && (
-                  <div className="uts-form-grid">
-                    <FormField ui="uts" label="Name" required full error={errors.name}>
+                  <div className={styles["uts-form-grid"]}>
+                    <FormField classNames={FIELD} label="Name" required full error={errors.name}>
                       {(field) => (
                         <input
                           {...field}
                           type="text"
-                          className="uts-input"
+                          className={styles["uts-input"]}
                           placeholder="e.g. Ananya Sharma"
                           value={formData.name}
                           onChange={(e) => setField("name", e.target.value)}
@@ -259,12 +261,12 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                       )}
                     </FormField>
 
-                    <FormField ui="uts" label="Phone number" required error={errors.phoneNumber}>
+                    <FormField classNames={FIELD} label="Phone number" required error={errors.phoneNumber}>
                       {(field) => (
                         <input
                           {...field}
                           type="tel"
-                          className="uts-input"
+                          className={styles["uts-input"]}
                           placeholder="e.g. +91 98765 43210"
                           value={formData.phoneNumber}
                           onChange={(e) => setField("phoneNumber", e.target.value)}
@@ -272,12 +274,12 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                       )}
                     </FormField>
 
-                    <FormField ui="uts" label="Email address" optional error={errors.emailAddress}>
+                    <FormField classNames={FIELD} label="Email address" optional error={errors.emailAddress}>
                       {(field) => (
                         <input
                           {...field}
                           type="email"
-                          className="uts-input"
+                          className={styles["uts-input"]}
                           placeholder="e.g. ananya@example.com"
                           value={formData.emailAddress}
                           onChange={(e) => setField("emailAddress", e.target.value)}
@@ -287,7 +289,7 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
                   </div>
                 )}
 
-                <div className="uts-footer-actions">
+                <div className={styles["uts-footer-actions"]}>
                   {step === 2 ? (
                     <button
                       type="button"

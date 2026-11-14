@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { RESORT_LOCATION_POINTS } from "../content/resortLocation";
-import "./InteractiveLocationMap.css";
+import styles from "./InteractiveLocationMap.module.css";
 
 export function InteractiveLocationMap() {
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -11,7 +11,7 @@ export function InteractiveLocationMap() {
 
   return (
     <>
-      <div className="location-map">
+      <div className={styles["location-map"]}>
         <svg className="tw:absolute tw:top-[0] tw:left-[0] tw:w-full tw:h-full tw:pointer-events-none">
           {tavaro && RESORT_LOCATION_POINTS.map((point) => {
             if (point.id === tavaro.id) return null;
@@ -40,7 +40,7 @@ export function InteractiveLocationMap() {
           return (
             <div
               key={point.id}
-              className={`map-marker ${isTavaro ? 'map-marker-resort' : ''}`}
+              className={`${styles["map-marker"]} ${isTavaro ? `${styles["map-marker-resort"]}` : ''}`}
               style={{
                 left: `${point.x}%`,
                 top: `${point.y}%`,
@@ -49,7 +49,7 @@ export function InteractiveLocationMap() {
             >
               <button
                 type="button"
-                className={`map-marker-btn ${activeId === point.id ? 'active' : ''} ${isTavaro ? 'resort' : ''}`}
+                className={`${styles["map-marker-btn"]} ${activeId === point.id ? 'active' : ''} ${isTavaro ? 'resort' : ''}`}
                 aria-label={isTavaro ? point.name : `${point.name}, ${point.travelTime} from Tavaro`}
                 onMouseEnter={() => setActiveId(point.id)}
                 onMouseLeave={() => setActiveId(null)}
@@ -60,31 +60,31 @@ export function InteractiveLocationMap() {
                 {isTavaro ? "★" : "●"}
               </button>
 
-              <div className={`map-marker-label-container ${isTop ? 'pos-top' : 'pos-bottom'} ${isActive ? 'active' : ''}`}>
+              <div className={`${styles["map-marker-label-container"]} ${isTop ? `${styles["pos-top"]}` : `${styles["pos-bottom"]}`} ${isActive ? 'active' : ''}`}>
                 {isTop && activeId === point.id && !isTavaro && (
-                  <div className="map-info-card">
+                  <div className={styles["map-info-card"]}>
                     {point.travelTime} FROM TAVARO
                   </div>
                 )}
 
                 {isTop && activeId === point.id && isTavaro && (
-                  <div className="map-info-card">
+                  <div className={styles["map-info-card"]}>
                     KOKAPET, HYDERABAD
                   </div>
                 )}
 
-                <span className="map-marker-name">
+                <span className={styles["map-marker-name"]}>
                   {point.name}
                 </span>
                 
                 {!isTop && activeId === point.id && !isTavaro && (
-                  <div className="map-info-card">
+                  <div className={styles["map-info-card"]}>
                     {point.travelTime} FROM TAVARO
                   </div>
                 )}
                 
                 {!isTop && activeId === point.id && isTavaro && (
-                  <div className="map-info-card">
+                  <div className={styles["map-info-card"]}>
                     KOKAPET, HYDERABAD
                   </div>
                 )}

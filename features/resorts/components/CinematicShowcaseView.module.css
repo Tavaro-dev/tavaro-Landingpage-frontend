@@ -72,13 +72,13 @@
   background: var(--surface-2, rgba(255, 255, 255, 0.05));
 }
 
-.cinematic-tab-btn.active {
+.cinematic-tab-btn:global(.active) {
   color: #ffffff;
   background: rgba(197, 160, 89, 0.22);
   border-color: var(--gold, #c5a059);
 }
 
-[data-theme="light"] .cinematic-tab-btn.active {
+[data-theme="light"] .cinematic-tab-btn:global(.active) {
   color: var(--gold-dark, #8f6c24);
   background: rgba(197, 160, 89, 0.16);
   border-color: rgba(177, 137, 58, 0.5);
@@ -283,7 +283,7 @@
   transform: translateY(-1px);
 }
 
-.cinematic-activity-chip.selected {
+.cinematic-activity-chip:global(.selected) {
   background: var(--gold, #c5a059);
   color: #0f0d0a;
   border-color: var(--gold, #c5a059);
@@ -298,7 +298,7 @@
   transition: background 0.2s ease;
 }
 
-.cinematic-activity-chip.selected .cinematic-chip-dot {
+.cinematic-activity-chip:global(.selected) .cinematic-chip-dot {
   background: #0f0d0a;
 }
 

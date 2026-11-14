@@ -51,7 +51,7 @@ test.describe('Navigation Smoke tests', () => {
     await thingsToDoBtn.click();
 
     // Verify modal dialog is open with title
-    const modal = page.locator('.ttd-modal-container');
+    const modal = page.getByRole('dialog');
     await expect(modal).toBeVisible();
 
     const modalHeading = modal.getByRole('heading', { name: /How would you like to spend your time\?/i });
@@ -85,16 +85,16 @@ test.describe('Navigation Smoke tests', () => {
     await expect(page.locator('.showcase-tab-btn', { hasText: 'Explore' })).toBeVisible();
 
     // Verify category tab switching and activity chips in each panel
-    await expect(page.locator('.showcase-chip', { hasText: 'Màre — poolside coffee & dining' })).toBeVisible();
+    await expect(page.locator('[aria-pressed]', { hasText: 'Màre — poolside coffee & dining' })).toBeVisible();
 
     await page.locator('.showcase-tab-btn', { hasText: 'Unwind' }).click();
-    await expect(page.locator('.showcase-chip', { hasText: 'Time in the Mango Grove' })).toBeVisible();
+    await expect(page.locator('[aria-pressed]', { hasText: 'Time in the Mango Grove' })).toBeVisible();
 
     await page.locator('.showcase-tab-btn', { hasText: 'Play' }).click();
-    await expect(page.locator('.showcase-chip', { hasText: 'Lawn games' })).toBeVisible();
+    await expect(page.locator('[aria-pressed]', { hasText: 'Lawn games' })).toBeVisible();
 
     await page.locator('.showcase-tab-btn', { hasText: 'Explore' }).click();
-    await expect(page.locator('.showcase-chip', { hasText: 'Tree Deck' })).toBeVisible();
+    await expect(page.locator('[aria-pressed]', { hasText: 'Tree Deck' })).toBeVisible();
 
     // Closing section
     await expect(page.getByRole('heading', { name: 'Explore at Your Own Pace' })).toBeVisible();
@@ -115,24 +115,24 @@ test.describe('Navigation Smoke tests', () => {
     await expect(page.locator('.showcase-tab-btn', { hasText: 'Gather' })).toBeVisible();
 
     // Verify category tab switching and activity chips in each panel
-    await expect(page.locator('.showcase-chip', { hasText: 'Hatha Yoga' })).toBeVisible();
+    await expect(page.locator('[aria-pressed]', { hasText: 'Hatha Yoga' })).toBeVisible();
 
     await page.locator('.showcase-tab-btn', { hasText: 'Movement' }).click();
-    await expect(page.locator('.showcase-chip', { hasText: 'Animal Flow' })).toBeVisible();
+    await expect(page.locator('[aria-pressed]', { hasText: 'Animal Flow' })).toBeVisible();
 
     await page.locator('.showcase-tab-btn', { hasText: 'Create' }).click();
-    await expect(page.locator('.showcase-chip', { hasText: 'Art Workshops' })).toBeVisible();
+    await expect(page.locator('[aria-pressed]', { hasText: 'Art Workshops' })).toBeVisible();
 
     await page.locator('.showcase-tab-btn', { hasText: 'Gather' }).click();
-    await expect(page.locator('.showcase-chip', { hasText: 'Private Dining' })).toBeVisible();
+    await expect(page.locator('[aria-pressed]', { hasText: 'Private Dining' })).toBeVisible();
 
     // Enquire about experience CTA
-    const arrangeBtn = page.locator('.showcase-panel.active .showcase-enquire-btn');
+    const arrangeBtn = page.locator('[aria-expanded="true"][aria-label$="Category"] .showcase-enquire-btn');
     await expect(arrangeBtn).toBeVisible();
     await arrangeBtn.click();
 
     // Verify modal opened
-    const modal = page.locator('.exp-modal-card');
+    const modal = page.getByRole('dialog');
     await expect(modal).toBeVisible();
     await expect(modal.getByRole('heading', { name: /Arrange an Experience/i })).toBeVisible();
     await expect(modal.getByLabel(/Full Name/i)).toBeVisible();

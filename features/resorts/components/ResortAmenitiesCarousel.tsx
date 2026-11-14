@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Reveal } from "@/components/shared/Reveal";
 import { AMENITIES_DATA, AmenityItem } from "../content/amenitiesData";
-import "./ResortAmenitiesCarousel.css";
+import styles from "./ResortAmenitiesCarousel.module.css";
 
 export function ResortAmenitiesCarousel() {
   // Split 12 items into 2 rows of 6 items each
@@ -15,15 +15,15 @@ export function ResortAmenitiesCarousel() {
   const row2Loop = [...row2, ...row2];
 
   return (
-    <section className="amenities-carousel-section" id="facilities">
+    <section className={styles["amenities-carousel-section"]} id="facilities">
 
       <div className="container">
         <Reveal>
-          <div className="amenities-header-row">
-            <div className="amenities-header-content">
-              <span className="amenities-header-eyebrow">Tavaro Hospitality &amp; Facilities</span>
-              <h2 className="amenities-header-title">Amenities &amp; Services</h2>
-              <p className="amenities-header-desc">
+          <div className={styles["amenities-header-row"]}>
+            <div className={styles["amenities-header-content"]}>
+              <span className={styles["amenities-header-eyebrow"]}>Tavaro Hospitality &amp; Facilities</span>
+              <h2 className={styles["amenities-header-title"]}>Amenities &amp; Services</h2>
+              <p className={styles["amenities-header-desc"]}>
                 From morning movement and artisanal coffee to secluded poolside
                 relaxation and seamless celebration support, every amenity is shaped
                 for effortless comfort.
@@ -33,10 +33,10 @@ export function ResortAmenitiesCarousel() {
         </Reveal>
       </div>
 
-      <div className="marquee-wrapper" aria-label="Continuously moving resort amenities showcase">
+      <div className={styles["marquee-wrapper"]} aria-label="Continuously moving resort amenities showcase">
         {/* ROW 1: Moves Left */}
-        <div className="marquee-row" tabIndex={0} aria-label="Amenities showcase row one">
-          <div className="marquee-track track-left">
+        <div className={styles["marquee-row"]} tabIndex={0} aria-label="Amenities showcase row one">
+          <div className={`${styles["marquee-track"]} ${styles["track-left"]}`}>
             {row1Loop.map((item, idx) => (
               <AmenityCard key={`row1-${item.slug}-${idx}`} item={item} />
             ))}
@@ -44,8 +44,8 @@ export function ResortAmenitiesCarousel() {
         </div>
 
         {/* ROW 2: Moves Right */}
-        <div className="marquee-row" tabIndex={0} aria-label="Amenities showcase row two">
-          <div className="marquee-track track-right">
+        <div className={styles["marquee-row"]} tabIndex={0} aria-label="Amenities showcase row two">
+          <div className={`${styles["marquee-track"]} ${styles["track-right"]}`}>
             {row2Loop.map((item, idx) => (
               <AmenityCard key={`row2-${item.slug}-${idx}`} item={item} />
             ))}
@@ -59,11 +59,11 @@ export function ResortAmenitiesCarousel() {
 function AmenityCard({ item }: { item: AmenityItem }) {
   return (
     <div
-      className="amenity-marquee-card"
+      className={styles["amenity-marquee-card"]}
       role="group"
       aria-label={`${item.title} — ${item.eyebrow}`}
     >
-      <div className="amenity-card-image-wrap">
+      <div className={styles["amenity-card-image-wrap"]}>
         <Image
           src={item.heroImage}
           alt={item.heroAlt}
@@ -71,12 +71,12 @@ function AmenityCard({ item }: { item: AmenityItem }) {
           sizes="(max-width: 768px) 280px, 360px" className="tw:object-cover"
         />
       </div>
-      <div className="amenity-card-scrim" />
-      <div className="amenity-card-content">
-        <span className="amenity-card-eyebrow">{item.eyebrow}</span>
-        <div className="amenity-card-title-row">
-          <span className="amenity-card-title">{item.title}</span>
-          <span className="amenity-card-indicator" aria-hidden="true" />
+      <div className={styles["amenity-card-scrim"]} />
+      <div className={styles["amenity-card-content"]}>
+        <span className={styles["amenity-card-eyebrow"]}>{item.eyebrow}</span>
+        <div className={styles["amenity-card-title-row"]}>
+          <span className={styles["amenity-card-title"]}>{item.title}</span>
+          <span className={styles["amenity-card-indicator"]} aria-hidden="true" />
         </div>
       </div>
     </div>

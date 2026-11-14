@@ -10,20 +10,20 @@ test.describe('Booking Flow', () => {
     await checkAvailabilityBtn.click();
 
     // Verify modal appears
-    const modal = page.locator('.ota-modal-card');
+    const modal = page.getByRole('dialog');
     await expect(modal).toBeVisible();
 
     // Verify Agoda primary link
-    const agodaLink = page.locator('a.ota-option-row.primary');
+    const agodaLink = page.getByRole('link', { name: /Agoda/ });
     await expect(agodaLink).toBeVisible();
     await expect(agodaLink).toHaveAttribute('href', /agoda\.com/);
 
     // Verify partners are present in modal with verified direct Tavaro listings
-    await expect(page.locator('.ota-option-name', { hasText: 'Bluepillow' })).toBeVisible();
-    await expect(page.locator('.ota-option-name', { hasText: 'Google Hotels' })).toBeVisible();
+    await expect(page.getByRole('dialog').getByText('Bluepillow')).toBeVisible();
+    await expect(page.getByRole('dialog').getByText('Google Hotels')).toBeVisible();
 
     // Close modal
-    const closeBtn = page.locator('.ota-modal-close');
+    const closeBtn = page.getByRole('button', { name: 'Close booking options modal' });
     await closeBtn.click();
     await expect(modal).toBeHidden();
   });
@@ -40,7 +40,7 @@ test.describe('Booking Flow', () => {
     const checkRates = firstRoom.getByRole('button', { name: 'Check Rates' });
     if (await checkRates.isVisible()) {
       await checkRates.click();
-      await expect(page.locator('.ota-modal-card')).toBeVisible();
+      await expect(page.getByRole('dialog')).toBeVisible();
       await expect(page.locator('.cart-button')).toHaveCount(0);
       return;
     }

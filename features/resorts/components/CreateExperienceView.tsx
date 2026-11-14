@@ -8,7 +8,7 @@ import { HeroSquareTilesBackground } from "./HeroSquareTilesBackground";
 import { ExpandingPanelsShowcase } from "./ExpandingPanelsShowcase";
 import { CREATE_SHOWCASE_CATEGORIES } from "../content/showcaseData";
 import StickyCta from "@/components/shared/StickyCta";
-import "./CreateExperienceView.css";
+import styles from "./CreateExperienceView.module.css";
 
 export function CreateExperienceView() {
   const { create } = THINGS_TO_DO_DATA;
@@ -52,34 +52,34 @@ export function CreateExperienceView() {
   return (
     <>
 
-      <div className="create-page">
+      <div className={styles["create-page"]}>
         {/* SECTION 1: Editorial Hero with Continuous Small Square Boxes Animation */}
-        <section className="create-hero" aria-label="Create Your Experience Hero">
-          <div className="create-hero-media">
+        <section className={styles["create-hero"]} aria-label="Create Your Experience Hero">
+          <div className={styles["create-hero-media"]}>
             <HeroSquareTilesBackground
               slides={createSlides}
-              overlayClassName="create-hero-overlay"
+              overlayClassName={styles["create-hero-overlay"]}
             />
           </div>
 
           <div className="container">
-            <Reveal className="create-hero-content">
-              <div className="create-breadcrumb">
+            <Reveal className={styles["create-hero-content"]}>
+              <div className={styles["create-breadcrumb"]}>
                 Tavaro / Resorts / Things to Do / Create
               </div>
-              <span className="create-hero-eyebrow">{create.eyebrow}</span>
-              <h1 className="create-hero-title">{create.heading}</h1>
-              <p className="create-hero-desc">{create.description}</p>
-              <div className="create-hero-notice">{create.notice}</div>
+              <span className={styles["create-hero-eyebrow"]}>{create.eyebrow}</span>
+              <h1 className={styles["create-hero-title"]}>{create.heading}</h1>
+              <p className={styles["create-hero-desc"]}>{create.description}</p>
+              <div className={styles["create-hero-notice"]}>{create.notice}</div>
 
               {/* Restrained scroll indicator */}
               <a
                 href="#create-showcase"
-                className="create-scroll-indicator"
+                className={styles["create-scroll-indicator"]}
                 aria-label="Scroll to discover on-request experiences"
               >
                 <span>Scroll to discover</span>
-                <span className="create-scroll-arrow" aria-hidden="true">
+                <span className={styles["create-scroll-arrow"]} aria-hidden="true">
                   ↓
                 </span>
               </a>

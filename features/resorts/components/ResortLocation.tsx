@@ -1,5 +1,5 @@
 import { Reveal } from "@/components/shared/Reveal";
-import "./ResortLocation.css";
+import styles from "./ResortLocation.module.css";
 import { RESORT_LOCATION_POINTS } from "../content/resortLocation";
 
 export function ResortLocation() {
@@ -23,7 +23,7 @@ export function ResortLocation() {
         <div className="container">
           <Reveal>
             <div className="tw:max-w-[1000px] tw:mt-[0] tw:mb-[60px] tw:mx-auto">
-              <div className="location-map-frame">
+              <div className={styles["location-map-frame"]}>
                 <iframe
                   title="Google Maps Location Preview"
                   src="https://maps.google.com/maps?q=Tavaro+Resorts%2C+Kokapet%2C+Hyderabad&t=&z=15&ie=UTF8&iwloc=&output=embed"
@@ -39,7 +39,7 @@ export function ResortLocation() {
             <div className="tw:max-w-[600px] tw:my-[0] tw:mx-auto">
               <ul className="tw:list-none tw:p-[0] tw:mt-[0] tw:mb-[40px] tw:mx-[0]">
                 {landmarks.map((point) => (
-                  <li key={point.id} className="location-landmark">
+                  <li key={point.id} className={styles["location-landmark"]}>
                     <span>{point.name}</span>
                     <span className="tw:text-(color:--muted-on-light)">{point.travelTime}</span>
                   </li>

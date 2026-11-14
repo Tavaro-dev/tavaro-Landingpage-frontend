@@ -72,13 +72,13 @@
   background: var(--surface-2, rgba(255, 255, 255, 0.05));
 }
 
-.storyboard-tab-btn.active {
+.storyboard-tab-btn:global(.active) {
   color: var(--on-surface);
   background: rgba(197, 160, 89, 0.18);
   border-color: rgba(197, 160, 89, 0.45);
 }
 
-[data-theme="light"] .storyboard-tab-btn.active {
+[data-theme="light"] .storyboard-tab-btn:global(.active) {
   background: rgba(197, 160, 89, 0.14);
   border-color: rgba(177, 137, 58, 0.45);
   color: var(--gold-dark, #8f6c24);
@@ -104,7 +104,7 @@
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
-.storyboard-tab-btn.active .storyboard-tab-dot {
+.storyboard-tab-btn:global(.active) .storyboard-tab-dot {
   opacity: 1;
   transform: scale(1.3);
   background: var(--gold, #c5a059);
@@ -132,15 +132,15 @@
   align-items: center;
 }
 
-.storyboard-grid.reverse {
+.storyboard-grid:global(.reverse) {
   grid-template-columns: 1fr 1fr;
 }
 
-.storyboard-grid.reverse .storyboard-media-col {
+.storyboard-grid:global(.reverse) .storyboard-media-col {
   order: 2;
 }
 
-.storyboard-grid.reverse .storyboard-content-col {
+.storyboard-grid:global(.reverse) .storyboard-content-col {
   order: 1;
 }
 
@@ -322,14 +322,14 @@
   transform: translateY(-1px);
 }
 
-.storyboard-activity-pill.active {
+.storyboard-activity-pill:global(.active) {
   color: #ffffff;
   background: rgba(197, 160, 89, 0.22);
   border-color: var(--gold, #c5a059);
   box-shadow: 0 4px 16px rgba(197, 160, 89, 0.2);
 }
 
-[data-theme="light"] .storyboard-activity-pill.active {
+[data-theme="light"] .storyboard-activity-pill:global(.active) {
   color: var(--surface);
   background: rgba(197, 160, 89, 0.25);
   border-color: var(--gold-dark, #8f6c24);
@@ -345,7 +345,7 @@
   transition: all 0.2s ease;
 }
 
-.storyboard-activity-pill.active .storyboard-pill-bullet {
+.storyboard-activity-pill:global(.active) .storyboard-pill-bullet {
   opacity: 1;
   transform: scale(1.4);
   background: var(--gold, #c5a059);
@@ -547,16 +547,16 @@
 /* Responsive Breakpoints */
 @media (max-width: 1024px) {
   .storyboard-grid,
-  .storyboard-grid.reverse {
+  .storyboard-grid:global(.reverse) {
     grid-template-columns: 1fr;
     gap: 40px;
   }
 
-  .storyboard-grid.reverse .storyboard-media-col {
+  .storyboard-grid:global(.reverse) .storyboard-media-col {
     order: 0;
   }
 
-  .storyboard-grid.reverse .storyboard-content-col {
+  .storyboard-grid:global(.reverse) .storyboard-content-col {
     order: 1;
   }
 

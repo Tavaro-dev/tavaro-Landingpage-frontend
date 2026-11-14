@@ -7,7 +7,7 @@ import { CustomSelect } from "@/components/ui/CustomSelect";
 import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
 import { Modal } from "@/components/ui/Modal";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
-import "./DiningEnquiryModal.css";
+import styles from "./DiningEnquiryModal.module.css";
 
 interface DiningEnquiryModalProps {
   isOpen: boolean;
@@ -118,7 +118,7 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
           <div className="event-modal-body">
             {view === "discover" ? (
               <div className="discover-dining-view">
-                <div className="event-grid discover-grid tw:mb-[40px]">
+                <div className={`event-grid ${styles["discover-grid"]} tw:mb-[40px]`}>
                   {EXPERIENCES.map((exp) => (
                     <article className="event-card" key={exp.title}>
                       <div className={`event-media ${exp.placeholder}`}>

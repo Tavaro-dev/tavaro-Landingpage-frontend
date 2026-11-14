@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
 import { ResortMediaCategory } from "../content/resortMedia";
-import "./MediaViewer.css";
+import styles from "./MediaViewer.module.css";
 
 interface MediaViewerProps {
   isOpen: boolean;
@@ -50,21 +50,21 @@ export function MediaViewer({ isOpen, category, onClose }: MediaViewerProps) {
 
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy="media-viewer-title" bare>
-      <div className="media-viewer-backdrop">
-        <header className="media-viewer-header">
-          <div className="media-viewer-title-group">
-            <h2 id="media-viewer-title" className="media-viewer-title">
+      <div className={styles["media-viewer-backdrop"]}>
+        <header className={styles["media-viewer-header"]}>
+          <div className={styles["media-viewer-title-group"]}>
+            <h2 id="media-viewer-title" className={styles["media-viewer-title"]}>
               {category.title}
             </h2>
             {totalCount > 1 && (
-              <span className="media-viewer-count">
+              <span className={styles["media-viewer-count"]}>
                 {String(currentIndex + 1).padStart(2, "0")} / {String(totalCount).padStart(2, "0")}
               </span>
             )}
           </div>
           <button
             type="button"
-            className="media-viewer-close-btn"
+            className={styles["media-viewer-close-btn"]}
             onClick={onClose}
             aria-label="Close photo gallery"
           >
@@ -72,11 +72,11 @@ export function MediaViewer({ isOpen, category, onClose }: MediaViewerProps) {
           </button>
         </header>
 
-        <div className="media-viewer-body">
+        <div className={styles["media-viewer-body"]}>
           {totalCount > 1 && (
             <button
               type="button"
-              className="media-viewer-nav-btn prev"
+              className={`${styles["media-viewer-nav-btn"]} prev`}
               onClick={handlePrev}
               aria-label="Previous photo"
             >
@@ -84,7 +84,7 @@ export function MediaViewer({ isOpen, category, onClose }: MediaViewerProps) {
             </button>
           )}
 
-          <div className="media-viewer-image-container">
+          <div className={styles["media-viewer-image-container"]}>
             <Image
               src={currentItem.src}
               alt={currentItem.alt}
@@ -97,7 +97,7 @@ export function MediaViewer({ isOpen, category, onClose }: MediaViewerProps) {
           {totalCount > 1 && (
             <button
               type="button"
-              className="media-viewer-nav-btn next"
+              className={`${styles["media-viewer-nav-btn"]} next`}
               onClick={handleNext}
               aria-label="Next photo"
             >
@@ -107,7 +107,7 @@ export function MediaViewer({ isOpen, category, onClose }: MediaViewerProps) {
         </div>
 
         {currentItem.caption && (
-          <footer className="media-viewer-footer">
+          <footer className={styles["media-viewer-footer"]}>
             <p className="tw:m-[0]">{currentItem.caption}</p>
           </footer>
         )}

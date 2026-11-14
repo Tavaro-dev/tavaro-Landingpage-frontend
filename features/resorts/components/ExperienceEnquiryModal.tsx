@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
-import "./ExperienceEnquiryModal.css";
+import styles from "./ExperienceEnquiryModal.module.css";
 
 interface ExperienceEnquiryModalProps {
   isOpen: boolean;
@@ -71,9 +71,9 @@ export function ExperienceEnquiryModal({
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy="exp-modal-title" bare>
       <div className="event-modal-overlay" onClick={onClose}>
-        <div className="exp-modal-card" onClick={(e) => e.stopPropagation()}>
-          <div className="exp-modal-head">
-            <h3 id="exp-modal-title" className="exp-modal-title">
+        <div className={styles["exp-modal-card"]} onClick={(e) => e.stopPropagation()}>
+          <div className={styles["exp-modal-head"]}>
+            <h3 id="exp-modal-title" className={styles["exp-modal-title"]}>
               Arrange an Experience
             </h3>
             <button
@@ -86,11 +86,11 @@ export function ExperienceEnquiryModal({
             </button>
           </div>
 
-          <div className="exp-modal-body">
+          <div className={styles["exp-modal-body"]}>
             {submitted ? (
-              <div className="exp-success">
-                <h4 className="exp-success-heading">Request Received</h4>
-                <p className="exp-success-text">
+              <div className={styles["exp-success"]}>
+                <h4 className={styles["exp-success-heading"]}>Request Received</h4>
+                <p className={styles["exp-success-text"]}>
                   Thank you for your interest in creating an experience at Tavaro. Our hospitality
                   team will review your preferences and contact you shortly.
                 </p>
@@ -105,16 +105,16 @@ export function ExperienceEnquiryModal({
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                {submitError && <div className="exp-error">{submitError}</div>}
+                {submitError && <div className={styles["exp-error"]}>{submitError}</div>}
 
-                <div className="exp-form-group">
-                  <label className="exp-label" htmlFor="exp-category">
+                <div className={styles["exp-form-group"]}>
+                  <label className={styles["exp-label"]} htmlFor="exp-category">
                     Experience Category
                   </label>
                   <select
                     id="exp-category"
                     name="category"
-                    className="exp-select"
+                    className={styles["exp-select"]}
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
@@ -126,8 +126,8 @@ export function ExperienceEnquiryModal({
                   </select>
                 </div>
 
-                <div className="exp-form-group">
-                  <label className="exp-label" htmlFor="exp-name">
+                <div className={styles["exp-form-group"]}>
+                  <label className={styles["exp-label"]} htmlFor="exp-name">
                     Full Name *
                   </label>
                   <input
@@ -136,13 +136,13 @@ export function ExperienceEnquiryModal({
                     type="text"
                     required
                     placeholder="Your name"
-                    className="exp-input"
+                    className={styles["exp-input"]}
                   />
                 </div>
 
-                <div className="exp-form-row">
-                  <div className="exp-form-group">
-                    <label className="exp-label" htmlFor="exp-email">
+                <div className={styles["exp-form-row"]}>
+                  <div className={styles["exp-form-group"]}>
+                    <label className={styles["exp-label"]} htmlFor="exp-email">
                       Email Address *
                     </label>
                     <input
@@ -151,11 +151,11 @@ export function ExperienceEnquiryModal({
                       type="email"
                       required
                       placeholder="email@example.com"
-                      className="exp-input"
+                      className={styles["exp-input"]}
                     />
                   </div>
-                  <div className="exp-form-group">
-                    <label className="exp-label" htmlFor="exp-phone">
+                  <div className={styles["exp-form-group"]}>
+                    <label className={styles["exp-label"]} htmlFor="exp-phone">
                       Phone Number *
                     </label>
                     <input
@@ -164,14 +164,14 @@ export function ExperienceEnquiryModal({
                       type="tel"
                       required
                       placeholder="+91"
-                      className="exp-input"
+                      className={styles["exp-input"]}
                     />
                   </div>
                 </div>
 
-                <div className="exp-form-row">
-                  <div className="exp-form-group">
-                    <label className="exp-label" htmlFor="exp-date">
+                <div className={styles["exp-form-row"]}>
+                  <div className={styles["exp-form-group"]}>
+                    <label className={styles["exp-label"]} htmlFor="exp-date">
                       Preferred Date (Optional)
                     </label>
                     <input
@@ -179,11 +179,11 @@ export function ExperienceEnquiryModal({
                       name="date"
                       type="text"
                       placeholder="e.g. Next month, specific weekend"
-                      className="exp-input"
+                      className={styles["exp-input"]}
                     />
                   </div>
-                  <div className="exp-form-group">
-                    <label className="exp-label" htmlFor="exp-guests">
+                  <div className={styles["exp-form-group"]}>
+                    <label className={styles["exp-label"]} htmlFor="exp-guests">
                       Estimated Group Size (Optional)
                     </label>
                     <input
@@ -191,20 +191,20 @@ export function ExperienceEnquiryModal({
                       name="guests"
                       type="text"
                       placeholder="e.g. 2, 8, 25 guests"
-                      className="exp-input"
+                      className={styles["exp-input"]}
                     />
                   </div>
                 </div>
 
-                <div className="exp-form-group">
-                  <label className="exp-label" htmlFor="exp-notes">
+                <div className={styles["exp-form-group"]}>
+                  <label className={styles["exp-label"]} htmlFor="exp-notes">
                     Preferences & Special Requests (Optional)
                   </label>
                   <textarea
                     id="exp-notes"
                     name="notes"
                     placeholder="Tell us about the session, occasion, or any specific requirements..."
-                    className="exp-textarea"
+                    className={styles["exp-textarea"]}
                   />
                 </div>
 

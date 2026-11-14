@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import "./EditorialStoryboard.css";
+import styles from "./EditorialStoryboard.module.css";
 
 export interface StoryboardActivity {
   name: string;
@@ -107,28 +107,28 @@ export function EditorialStoryboard({
   };
 
   return (
-    <div className="editorial-storyboard">
+    <div className={styles["editorial-storyboard"]}>
 
       {/* STICKY TIME-OF-DAY STORYBOARD TIMELINE */}
       <nav
-        className="storyboard-timeline-nav"
+        className={styles["storyboard-timeline-nav"]}
         aria-label="Story chapters timeline navigation"
       >
-        <div className="container storyboard-timeline-inner">
-          <div className="storyboard-timeline-tabs">
+        <div className={`container ${styles["storyboard-timeline-inner"]}`}>
+          <div className={styles["storyboard-timeline-tabs"]}>
             {chapters.map((ch) => {
               const isActive = activeChapterId === ch.id;
               return (
                 <button
                   key={ch.id}
                   type="button"
-                  className={`storyboard-tab-btn ${isActive ? "active" : ""}`}
+                  className={`${styles["storyboard-tab-btn"]} storyboard-tab-btn ${isActive ? "active" : ""}`}
                   onClick={() => scrollToChapter(ch.id)}
                   aria-label={`Jump to ${ch.categoryTitle} at ${ch.timeTag}`}
                   aria-current={isActive ? "true" : undefined}
                 >
-                  <span className="storyboard-tab-dot" />
-                  <span className="storyboard-tab-time">{ch.timeTag}</span>
+                  <span className={styles["storyboard-tab-dot"]} />
+                  <span className={styles["storyboard-tab-time"]}>{ch.timeTag}</span>
                   <span>{ch.categoryTitle}</span>
                 </button>
               );
@@ -138,7 +138,7 @@ export function EditorialStoryboard({
           <div className="tw:flex tw:items-center tw:gap-[10px]">
             <Link
               href="/resorts/things-to-do/create"
-              className="storyboard-tab-btn tw:border tw:border-solid tw:border-[rgba(197,160,89,0.4)] tw:text-(color:--gold) tw:inline-flex tw:items-center tw:gap-[6px] tw:no-underline"
+              className={`${styles["storyboard-tab-btn"]} storyboard-tab-btn tw:border tw:border-solid tw:border-[rgba(197,160,89,0.4)] tw:text-(color:--gold) tw:inline-flex tw:items-center tw:gap-[6px] tw:no-underline`}
             >
               Create your experience <span className="btn-arrow" aria-hidden="true">→</span>
             </Link>
@@ -148,7 +148,7 @@ export function EditorialStoryboard({
 
       {/* STORYBOARD CHAPTERS */}
       <div className="container">
-        <div className="storyboard-chapters">
+        <div className={styles["storyboard-chapters"]}>
           {chapters.map((ch, idx) => {
             const isReverse = idx % 2 === 1;
             const currentSelectedIdx = selectedActivities[ch.id] ?? 0;
@@ -159,24 +159,24 @@ export function EditorialStoryboard({
               <section
                 key={ch.id}
                 id={`chapter-${ch.id}`}
-                className="storyboard-chapter"
+                className={styles["storyboard-chapter"]}
                 aria-label={`${ch.categoryTitle} Story Chapter`}
               >
                 <div
-                  className={`storyboard-grid ${isReverse ? "reverse" : ""}`}
+                  className={`${styles["storyboard-grid"]} ${isReverse ? "reverse" : ""}`}
                 >
                   {/* MEDIA COLUMN */}
-                  <div className="storyboard-media-col">
-                    <div className="storyboard-media-wrapper">
+                  <div className={styles["storyboard-media-col"]}>
+                    <div className={styles["storyboard-media-wrapper"]}>
                       <Image
                         src={ch.image}
                         alt={ch.imageAlt}
                         fill
                         sizes="(max-width: 1024px) 100vw, 50vw"
-                        className="storyboard-image"
+                        className={styles["storyboard-image"]}
                       />
-                      <div className="storyboard-media-overlay" />
-                      <div className="storyboard-media-badge">
+                      <div className={styles["storyboard-media-overlay"]} />
+                      <div className={styles["storyboard-media-badge"]}>
                         <span>{ch.locationTag}</span>
                         <span className="tw:text-(color:--gold)">{ch.timeLabel}</span>
                       </div>
@@ -184,50 +184,50 @@ export function EditorialStoryboard({
                   </div>
 
                   {/* CONTENT COLUMN */}
-                  <div className="storyboard-content-col">
-                    <div className="storyboard-card">
-                      <div className="storyboard-chapter-eyebrow">
-                        <span className="storyboard-time-pill">
+                  <div className={styles["storyboard-content-col"]}>
+                    <div className={styles["storyboard-card"]}>
+                      <div className={styles["storyboard-chapter-eyebrow"]}>
+                        <span className={styles["storyboard-time-pill"]}>
                           <span>{ch.timeTag}</span>
                           <span>•</span>
                           <span>{ch.timeLabel}</span>
                         </span>
-                        <span className="storyboard-location-tag">
+                        <span className={styles["storyboard-location-tag"]}>
                           {ch.locationTag}
                         </span>
                       </div>
 
-                      <h2 className="storyboard-chapter-title">
+                      <h2 className={styles["storyboard-chapter-title"]}>
                         {ch.categoryTitle}
                       </h2>
 
-                      <p className="storyboard-chapter-tagline">{ch.tagline}</p>
+                      <p className={styles["storyboard-chapter-tagline"]}>{ch.tagline}</p>
 
-                      <p className="storyboard-chapter-desc">{ch.description}</p>
+                      <p className={styles["storyboard-chapter-desc"]}>{ch.description}</p>
 
                       {/* INTERACTIVE ACTIVITY PILL SELECTORS */}
-                      <div className="storyboard-activities-block">
-                        <div className="storyboard-activities-header">
+                      <div className={styles["storyboard-activities-block"]}>
+                        <div className={styles["storyboard-activities-header"]}>
                           <span>Select an experience to spotlight:</span>
                           <span className="tw:text-[10px] tw:opacity-[0.7]">
                             {ch.activities.length} Curated Moments
                           </span>
                         </div>
 
-                        <div className="storyboard-pills-grid">
+                        <div className={styles["storyboard-pills-grid"]}>
                           {ch.activities.map((act, actIdx) => {
                             const isPillActive = currentSelectedIdx === actIdx;
                             return (
                               <button
                                 key={act.name}
                                 type="button"
-                                className={`storyboard-activity-pill ${
+                                className={`${styles["storyboard-activity-pill"]} ${
                                   isPillActive ? "active" : ""
                                 }`}
                                 onClick={() => handleSelectActivity(ch.id, actIdx)}
                                 aria-label={`View details for ${act.name}`}
                               >
-                                <span className="storyboard-pill-bullet" />
+                                <span className={styles["storyboard-pill-bullet"]} />
                                 <span>{act.name}</span>
                               </button>
                             );
@@ -238,16 +238,16 @@ export function EditorialStoryboard({
                         {activeActivity && (
                           <div
                             key={activeActivity.name}
-                            className="storyboard-spotlight-box"
+                            className={styles["storyboard-spotlight-box"]}
                           >
-                            <div className="storyboard-spotlight-title">
+                            <div className={styles["storyboard-spotlight-title"]}>
                               <span>✦</span>
                               <span>{activeActivity.name}</span>
                             </div>
-                            <p className="storyboard-spotlight-desc">
+                            <p className={styles["storyboard-spotlight-desc"]}>
                               {activeActivity.detail}
                             </p>
-                            <div className="storyboard-spotlight-meta">
+                            <div className={styles["storyboard-spotlight-meta"]}>
                               {activeActivity.location && (
                                 <span>📍 {activeActivity.location}</span>
                               )}
@@ -261,17 +261,17 @@ export function EditorialStoryboard({
 
                       {/* CHAPTER ACTIONS (FOR CREATE ON-REQUEST) */}
                       {mode === "create" && (
-                        <div className="storyboard-chapter-actions">
+                        <div className={styles["storyboard-chapter-actions"]}>
                           <button
                             type="button"
-                            className="storyboard-enquire-btn"
+                            className={`${styles["storyboard-enquire-btn"]} storyboard-enquire-btn`}
                             onClick={() =>
                               onEnquireCategory?.(ch.categoryTitle)
                             }
                           >
                             Enquire About {ch.categoryTitle}
                           </button>
-                          <span className="storyboard-request-notice">
+                          <span className={styles["storyboard-request-notice"]}>
                             Arranged on request with our concierge
                           </span>
                         </div>
@@ -286,27 +286,27 @@ export function EditorialStoryboard({
       </div>
 
       {/* CLOSING STORYBOARD SECTION */}
-      <section className="storyboard-closing" aria-label="Closing Story Section">
-        <div className="storyboard-closing-media">
+      <section className={styles["storyboard-closing"]} aria-label="Closing Story Section">
+        <div className={styles["storyboard-closing-media"]}>
           <Image
             src={closing.backgroundImage}
             alt={closing.title}
             fill
             sizes="100vw"
-            className="storyboard-closing-image"
+            className={styles["storyboard-closing-image"]}
           />
-          <div className="storyboard-closing-overlay" />
+          <div className={styles["storyboard-closing-overlay"]} />
         </div>
 
         <div className="container">
-          <div className="storyboard-closing-content">
-            <span className="storyboard-closing-eyebrow">
+          <div className={styles["storyboard-closing-content"]}>
+            <span className={styles["storyboard-closing-eyebrow"]}>
               {closing.eyebrow}
             </span>
-            <h2 className="storyboard-closing-title">{closing.title}</h2>
-            <p className="storyboard-closing-desc">{closing.description}</p>
+            <h2 className={styles["storyboard-closing-title"]}>{closing.title}</h2>
+            <p className={styles["storyboard-closing-desc"]}>{closing.description}</p>
 
-            <div className="storyboard-closing-actions">
+            <div className={styles["storyboard-closing-actions"]}>
               {closing.onPrimaryCtaClick ? (
                 <button
                   type="button"

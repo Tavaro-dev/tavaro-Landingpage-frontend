@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ResortMediaCategory } from "../content/resortMedia";
-import "./MediaCategoryCard.css";
+import styles from "./MediaCategoryCard.module.css";
 
 interface MediaCategoryCardProps {
   category: ResortMediaCategory;
@@ -33,11 +33,11 @@ export function MediaCategoryCard({
     <>
       <button 
         type="button" 
-        className={`media-card variant-${variant}`}
+        className={`${styles["media-card"]} media-card ${styles[`variant-${variant}`]}`}
         onClick={onSelect}
         aria-label={`Open ${category.title} gallery (${category.countLabel})`}
       >
-        <div className="media-card-bg">
+        <div className={styles["media-card-bg"]}>
           {category.items.map((item, index) => (
             <Image
               key={item.id}
@@ -50,7 +50,7 @@ export function MediaCategoryCard({
                   ? "(max-width: 768px) 100vw, 1200px"
                   : "(max-width: 768px) 100vw, 600px"
               }
-              className={`slideshow-image ${index === activeIndex ? "active" : ""}`}
+              className={`${styles["slideshow-image"]} ${index === activeIndex ? "active" : ""}`}
               style={{
                 objectFit: "cover",
                 opacity: index === activeIndex ? 1 : 0,
@@ -59,15 +59,15 @@ export function MediaCategoryCard({
             />
           ))}
         </div>
-        <div className="media-card-overlay" />
-        <div className="media-card-content">
-          <div className="media-card-header">
-            <span className="media-card-badge">{category.countLabel}</span>
+        <div className={styles["media-card-overlay"]} />
+        <div className={styles["media-card-content"]}>
+          <div className={styles["media-card-header"]}>
+            <span className={styles["media-card-badge"]}>{category.countLabel}</span>
           </div>
-          <div className="media-card-body">
-            <h3 className="media-card-title">{category.title}</h3>
-            <p className="media-card-subtitle">{category.subtitle}</p>
-            <div className="media-card-action">
+          <div className={styles["media-card-body"]}>
+            <h3 className={styles["media-card-title"]}>{category.title}</h3>
+            <p className={styles["media-card-subtitle"]}>{category.subtitle}</p>
+            <div className={styles["media-card-action"]}>
               <span>EXPLORE</span>
               <span aria-hidden="true">→</span>
             </div>

@@ -2,7 +2,7 @@
 
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
-import "./ThirdPartyBookingModal.css";
+import styles from "./ThirdPartyBookingModal.module.css";
 
 export interface BookingSearchData {
   checkin?: string;
@@ -73,19 +73,19 @@ export function ThirdPartyBookingModal({
 }: ThirdPartyBookingModalProps) {
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy="ota-modal-title" bare>
-      <div className="ota-modal-overlay" onClick={onClose}>
-        <div className="ota-modal-card" onClick={(e) => e.stopPropagation()}>
+      <div className={styles["ota-modal-overlay"]} onClick={onClose}>
+        <div className={styles["ota-modal-card"]} onClick={(e) => e.stopPropagation()}>
           {/* Header */}
-          <div className="ota-modal-header">
+          <div className={styles["ota-modal-header"]}>
             <div>
-              <p className="ota-modal-eyebrow">Tavaro Resorts · Kokapet</p>
-              <h3 id="ota-modal-title" className="ota-modal-title">
+              <p className={styles["ota-modal-eyebrow"]}>Tavaro Resorts · Kokapet</p>
+              <h3 id="ota-modal-title" className={styles["ota-modal-title"]}>
                 Book Your Stay
               </h3>
             </div>
             <button
               type="button"
-              className="ota-modal-close"
+              className={styles["ota-modal-close"]}
               onClick={onClose}
               aria-label="Close booking options modal"
             >
@@ -94,77 +94,77 @@ export function ThirdPartyBookingModal({
           </div>
 
           {/* Body */}
-          <div className="ota-modal-body">
+          <div className={styles["ota-modal-body"]}>
             {/* Selected search dates pill */}
-            <div className="ota-search-summary">
+            <div className={styles["ota-search-summary"]}>
               {searchData?.checkin ? (
                 <>
-                  <span className="ota-search-chip">
+                  <span className={styles["ota-search-chip"]}>
                     <strong>Check-in:</strong> {searchData.checkin}
                   </span>
-                  <span className="ota-search-dot">&bull;</span>
-                  <span className="ota-search-chip">
+                  <span className={styles["ota-search-dot"]}>&bull;</span>
+                  <span className={styles["ota-search-chip"]}>
                     <strong>Check-out:</strong> {searchData.checkout || "Next day"}
                   </span>
-                  <span className="ota-search-dot">&bull;</span>
-                  <span className="ota-search-chip">
+                  <span className={styles["ota-search-dot"]}>&bull;</span>
+                  <span className={styles["ota-search-chip"]}>
                     {searchData?.guests ?? 2} Guests
                   </span>
                   {searchData?.roomType && searchData.roomType !== "Any" && (
                     <>
-                      <span className="ota-search-dot">&bull;</span>
-                      <span className="ota-search-chip">{searchData.roomType}</span>
+                      <span className={styles["ota-search-dot"]}>&bull;</span>
+                      <span className={styles["ota-search-chip"]}>{searchData.roomType}</span>
                     </>
                   )}
                 </>
               ) : (
                 <>
-                  <span className="ota-search-chip">
+                  <span className={styles["ota-search-chip"]}>
                     <strong>Property:</strong> Tavaro Resorts · Kokapet
                   </span>
-                  <span className="ota-search-dot">&bull;</span>
-                  <span className="ota-search-chip">Best Rate Guarantee</span>
-                  <span className="ota-search-dot">&bull;</span>
-                  <span className="ota-search-chip">Live Partner Availability</span>
+                  <span className={styles["ota-search-dot"]}>&bull;</span>
+                  <span className={styles["ota-search-chip"]}>Best Rate Guarantee</span>
+                  <span className={styles["ota-search-dot"]}>&bull;</span>
+                  <span className={styles["ota-search-chip"]}>Live Partner Availability</span>
                 </>
               )}
             </div>
 
-            <div className="ota-options-label">
+            <div className={styles["ota-options-label"]}>
               <span>Verified Booking Partners</span>
               <span className="tw:text-[10px] tw:opacity-[0.85]">Instant confirmation</span>
             </div>
 
             {/* Options List */}
-            <div className="ota-options-list">
+            <div className={styles["ota-options-list"]}>
               {BOOKING_OPTIONS.map((opt) => (
                 <a
                   key={opt.id}
                   href={opt.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`ota-option-row ${opt.isPrimary ? "primary" : ""}`}
+                  className={`${styles["ota-option-row"]} ${opt.isPrimary ? "primary" : ""}`}
                   aria-label={`View live rates on ${opt.name}`}
                 >
-                  <div className="ota-option-left">
-                    <span className="ota-option-badge-icon" aria-hidden="true">
+                  <div className={styles["ota-option-left"]}>
+                    <span className={styles["ota-option-badge-icon"]} aria-hidden="true">
                       {opt.name.charAt(0)}
                     </span>
-                    <div className="ota-option-details">
-                      <span className="ota-option-name">
+                    <div className={styles["ota-option-details"]}>
+                      <span className={styles["ota-option-name"]}>
                         {opt.name}
                         {opt.badge && (
-                          <span className="ota-featured-tag">{opt.badge}</span>
+                          <span className={styles["ota-featured-tag"]}>{opt.badge}</span>
                         )}
                       </span>
-                      <span className="ota-option-sub">{opt.tagline}</span>
+                      <span className={styles["ota-option-sub"]}>{opt.tagline}</span>
                     </div>
                   </div>
 
-                  <div className="ota-option-right">
-                    <span className="ota-action-cta">
+                  <div className={styles["ota-option-right"]}>
+                    <span className={styles["ota-action-cta"]}>
                       <span>{opt.ctaText}</span>
-                      <span className="ota-action-arrow" aria-hidden="true">
+                      <span className={styles["ota-action-arrow"]} aria-hidden="true">
                         &rarr;
                       </span>
                     </span>
@@ -175,13 +175,13 @@ export function ThirdPartyBookingModal({
           </div>
 
           {/* Footer */}
-          <div className="ota-modal-footer">
+          <div className={styles["ota-modal-footer"]}>
             <span>Need custom arrangements or villa buyouts?</span>
             <a
               href="https://wa.me/919989983029?text=Hello%20Tavaro%2C%20I%20would%20like%20to%20enquire%20about%20booking%20a%20stay"
               target="_blank"
               rel="noopener noreferrer"
-              className="ota-concierge-link"
+              className={styles["ota-concierge-link"]}
             >
               <span>WhatsApp Concierge (+91 99899 83029)</span>
               <span aria-hidden="true">&rarr;</span>

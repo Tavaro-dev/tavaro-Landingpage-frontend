@@ -5,7 +5,7 @@ import { Reveal } from "@/components/shared/Reveal";
 import { RESORT_MEDIA_CATEGORIES, ResortMediaCategory } from "../content/resortMedia";
 import { MediaCategoryCard } from "./MediaCategoryCard";
 import { MediaViewer } from "./MediaViewer";
-import "./ResortMediaGallery.css";
+import styles from "./ResortMediaGallery.module.css";
 
 interface ResortMediaGalleryProps {
   isStandalone?: boolean;
@@ -25,9 +25,9 @@ export function ResortMediaGallery({ isStandalone = false }: ResortMediaGalleryP
 
   return (
     <>
-      <section className={`section resort-media-section${isStandalone ? " standalone" : ""}`} id="gallery">
+      <section className={`section ${styles["resort-media-section"]}${isStandalone ? ` ${styles.standalone}` : ""}`} id="gallery">
         <div className="container">
-          <Reveal className="resort-media-header">
+          <Reveal className={styles["resort-media-header"]}>
             <span className="eyebrow center">PHOTOS & VIDEOS</span>
             <h2 className="display-2 tw:mt-[12px] tw:mb-[16px]">
               A visual glimpse of Tavaro
@@ -37,9 +37,9 @@ export function ResortMediaGallery({ isStandalone = false }: ResortMediaGalleryP
             </p>
           </Reveal>
 
-          <div className="resort-media-grid">
+          <div className={styles["resort-media-grid"]}>
             {overview && (
-              <Reveal className="resort-media-grid-item">
+              <Reveal className={styles["resort-media-grid-item"]}>
                 <MediaCategoryCard
                   category={overview}
                   variant="hero"
@@ -50,7 +50,7 @@ export function ResortMediaGallery({ isStandalone = false }: ResortMediaGalleryP
             )}
 
             {events && (
-              <Reveal className="resort-media-grid-item">
+              <Reveal className={styles["resort-media-grid-item"]}>
                 <MediaCategoryCard
                   category={events}
                   variant="standard"
@@ -60,7 +60,7 @@ export function ResortMediaGallery({ isStandalone = false }: ResortMediaGalleryP
             )}
 
             {dining && (
-              <Reveal className="resort-media-grid-item">
+              <Reveal className={styles["resort-media-grid-item"]}>
                 <MediaCategoryCard
                   category={dining}
                   variant="standard"
@@ -70,7 +70,7 @@ export function ResortMediaGallery({ isStandalone = false }: ResortMediaGalleryP
             )}
 
             {accommodation && (
-              <Reveal className="resort-media-grid-item">
+              <Reveal className={styles["resort-media-grid-item"]}>
                 <MediaCategoryCard
                   category={accommodation}
                   variant="wide"

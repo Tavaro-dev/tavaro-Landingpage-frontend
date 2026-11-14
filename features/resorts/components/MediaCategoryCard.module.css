@@ -128,7 +128,7 @@
   transition: opacity 1.8s ease-in-out, transform 8s linear;
   transform: scale(1.05);
 }
-.slideshow-image.active {
+.slideshow-image:global(.active) {
   transform: scale(1);
 }
 

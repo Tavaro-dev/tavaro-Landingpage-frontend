@@ -110,3 +110,32 @@ export const CREATIVE_DIRECTIONS = [
   "We have references but no concept yet",
   "We want EXP to develop the concept",
 ];
+
+export type OffsiteErrors = Partial<Record<keyof OffsiteEditFormData, string>>;
+
+/** Step 1 (event brief) errors; empty when the step is complete. */
+export function validateOffsiteBrief(d: OffsiteEditFormData): OffsiteErrors {
+  const e: OffsiteErrors = {};
+  if (!d.planningType) e.planningType = "Please select what you are planning";
+  if (d.purpose.length === 0) e.purpose = "Please select at least one purpose";
+  if (d.purpose.includes("Other") && !d.purposeOtherText?.trim()) e.purposeOtherText = "Please specify the purpose";
+  if (d.targetAudience.length === 0) e.targetAudience = "Please select target audience";
+  if (d.targetAudience.includes("Other") && !d.audienceOtherText?.trim()) e.audienceOtherText = "Please specify the audience";
+  if (!d.expectedGuests) e.expectedGuests = "Please select expected guest count";
+  if (!d.eventDate) e.eventDate = "Please select event date";
+  if (!d.eventDuration) e.eventDuration = "Please select event duration";
+  if (!d.creativeDirection) e.creativeDirection = "Please select creative direction";
+  return e;
+}
+
+/** Step 2 (contact details) errors; empty when the step is complete. */
+export function validateOffsiteContact(d: OffsiteEditFormData): OffsiteErrors {
+  const e: OffsiteErrors = {};
+  if (!d.name.trim()) e.name = "Full Name is required";
+  if (!d.company.trim()) e.company = "Company Name is required";
+  if (!d.contactNumber.trim()) e.contactNumber = "Contact Number is required";
+  if (!d.designation.trim()) e.designation = "Designation is required";
+  if (!d.email.trim()) e.email = "Email ID is required";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) e.email = "Please enter a valid email address";
+  return e;
+}

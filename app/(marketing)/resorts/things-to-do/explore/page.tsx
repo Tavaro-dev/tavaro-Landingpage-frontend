@@ -5,7 +5,7 @@ import { HeroSquareTilesBackground } from "@/features/resorts/components/HeroSqu
 import { ExpandingPanelsShowcase } from "@/features/resorts/components/ExpandingPanelsShowcase";
 import { EXPLORE_SHOWCASE_CATEGORIES } from "@/features/resorts/content/showcaseData";
 import StickyCta from "@/components/shared/StickyCta";
-import "./explore.css";
+import styles from "./explore.module.css";
 
 export const metadata = pageMetadata({
   title: "Explore at Your Own Pace — Tavaro Resorts | Tavaro",
@@ -48,33 +48,33 @@ export default function ExploreAtYourOwnPacePage() {
   return (
     <>
 
-      <div className="explore-page">
+      <div className={styles["explore-page"]}>
         {/* SECTION 1: Immersive Hero with Continuous Small Square Boxes Animation */}
-        <section className="explore-hero" aria-label="Explore at Your Own Pace Hero">
-          <div className="explore-hero-media">
+        <section className={styles["explore-hero"]} aria-label="Explore at Your Own Pace Hero">
+          <div className={styles["explore-hero-media"]}>
             <HeroSquareTilesBackground
               slides={exploreSlides}
-              overlayClassName="explore-hero-overlay"
+              overlayClassName={styles["explore-hero-overlay"]}
             />
           </div>
 
           <div className="container">
-            <Reveal className="explore-hero-content">
-              <div className="explore-breadcrumb">
+            <Reveal className={styles["explore-hero-content"]}>
+              <div className={styles["explore-breadcrumb"]}>
                 Tavaro / Resorts / Things to Do / Explore
               </div>
-              <span className="explore-hero-eyebrow">{explore.eyebrow}</span>
-              <h1 className="explore-hero-title">{explore.heading}</h1>
-              <p className="explore-hero-desc">{explore.description}</p>
+              <span className={styles["explore-hero-eyebrow"]}>{explore.eyebrow}</span>
+              <h1 className={styles["explore-hero-title"]}>{explore.heading}</h1>
+              <p className={styles["explore-hero-desc"]}>{explore.description}</p>
 
               {/* Restrained scroll indicator */}
               <a
                 href="#showcase"
-                className="explore-scroll-indicator"
+                className={styles["explore-scroll-indicator"]}
                 aria-label="Scroll to discover experiences"
               >
                 <span>Scroll to explore</span>
-                <span className="explore-scroll-arrow" aria-hidden="true">
+                <span className={styles["explore-scroll-arrow"]} aria-hidden="true">
                   ↓
                 </span>
               </a>

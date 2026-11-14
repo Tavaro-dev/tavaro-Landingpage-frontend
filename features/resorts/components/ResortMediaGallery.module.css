@@ -39,7 +39,7 @@
   .resort-media-grid-item:nth-child(1) {
     height: 100%;
   }
-  .resort-media-grid-item:nth-child(1) .media-card {
+  .resort-media-grid-item:nth-child(1) :global(.media-card) {
     height: 100% !important;
     min-height: 100%;
     flex: 1;

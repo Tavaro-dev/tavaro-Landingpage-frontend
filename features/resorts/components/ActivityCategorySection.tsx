@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { ActivityCategory } from "../content/thingsToDoData";
-import "./ActivityCategorySection.css";
+import styles from "./ActivityCategorySection.module.css";
 
 interface ActivityCategorySectionProps {
   category: ActivityCategory;
@@ -19,34 +19,34 @@ export function ActivityCategorySection({
   const numLabel = `0${index + 1}`;
 
   return (
-    <section className={`activity-block ${isReversed ? "reversed" : ""}`} id={category.id}>
+    <section className={`${styles["activity-block"]} ${isReversed ? `${styles.reversed}` : ""}`} id={category.id}>
 
       <div className="container">
-        <div className="activity-grid">
+        <div className={styles["activity-grid"]}>
           {/* Media Column */}
-          <div className="activity-media-container">
+          <div className={styles["activity-media-container"]}>
             <Image
               src={category.image}
               alt={category.imageAlt}
               fill
               sizes="(max-width: 860px) 100vw, 50vw"
-              className="activity-image"
+              className={styles["activity-image"]}
             />
           </div>
 
           {/* Content Column */}
-          <div className="activity-content">
-            <span className="activity-num">{numLabel} — {category.title}</span>
-            <h3 className="activity-title">{category.title}</h3>
-            <p className="activity-tagline">{category.tagline}</p>
-            <p className="activity-desc">{category.description}</p>
+          <div className={styles["activity-content"]}>
+            <span className={styles["activity-num"]}>{numLabel} — {category.title}</span>
+            <h3 className={styles["activity-title"]}>{category.title}</h3>
+            <p className={styles["activity-tagline"]}>{category.tagline}</p>
+            <p className={styles["activity-desc"]}>{category.description}</p>
 
-            <div className="activity-list-container">
-              <h4 className="activity-list-title">Featured Activities & Experiences</h4>
-              <ul className="activity-list">
+            <div className={styles["activity-list-container"]}>
+              <h4 className={styles["activity-list-title"]}>Featured Activities & Experiences</h4>
+              <ul className={styles["activity-list"]}>
                 {category.items.map((item) => (
-                  <li key={item} className="activity-item">
-                    <span className="activity-bullet">•</span>
+                  <li key={item} className={styles["activity-item"]}>
+                    <span className={styles["activity-bullet"]}>•</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -54,7 +54,7 @@ export function ActivityCategorySection({
             </div>
 
             {isCreatePage && onEnquire && (
-              <div className="activity-action">
+              <div className={styles["activity-action"]}>
                 <button
                   type="button"
                   className="btn"
