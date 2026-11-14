@@ -8,6 +8,7 @@ export function SplitSection({
   placeholder,
   src,
   alt,
+  position,
   children,
 }: {
   reverse?: boolean;
@@ -15,6 +16,8 @@ export function SplitSection({
   placeholder: string;
   src: string;
   alt: string;
+  /** CSS object-position, to keep the subject in frame when the crop changes (e.g. "center 80%"). */
+  position?: string;
   children: ReactNode;
 }) {
   return (
@@ -25,6 +28,7 @@ export function SplitSection({
           alt={alt}
           fill
           sizes="(min-width: 861px) 50vw, 100vw"
+          style={position ? { objectPosition: position } : undefined}
         />
       </div>
       <div className="split-body">{children}</div>

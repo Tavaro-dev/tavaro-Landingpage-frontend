@@ -21,6 +21,8 @@ const PILLAR_CARDS = [
     placeholder: "ph-1",
     src: "/images/home/resorts.jpg",
     alt: "Tavaro Resorts",
+    // landscape photo in a portrait card: cover makes it ~2.2x the card width, so ask for that
+    sizes: "(min-width: 1081px) 44vw, 95vw",
     num: "01 — Resorts",
     title: "Resorts",
     line: "A world away, yet close to you",
@@ -30,6 +32,7 @@ const PILLAR_CARDS = [
     placeholder: "ph-2",
     src: "/images/residences/leela-exterior.jpg",
     alt: "Tavaro Residences",
+    sizes: "(min-width: 1081px) 52vw, 100vw",
     num: "02 — Residences",
     title: "Residences",
     line: "Come home to yourself",
@@ -56,6 +59,9 @@ const PILLAR_CARDS = [
     href: "/mare",
     placeholder: "ph-gold",
     src: "/images/home/mare.jpg",
+    // full-width 16:9 card on tablet/phone: keep the cup (low in this tall photo) in frame
+    sizes: "(min-width: 1081px) 20vw, 100vw",
+    position: "center 80%",
     alt: "Màre Coffee House",
     num: "05 — Màre",
     title: "Màre",
@@ -113,7 +119,13 @@ export default function HomePage() {
           {PILLAR_CARDS.map((card) => (
             <Link className="pillar-card" href={card.href} key={card.href}>
               <div className={`${card.placeholder} tw:absolute tw:inset-0`} />
-              <Image src={card.src} alt={card.alt} fill sizes="(min-width: 861px) 20vw, 50vw" />
+              <Image
+                src={card.src}
+                alt={card.alt}
+                fill
+                sizes={card.sizes ?? "(min-width: 1081px) 20vw, 50vw"}
+                style={card.position ? { objectPosition: card.position } : undefined}
+              />
               <div className="pillar-card-body">
                 <span className="pillar-card-num">{card.num}</span>
                 <h3 className="pillar-card-title">{card.title}</h3>
@@ -212,7 +224,7 @@ export default function HomePage() {
       {/* Featured: Màre */}
       <section className="offer-block on-panel">
         <div className="container">
-          <SplitSection placeholder="ph-gold" src="/images/home/mare.jpg" alt="Màre Coffee House">
+          <SplitSection placeholder="ph-gold" src="/images/home/mare.jpg" alt="Màre Coffee House" position="center 80%">
             <p className="eyebrow">Màre Coffee House</p>
             <h3 className="display-3">
               Where life

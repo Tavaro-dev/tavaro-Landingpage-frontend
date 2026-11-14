@@ -52,6 +52,8 @@ export function HomeHero() {
       <span className={styles["scroll-cue"]}>Scroll to discover</span>
 
       <div className="pillar-strip">
+        {/* HeroVideo portals its sound button here: always just above the strip, whatever its height */}
+        <div id="hero-sound-slot" className={styles["hero-sound-slot"]} />
         <div className="container">
           <div className={styles["pillar-grid"]}>
             {PILLARS.map((pillar) => (

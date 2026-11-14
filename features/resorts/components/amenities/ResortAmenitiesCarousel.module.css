@@ -102,6 +102,7 @@
 }
 
 .marquee-track {
+  flex: none;
   display: flex;
   width: max-content;
   will-change: transform;
@@ -110,6 +111,7 @@
 
 /* Each copy carries its own trailing gap, so translating by -50% loops seamlessly. */
 .marquee-set {
+  flex: none;
   display: flex;
   gap: var(--card-gap);
   padding: 6px var(--card-gap) 6px 0;
@@ -143,7 +145,11 @@
 /* AMENITY CARD */
 .amenity-marquee-card {
   position: relative;
+  /* explicit width, not just flex-basis: WebKit (Safari, every iOS browser) sizes the
+     max-content track from the cards' content, which is all absolutely positioned, so
+     the track came out ~240px and the -50% loop crawled a few px per second. */
   flex: 0 0 var(--card-w);
+  width: var(--card-w);
   height: var(--card-h);
   border-radius: 6px;
   overflow: hidden;

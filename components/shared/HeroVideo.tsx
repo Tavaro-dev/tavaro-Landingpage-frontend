@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import styles from "./shared.module.css";
 
 /**
@@ -12,10 +13,12 @@ export function HeroVideo({ src }: { src: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [slot, setSlot] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     const video = ref.current;
     if (!video) return;
+    setSlot(document.getElementById("hero-sound-slot"));
     const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
     if (saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
@@ -55,20 +58,21 @@ export function HeroVideo({ src }: { src: string }) {
         tabIndex={-1}
         onPlaying={() => setPlaying(true)}
       />
-      {playing && (
+      {playing && slot && createPortal(
         <button
           type="button"
-          className={styles["hero-sound"]}
+          className={`${styles["hero-sound"]} ${muted ? styles["hero-sound-muted"] : ""}`}
           onClick={toggleSound}
           aria-pressed={!muted}
           aria-label={muted ? "Turn sound on" : "Turn sound off"}
+          title={muted ? "Sound on" : "Sound off"}
         >
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
             <path d="M4 9v6h4l5 4V5L8 9H4z" />
-            {muted ? <path d="M17 9l5 6M22 9l-5 6" /> : <path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" />}
+            {muted ? <path d="M17 9.5l4.5 5M21.5 9.5l-4.5 5" /> : <path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" />}
           </svg>
-          <span>{muted ? "Sound on" : "Sound off"}</span>
-        </button>
+        </button>,
+        slot,
       )}
     </>
   );
