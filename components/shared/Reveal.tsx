@@ -2,6 +2,49 @@
 
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
+// Every Reveal still waiting below the fold, checked by one shared listener.
+// A scroll check (not an IntersectionObserver) so a jump past a section, such
+// as an anchor link or a restored scroll position, reveals it too; an observer
+// only fires for elements that actually pass through the viewport.
+const waiting = new Set<Element>();
+let frame = 0;
+
+function check() {
+  frame = 0;
+  const line = window.innerHeight + 80;
+  for (const el of waiting) {
+    if (el.getBoundingClientRect().top < line) {
+      el.classList.add("in");
+      waiting.delete(el);
+    }
+  }
+  if (!waiting.size) {
+    window.removeEventListener("scroll", schedule);
+    window.removeEventListener("resize", schedule);
+  }
+}
+
+function schedule() {
+  frame ||= requestAnimationFrame(check);
+}
+
+function watch(el: Element) {
+  if (!waiting.size) {
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+  }
+  waiting.add(el);
+  return () => {
+    waiting.delete(el);
+  };
+}
+
+/**
+ * Fades its content up the first time it scrolls into view. The server HTML is
+ * fully visible; only content still below the fold once JS runs is hidden, so
+ * nothing the reader has already reached (in view, or above it after a
+ * restored scroll position or an anchor jump) ever blanks out.
+ */
 export function Reveal({
   stagger = false,
   className = "",
@@ -21,40 +64,14 @@ export function Reveal({
     const el = ref.current;
     if (!el) return;
 
-    // Accessibility: Respect reduced motion preference
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || el.getBoundingClientRect().top < window.innerHeight) {
       el.classList.add("in");
       return;
     }
 
-    if (!("IntersectionObserver" in window)) {
-      el.classList.add("in");
-      return;
-    }
-
-    // Progressive enhancement: If already in initial viewport, reveal immediately
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-      el.classList.add("reveal-init", "in");
-      return;
-    }
-
-    // Below the fold: activate observer-based reveal
     el.classList.add("reveal-init");
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in");
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.05, rootMargin: "80px 0px 80px 0px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
+    return watch(el);
   }, []);
 
   return (

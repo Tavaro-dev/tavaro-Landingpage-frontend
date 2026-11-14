@@ -1908,16 +1908,6 @@ button,
 
 
 
-@keyframes pageEnter {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
 /* ==========================================================================
    SCROLL REVEAL SYSTEM (Progressive Enhancement)
    ========================================================================== */
@@ -2482,6 +2472,30 @@ button,
     font-size: 12px !important;
     letter-spacing: 0.22em !important;
     white-space: nowrap !important;
+  }
+}
+
+/* Photos show a quiet tone while they load instead of an empty box.
+   Cover-fitted fill images only: transparent PNG art and contain-fitted
+   images would show the tone around the picture. */
+img[data-nimg="fill"]:not(.tw\:object-contain):not([src*=".png"]) {
+  background-color: rgba(128, 112, 90, 0.18);
+}
+
+/* Print what is on the page: scroll reveals and entrance animations never
+   ran for most of it, which left those sections blank on paper. */
+@media print {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal,
+  .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 

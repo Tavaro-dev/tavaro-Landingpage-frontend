@@ -337,13 +337,6 @@
   color: var(--on-surface-muted);
 }
 
-.page-transition {
-  /* Opacity-only: a lingering non-"none" transform here (even translateY(0)
-     held via fill-mode) would make this the containing block for every
-     position:fixed descendant, breaking their viewport-anchored positioning. */
-  animation: pageEnter 0.55s var(--ease) both;
-}
-
 @media (max-width: 1080px) {
 .footer-top {
     grid-template-columns: 1fr 1fr;
@@ -414,16 +407,6 @@
 
 body:global(.has-sticky-cta) .site-footer {
     padding-bottom: 86px;
-  }
-}
-
-@keyframes pageEnter {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
   }
 }
 
