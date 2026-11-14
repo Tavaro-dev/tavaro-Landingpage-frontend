@@ -370,6 +370,13 @@
   display: block;
 }
 
+/* Inside a sized icon box (.tri-icon), line icons fill it like the PNG brand icons do. */
+:global(.tri-icon) > .ui-icon,
+:global(.tri-icon) > .ui-icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
 .ui-icon[style*="width"] > svg,
 .ui-icon[style*="height"] > svg {
   width: 100%;

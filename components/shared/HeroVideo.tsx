@@ -4,6 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styles from "./shared.module.css";
 
+/** Sound level when on (0–1, linear): 0.06 is about 24 dB under the clip, which is mastered loud. */
+const VOLUME = 0.003;
+type Audio = { ctx: AudioContext; gain: GainNode };
+
 /**
  * Plays over the hero poster image, which stays the LCP element. The source is
  * set only after hydration, so the video never delays first paint, and is
@@ -14,6 +18,25 @@ export function HeroVideo({ src }: { src: string }) {
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   const [slot, setSlot] = useState<HTMLElement | null>(null);
+  // Loudness runs through a Web Audio gain: iOS ignores video.volume, and a gain can glide.
+  const audio = useRef<Audio | null>(null);
+  const soundOn = useRef(false);
+  const visible = useRef(1);
+
+  /** Glide toward the level for the current state: off, or VOLUME scaled by how much of the hero shows. */
+  const glide = (seconds: number) => {
+    const a = audio.current;
+    const level = soundOn.current ? VOLUME * visible.current : 0;
+    if (!a) {
+      // No Web Audio graph (yet): only while sound is on, step the element volume
+      // (each 5% of scroll is one small step). Off is handled by muting, and the
+      // element volume must stay at 1 for a graph built later, which hears it post-volume.
+      if (ref.current && soundOn.current) ref.current.volume = level;
+      return;
+    }
+    a.gain.gain.cancelScheduledValues(a.ctx.currentTime);
+    a.gain.gain.setTargetAtTime(level, a.ctx.currentTime, seconds);
+  };
 
   useEffect(() => {
     const video = ref.current;
@@ -39,20 +62,49 @@ export function HeroVideo({ src }: { src: string }) {
     };
     video.play().catch(() => {}); // blocked (e.g. low-power mode): the poster stays
 
-    // Don't decode frames nobody can see.
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) video.play().catch(() => {});
-      else video.pause();
-    });
+    // Sound fades with the hero as it scrolls away; once it is fully off screen
+    // (and silent), stop decoding frames nobody can see.
+    let pauseTimer = 0;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible.current = entry.intersectionRatio;
+        glide(0.15);
+        window.clearTimeout(pauseTimer);
+        if (entry.isIntersecting) video.play().catch(() => {});
+        else pauseTimer = window.setTimeout(() => video.pause(), 800);
+      },
+      { threshold: Array.from({ length: 21 }, (_, i) => i / 20) },
+    );
     observer.observe(video);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(pauseTimer);
+    };
   }, [src]);
 
   const toggleSound = () => {
     const video = ref.current;
     if (!video) return;
-    video.muted = !video.muted;
-    setMuted(video.muted);
+    soundOn.current = !soundOn.current;
+    setMuted(!soundOn.current);
+    const Ctx = window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!Ctx) {
+      // No Web Audio: plain mute toggle at the reduced volume.
+      video.volume = VOLUME;
+      video.muted = !soundOn.current;
+      return;
+    }
+    if (!audio.current) {
+      const ctx = new Ctx();
+      const gain = ctx.createGain();
+      gain.gain.value = 0;
+      ctx.createMediaElementSource(video).connect(gain).connect(ctx.destination);
+      audio.current = { ctx, gain };
+    }
+    audio.current.ctx.resume().catch(() => {});
+    video.volume = 1;
+    video.muted = false; // the gain sets the loudness from here on
+    glide(soundOn.current ? 0.35 : 0.15);
   };
 
   return (
