@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import styles from "./shared.module.css";
 
 /** Sound level when on (0–1, linear): 0.06 is about 24 dB under the clip, which is mastered loud. */
-const VOLUME = 0.005;
+const VOLUME = 0.01;
 type Audio = { ctx: AudioContext; gain: GainNode };
 
 /**
