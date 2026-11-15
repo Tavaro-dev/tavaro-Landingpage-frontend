@@ -20,6 +20,7 @@ export default function Header() {
   const navVisible = isHome ? pastPillarStrip : true;
   const noHero =
     pathname === "/resorts/accommodations" ||
+    pathname === "/resorts/location" ||
     pathname.startsWith("/checkout") ||
     pathname.endsWith("/book");
 
