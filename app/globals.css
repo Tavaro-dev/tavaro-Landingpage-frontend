@@ -391,21 +391,22 @@ select {
 }
 
 /* Desktop sub-sections: outline buttons rest filled gold and clear on hover
-   (the reverse of the default). Phones already show them filled. */
+   (the reverse of the default). Phones already show them filled.
+   A .ghost button opts out: outlined at rest, fills gold on hover. */
 @media (min-width: 769px) and (hover: hover) {
-  .split-body .btn:not(.solid):not(:disabled) {
+  .split-body .btn:not(.solid):not(.ghost):not(:disabled) {
     color: var(--black);
   }
 
-  .split-body .btn:not(.solid):not(:disabled)::before {
+  .split-body .btn:not(.solid):not(.ghost):not(:disabled)::before {
     transform: translateX(0);
   }
 
-  .split-body .btn:not(.solid):not(:disabled):hover {
+  .split-body .btn:not(.solid):not(.ghost):not(:disabled):hover {
     color: var(--on-surface);
   }
 
-  .split-body .btn:not(.solid):not(:disabled):hover::before {
+  .split-body .btn:not(.solid):not(.ghost):not(:disabled):hover::before {
     transform: translateX(101%);
   }
 }

@@ -92,7 +92,7 @@ export default function ResortsPage() {
             </ul>
             <div className="tw:flex tw:flex-wrap tw:gap-[12px]">
               <PlanEventButton />
-              <Link href="/resorts/venues" className="btn">
+              <Link href="/resorts/venues" className="btn ghost">
                 See the venues <span className="btn-arrow">→</span>
               </Link>
             </div>
