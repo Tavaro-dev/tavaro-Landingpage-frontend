@@ -9,6 +9,7 @@ const BRAND_ICONS = {
   experiences: { src: "/icons/icon-experiences-sun.png", width: 400, height: 400 },
   wellness: { src: "/icons/icon-wellness-bird.png", width: 400, height: 400 },
   mare: { src: "/icons/icon-mare-keys.png", width: 400, height: 400 },
+  "mare-wordmark": { src: "/icons/mare-wordmark-white.png", width: 458, height: 153 },
   sun: { src: "/icons/icon-experiences-sun.png", width: 400, height: 400 },
   leaf: { src: "/icons/icon-resorts-tree.png", width: 400, height: 400 },
   heart: { src: "/icons/icon-residences-heart.png", width: 400, height: 400 },

@@ -46,7 +46,7 @@ export default async function ExperienceDetailPage(props: PageProps<"/experience
         photoSrc={event.src}
         photoAlt={event.alt}
         placeholder={event.placeholder}
-        breadcrumbLabel={event.title}
+        breadcrumbLabel="Tavaro Experiences"
         eyebrow={event.category}
         title={event.title}
         titleSize="clamp(34px,5.6vw,68px)"

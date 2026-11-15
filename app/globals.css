@@ -709,6 +709,25 @@ button,
   transform: scale(1.08) rotate(-3deg);
 }
 
+/* Phones and tablets: one slim bar (mark beside the wordmark) so the fixed header keeps the screen free. */
+@media (max-width: 1080px) {
+  :root .site-header,
+  :root[data-scrolled] .site-header {
+    padding-block: 12px;
+  }
+
+  .site-header .logo {
+    flex-direction: row;
+    gap: 10px;
+    font-size: 16px;
+  }
+
+  .site-header .logo svg,
+  .site-header .logo img {
+    width: 30px;
+  }
+}
+
 
 
 

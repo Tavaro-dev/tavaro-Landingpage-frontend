@@ -9,6 +9,7 @@ import { BandQuote } from "@/components/shared/BandQuote";
 import Link from "next/link";
 import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
+import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
   path: "/wellness",
@@ -82,8 +83,7 @@ export default function WellnessPage() {
         photoSrc={heroPhoto}
         photoAlt="A yoga session on the lawn at Tavaro"
         placeholder="ph-green"
-        breadcrumbLabel="Wellness"
-        eyebrow="Wellness at Tavaro"
+        breadcrumbLabel="Wellness at Tavaro"
         title={
           <>
             A Tavaro
@@ -121,11 +121,11 @@ export default function WellnessPage() {
         <div className="container">
           <OfferHead eyebrow="The Wellness Pillars" heading="Three ways we live well" />
         </div>
-        <TriGrid cards={PILLARS} />
+        <TriGrid cards={PILLARS} list />
       </section>
 
       {/* Ecosystem */}
-      <section className="section on-panel">
+      <section className={`section on-panel ${styles.eco}`}>
         <div className="container">
           <OfferHead
             eyebrow="The Wellness Ecosystem"
@@ -174,7 +174,9 @@ export default function WellnessPage() {
       <section className="section on-dark">
         <div className="container">
           <OfferHead num="Programmes" heading="Wellness Experiences & Retreats" />
-          <EventGrid events={PROGRAMMES} />
+          <div className={styles.programmes}>
+            <EventGrid events={PROGRAMMES} />
+          </div>
         </div>
       </section>
 

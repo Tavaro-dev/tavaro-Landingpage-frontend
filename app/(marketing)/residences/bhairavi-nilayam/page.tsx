@@ -139,7 +139,7 @@ export default function BhairavPage() {
         photoSrc={heroPhoto}
         photoAlt="Bhairavi Nilayam — exterior view"
         placeholder="ph-4"
-        breadcrumbLabel="Bhairavi Nilayam"
+        breadcrumbLabel="Tavaro Residences"
         eyebrow="02 — Bhairavi Nilayam"
         title={
           <>

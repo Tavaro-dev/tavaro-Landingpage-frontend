@@ -31,9 +31,82 @@
   line-height: 1.6;
 }
 
+/* Tablets: two journeys a row. */
+@media (max-width: 1080px) {
+.journey-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+.journey-item p {
+    font-size: 14px;
+  }
+}
+
+/* Phones and tablets: the form follows the heading straight away; the ways to reach us come after it,
+   each a full-width row easy to tap. */
 @media (max-width: 860px) {
+.intro {
+    display: contents;
+  }
+
+.intro > div:first-child {
+    margin-bottom: 16px;
+  }
+
+.reach > span {
+    margin-top: 14px !important;
+  }
+
+.reach {
+    order: 1;
+    margin-top: 8px !important;
+    gap: 0 !important;
+    border-top: 1px solid var(--surface-line);
+  }
+
+.reach > a {
+    min-height: 52px;
+    border-bottom: 1px solid var(--surface-line);
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: none;
+  }
+
+.reach > a::after {
+    display: none;
+  }
+
+.social {
+    margin-top: 18px !important;
+    gap: 10px !important;
+  }
+
+.social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--surface-line);
+    border-radius: 50%;
+    color: var(--gold);
+  }
+}
+
+/* Phones: journeys as a tight list. */
+@media (max-width: 600px) {
 .journey-grid {
     grid-template-columns: 1fr;
+    margin-top: 8px;
+  }
+
+.journey-item {
+    padding: 18px 0;
+  }
+
+.journey-item :global(.eyebrow) {
+    margin-bottom: 6px;
+    letter-spacing: 0.16em;
   }
 }
 

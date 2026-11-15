@@ -55,8 +55,7 @@ export default function ExperiencesPage() {
         photoSrc={heroPhoto}
         photoAlt="An evening concert under the sun arch stage at Tavaro"
         placeholder="ph-3"
-        breadcrumbLabel="Tavaro / Experiences"
-        eyebrow="Experiences"
+        breadcrumbLabel="Tavaro Experiences"
         title={
           <>
             Moments made

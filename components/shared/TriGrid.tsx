@@ -17,10 +17,11 @@ export type TriCardData = {
   isGoldenSociety?: boolean;
 };
 
-export function TriGrid({ cards }: { cards: TriCardData[] }) {
+/** `list`: on phones and tablets the cards become compact rows (small icon beside the text). */
+export function TriGrid({ cards, list = false }: { cards: TriCardData[]; list?: boolean }) {
   const colsClass = cards.length === 4 ? " cols-4" : "";
   return (
-    <Reveal stagger className={`${styles["tri-grid"]}${colsClass}`}>
+    <Reveal stagger className={`${styles["tri-grid"]}${colsClass}${list ? ` ${styles.list}` : ""}`}>
       {cards.map((card) => (
         <div
           className={`${styles["tri-card"]}${card.bgImage ? ` ${styles["with-bg"]}` : ""}${card.isGoldenSociety ? ` ${styles["golden-society-card"]}` : ""}`}

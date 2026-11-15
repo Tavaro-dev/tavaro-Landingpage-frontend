@@ -24,6 +24,7 @@ export default function MarePage() {
         photoAlt="A cortado by the pool at Màre"
         placeholder="ph-gold"
         breadcrumbLabel="Màre"
+        breadcrumbIcon="mare-wordmark"
         eyebrow="Màre Coffee House"
         title={
           <>

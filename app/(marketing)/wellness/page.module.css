@@ -1,0 +1,50 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+
+/* Phones and tablets: the ecosystem heading leads straight into Leaf rather than standing in a band of its own. */
+@media (max-width: 1080px) {
+.eco {
+    background: var(--surface);
+    padding-bottom: 0;
+  }
+
+.eco + :global(.offer-block) {
+    border-top: none;
+    padding-top: 12px;
+  }
+}
+
+/* Phones: the programmes become a row to swipe through, the next card peeking in. */
+@media (max-width: 860px) {
+.programmes :global(.event-grid) {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    margin-inline: calc(-1 * var(--pad));
+    padding-inline: var(--pad);
+    scroll-padding-inline: var(--pad);
+    scrollbar-width: none;
+  }
+
+.programmes :global(.event-grid)::-webkit-scrollbar {
+    display: none;
+  }
+
+.programmes :global(.event-card) {
+    flex: 0 0 min(78%, 340px);
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 520px) {
+.programmes :global(.event-grid) {
+    margin-inline: -20px;
+    padding-inline: 20px;
+    scroll-padding-inline: 20px;
+  }
+}
+
+}

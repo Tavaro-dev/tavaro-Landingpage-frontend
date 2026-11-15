@@ -47,8 +47,7 @@ export default function ResidencesPage() {
         photoSrc={heroPhoto}
         photoAlt="Leela by Tavaro Residences — terraces wrapped in greenery"
         placeholder="ph-2"
-        breadcrumbLabel="Residences"
-        eyebrow="Tavaro Residences"
+        breadcrumbLabel="Tavaro Residences"
         title={
           <>
             Come home

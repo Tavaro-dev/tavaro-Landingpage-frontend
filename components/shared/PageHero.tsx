@@ -17,6 +17,7 @@ export function PageHero({
   placeholder,
   minHeight,
   breadcrumbLabel,
+  breadcrumbIcon,
   eyebrow,
   title,
   titleSize,
@@ -34,8 +35,12 @@ export function PageHero({
   photoPosition?: string;
   placeholder: string;
   minHeight?: string;
+  /** The section the page belongs to, e.g. "Tavaro Resorts". */
   breadcrumbLabel: string;
-  eyebrow: string;
+  /** Shown in place of the label (which stays as its accessible name), e.g. Màre's keys mark. */
+  breadcrumbIcon?: IconName;
+  /** A second, different line under it (a place, a sub-section); omit rather than repeat the label. */
+  eyebrow?: string;
   title: ReactNode;
   titleSize: string;
   titleMaxWidth?: string;
@@ -56,13 +61,19 @@ export function PageHero({
       <div className="page-hero-inner container">
         <div className="page-hero-top-row tw:flex tw:items-center tw:justify-between tw:w-full tw:z-[10] tw:mb-[20px]">
           <div className={`${styles.breadcrumb} tw:m-[0]`}>
-            <span>{breadcrumbLabel}</span>
+            {breadcrumbIcon ? (
+              <span role="img" aria-label={breadcrumbLabel} className={styles["breadcrumb-icon"]}>
+                <Icon name={breadcrumbIcon} />
+              </span>
+            ) : (
+              <span>{breadcrumbLabel}</span>
+            )}
           </div>
           {topRightCta && <div className={styles["hero-top-right"]}>{topRightCta}</div>}
         </div>
 
         <div className={`${styles["page-hero-content"]} tw:w-full`}>
-          <p className="eyebrow">{eyebrow}</p>
+          {eyebrow && <p className="eyebrow">{eyebrow}</p>}
           <h1 className={styles["hero-title"]} style={{ fontSize: titleSize, maxWidth: titleMaxWidth }}>
             {title}
           </h1>

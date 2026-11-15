@@ -615,10 +615,15 @@ const Room = memo(function Room({
   onPhoto: OnPhoto;
   onAlbum: (section: Section, sub: Sub) => void;
 }) {
-  const [head, , seen] = useInView<HTMLElement>();
+  const [head, live, seen] = useInView<HTMLElement>();
   return (
     <section id={s.id} className={styles.room} aria-labelledby={`${s.id}-title`}>
-      <header ref={head} className={styles["room-head"]} data-in={seen ? "" : undefined}>
+      <header
+        ref={head}
+        className={styles["room-head"]}
+        data-in={seen ? "" : undefined}
+        data-live={live ? "" : undefined}
+      >
         <span className={styles.ghost} aria-hidden="true">
           {[0, 1, 2, 3].map((k) => (
             <span key={k}>{s.title}</span>

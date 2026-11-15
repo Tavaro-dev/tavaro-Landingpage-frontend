@@ -19,7 +19,7 @@ export default function ResidencesRegisterPage() {
         photoSrc={heroPhoto}
         photoAlt="A Tavaro Residence"
         placeholder="ph-2"
-        breadcrumbLabel="Register Your Interest"
+        breadcrumbLabel="Tavaro Residences"
         eyebrow="Register Your Interest"
         title={
           <>

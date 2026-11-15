@@ -635,6 +635,15 @@
   .ghost span {
     padding-right: 0.6em;
   }
+  /* The outlined title drifts sideways while its header is on screen (four copies: -50% loops seamlessly). */
+  @media (prefers-reduced-motion: no-preference) {
+    .room-head[data-live] .ghost {
+      animation: ghost 48s linear infinite;
+    }
+    .page[data-lite] .ghost {
+      animation: none;
+    }
+  }
   .h2 {
     margin: 0;
     font-family: var(--font-display);

@@ -31,6 +31,8 @@ type Geo = {
   stem?: boolean;
   /** Faint side roads, so the map carries on past the drives. */
   roads?: string[];
+  /** The map pans past the starts, so each time chip names its place too. */
+  named?: boolean;
 };
 
 /** Wide screens: drives come in from the left; the arrival panel takes the right. */
@@ -74,6 +76,7 @@ const PHONE: Geo = {
   perMinute: 40,
   stem: true,
   roads: ["M400 1100H560", "M46 1100V1350", "M-60 1260H560", "M520 380V1260", "M150 95V-100"],
+  named: true,
 };
 
 const SHORT: Record<string, string> = { gachibowli: "Gachibowli", "jubilee-hills": "Jubilee Hills", rgi: "Airport" };
@@ -188,6 +191,26 @@ export function ResortLocation() {
     return () => io.disconnect();
   }, [run]);
 
+  // On stacked layouts the button sits below the map: bring the map's start back on screen first, then play.
+  const replay = () => {
+    setPlay(false);
+    let done = false;
+    const go = () => {
+      if (done) return;
+      done = true;
+      setRun((n) => n + 1);
+    };
+    const el = stage.current;
+    if (!el || !window.matchMedia("(max-width: 1024px)").matches) return go();
+    const header = document.querySelector(".site-header")?.getBoundingClientRect().height ?? 0;
+    const top = Math.max(0, el.getBoundingClientRect().top + window.scrollY - header - 8);
+    if (Math.abs(top - window.scrollY) < 4) return go();
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.addEventListener("scrollend", go, { once: true });
+    window.setTimeout(go, 1200);
+    window.scrollTo({ top, behavior: smooth ? "smooth" : "instant" });
+  };
+
   const T = geo.tavaro;
   const head = T.y - 62;
   const [vx, vy, vw, vh] = geo.view.split(" ").map(Number);
@@ -214,7 +237,13 @@ export function ResortLocation() {
               } as CSSProperties
             }
           >
-            <svg ref={svg} viewBox={geo.view} className={styles.map} role="img" aria-labelledby="loc-map-desc">
+            <svg
+              ref={svg}
+              viewBox={geo.view}
+              className={`${styles.map}${geo.named ? ` ${styles.named}` : ""}`}
+              role="img"
+              aria-labelledby="loc-map-desc"
+            >
               <desc id="loc-map-desc">
                 Three drives to Tavaro Resorts in Kokapet, drawn to the same scale of time: 15 minutes from Gachibowli,
                 30 minutes from Jubilee Hills Checkpost and 35 minutes from Rajiv Gandhi International Airport. Select a
@@ -257,12 +286,24 @@ export function ResortLocation() {
                     </a>
 
                     {/* The drive time, on its own line, once that point arrives */}
-                    <g className={styles.chip}>
-                      <rect x={r.mid[0] - 62} y={r.mid[1] - 24} width="124" height="48" rx="24" />
-                      <text x={r.mid[0]} y={r.mid[1]}>
-                        {d.minutes} min
-                      </text>
-                    </g>
+                    {geo.named ? (
+                      <g className={styles.chip}>
+                        <rect x={r.mid[0] - 104} y={r.mid[1] - 44} width="208" height="88" rx="6" />
+                        <text x={r.mid[0]} y={r.mid[1] - 16} className={styles.chipName}>
+                          {SHORT[d.id]}
+                        </text>
+                        <text x={r.mid[0]} y={r.mid[1] + 18}>
+                          {d.minutes} min
+                        </text>
+                      </g>
+                    ) : (
+                      <g className={styles.chip}>
+                        <rect x={r.mid[0] - 62} y={r.mid[1] - 24} width="124" height="48" rx="24" />
+                        <text x={r.mid[0]} y={r.mid[1]}>
+                          {d.minutes} min
+                        </text>
+                      </g>
+                    )}
 
                     {/* A point travelling this drive at the shared pace */}
                     <circle r="11" className={styles.car} opacity="0">
@@ -348,10 +389,7 @@ export function ResortLocation() {
             type="button"
             className={styles.replay}
             style={{ "--arrive": t(ARRIVE) } as CSSProperties}
-            onClick={() => {
-              setPlay(false);
-              setRun((n) => n + 1);
-            }}
+            onClick={replay}
           >
             Replay the drives
           </button>

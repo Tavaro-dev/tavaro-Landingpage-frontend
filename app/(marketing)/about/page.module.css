@@ -49,9 +49,58 @@
   }
 }
 
-@media (max-width: 860px) {
+/* Tablets: the four ideas sit two by two, read from the left. */
+@media (max-width: 1080px) {
+.why br {
+    display: none;
+  }
+
+.idea-card {
+    padding: 36px 32px;
+    text-align: left;
+  }
+}
+
+/* Phones: forced line breaks go (they split the sentence awkwardly), and each idea becomes a compact row,
+   number and icon beside the text. */
+@media (max-width: 600px) {
 .idea-grid {
     grid-template-columns: 1fr;
+  }
+
+.idea-card {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    column-gap: 18px;
+    align-items: start;
+    padding: 26px 20px;
+  }
+
+.idea-card > * {
+    grid-column: 2;
+  }
+
+.idea-num {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 4px 0 0;
+  }
+
+.idea-card > :global(.tri-icon) {
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    margin: 10px 0 0;
+  }
+
+.idea-card h4 {
+    grid-row: 1;
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+.idea-card p {
+    grid-row: 2;
+    font-size: 14px;
   }
 }
 

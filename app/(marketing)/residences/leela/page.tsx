@@ -148,7 +148,7 @@ export default function LeelaPage() {
         photoSrc={heroPhoto}
         photoAlt="Leela by Tavaro Residences — architectural exterior"
         placeholder="ph-2"
-        breadcrumbLabel="Leela by Tavaro Residences"
+        breadcrumbLabel="Tavaro Residences"
         eyebrow="01 — Leela by Tavaro Residences"
         title={
           <>

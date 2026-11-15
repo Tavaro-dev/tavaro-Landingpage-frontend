@@ -29,8 +29,8 @@ export default function ContactPage() {
         photoSrc="/photos/residences-villa.jpg"
         photoAlt="An evening at Tavaro"
         placeholder="ph-1"
-        breadcrumbLabel="Contact"
-        eyebrow="Get in Touch"
+        breadcrumbLabel="Contact Tavaro"
+        eyebrow="Kokapet, Hyderabad"
         title={
           <>
             Let&apos;s plan your
@@ -70,14 +70,16 @@ export default function ContactPage() {
       <section className="section on-dark">
         <div className="container">
           <Reveal className="split">
-            <div className="split-body">
-              <p className="eyebrow">Enquire</p>
-              <h3 className="display-3">Send us a message</h3>
-              <p className="lede tw:mt-[16px]">
-                Tell us what brings you to Tavaro, and the right team will be in touch within one business
-                day.
-              </p>
-              <div className="tw:mt-[40px] tw:flex tw:flex-col tw:gap-[16px]">
+            <div className={`split-body ${styles.intro}`}>
+              <div>
+                <p className="eyebrow">Enquire</p>
+                <h3 className="display-3">Send us a message</h3>
+                <p className="lede tw:mt-[16px]">
+                  Tell us what brings you to Tavaro, and the right team will be in touch within one business
+                  day.
+                </p>
+              </div>
+              <div className={`tw:mt-[40px] tw:flex tw:flex-col tw:gap-[16px] ${styles.reach}`}>
                 <a
                   href="tel:+919989983029"
                   className="text-link tw:inline-flex tw:items-center tw:gap-[8px]"
@@ -98,7 +100,7 @@ export default function ContactPage() {
                 >
                   <Icon name="mail" className="tw:w-[16px] tw:h-[16px]" /> celebrate@tavaro.in
                 </a>
-                <div className="tw:flex tw:gap-[16px] tw:mt-[12px]">
+                <div className={`tw:flex tw:gap-[16px] tw:mt-[12px] ${styles.social}`}>
                   <a
                     href="https://www.instagram.com/tavaro.resorts?stkn=anQwdWZkbmd1NmE5"
                     target="_blank"

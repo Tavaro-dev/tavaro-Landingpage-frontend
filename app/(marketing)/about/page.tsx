@@ -47,8 +47,7 @@ export default function AboutPage() {
         photoSrc="/photos/drone-hero.jpg"
         photoAlt="The Tavaro world, from above"
         placeholder="ph-1"
-        breadcrumbLabel="About"
-        eyebrow="About Tavaro"
+        breadcrumbLabel="About Tavaro"
         title={
           <>
             Places for people to
@@ -67,8 +66,8 @@ export default function AboutPage() {
             <p className="eyebrow center no-line tw:flex tw:justify-center">
               Why Tavaro
             </p>
-            <p className="display-2 tw:mt-[24px] tw:max-w-[22ch] tw:mx-auto">
-              Tavaro creates places for people
+            <p className={`display-2 tw:mt-[24px] tw:max-w-[22ch] tw:mx-auto ${styles.why}`}>
+              Tavaro creates places for people{" "}
               <br />
               to stay, live, gather and grow.
             </p>

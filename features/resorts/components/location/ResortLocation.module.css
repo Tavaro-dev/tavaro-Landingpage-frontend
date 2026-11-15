@@ -137,6 +137,24 @@
     text-anchor: middle;
     dominant-baseline: central;
   }
+  /* Where the chips carry the names, each start's own name steps aside once its chip is in. */
+  .named .tagName {
+    animation:
+      lightUp 0.5s var(--ease) 0.3s forwards,
+      fadeOut 0.4s var(--ease) var(--at) forwards;
+  }
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  .chip .chipName {
+    fill: var(--on-surface);
+    font-size: 24px;
+  }
 
   /* Tavaro: lands with a bounce, then keeps a slow heartbeat. */
   .home {
