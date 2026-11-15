@@ -359,10 +359,6 @@
     padding: 0;
     list-style: none;
   }
-  .col,
-  .row {
-    will-change: transform;
-  }
   :is(.col, .row) li {
     position: relative;
     flex: none;
@@ -1068,7 +1064,9 @@
       animation-name: part-right;
     }
     /* The opening waits behind the welcome and plays its entrance as it parts. */
-    .page[data-intro] .opening :is(*, *::before, *::after) {
+    .page[data-intro] .opening *,
+    .page[data-intro] .opening *::before,
+    .page[data-intro] .opening *::after {
       animation-play-state: paused;
     }
     /* As the welcome parts, the film comes into focus, a sheen of light crosses it, and the photos fall into place. */
@@ -1119,42 +1117,44 @@
     }
 
     /* Rooms: the title rises; each arch rises into place, the large one first, then the plaque. */
-    .word > span {
+    /* Content hides for its reveal only once React can reveal it, so nothing sits invisible while the page
+       loads. Hiding is instant (no transition); only the way back in is animated, by the [data-in] rules. */
+    .page[data-ready] .word > span {
       translate: 0 105%;
-      transition: translate 1.1s var(--ease-luxury) calc(var(--w) * 0.08s);
+      transition: none;
     }
     .room-head[data-in] .word > span {
       translate: none;
+      transition: translate 1.1s var(--ease-luxury) calc(var(--w) * 0.08s);
     }
-    .line {
+    .page[data-ready] .line {
       opacity: 0;
       translate: 0 26px;
-      transition:
-        opacity 0.9s var(--ease-luxury),
-        translate 0.9s var(--ease-luxury);
-    }
-    .line {
-      transition-delay: 0.3s;
+      transition: none;
     }
     .room-head[data-in] .line {
       opacity: 1;
       translate: none;
+      transition:
+        opacity 0.9s var(--ease-luxury) 0.3s,
+        translate 0.9s var(--ease-luxury) 0.3s;
     }
-    .arch {
+    .page[data-ready] .arch {
       opacity: 0;
       translate: 0 60px;
-      transition:
-        opacity 1s var(--ease-luxury) calc(var(--d) * 0.12s),
-        translate 1.2s var(--ease-luxury) calc(var(--d) * 0.12s),
-        border-color 0.4s var(--ease);
+      transition: none;
     }
-    .arch img {
+    .page[data-ready] .arch img {
       scale: 1.2;
-      transition: scale 1.6s var(--ease-luxury) calc(var(--d) * 0.12s);
+      transition: none;
     }
     .sub[data-in] .arch {
       opacity: 1;
       translate: none;
+      transition:
+        opacity 1s var(--ease-luxury) calc(var(--d) * 0.12s),
+        translate 1.2s var(--ease-luxury) calc(var(--d) * 0.12s),
+        border-color 0.4s var(--ease);
     }
     /* Once in, the arch lifts quickly on hover. */
     .sub[data-in] .arch:hover {
@@ -1164,32 +1164,35 @@
     }
     .sub[data-in] .arch img {
       scale: 1;
+      transition: scale 1.6s var(--ease-luxury) calc(var(--d) * 0.12s);
     }
-    .plaque {
+    .page[data-ready] .plaque {
       opacity: 0;
       translate: 0 40px;
-      transition:
-        opacity 1s var(--ease-luxury),
-        translate 1.2s var(--ease-luxury);
+      transition: none;
     }
     .sub[data-in] .plaque {
       opacity: 1;
       translate: none;
+      transition:
+        opacity 1s var(--ease-luxury),
+        translate 1.2s var(--ease-luxury);
     }
-    .plaque-text > *,
-    .plaque-text::before {
+    .page[data-ready] .plaque-text > *,
+    .page[data-ready] .plaque-text::before {
       opacity: 0;
       translate: 0 18px;
-      transition:
-        opacity 0.8s var(--ease-luxury) 0.35s,
-        translate 0.8s var(--ease-luxury) 0.35s,
-        background 0.3s var(--ease),
-        color 0.3s var(--ease);
+      transition: none;
     }
     .sub[data-in] .plaque-text > *,
     .sub[data-in] .plaque-text::before {
       opacity: 1;
       translate: none;
+      transition:
+        opacity 0.8s var(--ease-luxury) 0.35s,
+        translate 0.8s var(--ease-luxury) 0.35s,
+        background 0.3s var(--ease),
+        color 0.3s var(--ease);
     }
     /* The large arch: each new photo fades in over the last and drifts slowly closer while it holds. */
     .sub[data-in] .over {
@@ -1236,12 +1239,6 @@
         animation: parallax linear both;
         animation-timeline: view();
       }
-      .plaque-photo {
-        animation:
-          parallax linear both,
-          kenburns 16s ease-in-out infinite alternate;
-        animation-timeline: view(), auto;
-      }
     }
   }
   @keyframes progress {
@@ -1270,14 +1267,6 @@
   @keyframes ghost {
     to {
       transform: translateX(-50%);
-    }
-  }
-  @keyframes kenburns {
-    from {
-      scale: 1.02;
-    }
-    to {
-      scale: 1.14;
     }
   }
   @keyframes window {
@@ -1318,7 +1307,6 @@
   }
   @keyframes focus {
     from {
-      scale: 1.16;
       opacity: 0.4;
     }
   }
@@ -1531,7 +1519,11 @@
       grid-template-columns: none;
       grid-template-rows: 1fr 1fr;
       padding: 8px 0;
-      mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    }
+    /* Phones: no edge fade on the moving strips; a mask repaints every frame. */
+    .columns,
+    .rows {
+      mask-image: none;
     }
     .col {
       flex-direction: row;
@@ -1595,5 +1587,23 @@
     .ghost {
       font-size: 84px;
     }
+  }
+
+  /* Off screen, the stage's endless motion stops. */
+  .stage:not([data-live]) *,
+  .stage:not([data-live]) *::before,
+  .stage:not([data-live]) *::after {
+    animation-play-state: paused;
+  }
+  /* The welcome's buttons appear once they can answer. */
+  .page:not([data-ready]) .intro-actions {
+    visibility: hidden;
+  }
+  /* Slow connection, Data Saver or a low-memory phone: the strips stand still and scroll by hand. */
+  .page[data-lite] :is(.col, .row) {
+    animation: none;
+  }
+  .page[data-lite] .reel {
+    overflow: auto;
   }
 }

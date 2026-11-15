@@ -19,4 +19,16 @@
   color: var(--cream);
 }
 
+/* Events & Venues: on phones and touch tablets show "Plan Your Event" filled gold beside the
+   outlined "See the venues", as desktop does (globals.css only fills it on hover-capable desktops). */
+@media (max-width: 768px), (hover: none) {
+  .event-ctas :global(.btn:not(.ghost)) {
+    color: var(--black);
+  }
+
+  .event-ctas :global(.btn:not(.ghost))::before {
+    transform: translateX(0);
+  }
+}
+
 }

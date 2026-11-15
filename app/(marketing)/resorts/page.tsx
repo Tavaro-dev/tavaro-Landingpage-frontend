@@ -90,7 +90,7 @@ export default function ResortsPage() {
               <li>Six spaces, from 50 to 4,000 guests</li>
               <li>In-house catering and décor, or your own vendors</li>
             </ul>
-            <div className="tw:flex tw:flex-wrap tw:gap-[12px]">
+            <div className={`${styles["event-ctas"]} tw:flex tw:flex-wrap tw:gap-[12px]`}>
               <PlanEventButton />
               <Link href="/resorts/venues" className="btn ghost">
                 See the venues <span className="btn-arrow">→</span>

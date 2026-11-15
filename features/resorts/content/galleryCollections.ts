@@ -12,6 +12,8 @@ export type GalleryFilm = {
   /** Playback volume, evening out the two films' loudness. */
   volume: number;
   src: string;
+  /** A lighter cut for phones and tablets (960px wide film, 540px upright). */
+  mobile: string;
   poster: string;
   w: number;
   h: number;
@@ -41,6 +43,7 @@ export const GALLERY_FILMS: GalleryFilm[] = [
     theme: "light",
     volume: 0.9,
     src: `${V}/wedding-film-5566b35f.mp4`,
+    mobile: `${V}/wedding-film-sm-dfb07ce5.mp4`,
     poster: `${V}/wedding-film-e61cdb61.webp`,
     w: 1920,
     h: 1080,
@@ -50,6 +53,7 @@ export const GALLERY_FILMS: GalleryFilm[] = [
     theme: "dark",
     volume: 0.55,
     src: `${V}/sanctuary-night-f81b2925.mp4`,
+    mobile: `${V}/sanctuary-night-sm-b2761e7d.mp4`,
     poster: `${V}/sanctuary-night-54c1d05d.webp`,
     w: 720,
     h: 1280,

@@ -1,13 +1,13 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState, type CSSProperties } from "react";
-import Image from "next/image";
+import { Fragment, memo, useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { Modal } from "@/components/ui/Modal";
 import { GALLERY_PHOTOS, type GalleryPhoto } from "../../content/galleryPhotos";
 import { GALLERY_COLLECTIONS, GALLERY_FILMS, collectionTitle, type GalleryFilm } from "../../content/galleryCollections";
 import { GalleryLightbox } from "./GalleryLightbox";
-import { fullSrc, thumbSrc } from "./paths";
+import { fullSrc, lite, thumbSrc } from "./paths";
 import styles from "./ResortGallery.module.css";
 
 /** Seconds each photo holds in the large arch. */
@@ -55,10 +55,27 @@ const CHAPTERS = GALLERY_FILMS.map((film) => {
   return { film, sections, reel: reel.slice(0, REEL) };
 });
 
-const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+/** Reduced motion, or a phone or connection too slow for motion: nothing moves or plays on its own. */
+const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches || lite();
+
+/**
+ * The large arch's photo, through Next's optimizer (AVIF or WebP at the width the screen needs). The arch is
+ * tall and narrow, so a photo covering it is as wide as the arch's height times its own ratio: these sizes
+ * follow the arch's height per breakpoint (290px phones, about 48vw tablets, 31vw desktops).
+ */
+const archImage = (p: GalleryPhoto) => {
+  const r = Math.max(p.w / p.h, 0.75);
+  return {
+    src: fullSrc(p),
+    alt: "",
+    fill: true,
+    // ponytail: phones under-report by 1.6x, capping sharpness near 1.7x density to save data; drop the divisor if arches look soft.
+    sizes: `(max-width: 600px) ${Math.round((290 * r) / 1.6)}px, (max-width: 1024px) ${(48 * r).toFixed(1)}vw, ${(31 * r).toFixed(1)}vw`,
+  } as const;
+};
 
 /** Whether the element is on screen now, and whether it has ever been (for one-time reveals). */
-function useInView<T extends Element>(rootMargin = "0px 0px -12% 0px") {
+function useInView<T extends Element>(rootMargin = "0px 0px -4% 0px") {
   const ref = useRef<T>(null);
   const [state, setState] = useState({ now: false, seen: false });
   useEffect(() => {
@@ -94,8 +111,13 @@ export function ResortGallery() {
   const [onStage, setOnStage] = useState(true);
   /** The welcome that asks about sound before the gallery opens; it parts like a curtain when answered. */
   const [intro, setIntro] = useState<"open" | "leaving" | null>("open");
+  /** Set once React has taken over: until then the welcome's buttons and the scroll reveals stay out of the way. */
+  const [ready, setReady] = useState<"" | "lite" | null>(null);
   const page = useRef<HTMLDivElement>(null);
   const chips = useRef<HTMLUListElement>(null);
+
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- runs once after hydration, by design
+  useEffect(() => setReady(lite() ? "lite" : ""), []);
 
   // The bar follows the room on screen, and the soundtrack follows the chapter.
   useEffect(() => {
@@ -175,7 +197,9 @@ export function ResortGallery() {
     return () => window.removeEventListener("resize", place);
   }, [current]);
 
-  const openPhoto: OnPhoto = (photos, index) => setViewer({ photos, index });
+  // Stable, so the rooms (most of the page) don't re-render as the visitor scrolls.
+  const openPhoto: OnPhoto = useCallback((photos, index) => setViewer({ photos, index }), []);
+  const openAlbum = useCallback((section: Section, sub: Sub) => setAlbum({ section, sub }), []);
   /** The visitor's answer is the tap browsers need before a page may play sound. */
   const enter = (withSound: boolean) => {
     setSound(withSound);
@@ -195,13 +219,21 @@ export function ResortGallery() {
       film={CHAPTERS[i].film}
       reel={CHAPTERS[i].reel}
       audible={audible === i}
+      held={intro !== null}
+      first={i === 0}
       onSound={(t) => filmSound(i, t)}
       onPhoto={openPhoto}
     />
   );
 
   return (
-    <div ref={page} className={styles.page} data-intro={intro ? "" : undefined}>
+    <div
+      ref={page}
+      className={styles.page}
+      data-intro={intro ? "" : undefined}
+      data-ready={ready !== null ? "" : undefined}
+      data-lite={ready === "lite" ? "" : undefined}
+    >
       <h1 className={styles.hidden}>Photos &amp; Videos</h1>
       {intro && <Intro leaving={intro === "leaving"} onEnter={enter} />}
       <div className={styles.opening} data-zone="0">
@@ -267,7 +299,7 @@ export function ResortGallery() {
         <div key={film.src} className={styles[film.theme]} data-zone={i}>
           {i > 0 && stage(i)}
           {sections.map((s) => (
-            <Room key={s.id} section={s} onPhoto={openPhoto} onAlbum={(sub) => setAlbum({ section: s, sub })} />
+            <Room key={s.id} section={s} onPhoto={openPhoto} onAlbum={openAlbum} />
           ))}
         </div>
       ))}
@@ -363,15 +395,24 @@ function Stage({
   film,
   reel,
   audible,
+  held,
+  first,
   onSound,
   onPhoto,
 }: {
   film: GalleryFilm;
   reel: GalleryPhoto[];
   audible: boolean;
+  /** The welcome is still up: the film waits for it. */
+  held: boolean;
+  /** The opening stage, on screen at load: its film's poster and first frames load straight away. */
+  first: boolean;
   onSound: (t: number) => void;
   onPhoto: OnPhoto;
 }) {
+  // The drifting photos stop while the stage is off screen. Their files are requested only once the page is
+  // interactive and the stage is near, so on a slow connection the script arrives first (colour placeholders until then).
+  const [box, live, near] = useInView<HTMLElement>("600px 0px");
   const wide = film.w > film.h;
   const track = (photos: GalleryPhoto[], dir: "col" | "row", k: number) => (
     <ul key={k} className={styles[dir]} style={{ "--n": photos.length, "--c": k } as CSSProperties}>
@@ -391,7 +432,7 @@ function Stage({
               onClick={() => onPhoto(reel, at)}
               aria-label={`View photo ${at + 1} of ${reel.length}: ${collectionTitle(p.c)}`}
             >
-              <Image src={thumbSrc(p)} alt="" fill unoptimized />
+              {near && <Image src={thumbSrc(p)} alt="" fill unoptimized />}
             </button>
           </li>
         );
@@ -403,11 +444,13 @@ function Stage({
   const rows = lanes(reel.slice(side.length), wide ? 2 : 3);
   return (
     <section
+      ref={box}
       className={`${styles.stage} ${styles[film.theme]} ${wide ? styles.wide : styles.upright}`}
       aria-label={film.title}
       data-stage=""
+      data-live={live ? "" : undefined}
     >
-      <Film film={film} audible={audible} onSound={onSound} />
+      <Film film={film} audible={audible} held={held} first={first} near={near} onSound={onSound} />
       <div className={`${styles.reel} ${styles.columns}`}>{lanes(side, 2).map((l, k) => track(l, "col", k))}</div>
       <div className={`${styles.reel} ${styles.rows}`}>{rows.map((l, k) => track(l, "row", k))}</div>
     </section>
@@ -420,22 +463,37 @@ type FullscreenVideo = HTMLVideoElement & { webkitEnterFullscreen?: () => void }
  * A client film. It plays silently while on screen. While it is the soundtrack it keeps playing
  * off screen too, and its sound fades in and out as the visitor moves between chapters.
  */
-function Film({ film, audible, onSound }: { film: GalleryFilm; audible: boolean; onSound: (t: number) => void }) {
+function Film({
+  film,
+  audible,
+  held,
+  first,
+  near,
+  onSound,
+}: {
+  film: GalleryFilm;
+  audible: boolean;
+  held: boolean;
+  first: boolean;
+  /** The stage has come near the screen: a later film's poster may load. */
+  near: boolean;
+  onSound: (t: number) => void;
+}) {
   const [box, inView] = useInView<HTMLElement>("0px");
   const video = useRef<HTMLVideoElement>(null);
-  const [progress, setProgress] = useState(0);
+  const bar = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const v = video.current;
     if (!v) return;
-    if (audible || (inView && !still())) {
+    if (audible || (inView && !held && !still())) {
       v.play().catch(() => {});
       return;
     }
     // Let the sound fade out before pausing.
     const t = window.setTimeout(() => v.pause(), FADE * 1000);
     return () => window.clearTimeout(t);
-  }, [inView, audible]);
+  }, [inView, audible, held]);
 
   useEffect(() => {
     const v = video.current;
@@ -477,18 +535,23 @@ function Film({ film, audible, onSound }: { film: GalleryFilm; audible: boolean;
 
   return (
     <figure ref={box} className={`${styles.film} ${audible ? styles.on : ""}`}>
+      {/* Phones and tablets get the lighter cut; only the opening film fetches more than its first frames early. */}
       <video
         ref={video}
-        src={film.src}
-        poster={film.poster}
+        poster={first || near ? film.poster : undefined}
         muted
         loop
         playsInline
-        preload={film === GALLERY_FILMS[0] ? "auto" : "metadata"}
+        preload={first ? "metadata" : "none"}
         aria-label={film.title}
-        onTimeUpdate={(e) => setProgress(e.currentTarget.currentTime / (e.currentTarget.duration || 1))}
-      />
-      <span className={styles.progress} style={{ "--v": progress } as CSSProperties} aria-hidden="true" />
+        onTimeUpdate={(e) =>
+          bar.current?.style.setProperty("--v", String(e.currentTarget.currentTime / (e.currentTarget.duration || 1)))
+        }
+      >
+        <source src={film.mobile} type="video/mp4" media="(max-width: 1024px)" />
+        <source src={film.src} type="video/mp4" />
+      </video>
+      <span ref={bar} className={styles.progress} aria-hidden="true" />
       <span className={styles.controls}>
         <button
           type="button"
@@ -513,7 +576,15 @@ function Film({ film, audible, onSound }: { film: GalleryFilm; audible: boolean;
 }
 
 /** One occasion: its name and feel, then each sub-section as a plaque beside a row of arches. */
-function Room({ section: s, onPhoto, onAlbum }: { section: Section; onPhoto: OnPhoto; onAlbum: (sub: Sub) => void }) {
+const Room = memo(function Room({
+  section: s,
+  onPhoto,
+  onAlbum,
+}: {
+  section: Section;
+  onPhoto: OnPhoto;
+  onAlbum: (section: Section, sub: Sub) => void;
+}) {
   const [head, , seen] = useInView<HTMLElement>();
   return (
     <section id={s.id} className={styles.room} aria-labelledby={`${s.id}-title`}>
@@ -551,12 +622,12 @@ function Room({ section: s, onPhoto, onAlbum }: { section: Section; onPhoto: OnP
           flip={i % 2 === 1}
           label={x.name || s.title}
           onPhoto={onPhoto}
-          onAlbum={() => onAlbum(x)}
+          onAlbum={() => onAlbum(s, x)}
         />
       ))}
     </section>
   );
-}
+});
 
 /** A sub-section: a title card over one of its photos, a large arch playing through the rest, and three small arches. */
 function Arches({
@@ -573,6 +644,9 @@ function Arches({
   onAlbum: () => void;
 }) {
   const [box, inView, seen] = useInView<HTMLDivElement>();
+  // Photos are requested once the page is interactive and the set is within a screen or so; until then each
+  // frame shows the photo's average colour.
+  const [nearBox, , near] = useInView<HTMLDivElement>("100% 0px");
   const [show, setShow] = useState<{ k: number; prev: number | null }>({ k: 0, prev: null });
   const { photos, cycle } = sub;
   const n = photos.length;
@@ -582,9 +656,14 @@ function Arches({
     const t = window.setInterval(() => setShow(({ k }) => ({ prev: k, k: (k + 1) % cycle.length })), HOLD * 1000);
     return () => window.clearInterval(t);
   }, [inView, cycle.length]);
-  // Fetch the next photo before its turn.
+  // Fetch and decode the next photo, at the size this screen will pick, before its turn.
   useEffect(() => {
-    if (inView && cycle.length > 1) new window.Image().src = fullSrc(cycle[(show.k + 1) % cycle.length]);
+    if (!inView || cycle.length < 2 || still()) return;
+    const { props } = getImageProps(archImage(cycle[(show.k + 1) % cycle.length]));
+    const next = new window.Image();
+    next.sizes = props.sizes ?? "";
+    next.srcset = props.srcSet ?? "";
+    next.decode().catch(() => {});
   }, [inView, show.k, cycle]);
 
   const cur = cycle[show.k];
@@ -605,7 +684,7 @@ function Arches({
       style={{ "--hold": `${HOLD}s` } as CSSProperties}
     >
       <div className={styles.plaque} style={{ "--k": cover.k } as CSSProperties}>
-        <Image src={thumbSrc(cover)} alt="" fill unoptimized className={styles["plaque-photo"]} />
+        {near && <Image src={thumbSrc(cover)} alt="" fill unoptimized className={styles["plaque-photo"]} />}
         <div className={styles["plaque-text"]}>
           {sub.name && <h3 className={styles.h3}>{sub.name}</h3>}
           <p className={styles.note}>{sub.note}</p>
@@ -614,25 +693,24 @@ function Arches({
           </button>
         </div>
       </div>
-      <div className={styles.arches}>
+      <div ref={nearBox} className={styles.arches}>
         <div className={`${styles.arch} ${styles.big}`} style={{ "--d": 0, "--k": cur.k } as CSSProperties}>
           <button type="button" {...view(cur)}>
-            {layers.map((l) => (
-              <Image
-                key={cycle[l].f}
-                src={fullSrc(cycle[l])}
-                alt=""
-                fill
-                unoptimized
-                className={l === show.k ? styles.over : styles.under}
-              />
-            ))}
+            {near &&
+              layers.map((l) => (
+                <Image
+                  key={cycle[l].f}
+                  {...archImage(cycle[l])}
+                  alt=""
+                  className={l === show.k ? styles.over : styles.under}
+                />
+              ))}
           </button>
         </div>
         {photos.slice(1, 4).map((p, j) => (
           <div key={p.f} className={styles.arch} style={{ "--d": j + 1, "--k": p.k } as CSSProperties}>
             <button type="button" {...view(p)}>
-              <Image src={thumbSrc(p)} alt="" fill unoptimized />
+              {near && <Image src={thumbSrc(p)} alt="" fill unoptimized />}
             </button>
           </div>
         ))}
