@@ -21,8 +21,6 @@ type Geo = {
   view: string;
   /** Where the pin's tip stands. */
   tavaro: { x: number; y: number };
-  /** Where "Tavaro" sits: under the pin, or beside its head. */
-  name: "below" | "right";
   /** The last stretch every drive shares into Tavaro. */
   lastMile: Leg;
   /** Each drive's legs before the last stretch, in travel order, and where its name goes. */
@@ -31,13 +29,14 @@ type Geo = {
   perMinute: number;
   /** Stacked layouts: a short stem from the pin down into the panel. */
   stem?: boolean;
+  /** Faint side roads, so the map carries on past the drives. */
+  roads?: string[];
 };
 
 /** Wide screens: drives come in from the left; the arrival panel takes the right. */
 const WIDE: Geo = {
   view: "0 170 1600 560",
   tavaro: { x: 940, y: 450 },
-  name: "below",
   lastMile: [0, 100],
   from: {
     gachibowli: { legs: [[0, 0.35], [90, 0.65]], label: "above" },
@@ -48,9 +47,8 @@ const WIDE: Geo = {
 };
 /** Tablets and phones: Tavaro at the foot of the drawing, its panel opening straight out of the pin. */
 const STACK: Geo = {
-  view: "20 50 740 510",
+  view: "20 50 740 560",
   tavaro: { x: 560, y: 500 },
-  name: "right",
   lastMile: [0, 120],
   from: {
     gachibowli: { legs: [[0, 0.25], [90, 0.75]], label: "above" },
@@ -60,19 +58,22 @@ const STACK: Geo = {
   perMinute: 20,
   stem: true,
 };
-/** Phones: the same idea, narrower and taller so it stays large. */
+/**
+ * Phones: a tall map that scrolls down with the drives (see .window in the CSS)
+ * and settles on Tavaro, with more road below it.
+ */
 const PHONE: Geo = {
-  view: "-10 40 610 510",
-  tavaro: { x: 400, y: 500 },
-  name: "right",
+  view: "-60 -100 620 1450",
+  tavaro: { x: 400, y: 1100 },
   lastMile: [0, 100],
   from: {
-    gachibowli: { legs: [[0, 0.25], [90, 0.75]], label: "above" },
-    "jubilee-hills": { legs: [[90, 0.6], [0, 0.1], [45, 0.3]], label: "right" },
-    rgi: { legs: [[90, 0.6], [0, 0.4]], label: "above" },
+    gachibowli: { legs: [[180, 0.2], [90, 0.8]], label: "above" },
+    "jubilee-hills": { legs: [[90, 0.4], [0, 0.0515], [90, 0.4285], [45, 0.12]], label: "right" },
+    rgi: { legs: [[90, 0.45], [45, 0.04], [90, 0.315], [0, 0.195]], label: "above" },
   },
-  perMinute: 20,
+  perMinute: 40,
   stem: true,
+  roads: ["M400 1100H560", "M46 1100V1350", "M-60 1260H560", "M520 380V1260", "M150 95V-100"],
 };
 
 const SHORT: Record<string, string> = { gachibowli: "Gachibowli", "jubilee-hills": "Jubilee Hills", rgi: "Airport" };
@@ -189,10 +190,6 @@ export function ResortLocation() {
 
   const T = geo.tavaro;
   const head = T.y - 62;
-  const nameAt =
-    geo.name === "below"
-      ? { x: T.x, y: T.y + 64, anchor: "middle" as const }
-      : { x: T.x + 54, y: head + 14, anchor: "start" as const };
   const [vx, vy, vw, vh] = geo.view.split(" ").map(Number);
   // Where the pin stands across the drawing, so the panel's pointer lines up under it.
   const tip = `${(((T.x - vx) / vw) * 100).toFixed(2)}%`;
@@ -207,73 +204,101 @@ export function ResortLocation() {
           key={run}
           style={{ "--tip": tip } as CSSProperties}
         >
-          <svg ref={svg} viewBox={geo.view} className={styles.map} role="img" aria-labelledby="loc-map-desc">
-            <desc id="loc-map-desc">
-              Three drives to Tavaro Resorts in Kokapet, drawn to the same scale of time: 15 minutes from
-              Gachibowli, 30 minutes from Jubilee Hills Checkpost and 35 minutes from Rajiv Gandhi International
-              Airport.
-            </desc>
+          {/* On phones this window scrolls the tall map down with the drives */}
+          <div
+            className={styles.window}
+            style={
+              {
+                "--pan-delay": t(START),
+                "--pan-dur": t(ARRIVE - START),
+              } as CSSProperties
+            }
+          >
+            <svg ref={svg} viewBox={geo.view} className={styles.map} role="img" aria-labelledby="loc-map-desc">
+              <desc id="loc-map-desc">
+                Three drives to Tavaro Resorts in Kokapet, drawn to the same scale of time: 15 minutes from Gachibowli,
+                30 minutes from Jubilee Hills Checkpost and 35 minutes from Rajiv Gandhi International Airport. Select a
+                starting point for directions from there.
+              </desc>
 
-            {DRIVE_TIMES.map((d) => {
-              const r = drive(geo, d.id, d.minutes);
-              const [x, y] = r.from;
-              const label = place(geo.from[d.id].label, x, y);
-              const arrive = START + d.minutes * PACE;
-              const vars = { "--delay": t(START), "--dur": t(d.minutes * PACE), "--at": t(arrive) } as CSSProperties;
-              return (
-                <g key={`${geo.view}-${d.id}`} className={styles.drive} style={vars}>
-                  <path d={r.d} className={styles.ghost} />
-                  <path d={r.d} pathLength={1} className={styles.under} />
-                  <path d={r.d} pathLength={1} className={styles.line} />
+              {geo.roads?.map((d) => (
+                <path key={d} d={d} className={styles.road} />
+              ))}
 
-                  {/* The start: dot and name show from the outset */}
-                  <circle cx={x} cy={y} r="18" className={styles.burst} />
-                  <circle cx={x} cy={y} r="14" className={styles.dot} />
-                  <text x={label.x} y={label.y} textAnchor={label.anchor} className={styles.tagName}>
-                    {SHORT[d.id]}
-                  </text>
+              {DRIVE_TIMES.map((d) => {
+                const r = drive(geo, d.id, d.minutes);
+                const [x, y] = r.from;
+                const label = place(geo.from[d.id].label, x, y);
+                const arrive = START + d.minutes * PACE;
+                const vars = {
+                  "--delay": t(START),
+                  "--dur": t(d.minutes * PACE),
+                  "--at": t(arrive),
+                } as CSSProperties;
+                return (
+                  <g key={`${geo.view}-${d.id}`} className={styles.drive} style={vars}>
+                    <path d={r.d} className={styles.ghost} />
+                    <path d={r.d} pathLength={1} className={styles.under} />
+                    <path d={r.d} pathLength={1} className={styles.line} />
 
-                  {/* The drive time, on its own line, once that point arrives */}
-                  <g className={styles.chip}>
-                    <rect x={r.mid[0] - 62} y={r.mid[1] - 24} width="124" height="48" rx="24" />
-                    <text x={r.mid[0]} y={r.mid[1]}>
-                      {d.minutes} min
-                    </text>
+                    {/* The start: dot and name show from the outset, and open directions from there */}
+                    <a
+                      href={directionsUrl(d.origin)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Directions from ${d.name}`}
+                      className={styles.start}
+                    >
+                      <circle cx={x} cy={y} r="18" className={styles.burst} />
+                      <circle cx={x} cy={y} r="14" className={styles.dot} />
+                      <text x={label.x} y={label.y} textAnchor={label.anchor} className={styles.tagName}>
+                        {SHORT[d.id]}
+                      </text>
+                    </a>
+
+                    {/* The drive time, on its own line, once that point arrives */}
+                    <g className={styles.chip}>
+                      <rect x={r.mid[0] - 62} y={r.mid[1] - 24} width="124" height="48" rx="24" />
+                      <text x={r.mid[0]} y={r.mid[1]}>
+                        {d.minutes} min
+                      </text>
+                    </g>
+
+                    {/* A point travelling this drive at the shared pace */}
+                    <circle r="11" className={styles.car} opacity="0">
+                      <set attributeName="opacity" to="1" begin={t(START)} />
+                      <animateMotion path={r.d} begin={t(START)} dur={t(d.minutes * PACE)} fill="freeze" />
+                      <set attributeName="opacity" to="0" begin={t(arrive)} />
+                    </circle>
                   </g>
+                );
+              })}
 
-                  {/* A point travelling this drive at the shared pace */}
-                  <circle r="11" className={styles.car} opacity="0">
-                    <set attributeName="opacity" to="1" begin={t(START)} />
-                    <animateMotion path={r.d} begin={t(START)} dur={t(d.minutes * PACE)} fill="freeze" />
-                    <set attributeName="opacity" to="0" begin={t(arrive)} />
-                  </circle>
-                </g>
-              );
-            })}
-
-            {/* Tavaro drops in as a map pin once every drive is in, and keeps a slow heartbeat */}
-            <g className={styles.home} style={{ "--arrive": t(ARRIVE) } as CSSProperties}>
-              {geo.stem && <line x1={T.x} y1={T.y} x2={T.x} y2={vy + vh} className={styles.stem} />}
-              <ellipse cx={T.x} cy={T.y} rx="54" ry="16" className={styles.glow} />
-              <ellipse cx={T.x} cy={T.y} rx="30" ry="10" className={styles.ripple} />
-              <ellipse cx={T.x} cy={T.y} rx="30" ry="10" className={`${styles.ripple} ${styles.ripple2}`} />
-              <path
-                d={`M${T.x} ${T.y}C${T.x - 12} ${T.y - 20} ${T.x - 42} ${head + 26} ${T.x - 42} ${head}A42 42 0 1 1 ${T.x + 42} ${head}C${T.x + 42} ${head + 26} ${T.x + 12} ${T.y - 20} ${T.x} ${T.y}Z`}
-                className={styles.pin}
-              />
-              <image
-                href="/icons/logo-mark.png"
-                x={T.x - 27}
-                y={head - 22}
-                width="54"
-                height="43"
-                className={styles.homeMark}
-              />
-              <text x={nameAt.x} y={nameAt.y} textAnchor={nameAt.anchor} className={styles.homeName}>
-                Tavaro
-              </text>
-            </g>
-          </svg>
+              {/* Tavaro drops in as a map pin once every drive is in, and keeps a slow heartbeat */}
+              <a
+                href={mapsSearch}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Tavaro Resorts on Google Maps"
+                className={styles.home}
+                style={{ "--arrive": t(ARRIVE) } as CSSProperties}
+              >
+                {geo.stem && <line x1={T.x} y1={T.y + 84} x2={T.x} y2={vy + vh} className={styles.stem} />}
+                <ellipse cx={T.x} cy={T.y} rx="54" ry="16" className={styles.glow} />
+                <ellipse cx={T.x} cy={T.y} rx="30" ry="10" className={styles.ripple} />
+                <ellipse cx={T.x} cy={T.y} rx="30" ry="10" className={`${styles.ripple} ${styles.ripple2}`} />
+                <path
+                  d={`M${T.x} ${T.y}C${T.x - 12} ${T.y - 20} ${T.x - 42} ${head + 26} ${T.x - 42} ${head}A42 42 0 1 1 ${T.x + 42} ${head}C${T.x + 42} ${head + 26} ${T.x + 12} ${T.y - 20} ${T.x} ${T.y}Z`}
+                  className={styles.pin}
+                />
+                <circle cx={T.x} cy={head} r="31" className={styles.pinFace} />
+                <image href="/icons/logo-mark.png" x={T.x - 23} y={head - 19} width="46" height="37" />
+                <text x={T.x} y={T.y + 70} textAnchor="middle" className={styles.homeName}>
+                  Tavaro Resort
+                </text>
+              </a>
+            </svg>
+          </div>
 
           {/* What you need once you're here, in one place */}
           <article className={styles.panel} style={{ "--arrive": t(ARRIVE + 0.2) } as CSSProperties}>

@@ -19,9 +19,12 @@
     display: grid;
     align-items: center;
   }
-  .map,
+  .window,
   .panel {
     grid-area: 1 / 1;
+  }
+  .window {
+    min-width: 0;
   }
   .map {
     display: block;
@@ -32,6 +35,31 @@
   }
 
   /* ---------- Route ---------- */
+  .road {
+    fill: none;
+    stroke: color-mix(in srgb, var(--on-surface) 7%, transparent);
+    stroke-width: 18;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  /* A start opens directions from there. */
+  .start {
+    cursor: pointer;
+    outline: none;
+  }
+  .start .dot,
+  .start .tagName {
+    transition: fill 0.3s var(--ease);
+  }
+  .start:hover .dot,
+  .start:focus-visible .dot {
+    fill: var(--gold);
+  }
+  .start:hover .tagName,
+  .start:focus-visible .tagName {
+    fill: var(--gold);
+    text-decoration: underline;
+  }
   .ghost {
     fill: none;
     stroke: var(--m-ghost);
@@ -133,8 +161,15 @@
     stroke-dasharray: 2 10;
     stroke-linecap: round;
   }
-  .homeMark {
-    filter: brightness(0) saturate(100%);
+  .pinFace {
+    fill: var(--surface);
+  }
+  .home {
+    cursor: pointer;
+    outline: none;
+  }
+  .home:focus-visible .pin {
+    stroke: var(--on-surface);
   }
   .homeName {
     fill: var(--gold);
@@ -356,9 +391,53 @@
       transform: none;
     }
   }
+  @keyframes pan {
+    to {
+      transform: translateY(calc(-100% + 64svh));
+    }
+  }
   @keyframes lightUp {
     to {
       opacity: 1;
+    }
+  }
+
+  /* ================= Desktop: a compact card, so the whole journey fits one screen ================= */
+  @media (min-width: 1025px) {
+    .panel {
+      width: min(360px, 28vw);
+    }
+    .panelPhoto {
+      aspect-ratio: 2 / 1;
+    }
+    .panelBody {
+      padding: 16px 20px 18px;
+    }
+    .name {
+      font-size: clamp(26px, 2.2vw, 32px);
+    }
+    .where {
+      margin: 2px 0 12px;
+    }
+    .drives {
+      margin-bottom: 14px;
+    }
+    .drives a {
+      padding: 6px 2px;
+    }
+    .min {
+      width: 2.8em;
+      font-size: 22px;
+    }
+    .from {
+      font-size: 13px;
+    }
+    .actions {
+      gap: 8px;
+    }
+    .actions :global(.btn) {
+      padding-top: 11px;
+      padding-bottom: 11px;
     }
   }
 
@@ -417,7 +496,7 @@
       grid-area: auto;
     }
     /* Map and panel share one width, so the panel's pointer sits right under the pin. */
-    .map,
+    .window,
     .panel {
       justify-self: center;
       width: min(720px, calc(100% - 2 * var(--pad)));
@@ -466,6 +545,15 @@
 
   /* ================= Phones ================= */
   @media (max-width: 600px) {
+    /* A tall map seen through a window that scrolls down with the drives and settles on Tavaro. */
+    .window {
+      height: 64svh;
+      overflow: hidden;
+      mask-image: linear-gradient(transparent, #000 7%, #000 93%, transparent);
+    }
+    .map {
+      animation: pan var(--pan-dur) cubic-bezier(0.45, 0, 0.55, 1) var(--pan-delay) forwards;
+    }
     .panel {
       grid-template-columns: 1fr;
     }
@@ -502,6 +590,14 @@
     .car,
     .replay {
       display: none;
+    }
+    .map {
+      animation: none;
+    }
+  }
+  @media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+    .map {
+      transform: translateY(calc(-100% + 64svh));
     }
   }
 }
