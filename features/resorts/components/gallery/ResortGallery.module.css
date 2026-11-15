@@ -1595,9 +1595,10 @@
   .stage:not([data-live]) *::after {
     animation-play-state: paused;
   }
-  /* The welcome's buttons appear once they can answer. */
+  /* The welcome's buttons appear once they can answer (until then they are also inert). Transparent rather
+     than hidden: a visibility change still mid-transition would block the focus they receive on appearing. */
   .page:not([data-ready]) .intro-actions {
-    visibility: hidden;
+    opacity: 0;
   }
   /* Slow connection, Data Saver or a low-memory phone: the strips stand still and scroll by hand. */
   .page[data-lite] :is(.col, .row) {

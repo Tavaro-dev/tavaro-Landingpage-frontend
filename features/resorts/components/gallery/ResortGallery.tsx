@@ -235,7 +235,7 @@ export function ResortGallery() {
       data-lite={ready === "lite" ? "" : undefined}
     >
       <h1 className={styles.hidden}>Photos &amp; Videos</h1>
-      {intro && <Intro leaving={intro === "leaving"} onEnter={enter} />}
+      {intro && <Intro leaving={intro === "leaving"} ready={ready !== null} onEnter={enter} />}
       <div className={styles.opening} data-zone="0">
         {stage(0)}
       </div>
@@ -337,7 +337,20 @@ const lanes = (photos: GalleryPhoto[], n: number) =>
   Array.from({ length: n }, (_, k) => photos.filter((_, i) => i % n === k));
 
 /** The welcome before the gallery: it says the page plays music and lets the visitor choose. */
-function Intro({ leaving, onEnter }: { leaving: boolean; onEnter: (withSound: boolean) => void }) {
+function Intro({
+  leaving,
+  ready,
+  onEnter,
+}: {
+  leaving: boolean;
+  /** The buttons are hidden until React can answer them; focus moves to the first once they show. */
+  ready: boolean;
+  onEnter: (withSound: boolean) => void;
+}) {
+  const on = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (ready) on.current?.focus();
+  }, [ready]);
   return (
     <div
       className={styles.intro}
@@ -369,8 +382,8 @@ function Intro({ leaving, onEnter }: { leaving: boolean; onEnter: (withSound: bo
           Our films carry their own soundtrack as you scroll: the wedding by day, the reception by night. You can
           turn it off at any time with the speaker button.
         </p>
-        <div className={styles["intro-actions"]}>
-          <button type="button" className={styles["intro-on"]} onClick={() => onEnter(true)} autoFocus>
+        <div className={styles["intro-actions"]} inert={!ready}>
+          <button ref={on} type="button" className={styles["intro-on"]} onClick={() => onEnter(true)}>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />
               <path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" />
