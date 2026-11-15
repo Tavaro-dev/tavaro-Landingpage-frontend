@@ -1,6 +1,5 @@
-import { GALLERY_COLLECTIONS, type GalleryPhoto } from "../../content/galleryPhotos";
+import type { GalleryPhoto } from "../../content/galleryPhotos";
 
 /** Pre-sized WebPs with content-hashed names (served as-is, cached for a year). */
 export const thumbSrc = (p: GalleryPhoto) => `/gallery/${p.c}/t/${p.f}.webp`;
 export const fullSrc = (p: GalleryPhoto) => `/gallery/${p.c}/${p.f}.webp`;
-export const collectionTitle = (id: string) => GALLERY_COLLECTIONS.find((c) => c.id === id)?.title ?? "";
