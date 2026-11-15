@@ -2,42 +2,6 @@
 
 @layer components {
 
-.gallery-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-
-.gallery-item {
-  overflow: hidden;
-  aspect-ratio: 3/4;
-  position: relative;
-}
-
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform var(--duration-card, 0.75s) var(--ease-luxury, var(--ease));
-}
-
-@media (hover: hover) and (pointer: fine) {
-.gallery-item:hover img {
-    transform: scale(1.04);
-  }
-}
-
-.gallery-item:global(.tall) {
-  grid-row: span 2;
-  aspect-ratio: 3/6.4;
-}
-
-@media (max-width: 860px) {
-.gallery-strip {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 .principles-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -48,10 +12,40 @@
 }
 
 .principle-item {
+  position: relative;
   grid-column: span 2;
   background: var(--surface);
   padding: 30px 26px;
-  transition: background 0.4s var(--ease);
+}
+
+/* Numbered principles: a display-font index above each label. */
+.numbered {
+  counter-reset: principle;
+}
+
+.numbered .principle-item::before {
+  counter-increment: principle;
+  content: counter(principle, decimal-leading-zero);
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 2.4vw, 34px);
+  line-height: 1;
+  color: var(--gold);
+}
+
+/* A gold rule draws along the top edge under the pointer. */
+.principle-item::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease-luxury);
 }
 
 .principles-grid .principle-item:nth-child(4):nth-last-child(2),
@@ -59,8 +53,10 @@
   grid-column: span 3;
 }
 
-.principle-item:hover {
-  background: var(--surface-2);
+@media (hover: hover) and (pointer: fine) {
+  .principle-item:hover::after {
+    transform: scaleX(1);
+  }
 }
 
 .principle-item :global(.eyebrow) {
@@ -136,33 +132,76 @@
   padding: 20px 0;
 }
 
-.gallery-item {
+/* Size the button to its label, and let a long one wrap on narrow screens rather than clip. */
+.residence-card-body :global(.btn) {
+  align-self: flex-start;
+  max-width: 100%;
+  white-space: normal !important;
+  text-align: left;
+}
+
+/* Photo beside text, used for the living, floor-plan and location sections. */
+.living-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(28px, 4.5vw, 72px);
+  align-items: center;
+}
+
+.living-split.flip {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+}
+
+.living-split.top {
+  align-items: start;
+}
+
+/* The photo holds its place while the list beside it scrolls. */
+.living-media.sticky {
+  position: sticky;
+  top: 110px;
+  aspect-ratio: 1/1;
+}
+
+.living-media {
   position: relative;
+  aspect-ratio: 4/3;
   overflow: hidden;
+  border-radius: var(--radius);
 }
 
-.gallery-item-caption {
-  position: absolute;
-  bottom: 14px;
-  left: 16px;
-  z-index: 2;
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--gold-light);
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+.living-media.portrait {
+  aspect-ratio: 9/10;
 }
 
-.gallery-item:hover .gallery-item-caption {
-  opacity: 1;
-  transform: translateY(0);
+.living-media img {
+  object-fit: cover;
+  transition: transform 1.4s var(--ease-luxury);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .living-split:hover .living-media img {
+    transform: scale(1.04);
+  }
 }
 
 @media (max-width: 900px) {
+.living-split,
+  .living-split.flip {
+    grid-template-columns: 1fr;
+  }
+
+.living-media,
+  .living-media.portrait {
+    aspect-ratio: 16/10;
+  }
+
+.living-media.sticky {
+    position: relative;
+    top: auto;
+    aspect-ratio: 16/10;
+  }
+
 .principles-grid {
     grid-template-columns: repeat(2, 1fr);
   }

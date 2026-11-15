@@ -132,7 +132,8 @@
 @media (max-width: 640px) {
   .explore-hero {
     min-height: 75vh;
-    padding-bottom: 40px;
+    /* Room for the slide switcher pinned to the bottom of the hero. */
+    padding-bottom: 76px;
   }
 }
 

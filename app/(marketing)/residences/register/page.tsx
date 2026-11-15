@@ -3,6 +3,7 @@ import heroPhoto from "@/public/images/heroes/residences-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { pageMetadata } from "@/lib/metadata";
 import ResidenceInterestForm from "@/features/residences/components/ResidenceInterestForm";
+import { ResidenceJourney } from "@/features/residences/components/Residence";
 
 export const metadata = pageMetadata({
   title: "Register Your Interest — Tavaro Residences | Tavaro",
@@ -41,12 +42,12 @@ export default function ResidencesRegisterPage() {
                 <br />
                 Bhairavi Nilayam
               </h2>
-              <p className="tw:mt-[18px] tw:leading-[1.8] tw:text-(color:--muted-on-dark)">
+              <p className="tw:mt-[18px] tw:leading-[1.8] tw:text-(color:--on-surface-muted)">
                 Whether you&apos;d like the brochure, pricing information, a private viewing or
                 simply a conversation with our team — we&apos;re here to help you understand which
                 residence is right for you.
               </p>
-              <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--muted-on-dark) tw:leading-[1.7]"
+              <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--on-surface-muted) tw:leading-[1.7]"
               >
                 Your enquiry is handled with complete discretion. We will never share your
                 information or contact you without your permission.
@@ -54,6 +55,20 @@ export default function ResidencesRegisterPage() {
             </div>
             <ResidenceInterestForm />
           </Reveal>
+        </div>
+      </section>
+
+      <section className="section on-panel" id="how-it-works">
+        <div className="container">
+          <ResidenceJourney
+            heading={
+              <>
+                What happens
+                <br />
+                after you register
+              </>
+            }
+          />
         </div>
       </section>
     </>

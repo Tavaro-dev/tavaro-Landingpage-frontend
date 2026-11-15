@@ -164,7 +164,7 @@ export function ResortGallery() {
     };
   }, [intro]);
 
-  // The gold pill slides to the current occasion.
+  // The gold rule slides to the current occasion.
   useEffect(() => {
     const place = () => {
       const chip = chips.current?.querySelector<HTMLElement>('[aria-current="true"]');
@@ -228,7 +228,7 @@ export function ResortGallery() {
           ref={chips}
           className={styles.chips}
           data-open={menu ? "" : undefined}
-          style={{ "--px": `${pill.x}px`, "--pw": `${pill.w}px` } as CSSProperties}
+          style={{ "--px": `${pill.x}px`, "--pw": pill.w } as CSSProperties}
         >
           {SECTIONS.map((s, i) => (
             <li key={s.id} className={i && s.theme !== SECTIONS[i - 1].theme ? styles.split : undefined}>

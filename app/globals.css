@@ -419,7 +419,6 @@ button,
   input[type="button"],
   input[type="submit"],
   .nav-cta,
-  .intent-pill,
   .toggle-btn,
   .things-filter-btn,
   .cinematic-enquire-btn,
@@ -541,13 +540,6 @@ button,
     font-size: 15px !important;
   }
 
-.intent-pill {
-    padding: 8px 12px !important;
-    font-size: 9px !important;
-    letter-spacing: 0.12em !important;
-    white-space: nowrap !important;
-  }
-
 .toggle-btn {
     padding: 9.5px 12px !important;
     font-size: 10.5px !important;
@@ -598,13 +590,6 @@ button,
     letter-spacing: 0.22em !important;
     gap: 12px !important;
     justify-content: center !important;
-    white-space: nowrap !important;
-  }
-
-.intent-pill {
-    padding: 7px 10px !important;
-    font-size: 8.5px !important;
-    letter-spacing: 0.09em !important;
     white-space: nowrap !important;
   }
 
@@ -3041,40 +3026,6 @@ img[data-nimg="fill"]:not(.tw\:object-contain):not([src*=".png"]) {
 
 
 
-
-/* Intent Pill Buttons (Register Form) */
-
-
-.intent-pill {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  padding: 10px 16px;
-  border: 1px solid var(--surface-line);
-  background: transparent;
-  color: var(--on-surface-muted);
-  cursor: pointer;
-  border-radius: var(--radius);
-  transition: border-color 0.3s var(--ease), color 0.3s var(--ease), background 0.3s var(--ease);
-}
-
-.intent-pill:hover {
-  border-color: var(--gold);
-  color: var(--on-surface);
-}
-
-.intent-pill.active {
-  border-color: var(--gold);
-  background: rgba(201, 164, 90, 0.12);
-  color: var(--gold-light);
-}
-
-.intent-pill:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 
 /* Responsive: Residences */
 

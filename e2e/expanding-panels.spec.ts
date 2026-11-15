@@ -39,7 +39,7 @@ test("Expanding panels scroll sequence", async ({ page }) => {
   // Test stage 0 (Dine)
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.1 * scrollDistance);
   await page.waitForTimeout(500);
-  let activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  let activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   console.log("At 10% progress:", activeText);
   expect(activeText).toBe("Dine");
 
@@ -51,28 +51,28 @@ test("Expanding panels scroll sequence", async ({ page }) => {
   await page.waitForTimeout(600);
   const actualY = await page.evaluate(() => window.scrollY);
   console.log("actual scrollY at 35%:", actualY);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   console.log("At 35% progress:", activeText);
   expect(activeText).toBe("Unwind");
 
   // Test stage 2 (Play)
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.6 * scrollDistance);
   await page.waitForTimeout(500);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   console.log("At 60% progress:", activeText);
   expect(activeText).toBe("Play");
 
   // Test stage 3 (Explore)
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.85 * scrollDistance);
   await page.waitForTimeout(500);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   console.log("At 85% progress:", activeText);
   expect(activeText).toBe("Explore");
 
   // Test manual selection via click
   await page.click(".showcase-tab-btn:has-text('Dine')");
   await page.waitForTimeout(800);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   console.log("After clicking Dine tab:", activeText);
   expect(activeText).toBe("Dine");
 });
@@ -100,29 +100,29 @@ test("Create Experience scroll sequence", async ({ page }) => {
   // Stage 0: Wellness
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.1 * scrollDistance);
   await page.waitForTimeout(500);
-  let activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  let activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   expect(activeText).toBe("Wellness");
 
   // Stage 1: Movement
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.35 * scrollDistance);
   await page.waitForTimeout(500);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   expect(activeText).toBe("Movement");
 
   // Stage 2: Create
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.6 * scrollDistance);
   await page.waitForTimeout(500);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   expect(activeText).toBe("Create");
 
   // Stage 3: Gather
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.85 * scrollDistance);
   await page.waitForTimeout(500);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   expect(activeText).toBe("Gather");
 
   // Click enquiry button in active panel
-  const enquireBtn = page.locator('[aria-expanded="true"][aria-label$="Category"] .showcase-enquire-btn');
+  const enquireBtn = page.locator('[data-stage][data-active="true"] .showcase-enquire-btn');
   await enquireBtn.click();
   await page.waitForTimeout(600);
   const modalHeader = page.getByRole('dialog').getByRole('heading', { name: /Arrange an Experience/i });
@@ -153,31 +153,31 @@ test("Mobile scroll-driven expanding panels sequence", async ({ page }) => {
   // Test stage 0 (Dine)
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.1 * scrollDistance);
   await page.waitForTimeout(500);
-  let activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  let activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   expect(activeText).toBe("Dine");
 
   // Test stage 1 (Unwind)
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.35 * scrollDistance);
   await page.waitForTimeout(500);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   expect(activeText).toBe("Unwind");
 
   // Test stage 2 (Play)
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.6 * scrollDistance);
   await page.waitForTimeout(500);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   expect(activeText).toBe("Play");
 
   // Test stage 3 (Explore)
   await page.evaluate((y) => window.scrollTo(0, y), trackStart + 0.85 * scrollDistance);
   await page.waitForTimeout(500);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   expect(activeText).toBe("Explore");
 
   // Test tap on Dine tab in top controls
   await page.click(".showcase-tab-btn:has-text('Dine')");
   await page.waitForTimeout(800);
-  activeText = await page.locator('[aria-expanded="true"][aria-label$="Category"] h3').innerText();
+  activeText = await page.locator('[data-stage][data-active="true"] h3').innerText();
   expect(activeText).toBe("Dine");
 });
 

@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
+
+/** The optimizer's copy sized to the screen (about 2x its width): the originals are up to 1.3 MB each. */
+const canvasSrc = (src: string) =>
+  getImageProps({ src, alt: "", width: Math.min(window.innerWidth, 960), height: 540 }).props.src;
 import styles from "./HeroSquareTilesBackground.module.css";
 
 export interface HeroSlideItem {
@@ -97,7 +101,7 @@ export function HeroSquareTilesBackground({
     slides.forEach((slide) => {
       if (!loadedImagesRef.current.has(slide.image)) {
         const img = new window.Image();
-        img.src = slide.image;
+        img.src = canvasSrc(slide.image);
         img.onload = () => {
           loadedImagesRef.current.set(slide.image, img);
           // Redraw static canvas if current image just loaded
@@ -388,7 +392,6 @@ export function HeroSquareTilesBackground({
                 aria-label={`Show ${slide.title} background`}
                 aria-current={isActive ? "true" : undefined}
               >
-                <span className={styles["hero-indicator-dot"]} />
                 <span>{slide.title}</span>
               </button>
             );

@@ -1,13 +1,16 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import styles from "../ExpandingPanelsShowcase.module.css";
 import type { ShowcaseCategory } from "../ExpandingPanelsShowcase";
 
-/** One category: a narrow spine when collapsed, a glass card of activity chips when active. */
+/**
+ * One moment on the stage: a full-bleed photo with its title and activities.
+ * All moments are stacked; only the active one is shown, and it fades and settles in.
+ */
 export function ShowcasePanel({
   cat,
   index,
   isActive,
-  onSelect,
   selectedChip,
   onChip,
   onEnquire,
@@ -15,7 +18,6 @@ export function ShowcasePanel({
   cat: ShowcaseCategory;
   index: number;
   isActive: boolean;
-  onSelect: () => void;
   selectedChip: string | null;
   onChip: (chip: string | null) => void;
   /** Create mode only: shows the enquiry button. */
@@ -24,86 +26,67 @@ export function ShowcasePanel({
   return (
     <div
       data-stage={index}
-      className={`${styles["showcase-panel"]} ${isActive ? "active" : ""}`}
-      onClick={onSelect}
-      tabIndex={0}
-      role="button"
-      aria-expanded={isActive}
-      aria-label={`${cat.title} Category`}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") onSelect();
-      }}
+      data-active={isActive}
+      className={styles["showcase-panel"]}
+      role="group"
+      aria-roledescription="moment"
+      aria-label={cat.title}
+      aria-hidden={!isActive}
+      inert={!isActive}
     >
       <div className={styles["showcase-panel-bg"]}>
         <Image
           src={cat.image}
           alt={cat.imageAlt}
           fill
-          sizes="(max-width: 900px) 100vw, 70vw"
+          sizes="(max-width: 900px) 100vw, 1360px"
           loading={index === 0 ? "eager" : undefined}
           className={styles["showcase-panel-image"]}
         />
         <div className={styles["showcase-panel-overlay"]} />
       </div>
 
-      <div className={styles["showcase-panel-collapsed"]}>
-        <span className={styles["showcase-collapsed-num"]}>{cat.number}</span>
-        <span className={styles["showcase-collapsed-label"]}>{cat.title}</span>
-        <span className={styles["showcase-collapsed-indicator"]} />
-      </div>
+      <span className={styles["showcase-numeral"]} aria-hidden="true">
+        {cat.number}
+      </span>
 
-      <div className={styles["showcase-panel-expanded"]}>
-        <div className={styles["showcase-glass-card"]}>
-          <div className={styles["showcase-card-header"]}>
-            <span className={styles["showcase-badge-pill"]}>
-              {cat.number} &bull; {cat.badge}
-            </span>
-            <span className="tw:text-[11px] tw:opacity-[0.65] tw:font-(family-name:--font-sans) tw:tracking-[0.08em]">
-              {cat.activities.length} Experiences
-            </span>
-          </div>
+      <div className={styles["showcase-panel-content"]}>
+        <span className={`${styles["showcase-kicker"]} ${styles.rise}`}>{cat.number}</span>
+        <h3 className={`${styles["showcase-card-title"]} ${styles.rise}`}>{cat.title}</h3>
+        {cat.tagline && <p className={`${styles["showcase-tagline"]} ${styles.rise}`}>{cat.tagline}</p>}
 
-          <h3 className={styles["showcase-card-title"]}>{cat.title}</h3>
-
-          <div className={styles["showcase-chips-wrap"]} role="list" aria-label={`${cat.title} activities`}>
-            {cat.activities.map((act) => {
-              const isSelected = selectedChip === act;
-              return (
+        <ul className={styles["showcase-chips-wrap"]} aria-label={`${cat.title} activities`}>
+          {cat.activities.map((act, i) => {
+            const isSelected = selectedChip === act;
+            return (
+              <li key={act} className={styles.rise} style={{ "--i": i } as CSSProperties}>
                 <button
-                  key={act}
                   type="button"
-                  tabIndex={isActive ? 0 : -1}
-                  className={`${styles["showcase-chip"]} ${isSelected ? "selected" : ""}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onChip(isSelected ? null : act);
-                  }}
+                  className={styles["showcase-chip"]}
+                  data-selected={isSelected}
+                  onClick={() => onChip(isSelected ? null : act)}
                   aria-pressed={isSelected}
                 >
-                  <span className={styles["showcase-chip-dot"]} />
-                  <span>{act}</span>
+                  <span className={styles["showcase-chip-dot"]} aria-hidden="true" />
+                  {act}
                 </button>
-              );
-            })}
-          </div>
+              </li>
+            );
+          })}
+        </ul>
 
-          {onEnquire && (
-            <div className={styles["showcase-card-actions"]}>
-              <button
-                type="button"
-                tabIndex={isActive ? 0 : -1}
-                className={`${styles["showcase-enquire-btn"]} showcase-enquire-btn`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEnquire();
-                }}
-              >
-                Enquire for {cat.title} &rarr;
-              </button>
-              <span className={styles["showcase-action-hint"]}>Arranged on request with our team</span>
-            </div>
-          )}
-        </div>
+        {onEnquire && (
+          <div className={`${styles["showcase-card-actions"]} ${styles.rise}`}>
+            <button
+              type="button"
+              className={`${styles["showcase-enquire-btn"]} showcase-enquire-btn`}
+              onClick={onEnquire}
+            >
+              Enquire for {cat.title} <span aria-hidden="true">&rarr;</span>
+            </button>
+            <span className={styles["showcase-action-hint"]}>Arranged on request with our team</span>
+          </div>
+        )}
       </div>
     </div>
   );

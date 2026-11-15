@@ -98,6 +98,7 @@ export function CreateExperienceView() {
               title: "Create Your Experience (On Request)",
               tagline:
                 "Arrange something special with our team.",
+              image: THINGS_TO_DO_DATA.explore.heroImage,
               primaryBtnText: "Enquire About an Experience",
               onPrimaryBtnClick: () => handleOpenEnquiry("General"),
               secondaryBtnText: "Explore at Your Own Pace",
@@ -114,7 +115,7 @@ export function CreateExperienceView() {
         />
 
         <StickyCta
-          text="Looking to arrange a bespoke on-request experience?"
+          text="Something special, on request."
           ctaLabel="Enquire on Request"
           ctaHref="#create-showcase"
           onCtaClick={() => handleOpenEnquiry("General")}

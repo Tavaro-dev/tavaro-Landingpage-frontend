@@ -19,76 +19,73 @@
   transition: opacity 0.8s ease;
 }
 
+/* Slide index: plain words on the photo, a gold rule drawn under the one showing. */
 .hero-subsection-indicators {
   position: absolute;
-  bottom: 24px;
+  bottom: 28px;
   right: clamp(20px, 4vw, 48px);
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(15, 13, 10, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  padding: 6px 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  gap: clamp(16px, 2vw, 28px);
 }
 
 .hero-indicator-btn {
+  position: relative;
   background: transparent;
   border: none;
   cursor: pointer;
   font-family: var(--font-sans, sans-serif);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.6);
-  padding: 4px 10px;
-  border-radius: 999px;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  padding: 8px 0;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+  transition: color 0.4s var(--ease-luxury, ease);
 }
 
-.hero-indicator-btn:hover {
-  color: #ffffff;
+.hero-indicator-btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: #c9a45a;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.6s var(--ease-luxury, ease);
 }
 
+.hero-indicator-btn:hover,
 .hero-indicator-btn:global(.active) {
   color: #ffffff;
-  background: rgba(197, 160, 89, 0.28);
-  border: 1px solid rgba(197, 160, 89, 0.6);
 }
 
-.hero-indicator-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  transition: all 0.3s ease;
+.hero-indicator-btn:global(.active)::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
-.hero-indicator-btn:global(.active) .hero-indicator-dot {
-  background: var(--gold, #c5a059);
-  transform: scale(1.4);
-  box-shadow: 0 0 8px rgba(197, 160, 89, 0.8);
+.hero-indicator-btn:focus-visible {
+  outline: 2px solid #c9a45a;
+  outline-offset: 3px;
 }
 
 @media (max-width: 640px) {
   .hero-subsection-indicators {
-    bottom: 16px;
-    right: 16px;
-    padding: 4px 8px;
-    gap: 4px;
+    bottom: 18px;
+    left: 20px;
+    right: 20px;
+    justify-content: space-between;
+    gap: 8px;
   }
 
   .hero-indicator-btn {
-    font-size: 9.5px;
-    padding: 3px 7px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
   }
 }
 

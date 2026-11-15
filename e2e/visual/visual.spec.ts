@@ -29,7 +29,7 @@ const DIALOGS: DialogCase[] = [
   { name: 'under-the-sky', card: mod('uts-modal-card'), path: '/experiences', open: btn(/UNDER THE SKY/) },
   {
     name: 'experience-enquiry', card: mod('exp-modal-card'), path: '/resorts/things-to-do/create',
-    open: async (p) => { await p.locator('[aria-expanded="true"][aria-label$="Category"] .showcase-enquire-btn').click(); },
+    open: async (p) => { await p.locator('[data-stage][data-active="true"] .showcase-enquire-btn').click(); },
   },
   {
     name: 'gallery-lightbox', card: mod('lightbox'), path: '/resorts/photos',

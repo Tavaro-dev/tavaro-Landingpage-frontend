@@ -119,21 +119,26 @@ export default function ResidenceInterestForm({
         <p className="eyebrow no-line tw:mb-[14px] tw:text-[10px]">
           I would like to (optional)
         </p>
-        <div className={styles["residence-intent-options"]}>
-          {INTENT_OPTIONS.map((opt) => (
-            <button
-              key={opt.value}
-              type="button"
-              className={`intent-pill${intents.includes(opt.value) ? " active" : ""}`}
-              onClick={() => toggleIntent(opt.value)}
-              disabled={submitted}
-              suppressHydrationWarning
-            >
-              {intents.includes(opt.value) ? "✓ " : ""}
-              {opt.label}
-            </button>
-          ))}
-        </div>
+        <ul className={styles["intent-list"]}>
+          {INTENT_OPTIONS.map((opt) => {
+            const on = intents.includes(opt.value);
+            return (
+              <li key={opt.value}>
+                <button
+                  type="button"
+                  className={styles.intent}
+                  aria-pressed={on}
+                  onClick={() => toggleIntent(opt.value)}
+                  disabled={submitted}
+                  suppressHydrationWarning
+                >
+                  <span className={styles["intent-mark"]} aria-hidden="true" />
+                  {opt.label}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
       </div>
 
       {submitError && (

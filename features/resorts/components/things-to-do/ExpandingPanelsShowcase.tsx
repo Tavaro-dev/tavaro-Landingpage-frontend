@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type CSSProperties } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./ExpandingPanelsShowcase.module.css";
 import { ShowcasePanel } from "./showcase/ShowcasePanel";
@@ -25,6 +26,8 @@ interface ExpandingPanelsShowcaseProps {
   closing: {
     title: string;
     tagline: string;
+    /** Backdrop of the closing band: a glimpse of where the primary button leads. */
+    image: string;
     primaryBtnText: string;
     primaryBtnHref?: string;
     onPrimaryBtnClick?: () => void;
@@ -33,6 +36,10 @@ interface ExpandingPanelsShowcaseProps {
   };
 }
 
+/**
+ * A pinned stage that plays the categories as moments while the visitor scrolls past it:
+ * the scroll distance is split into one band per category (see useScrollStage).
+ */
 export function ExpandingPanelsShowcase({
   mode,
   categories,
@@ -45,21 +52,13 @@ export function ExpandingPanelsShowcase({
 
   return (
     <div className={styles["expanding-showcase-wrapper"]}>
-
-      {/* DEDICATED OUTER SCROLL TRACK (PINS SHOWCASE BENEATH STICKY HEADER) */}
       <div ref={trackRef} className={styles["showcase-scroll-track"]} id="expanding-showcase-track">
-        {/* STICKY VISUAL SHOWCASE STAGE */}
         <div className={styles["showcase-sticky-stage"]}>
-          <div
-            className="container tw:flex tw:flex-col tw:h-full tw:w-full"
-          >
-            {/* HEADER CONTROLLER (CATEGORY QUICK NAVIGATION & OPTION BUTTON) */}
+          <div className={`container ${styles["showcase-inner"]}`}>
             <div className={styles["showcase-header"]}>
               <div className={styles["showcase-title-group"]}>
                 <span className={styles["showcase-eyebrow"]}>
-                  {mode === "explore"
-                    ? "Explore at Your Own Pace"
-                    : "Create Your Experience (On Request)"}
+                  {mode === "explore" ? "Explore at Your Own Pace" : "Create Your Experience (On Request)"}
                 </span>
                 <h2 className={styles["showcase-heading"]}>
                   {mode === "explore"
@@ -69,94 +68,81 @@ export function ExpandingPanelsShowcase({
               </div>
 
               <div className={styles["showcase-top-controls"]}>
-                {/* Manual Selection Tabs */}
-                <nav className={styles["showcase-tabs-nav"]} aria-label="Category tabs">
-                  {categories.map((cat, idx) => {
-                    const isActive = idx === activeIndex;
-                    return (
-                      <button
-                        key={cat.id}
-                        type="button"
-                        className={`${styles["showcase-tab-btn"]} showcase-tab-btn ${isActive ? "active" : ""}`}
-                        onClick={() => handleSelectCategory(idx)}
-                        aria-label={`Select ${cat.title}`}
-                        aria-current={isActive ? "true" : undefined}
-                      >
-                        <span>{cat.title}</span>
-                      </button>
-                    );
-                  })}
+                <nav className={styles["showcase-tabs-nav"]} aria-label="Categories">
+                  {categories.map((cat, idx) => (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      className={`${styles["showcase-tab-btn"]} showcase-tab-btn`}
+                      data-active={idx === activeIndex}
+                      onClick={() => handleSelectCategory(idx)}
+                      aria-current={idx === activeIndex ? "true" : undefined}
+                    >
+                      {cat.title}
+                    </button>
+                  ))}
                 </nav>
 
-                {mode === "explore" ? (
-                  <Link
-                    href="/resorts/things-to-do/create"
-                    className={`${styles["showcase-change-btn"]} showcase-change-btn`}
-                  >
-                    Create your experience <span className="btn-arrow" aria-hidden="true">→</span>
-                  </Link>
-                ) : (
-                  <Link
-                    href="/resorts/things-to-do/explore"
-                    className={`${styles["showcase-change-btn"]} showcase-change-btn`}
-                  >
-                    Discover <span className="btn-arrow" aria-hidden="true">→</span>
-                  </Link>
-                )}
+                <Link
+                  href={mode === "explore" ? "/resorts/things-to-do/create" : "/resorts/things-to-do/explore"}
+                  className={`${styles["showcase-change-btn"]} showcase-change-btn`}
+                >
+                  {mode === "explore" ? "Create your experience" : "Explore at your own pace"}{" "}
+                  <span className="btn-arrow" aria-hidden="true">→</span>
+                </Link>
               </div>
             </div>
 
-            {/* THE FOUR EXPANDING PANELS (DRIVEN BY SCROLL, CLICK, & SELECTION) */}
-            <div
-              className={styles["showcase-panels-container"]}
-              role="region"
-              aria-label="Experience Categories Showcase"
-            >
+            <div className={styles["showcase-panels-container"]} role="region" aria-label="Experience categories">
               {categories.map((cat, idx) => (
                 <ShowcasePanel
                   key={cat.id}
                   cat={cat}
                   index={idx}
                   isActive={idx === activeIndex}
-                  onSelect={() => handleSelectCategory(idx)}
                   selectedChip={selectedChip}
                   onChip={setSelectedChip}
                   onEnquire={mode === "create" ? () => onEnquireCategory?.(cat.title) : undefined}
                 />
               ))}
+
+              {/* Film strip of every moment: shows what is coming and jumps to it. */}
+              <div className={styles["showcase-strip"]}>
+                {categories.map((cat, idx) => (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    className={styles["showcase-strip-btn"]}
+                    data-active={idx === activeIndex}
+                    onClick={() => handleSelectCategory(idx)}
+                    aria-label={`Show ${cat.title}`}
+                    tabIndex={-1}
+                  >
+                    <Image src={cat.image} alt="" fill sizes="132px" className={styles["showcase-strip-img"]} />
+                    <span className={styles["showcase-strip-label"]}>{cat.title}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* STAGE FOOTER & STAGE PROGRESS INDICATORS */}
             <div className={styles["showcase-stage-footer"]}>
               <span className={styles["showcase-scroll-hint"]}>
-                <span>✦</span>
-                <span>Scroll down through all 4 categories, or select directly above</span>
+                <span className={styles["showcase-hint-line"]} aria-hidden="true" />
+                Scroll to drift between moments
               </span>
-
-              <div className={styles["showcase-progress-dots"]} role="tablist" aria-label="Showcase stage dots">
-                {categories.map((cat, idx) => {
-                  const isActive = idx === activeIndex;
-                  return (
-                    <button
-                      key={cat.id}
-                      type="button"
-                      className={`${styles["showcase-dot-btn"]} ${isActive ? "active" : ""}`}
-                      onClick={() => handleSelectCategory(idx)}
-                      aria-label={`Jump to stage ${idx + 1}: ${cat.title}`}
-                      aria-selected={isActive}
-                      role="tab"
-                    />
-                  );
-                })}
-              </div>
+              <span
+                className={styles["showcase-progress"]}
+                style={{ "--p": (activeIndex + 1) / categories.length } as CSSProperties}
+                aria-hidden="true"
+              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* MINIMAL LUXURY CLOSING BAR (Directly below scroll track, releases naturally) */}
       <div className="container">
         <div className={styles["showcase-closing-bar"]}>
+          <Image src={closing.image} alt="" fill sizes="(max-width: 1360px) 100vw, 1360px" className={styles["showcase-closing-img"]} />
           <div className={styles["showcase-closing-text"]}>
             <h3 className={styles["showcase-closing-title"]}>{closing.title}</h3>
             <p className={styles["showcase-closing-desc"]}>{closing.tagline}</p>
@@ -172,18 +158,12 @@ export function ExpandingPanelsShowcase({
                 {closing.primaryBtnText} &rarr;
               </button>
             ) : (
-              <Link
-                href={closing.primaryBtnHref || "#"}
-                className={`btn solid ${styles["showcase-closing-primary"]}`}
-              >
+              <Link href={closing.primaryBtnHref || "#"} className={`btn solid ${styles["showcase-closing-primary"]}`}>
                 {closing.primaryBtnText} &rarr;
               </Link>
             )}
 
-            <Link
-              href={closing.secondaryBtnHref}
-              className={`btn ${styles["showcase-closing-secondary"]}`}
-            >
+            <Link href={closing.secondaryBtnHref} className={`btn ${styles["showcase-closing-secondary"]}`}>
               {closing.secondaryBtnText}
             </Link>
           </div>

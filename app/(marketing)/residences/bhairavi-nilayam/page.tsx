@@ -7,9 +7,17 @@ import { SplitSection } from "@/components/shared/SplitSection";
 import { BandQuote } from "@/components/shared/BandQuote";
 import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
+import {
+  ResidenceFacts,
+  ResidenceJourney,
+  ResidenceMosaic,
+  RuledList,
+  type Fact,
+  type MosaicItem,
+  type RuledItem,
+} from "@/features/residences/components/Residence";
 import BhairavDynamicForm from "./BhairavDynamicForm";
 import styles from "../residences.module.css";
-import gstyles from "./page.module.css";
 
 export const metadata = pageMetadata({
   title: "Bhairavi Nilayam — A Private Residence Shaped by Light | Tavaro",
@@ -18,13 +26,20 @@ export const metadata = pageMetadata({
   path: "/residences/bhairavi-nilayam",
 });
 
-const RESIDENCE_SPECS = [
+const RESIDENCE_SPECS: Fact[] = [
   { label: "Residence", value: "Bhairavi Nilayam" },
   { label: "Area", value: "15,000 sq. ft." },
   { label: "Floors", value: "3" },
   { label: "Bedrooms", value: "5" },
   { label: "Landscape & Lawn", value: "Approx. 7,000 sq. ft." },
   { label: "Planning", value: "Vastu Compliant" },
+];
+
+const ARCHITECTURE_NOTES: RuledItem[] = [
+  { label: "Praveen Architects — West Hyderabad" },
+  { label: "Vastu conscious contemporary planning" },
+  { label: "North-facing glass wall — landscape connection" },
+  { label: "Double-height volumes across levels" },
 ];
 
 const DESIGN_PRINCIPLES = [
@@ -54,7 +69,7 @@ const DESIGN_PRINCIPLES = [
   },
 ];
 
-const LIVING_SPACES = [
+const LIVING_SPACES: RuledItem[] = [
   {
     label: "Dedicated Theatre Room",
     body: "An acoustically tailored private cinema designed for quiet evenings, screenings and shared family stories.",
@@ -89,34 +104,31 @@ const LIVING_SPACES = [
   },
 ];
 
-const GALLERY_IMAGES = [
+const GALLERY: MosaicItem[] = [
   {
     src: "/images/residences/bhairavi-nilayam-exterior.jpg",
-    alt: "Bhairavi Nilayam exterior",
-    placeholder: "ph-4",
-    tall: true,
+    alt: "Bhairavi Nilayam at dusk: the street front, landscaped edge and gated entrance",
     caption: "Architecture",
-  },
-  {
-    src: "/images/residences/bhairavi-nilayam-living-room.jpg",
-    alt: "Living space",
-    placeholder: "ph-2",
-    tall: false,
-    caption: "Interiors",
+    size: "lead",
   },
   {
     src: "/images/residences/bhairavi-nilayam-terrace.jpg",
-    alt: "Open terrace",
-    placeholder: "ph-1",
-    tall: false,
-    caption: "Terrace",
+    alt: "Lit terraces with planters and hanging greenery",
+    caption: "Terraces",
+    size: "tall",
+    position: "30% center",
+  },
+  {
+    src: "/images/residences/bhairavi-nilayam-living-room.jpg",
+    alt: "A living space at Bhairavi Nilayam",
+    caption: "Interiors",
+    size: "half",
   },
   {
     src: "/images/residences/bhairavi-nilayam-gate.jpg",
-    alt: "Gated, landscaped entrance",
-    placeholder: "ph-5",
-    tall: true,
-    caption: "Landscape",
+    alt: "The planted entrance and front steps at night",
+    caption: "Arrival",
+    size: "half",
   },
 ];
 
@@ -143,16 +155,16 @@ export default function BhairavPage() {
           { label: "Residence Details", href: "#details" },
         ]}
         quickNav={[
-          { label: "Architecture", href: "#architecture", icon: "facilities" },
+          { label: "At a glance", href: "#details", icon: "facilities" },
           { label: "Spaces", href: "#spaces", icon: "compass" },
           { label: "Gallery", href: "#gallery", icon: "photos" },
-          { label: "Details", href: "#details", icon: "location" },
+          { label: "How it works", href: "#how-it-works", icon: "location" },
           { label: "Enquire", href: "#register", icon: "mail" },
         ]}
       />
 
-      {/* Overview */}
-      <section className="section on-dark tight">
+      {/* Overview + at a glance */}
+      <section className="section on-dark tight" id="details">
         <div className="container">
           <Reveal className="two-col-text">
             <p className="eyebrow">The Residence</p>
@@ -163,6 +175,7 @@ export default function BhairavPage() {
               the life of its residents.
             </p>
           </Reveal>
+          <ResidenceFacts facts={RESIDENCE_SPECS} />
         </div>
       </section>
 
@@ -170,9 +183,9 @@ export default function BhairavPage() {
       <section className="offer-block on-panel" id="architecture">
         <div className="container">
           <SplitSection
-            placeholder="ph-4"
-            src="/images/residences/bhairavi-nilayam-exterior.jpg"
-            alt="Bhairavi Nilayam — architectural view"
+            placeholder="ph-5"
+            src="/images/residences/bhairavi-nilayam-gate.jpg"
+            alt="Bhairavi Nilayam's planted entrance, front steps and stone-clad facade at night"
           >
             <OfferHead
               num="The Architectural Story"
@@ -189,12 +202,9 @@ export default function BhairavPage() {
               architecture that is deeply responsive to its setting. The residence balances
               contemporary forms with traditional craft, vastu-conscious planning with modern living.
             </p>
-            <ul className="split-list tw:mt-[20px]">
-              <li>Praveen Architects — West Hyderabad</li>
-              <li>Vastu conscious contemporary planning</li>
-              <li>North-facing glass wall — landscape connection</li>
-              <li>Double-height volumes across levels</li>
-            </ul>
+            <div className="tw:mt-[20px]">
+              <RuledList items={ARCHITECTURE_NOTES} />
+            </div>
           </SplitSection>
         </div>
       </section>
@@ -212,7 +222,7 @@ export default function BhairavPage() {
               </>
             }
           />
-          <Reveal stagger className={`${styles["principles-grid"]} tw:mt-[40px]`}>
+          <Reveal stagger className={`${styles["principles-grid"]} ${styles.numbered} tw:mt-[40px]`}>
             {DESIGN_PRINCIPLES.map((p) => (
               <div className={styles["principle-item"]} key={p.label}>
                 <p className="eyebrow no-line">{p.label}</p>
@@ -223,66 +233,36 @@ export default function BhairavPage() {
         </div>
       </section>
 
-      {/* Living Spaces */}
+      {/* What living here includes */}
       <section className="section on-panel" id="spaces">
         <div className="container">
           <OfferHead
             num="Make Room for Life"
             heading={
               <>
-                Every mode of
+                What living
                 <br />
-                living, considered
+                here includes
               </>
             }
             lede="These spaces are not a list of amenities. They are the parts of a home designed around how a family actually lives — across mornings, evenings, weekends and years."
           />
-          <Reveal stagger className={`${gstyles["living-spaces-grid"]} tw:mt-[40px]`}>
-            {LIVING_SPACES.map((space) => (
-              <div className={gstyles["living-space-item"]} key={space.label}>
-                <p className="eyebrow no-line">{space.label}</p>
-                <p>{space.body}</p>
-              </div>
-            ))}
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Residence Details / Specs */}
-      <section className="section on-dark" id="details">
-        <div className="container">
-          <OfferHead
-            num="Residence Details"
-            heading={
-              <>
-                Specifications
-                <br />& overview
-              </>
-            }
-          />
-          <Reveal className={`${gstyles["residence-specs-block"]} tw:mt-[40px]`}>
-            <div className={gstyles["residence-specs-table"]}>
-              {RESIDENCE_SPECS.map((spec) => (
-                <div className={gstyles["spec-row"]} key={spec.label}>
-                  <span className={gstyles["spec-key"]}>{spec.label}</span>
-                  <span className={gstyles["spec-val"]}>{spec.value}</span>
-                </div>
-              ))}
-            </div>
-            <div className={`${gstyles["residence-specs-media"]} ph-4`}>
+          <Reveal className={`${styles["living-split"]} ${styles.top} tw:mt-[32px]`}>
+            <div className={`${styles["living-media"]} ${styles.sticky} ph-2`}>
               <Image
-                src="/images/residences/bhairavi-nilayam-exterior.jpg"
-                alt="Bhairavi Nilayam"
+                src="/images/residences/bhairavi-nilayam-living-room.jpg"
+                alt="A lounge with recliner seating and a glass wall onto a planted balcony"
                 fill
-                sizes="(min-width: 860px) 40vw, 100vw"
+                sizes="(min-width: 861px) 45vw, 100vw"
               />
             </div>
+            <RuledList items={LIVING_SPACES} />
           </Reveal>
         </div>
       </section>
 
       {/* Gallery */}
-      <section className="section on-panel" id="gallery">
+      <section className="section on-dark" id="gallery">
         <div className="container">
           <OfferHead
             num="Gallery"
@@ -294,22 +274,22 @@ export default function BhairavPage() {
               </>
             }
           />
-          <Reveal stagger className={`${styles["gallery-strip"]} tw:mt-[32px]`}>
-            {GALLERY_IMAGES.map((item) => (
-              <div
-                className={`${styles["gallery-item"]} ${item.tall ? "tall " : ""}${item.placeholder}`}
-                key={item.src}
-              >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  sizes="(min-width: 521px) 25vw, 50vw"
-                />
-                <span className={styles["gallery-item-caption"]}>{item.caption}</span>
-              </div>
-            ))}
-          </Reveal>
+          <ResidenceMosaic items={GALLERY} />
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="section on-panel" id="how-it-works">
+        <div className="container">
+          <ResidenceJourney
+            heading={
+              <>
+                From first enquiry
+                <br />
+                to a private viewing
+              </>
+            }
+          />
         </div>
       </section>
 
@@ -328,14 +308,9 @@ export default function BhairavPage() {
                 Bhairavi Nilayam is a residence of singular character. If it speaks to you, we&apos;d
                 like to speak with you — personally, discreetly, at your pace.
               </p>
-              <div className={`${gstyles["residence-details-mini"]} tw:mt-[28px]`}>
-                {RESIDENCE_SPECS.map((spec) => (
-                  <div key={spec.label} className={gstyles["mini-spec"]}>
-                    <span className={gstyles["mini-spec-label"]}>{spec.label}</span>
-                    <span className={gstyles["mini-spec-value"]}>{spec.value}</span>
-                  </div>
-                ))}
-              </div>
+              <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--on-surface-muted) tw:leading-[1.7]">
+                15,000 sq. ft. · 3 floors · 5 bedrooms · Approx. 7,000 sq. ft. of landscape and lawn.
+              </p>
             </div>
             <BhairavDynamicForm />
           </Reveal>

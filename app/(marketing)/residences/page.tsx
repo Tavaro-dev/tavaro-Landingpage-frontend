@@ -7,6 +7,7 @@ import { OfferHead } from "@/components/shared/OfferHead";
 import { BandQuote } from "@/components/shared/BandQuote";
 import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
+import { ResidenceJourney } from "@/features/residences/components/Residence";
 import styles from "./residences.module.css";
 
 export const metadata = pageMetadata({
@@ -59,7 +60,7 @@ export default function ResidencesPage() {
         lede="If earth is our only home, then the homes we create should help us live more consciously within it."
         ctas={[
           { label: "Explore Leela", href: "/residences/leela", solid: true },
-          { label: "Discover Bhairavi Nilayam", href: "/residences/bhairavi-nilayam" },
+          { label: "View Bhairavi Nilayam", href: "/residences/bhairavi-nilayam" },
         ]}
       />
 
@@ -75,16 +76,16 @@ export default function ResidencesPage() {
             </p>
           </Reveal>
           <Reveal className="tw:mt-[40px] tw:max-w-[68ch]">
-            <p className="tw:leading-[1.8] tw:text-(color:--muted-on-dark)">
+            <p className="tw:leading-[1.8] tw:text-(color:--on-surface-muted)">
               We believe a home should belong to its place, responding to its landscape, light,
               climate and surroundings rather than existing apart from them.
             </p>
-            <p className="tw:mt-[20px] tw:leading-[1.8] tw:text-(color:--muted-on-dark)">
+            <p className="tw:mt-[20px] tw:leading-[1.8] tw:text-(color:--on-surface-muted)">
               We design for the life that happens after the architecture is finished. For changing
               seasons, morning light, long conversations, quiet evenings, family gatherings and the
               many ways a home evolves with the people who inhabit it.
             </p>
-            <p className="tw:mt-[20px] tw:leading-[1.8] tw:text-(color:--muted-on-dark)">
+            <p className="tw:mt-[20px] tw:leading-[1.8] tw:text-(color:--on-surface-muted)">
               We believe true luxury is not simply having more space, but having the freedom to
               experience it in your own way. To open the home to nature, retreat into privacy,
               gather with others, or simply slow down.
@@ -110,7 +111,7 @@ export default function ResidencesPage() {
               </>
             }
           />
-          <Reveal stagger className={styles["principles-grid"]}>
+          <Reveal stagger className={`${styles["principles-grid"]} ${styles.numbered}`}>
             {PRINCIPLES.map((p) => (
               <div className={styles["principle-item"]} key={p.label}>
                 <p className="eyebrow no-line">{p.label}</p>
@@ -213,7 +214,23 @@ export default function ResidencesPage() {
         </div>
       </section>
 
-      <section className="section on-panel">
+      {/* How it works */}
+      <section className="section on-panel" id="how-it-works">
+        <div className="container">
+          <ResidenceJourney
+            heading={
+              <>
+                Registering interest,
+                <br />
+                step by step
+              </>
+            }
+            cta={{ label: "Register Interest", href: "/residences/register" }}
+          />
+        </div>
+      </section>
+
+      <section className="section on-dark">
         <BandQuote
           label="Register Your Interest"
           quote="A home is not just where you live. It is who you become when you're there."

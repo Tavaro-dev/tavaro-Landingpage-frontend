@@ -13,15 +13,11 @@ export function ThingsToDoSection() {
 
   return (
     <section className={`offer-block on-dark ${styles["things-to-do-section"]}`} id="things-to-do">
-
       <div className="container">
         <Reveal className={styles["ttd-header"]}>
-          <OfferHead
-            num="06 — Discovery & Activities"
-            heading="Things to Do at Tavaro"
-          />
-          <div className="tw:flex tw:justify-between tw:items-baseline tw:flex-wrap tw:gap-[16px] tw:mt-[12px]">
-            <p className="tw:text-(color:--on-surface-muted) tw:max-w-[600px] tw:m-[0] tw:text-[15px] tw:leading-[1.6]">
+          <OfferHead num="06 — Discovery & Activities" heading="Things to Do at Tavaro" />
+          <div className={styles["ttd-header-row"]}>
+            <p className={styles["ttd-intro"]}>
               Whether wandering through quiet mango trails at your own pace or arranging a curated
               experience with our team, discover two distinct ways to experience Tavaro.
             </p>
@@ -31,55 +27,31 @@ export function ThingsToDoSection() {
           </div>
         </Reveal>
 
-        <div className={styles["ttd-editorial-grid"]}>
-          {/* Option 1: Explore at Your Own Pace */}
-          <Reveal className={styles["ttd-editorial-card"]}>
-            <div className={styles["ttd-editorial-media"]}>
+        <Reveal stagger className={styles["ttd-editorial-grid"]}>
+          {[explore, create].map((path, i) => (
+            <Link key={path.id} href={path.route} className={styles["ttd-editorial-card"]}>
               <Image
-                src={explore.modalImage}
-                alt={explore.modalImageAlt}
+                src={path.modalImage}
+                alt={path.modalImageAlt}
                 fill
-                sizes="(max-width: 860px) 100vw, 50vw"
+                sizes="(max-width: 860px) 100vw, 680px"
                 className={styles["ttd-editorial-img"]}
               />
-            </div>
-            <div className={styles["ttd-editorial-body"]}>
-              <span className={styles["ttd-editorial-tag"]}>{explore.badge}</span>
-              <h3 className={styles["ttd-editorial-title"]}>{explore.title}</h3>
-              <p className={styles["ttd-editorial-desc"]}>{explore.cardDescription}</p>
-              <div className={styles["ttd-editorial-preview"]}>{explore.categoryPreview}</div>
-              <div className={styles["ttd-editorial-action"]}>
-                <Link href={explore.route} className="btn solid">
-                  {explore.ctaLabel} <span className="btn-arrow">→</span>
-                </Link>
+              <span className={styles["ttd-editorial-numeral"]} aria-hidden="true">
+                0{i + 1}
+              </span>
+              <div className={styles["ttd-editorial-body"]}>
+                <span className={styles["ttd-editorial-tag"]}>{path.badge}</span>
+                <h3 className={styles["ttd-editorial-title"]}>{path.title}</h3>
+                <p className={styles["ttd-editorial-desc"]}>{path.cardDescription}</p>
+                <span className={styles["ttd-editorial-preview"]}>{path.categoryPreview}</span>
+                <span className={styles["ttd-editorial-action"]}>
+                  {path.ctaLabel} <span className={styles["ttd-editorial-arrow"]} aria-hidden="true">→</span>
+                </span>
               </div>
-            </div>
-          </Reveal>
-
-          {/* Option 2: Create Your Experience */}
-          <Reveal className={styles["ttd-editorial-card"]}>
-            <div className={styles["ttd-editorial-media"]}>
-              <Image
-                src={create.modalImage}
-                alt={create.modalImageAlt}
-                fill
-                sizes="(max-width: 860px) 100vw, 50vw"
-                className={styles["ttd-editorial-img"]}
-              />
-            </div>
-            <div className={styles["ttd-editorial-body"]}>
-              <span className={styles["ttd-editorial-tag"]}>{create.badge}</span>
-              <h3 className={styles["ttd-editorial-title"]}>{create.title}</h3>
-              <p className={styles["ttd-editorial-desc"]}>{create.cardDescription}</p>
-              <div className={styles["ttd-editorial-preview"]}>{create.categoryPreview}</div>
-              <div className={styles["ttd-editorial-action"]}>
-                <Link href={create.route} className="btn solid">
-                  {create.ctaLabel} <span className="btn-arrow">→</span>
-                </Link>
-              </div>
-            </div>
-          </Reveal>
-        </div>
+            </Link>
+          ))}
+        </Reveal>
       </div>
     </section>
   );

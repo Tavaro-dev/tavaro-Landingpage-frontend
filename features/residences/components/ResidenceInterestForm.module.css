@@ -2,10 +2,118 @@
 
 @layer components {
 
-.residence-intent-options {
+/* Optional intents as a ruled two-column list with gold diamond markers. */
+.intent-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+}
+
+.intent-list li {
+  position: relative;
+  border-bottom: 1px solid var(--surface-line);
+}
+
+.intent-list li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-luxury);
+  pointer-events: none;
+}
+
+.intent-list li:has([aria-pressed="true"])::after {
+  transform: scaleX(1);
+}
+
+.intent {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  color: var(--on-surface-muted);
+  cursor: pointer;
+  /* List lines, not call-to-action buttons: opt out of the site-wide one-line rule. */
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+  transition: transform 0.4s var(--ease-luxury);
+}
+
+.intent[aria-pressed="true"] {
+  color: var(--on-surface);
+}
+
+.intent:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.intent:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.intent-mark {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border: 1px solid var(--gold);
+  transform: rotate(45deg);
+  transition: transform 0.4s var(--ease-luxury);
+}
+
+/* The fill fades in as its own layer so only opacity animates. */
+.intent-mark::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--gold);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-luxury);
+}
+
+.intent[aria-pressed="true"] .intent-mark::after {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .intent:not(:disabled):hover {
+    transform: translateX(4px);
+    color: var(--on-surface);
+  }
+
+  .intent:not(:disabled):hover .intent-mark {
+    transform: rotate(225deg);
+  }
+
+  .intent-list li:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .intent-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 }

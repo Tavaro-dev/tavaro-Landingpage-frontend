@@ -128,7 +128,7 @@ test.describe('Navigation Smoke tests', () => {
     await expect(page.locator('[aria-pressed]', { hasText: 'Private Dining' })).toBeVisible();
 
     // Enquire about experience CTA
-    const arrangeBtn = page.locator('[aria-expanded="true"][aria-label$="Category"] .showcase-enquire-btn');
+    const arrangeBtn = page.locator('[data-stage][data-active="true"] .showcase-enquire-btn');
     await expect(arrangeBtn).toBeVisible();
     await arrangeBtn.click();
 

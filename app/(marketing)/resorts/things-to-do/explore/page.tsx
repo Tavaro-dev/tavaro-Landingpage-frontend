@@ -92,6 +92,7 @@ export default function ExploreAtYourOwnPacePage() {
               title: "Explore at Your Own Pace",
               tagline:
                 "Wander, dine, swim, play and unwind — at your own rhythm.",
+              image: THINGS_TO_DO_DATA.create.heroImage,
               primaryBtnText: "Create Your Experience (On Request)",
               primaryBtnHref: "/resorts/things-to-do/create",
               secondaryBtnText: "Resorts Overview",
@@ -101,7 +102,7 @@ export default function ExploreAtYourOwnPacePage() {
         </div>
 
         <StickyCta
-          text="Ready to experience Tavaro at your own rhythm?"
+          text="Tavaro, at your own rhythm."
           ctaLabel="Book Your Stay"
           ctaHref="/contact"
         />

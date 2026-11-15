@@ -8,6 +8,8 @@ function headerHeight() {
 /** Where the track pins under the header, and how far it scrolls while pinned. */
 function trackGeometry(track: HTMLElement) {
   const headerH = headerHeight();
+  // The stage pins right under the header, whose height differs by breakpoint.
+  track.style.setProperty("--header-h", `${headerH}px`);
   const scrollTop = window.scrollY || document.documentElement.scrollTop;
   const start = track.getBoundingClientRect().top + scrollTop - headerH;
   const distance = track.offsetHeight - (window.innerHeight - headerH);

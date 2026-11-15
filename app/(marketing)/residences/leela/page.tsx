@@ -4,13 +4,20 @@ import { PageHero } from "@/components/shared/PageHero";
 import heroPhoto from "@/public/images/heroes/residences-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
-import { SplitSection } from "@/components/shared/SplitSection";
 import { BandQuote } from "@/components/shared/BandQuote";
 import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
+import {
+  ResidenceFacts,
+  ResidenceJourney,
+  ResidenceMosaic,
+  RuledList,
+  type Fact,
+  type MosaicItem,
+  type RuledItem,
+} from "@/features/residences/components/Residence";
 import LeelaDynamicForm from "./LeelaDynamicForm";
 import styles from "../residences.module.css";
-import gstyles from "./page.module.css";
 
 export const metadata = pageMetadata({
   title: "Leela by Tavaro Residences — A Home Shaped by Stillness | Tavaro",
@@ -19,42 +26,13 @@ export const metadata = pageMetadata({
   path: "/residences/leela",
 });
 
-const GALLERY_IMAGES = [
-  {
-    src: "/images/residences/leela-exterior.jpg",
-    alt: "Architecture — Leela by Tavaro Residences",
-    placeholder: "ph-2",
-    tall: true,
-    caption: "Architecture",
-  },
-  {
-    src: "/images/residences/leela-living-room.jpg",
-    alt: "Interiors — living room",
-    placeholder: "ph-3",
-    tall: false,
-    caption: "Interiors",
-  },
-  {
-    src: "/images/residences/leela-elevation.jpg",
-    alt: "Architecture — the full elevation",
-    placeholder: "ph-5",
-    tall: true,
-    caption: "Landscape",
-  },
-  {
-    src: "/images/residences/leela-detail.jpg",
-    alt: "Details — materiality and craft",
-    placeholder: "ph-4",
-    tall: false,
-    caption: "Details",
-  },
-  {
-    src: "/images/residences/leela-terrace.jpg",
-    alt: "Terrace — open-air living",
-    placeholder: "ph-1",
-    tall: false,
-    caption: "Terrace",
-  },
+const FACTS: Fact[] = [
+  { label: "Residence", value: "Leela by Tavaro Residences" },
+  { label: "Configuration", value: "Curated multi-level layouts" },
+  { label: "Floor plans", value: "Typical, Terrace & Sky Deck" },
+  { label: "Spatial models", value: "Isometric & 3D volumetric" },
+  { label: "Orientation", value: "Solar & wind-path aligned" },
+  { label: "Area information", value: "Shared in the brochure" },
 ];
 
 const ARCHITECTURAL_PRINCIPLES = [
@@ -77,6 +55,89 @@ const ARCHITECTURAL_PRINCIPLES = [
   {
     label: "Age with Life",
     body: "Designed with enduring natural materials and flexible spaces that become more meaningful as generations inhabit them.",
+  },
+];
+
+const LIVING: RuledItem[] = [
+  {
+    label: "Refined contemporary interiors",
+    body: "Contemporary detailing balanced with a deep relationship to nature.",
+  },
+  {
+    label: "Natural textures, honest finishes",
+    body: "Materials chosen for how they age: warm, honest and quietly luxurious.",
+  },
+  {
+    label: "Light through considered openings",
+    body: "Large openings bring in light that changes through the day.",
+  },
+  {
+    label: "Indoor–outdoor connection",
+    body: "Deep perimeter verandas and terraces open the home to the landscape.",
+  },
+  {
+    label: "Room to retreat",
+    body: "Private family sanctuaries buffered from entertaining zones.",
+  },
+  {
+    label: "Wellbeing built in",
+    body: "Movement, stillness, light and green in the daily rhythm of the home.",
+  },
+];
+
+const PLANS: RuledItem[] = [
+  {
+    label: "Typical floor plan — Living & bedroom suites",
+    body: "Generous social living pavilions opening onto deep perimeter verandas, with private family sanctuaries buffered from entertaining zones.",
+  },
+  {
+    label: "Terrace plan — Sky pavilion & landscape deck",
+    body: "An open-to-sky entertaining terrace with shaded pergolas, lush planters and panoramic views of morning sun and twilight breezes.",
+  },
+  {
+    label: "Isometric & 3D plans — Volumetric flow",
+    body: "Double-height light shafts, cross-ventilation pathways and intuitive circulation connecting every level.",
+  },
+];
+
+const PROXIMITY: RuledItem[] = [
+  { label: "Outer Ring Road access", meta: "5 min" },
+  { label: "Gachibowli", meta: "10 min" },
+  { label: "Kokapet Financial District", meta: "12 min" },
+  { label: "HITEC City", meta: "18 min" },
+  { label: "Rajiv Gandhi International Airport", meta: "25 min" },
+];
+
+const GALLERY: MosaicItem[] = [
+  {
+    src: "/images/residences/leela-exterior.jpg",
+    alt: "Leela's terraces, glass balustrades and hanging greenery among the trees",
+    caption: "Architecture",
+    size: "lead",
+  },
+  {
+    src: "/images/residences/leela-elevation.jpg",
+    alt: "The full elevation of Leela at dusk, with its curved stone facade and roof canopy",
+    caption: "Elevation",
+    size: "tall",
+  },
+  {
+    src: "/images/residences/leela-living-room.jpg",
+    alt: "A Leela living room with pale stone floors and soft seating",
+    caption: "Interiors",
+    size: "third",
+  },
+  {
+    src: "/images/residences/leela-detail.jpg",
+    alt: "Material detail: timber, stone and greenery at Leela",
+    caption: "Details",
+    size: "third",
+  },
+  {
+    src: "/images/residences/leela-terrace.jpg",
+    alt: "Leela's lit terraces at dusk",
+    caption: "Terraces",
+    size: "third",
   },
 ];
 
@@ -103,16 +164,16 @@ export default function LeelaPage() {
           { label: "View Floor Plans", href: "#floor-plans" },
         ]}
         quickNav={[
-          { label: "Architecture", href: "#architecture", icon: "facilities" },
-          { label: "Floor Plans", href: "#floor-plans", icon: "location" },
-          { label: "Interiors", href: "#interiors", icon: "photos" },
-          { label: "Gallery", href: "#gallery", icon: "compass" },
+          { label: "At a glance", href: "#overview", icon: "facilities" },
+          { label: "Floor Plans", href: "#floor-plans", icon: "compass" },
+          { label: "Gallery", href: "#gallery", icon: "photos" },
           { label: "Location", href: "#location", icon: "location" },
+          { label: "How it works", href: "#how-it-works", icon: "mail" },
         ]}
       />
 
-      {/* A. The Residence Overview */}
-      <section className="section on-dark tight">
+      {/* A. Overview + at a glance */}
+      <section className="section on-dark tight" id="overview">
         <div className="container">
           <Reveal className="two-col-text">
             <p className="eyebrow">The Residence</p>
@@ -122,6 +183,7 @@ export default function LeelaPage() {
               gathered with people you love.
             </p>
           </Reveal>
+          <ResidenceFacts facts={FACTS} />
         </div>
       </section>
 
@@ -139,7 +201,7 @@ export default function LeelaPage() {
             }
             lede="Each of Tavaro's residential principles is expressed through Leela's architecture — in the way it meets its landscape, handles light and creates space for living."
           />
-          <Reveal stagger className={`${styles["principles-grid"]} tw:mt-[40px]`}>
+          <Reveal stagger className={`${styles["principles-grid"]} ${styles.numbered} tw:mt-[40px]`}>
             {ARCHITECTURAL_PRINCIPLES.map((p) => (
               <div className={styles["principle-item"]} key={p.label}>
                 <p className="eyebrow no-line">{p.label}</p>
@@ -150,8 +212,37 @@ export default function LeelaPage() {
         </div>
       </section>
 
-      {/* C. Floor Plans */}
-      <section className="section on-dark" id="floor-plans">
+      {/* C. What living here includes */}
+      <section className="section on-dark" id="interiors">
+        <div className="container">
+          <Reveal className={styles["living-split"]}>
+            <div className={`${styles["living-media"]} ph-3`}>
+              <Image
+                src="/images/residences/leela-living-room.jpg"
+                alt="Leela interiors — a light-filled living space"
+                fill
+                sizes="(min-width: 861px) 45vw, 100vw"
+              />
+            </div>
+            <div>
+              <span className="offer-num">Living at Leela</span>
+              <h2 className="display-2 tw:mt-[18px]">
+                What living
+                <br />
+                here includes
+              </h2>
+              <p className="tw:mt-[18px] tw:mb-[24px] tw:max-w-[52ch] tw:text-(color:--on-surface-muted) tw:leading-[1.75]">
+                Leela&apos;s interiors balance refined contemporary detailing with a deep relationship
+                to nature. Each space is designed for the life that happens within it.
+              </p>
+              <RuledList items={LIVING} columns={2} />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* D. Floor Plans */}
+      <section className="section on-panel" id="floor-plans">
         <div className="container">
           <OfferHead
             num="Floor Plans"
@@ -162,116 +253,28 @@ export default function LeelaPage() {
                 planned spaces
               </>
             }
-            lede="Floor-wise plans, typical floor plan, terrace plan and 3D volumetric views — each level considered for orientation, privacy and unhindered connection to nature."
+            lede="Each level considered for orientation, privacy and unhindered connection to nature."
           />
-
-          {/* Plan categories overview */}
-          <Reveal stagger className={`${styles["principles-grid"]} tw:mt-[40px] tw:mb-[32px]`}>
-            <div className={styles["principle-item"]}>
-              <p className="eyebrow no-line tw:text-(color:--gold)">
-                01 — Typical Floor Plan
-              </p>
-              <p className="tw:mt-[8px] tw:font-[500] tw:text-(color:--on-surface)">
-                Living &amp; Bedroom Suites
-              </p>
-              <p className="tw:mt-[8px]">
-                Generous social living pavilions seamlessly opening onto deep perimeter verandas, with private family sanctuaries buffered from entertaining zones.
-              </p>
+          <Reveal className={`${styles["living-split"]} ${styles.flip} tw:mt-[32px]`}>
+            <div className={`${styles["living-media"]} ${styles.portrait} ph-5`}>
+              <Image
+                src="/images/residences/leela-elevation.jpg"
+                alt="The full elevation of Leela, floor by floor"
+                fill
+                sizes="(min-width: 861px) 40vw, 100vw"
+              />
             </div>
-            <div className={styles["principle-item"]}>
-              <p className="eyebrow no-line tw:text-(color:--gold)">
-                02 — Terrace Plan
+            <div>
+              <RuledList items={PLANS} />
+              <p className="tw:mt-[24px] tw:max-w-[56ch] tw:text-[13.5px] tw:leading-[1.7] tw:text-(color:--on-surface-muted)">
+                Detailed architectural plans, including floor-wise layouts, dimensioned room
+                configurations, terrace layouts and orientation studies, are shared on enquiry.
               </p>
-              <p className="tw:mt-[8px] tw:font-[500] tw:text-(color:--on-surface)">
-                Sky Pavilion &amp; Landscape Deck
-              </p>
-              <p className="tw:mt-[8px]">
-                Open-to-sky entertaining terrace with shaded pergolas, lush planters, and panoramic vistas celebrating morning sun and twilight breezes.
-              </p>
-            </div>
-            <div className={styles["principle-item"]}>
-              <p className="eyebrow no-line tw:text-(color:--gold)">
-                03 — Isometric &amp; 3D Plans
-              </p>
-              <p className="tw:mt-[8px] tw:font-[500] tw:text-(color:--on-surface)">
-                Volumetric Spatial Flow
-              </p>
-              <p className="tw:mt-[8px]">
-                Double-height light shafts, deliberate thermal cross-ventilation pathways, and intuitive circulation connecting every level.
-              </p>
+              <Link href="#register" className="btn solid tw:mt-[24px]">
+                Request floor plans <span className="btn-arrow">→</span>
+              </Link>
             </div>
           </Reveal>
-
-          <Reveal className={gstyles["floor-plan-display"]}>
-            <div className={`${gstyles["floor-plan-placeholder"]} ph-2`}>
-              <div className={gstyles["floor-plan-overlay"]}>
-                <p className="eyebrow no-line tw:text-(color:--gold-light)">
-                  Detailed Architectural Plans &amp; Brochure
-                </p>
-                <p className="tw:mt-[10px] tw:text-[13px] tw:text-(color:--muted-on-dark) tw:max-w-[46ch] tw:mx-auto">
-                  Comprehensive architectural schematics including floor-wise layouts, dimensioned room configurations, terrace layouts, and orientation studies are available upon enquiry.
-                </p>
-                <Link href="#register" className="btn solid tw:mt-[22px]">
-                  Request Complete Floor Plans <span className="btn-arrow">→</span>
-                </Link>
-              </div>
-            </div>
-            <div className={gstyles["floor-plan-specs"]}>
-              <div className={gstyles["spec-item"]}>
-                <span className={gstyles["spec-label"]}>Configuration</span>
-                <span className={gstyles["spec-value"]}>Curated multi-level layouts</span>
-              </div>
-              <div className={gstyles["spec-item"]}>
-                <span className={gstyles["spec-label"]}>Floor Plans</span>
-                <span className={gstyles["spec-value"]}>Typical, Terrace &amp; Sky Deck</span>
-              </div>
-              <div className={gstyles["spec-item"]}>
-                <span className={gstyles["spec-label"]}>Spatial Models</span>
-                <span className={gstyles["spec-value"]}>Isometric &amp; 3D Volumetric</span>
-              </div>
-              <div className={gstyles["spec-item"]}>
-                <span className={gstyles["spec-label"]}>Orientation</span>
-                <span className={gstyles["spec-value"]}>Solar &amp; wind-path aligned</span>
-              </div>
-              <div className={gstyles["spec-item"]}>
-                <span className={gstyles["spec-label"]}>Area Information</span>
-                <span className={gstyles["spec-value"]}>Provided in brochure</span>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* D. Interiors */}
-      <section className="offer-block on-panel" id="interiors">
-        <div className="container">
-          <SplitSection
-            placeholder="ph-2"
-            src="/images/residences/leela-living-room.jpg"
-            alt="Leela interiors — living space"
-          >
-            <OfferHead
-              num="Interiors"
-              heading={
-                <>
-                  Form, function
-                  <br />
-                  and lived beauty
-                </>
-              }
-            />
-            <p>
-              Leela&apos;s interiors balance refined contemporary detailing with a deep relationship
-              to nature. Materials are chosen for how they age — warm, honest and quietly luxurious.
-              Each space is designed for the life that happens within it.
-            </p>
-            <ul className="split-list tw:mt-[20px]">
-              <li>Refined contemporary materiality</li>
-              <li>Natural textures and honest finishes</li>
-              <li>Generous light through considered openings</li>
-              <li>Indoor — outdoor connection throughout</li>
-            </ul>
-          </SplitSection>
         </div>
       </section>
 
@@ -288,22 +291,7 @@ export default function LeelaPage() {
               </>
             }
           />
-          <Reveal stagger className={`${styles["gallery-strip"]} tw:mt-[32px]`}>
-            {GALLERY_IMAGES.map((item) => (
-              <div
-                className={`${styles["gallery-item"]} ${item.tall ? "tall " : ""}${item.placeholder}`}
-                key={item.src}
-              >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  sizes="(min-width: 521px) 25vw, 50vw"
-                />
-                <span className={styles["gallery-item-caption"]}>{item.caption}</span>
-              </div>
-            ))}
-          </Reveal>
+          <ResidenceMosaic items={GALLERY} />
         </div>
       </section>
 
@@ -321,36 +309,19 @@ export default function LeelaPage() {
             }
             lede="Leela is positioned to offer genuine connection to nature while remaining close to the rhythms of city life."
           />
-          <Reveal className={`${gstyles["location-proximity-grid"]} tw:mt-[40px]`}>
-            <div className={`${gstyles["proximity-map-placeholder"]} ph-1`}>
-              <div className={gstyles["proximity-map-label"]}>
-                <p className="eyebrow no-line tw:text-(color:--gold-light)">
-                  Location
-                </p>
-                <p className="tw:text-[12px] tw:text-(color:--muted-on-dark) tw:mt-[6px]">
-                  Interactive map available on enquiry
-                </p>
-              </div>
+          <Reveal className={`${styles["living-split"]} tw:mt-[32px]`}>
+            <div className={`${styles["living-media"]} ph-1`}>
+              <Image
+                src="/images/residences/leela-terrace.jpg"
+                alt="Leela's terraces at dusk, open to the sky"
+                fill
+                sizes="(min-width: 861px) 45vw, 100vw"
+              />
             </div>
-            <div className={gstyles["proximity-list"]}>
-              <p
-                className="eyebrow no-line tw:mb-[20px] tw:text-(color:--on-surface-muted)"
-              >
-                Key Destinations
-              </p>
-              {[
-                { place: "Kokapet Financial District", time: "12 min" },
-                { place: "HITEC City", time: "18 min" },
-                { place: "Rajiv Gandhi International Airport", time: "25 min" },
-                { place: "Gachibowli", time: "10 min" },
-                { place: "Outer Ring Road Access", time: "5 min" },
-              ].map((item) => (
-                <div className={gstyles["proximity-item"]} key={item.place}>
-                  <span className={gstyles["proximity-place"]}>{item.place}</span>
-                  <span className={gstyles["proximity-time"]}>{item.time}</span>
-                </div>
-              ))}
-              <p className="tw:text-[11px] tw:text-(color:--muted-on-dark) tw:mt-[16px]">
+            <div>
+              <p className="eyebrow no-line tw:mb-[16px]">Key destinations</p>
+              <RuledList items={PROXIMITY} />
+              <p className="tw:text-[12px] tw:text-(color:--on-surface-muted) tw:mt-[16px]">
                 Travel times are indicative. Verified times available on request.
               </p>
             </div>
@@ -358,8 +329,23 @@ export default function LeelaPage() {
         </div>
       </section>
 
-      {/* G. Register Your Interest */}
-      <section className="section on-dark" id="register">
+      {/* G. How it works */}
+      <section className="section on-dark" id="how-it-works">
+        <div className="container">
+          <ResidenceJourney
+            heading={
+              <>
+                From first enquiry
+                <br />
+                to a private viewing
+              </>
+            }
+          />
+        </div>
+      </section>
+
+      {/* H. Register Your Interest */}
+      <section className="section on-panel" id="register">
         <div className="container">
           <Reveal className="split">
             <div className="split-body">
@@ -371,7 +357,7 @@ export default function LeelaPage() {
                 Tell us what you&apos;d like to know. We&apos;ll follow up personally and without
                 pressure — a conversation, not a sales call.
               </p>
-              <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--muted-on-dark) tw:leading-[1.7]">
+              <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--on-surface-muted) tw:leading-[1.7]">
                 Whether you&apos;d like the brochure, pricing information, a private viewing or simply
                 a conversation with our team — we&apos;re here to help you understand if Leela is
                 right for you.
@@ -383,7 +369,7 @@ export default function LeelaPage() {
         </div>
       </section>
 
-      <section className="section on-panel">
+      <section className="section on-dark">
         <BandQuote
           label="Tavaro Residences"
           quote="A home shaped by stillness, light and the way you choose to live."
