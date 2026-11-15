@@ -17,6 +17,8 @@ type DialogCase = { name: string; path: string; card: string; open: (p: Page) =>
 // CSS Module classes are hashed as `<hash>_<name>`; match the name at a class boundary.
 const mod = (c: string) => `[class$="_${c}"], [class*="_${c} "]`;
 const btn = (name: RegExp) => async (p: Page) => { await p.getByRole('button', { name }).first().click(); };
+// The photos page opens with a welcome that asks about sound; answering it parts it over 1.6s.
+const enterGallery = async (p: Page) => { await p.getByRole('button', { name: 'Enter without sound' }).click(); await p.clock.runFor(2000); };
 
 const DIALOGS: DialogCase[] = [
   { name: 'plan-event', card: '.event-modal-card', path: '/resorts', open: btn(/Plan Your Event/) },
@@ -31,8 +33,10 @@ const DIALOGS: DialogCase[] = [
   },
   {
     name: 'gallery-lightbox', card: mod('lightbox'), path: '/resorts/photos',
-    open: async (p) => { await p.getByRole('button', { name: /^View photo 1 of/ }).click(); },
+    // The first photo drifts under the see-through navbar, so open it from the keyboard.
+    open: async (p) => { await enterGallery(p); await p.getByRole('button', { name: /^View photo 1 of/ }).first().focus(); await p.keyboard.press('Enter'); },
   },
+  { name: 'gallery-intro', card: mod('intro-body'), path: '/resorts/photos', open: async () => {} },
 ];
 
 async function settle(page: Page) {
@@ -58,6 +62,7 @@ for (const vp of [{ tag: 'desktop', width: 1280, height: 800 }, { tag: 'mobile',
     for (const path of PAGES) {
       test(`page ${path}`, async ({ page }) => {
         await load(page, path);
+        if (path === '/resorts/photos') await enterGallery(page);
         // Scroll through so IntersectionObserver reveals fire, then back to top.
         await page.evaluate(async () => {
           for (let y = 0; y < document.body.scrollHeight; y += 400) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 0)); }

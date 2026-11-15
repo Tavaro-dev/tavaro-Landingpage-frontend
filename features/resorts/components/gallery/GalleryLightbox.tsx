@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import { Modal } from "@/components/ui/Modal";
 import type { GalleryPhoto } from "../../content/galleryPhotos";
-import { collectionTitle, type GalleryFilm } from "../../content/galleryCollections";
+import { collectionTitle } from "../../content/galleryCollections";
 import { fullSrc, thumbSrc } from "./paths";
 import styles from "./GalleryLightbox.module.css";
 
@@ -91,30 +91,6 @@ export function GalleryLightbox({ photos, index, onIndex, onClose }: Props) {
             </button>
           </>
         )}
-      </div>
-    </Modal>
-  );
-}
-
-/** Plays a film full-screen, with sound and controls. */
-export function FilmLightbox({ film, onClose }: { film: GalleryFilm | null; onClose: () => void }) {
-  if (!film) return null;
-  return (
-    <Modal open onClose={onClose} labelledBy="gallery-film-title" bare>
-      <div className={styles.lightbox}>
-        <header className={styles.head}>
-          <p id="gallery-film-title" className={styles.place}>
-            {film.title}
-          </p>
-          <button type="button" className={styles.close} onClick={onClose} aria-label="Close film">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
-          </button>
-        </header>
-        <div className={styles.stage}>
-          <div className={styles.frame} style={{ "--ar": film.w / film.h, "--k": "#000" } as CSSProperties}>
-            <video className={styles.film} src={film.src} poster={film.poster} controls autoPlay playsInline />
-          </div>
-        </div>
       </div>
     </Modal>
   );
