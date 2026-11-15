@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import styles from "../ExpandingPanelsShowcase.module.css";
 import type { ShowcaseCategory } from "../ExpandingPanelsShowcase";
 
@@ -11,6 +11,7 @@ export function ShowcasePanel({
   cat,
   index,
   isActive,
+  near,
   selectedChip,
   onChip,
   onEnquire,
@@ -18,11 +19,18 @@ export function ShowcasePanel({
   cat: ShowcaseCategory;
   index: number;
   isActive: boolean;
+  /**
+   * Showing now or next. The panels are stacked in one place, so the browser would fetch every photo at once
+   * (lazy loading counts them all as on screen); each photo is requested only once its panel is near, then kept.
+   */
+  near: boolean;
   selectedChip: string | null;
   onChip: (chip: string | null) => void;
   /** Create mode only: shows the enquiry button. */
   onEnquire?: () => void;
 }) {
+  const [seen, setSeen] = useState(near);
+  if (near && !seen) setSeen(true);
   return (
     <div
       data-stage={index}
@@ -35,14 +43,15 @@ export function ShowcasePanel({
       inert={!isActive}
     >
       <div className={styles["showcase-panel-bg"]}>
-        <Image
-          src={cat.image}
-          alt={cat.imageAlt}
-          fill
-          sizes="(max-width: 900px) 100vw, 1360px"
-          loading={index === 0 ? "eager" : undefined}
-          className={styles["showcase-panel-image"]}
-        />
+        {seen && (
+          <Image
+            src={cat.image}
+            alt={cat.imageAlt}
+            fill
+            sizes="(max-width: 900px) 100vw, 1360px"
+            className={styles["showcase-panel-image"]}
+          />
+        )}
         <div className={styles["showcase-panel-overlay"]} />
       </div>
 

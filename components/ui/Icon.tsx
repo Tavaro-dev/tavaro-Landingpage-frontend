@@ -241,7 +241,11 @@ export function Icon({
 }) {
   if (name in BRAND_ICONS) {
     const icon = BRAND_ICONS[name as BrandIconName];
-    return <Image src={icon.src} alt="" width={icon.width} height={icon.height} className={className} style={style} />;
+    // Shown at most ~170px wide (the logo far smaller); without `sizes` Next serves 640-828px files.
+    const sizes = name === "logo" ? "48px" : "180px";
+    return (
+      <Image src={icon.src} alt="" width={icon.width} height={icon.height} sizes={sizes} className={className} style={style} />
+    );
   }
   const svg = SVG_ICONS[name as SvgIconName] ?? SVG_ICONS.close;
   return (

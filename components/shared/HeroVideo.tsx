@@ -42,14 +42,16 @@ export function HeroVideo({ src }: { src: string }) {
     const video = ref.current;
     if (!video) return;
     setSlot(document.getElementById("hero-sound-slot"));
-    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean; downlink?: number } }).connection;
+    const saveData = conn?.saveData;
     if (saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     video.muted = true; // autoplay is only allowed muted; React doesn't set the attribute
     // `${src}-{720|1080}.{webm|mp4}`: AV1 is ~half the size of H.264 at the
     // same quality. Apple's WebKit (Safari, and every iOS browser) answers
     // "probably" for AV1 WebM yet never loads it, so it always gets the MP4.
-    const size = window.matchMedia("(max-width: 900px)").matches ? 720 : 1080;
+    // Phones, and any screen below about 5 Mbps, get the 720p cut.
+    const size = window.matchMedia("(max-width: 900px)").matches || (conn?.downlink ?? 10) < 5 ? 720 : 1080;
     const mp4 = `${src}-${size}.mp4`;
     const apple = navigator.vendor.startsWith("Apple");
     const av1 = !apple && video.canPlayType('video/webm; codecs="av01.0.08M.10, opus"') === "probably";

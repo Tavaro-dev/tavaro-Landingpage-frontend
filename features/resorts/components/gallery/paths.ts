@@ -10,3 +10,10 @@ export const lite = () => {
   const n = navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string }; deviceMemory?: number };
   return Boolean(n.connection?.saveData || /2g|3g/.test(n.connection?.effectiveType ?? "") || (n.deviceMemory ?? 8) <= 2);
 };
+
+/** Below about 5 Mbps (or in lite mode) a desktop gets the films' lighter cut too. */
+export const slowNet = () => {
+  if (typeof navigator === "undefined") return false;
+  const c = (navigator as Navigator & { connection?: { downlink?: number } }).connection;
+  return lite() || (c?.downlink ?? 10) < 5;
+};

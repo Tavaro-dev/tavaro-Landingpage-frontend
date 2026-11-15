@@ -96,21 +96,36 @@ export function HeroSquareTilesBackground({
     ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
   }, []);
 
-  // Preload all slide images
+  // Load the slides one at a time, the one on screen first and the rest only after the page has loaded, so on a
+  // slow connection they don't compete with the hero photo the visitor is waiting for.
   useEffect(() => {
-    slides.forEach((slide) => {
-      if (!loadedImagesRef.current.has(slide.image)) {
-        const img = new window.Image();
-        img.src = canvasSrc(slide.image);
-        img.onload = () => {
-          loadedImagesRef.current.set(slide.image, img);
-          // Redraw static canvas if current image just loaded
-          if (slide.image === slides[currentIndexRef.current]?.image) {
-            drawStaticImage(img);
-          }
-        };
-      }
-    });
+    let cancelled = false;
+    const start = currentIndexRef.current;
+    const order = slides.map((_, i) => slides[(start + i) % slides.length]);
+    const loadNext = (i: number) => {
+      const slide = order[i];
+      if (cancelled || !slide) return;
+      if (loadedImagesRef.current.has(slide.image)) return loadNext(i + 1);
+      const img = new window.Image();
+      img.onload = () => {
+        loadedImagesRef.current.set(slide.image, img);
+        // Redraw static canvas if current image just loaded
+        if (slide.image === slides[currentIndexRef.current]?.image) {
+          drawStaticImage(img);
+        }
+        if (i === 0 && document.readyState !== "complete") {
+          window.addEventListener("load", () => loadNext(1), { once: true });
+        } else {
+          loadNext(i + 1);
+        }
+      };
+      img.onerror = () => loadNext(i + 1);
+      img.src = canvasSrc(slide.image);
+    };
+    loadNext(0);
+    return () => {
+      cancelled = true;
+    };
   }, [slides, drawStaticImage]);
 
   // Responsive canvas sizing

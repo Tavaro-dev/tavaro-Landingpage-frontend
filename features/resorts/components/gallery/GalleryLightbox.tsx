@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { Modal } from "@/components/ui/Modal";
 import type { GalleryPhoto } from "../../content/galleryPhotos";
 import { collectionTitle } from "../../content/galleryCollections";
 import { fullSrc, thumbSrc } from "./paths";
 import styles from "./GalleryLightbox.module.css";
+
+/** The full photo through the optimizer: a phone gets about 830-1080px instead of the 1600px original. */
+const full = (p: GalleryPhoto) => ({ src: fullSrc(p), alt: "", fill: true, sizes: "100vw" }) as const;
 
 type Props = {
   photos: GalleryPhoto[];
@@ -34,7 +37,11 @@ export function GalleryLightbox({ photos, index, onIndex, onClose }: Props) {
     // Warm the neighbours so stepping through feels instant.
     [index + 1, index - 1].forEach((i) => {
       const q = photos[(i + n) % n];
-      if (q) new window.Image().src = fullSrc(q);
+      if (!q) return;
+      const { props } = getImageProps(full(q));
+      const img = new window.Image();
+      img.sizes = props.sizes ?? "";
+      img.srcset = props.srcSet ?? "";
     });
     return () => window.removeEventListener("keydown", onKey);
   }, [index, n, photos, onIndex]);
@@ -68,12 +75,10 @@ export function GalleryLightbox({ photos, index, onIndex, onClose }: Props) {
           }}
         >
           <div key={p.f} className={styles.frame} style={{ "--ar": p.w / p.h, "--k": p.k } as CSSProperties}>
-            <Image src={thumbSrc(p)} alt="" fill unoptimized className={styles.thumb} draggable={false} />
+            <Image src={thumbSrc(p)} alt="" fill sizes="50vw" className={styles.thumb} draggable={false} />
             <Image
-              src={fullSrc(p)}
+              {...full(p)}
               alt={`${place}, Tavaro Resorts`}
-              fill
-              unoptimized
               draggable={false}
               className={`${styles.full} ${loaded === p.f ? styles.ready : ""}`}
               onLoad={() => setLoaded(p.f)}

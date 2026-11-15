@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./ExpandingPanelsShowcase.module.css";
@@ -48,6 +48,14 @@ export function ExpandingPanelsShowcase({
 }: ExpandingPanelsShowcaseProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, handleSelectCategory] = useScrollStage(trackRef, categories.length);
+  // The stage sits below the hero: its photos wait for the page (and the hero photo) to finish loading.
+  const [pageLoaded, setPageLoaded] = useState(false);
+  useEffect(() => {
+    const done = () => setPageLoaded(true);
+    if (document.readyState === "complete") done();
+    else window.addEventListener("load", done, { once: true });
+    return () => window.removeEventListener("load", done);
+  }, []);
   const [selectedChip, setSelectedChip] = useState<string | null>(null);
 
   return (
@@ -100,6 +108,7 @@ export function ExpandingPanelsShowcase({
                   cat={cat}
                   index={idx}
                   isActive={idx === activeIndex}
+                  near={pageLoaded && (idx === activeIndex || idx === activeIndex + 1)}
                   selectedChip={selectedChip}
                   onChip={setSelectedChip}
                   onEnquire={mode === "create" ? () => onEnquireCategory?.(cat.title) : undefined}

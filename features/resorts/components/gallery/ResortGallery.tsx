@@ -7,7 +7,7 @@ import { Modal } from "@/components/ui/Modal";
 import { GALLERY_PHOTOS, type GalleryPhoto } from "../../content/galleryPhotos";
 import { GALLERY_COLLECTIONS, GALLERY_FILMS, collectionTitle, type GalleryFilm } from "../../content/galleryCollections";
 import { GalleryLightbox } from "./GalleryLightbox";
-import { fullSrc, lite, thumbSrc } from "./paths";
+import { fullSrc, lite, slowNet, thumbSrc } from "./paths";
 import styles from "./ResortGallery.module.css";
 
 /** Seconds each photo holds in the large arch. */
@@ -63,16 +63,24 @@ const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matche
  * tall and narrow, so a photo covering it is as wide as the arch's height times its own ratio: these sizes
  * follow the arch's height per breakpoint (290px phones, about 48vw tablets, 31vw desktops).
  */
-const archImage = (p: GalleryPhoto) => {
+const archSizes = (p: GalleryPhoto) => {
   const r = Math.max(p.w / p.h, 0.75);
-  return {
-    src: fullSrc(p),
-    alt: "",
-    fill: true,
-    // ponytail: phones under-report by 1.6x, capping sharpness near 1.7x density to save data; drop the divisor if arches look soft.
-    sizes: `(max-width: 600px) ${Math.round((290 * r) / 1.6)}px, (max-width: 1024px) ${(48 * r).toFixed(1)}vw, ${(31 * r).toFixed(1)}vw`,
-  } as const;
+  // ponytail: phones under-report by 1.6x, capping sharpness near 1.7x density to save data; drop the divisor if arches look soft.
+  return `(max-width: 600px) ${Math.round((290 * r) / 1.6)}px, (max-width: 1024px) ${(48 * r).toFixed(1)}vw, ${(31 * r).toFixed(1)}vw`;
 };
+const archImage = (p: GalleryPhoto) => ({ src: fullSrc(p), alt: "", fill: true, sizes: archSizes(p) }) as const;
+
+/*
+ * Every other photo goes through the optimizer from its 480px-tall thumb (it never enlarges past that), with
+ * sizes measured from the page: strip tiles are 72px tall on phones, 104px on tablets and 170px wide columns on
+ * desktops; covers are full width on phones and tablets, 446px tall beside the arches on desktops.
+ */
+const stripSizes = (p: GalleryPhoto) => {
+  const r = p.w / p.h;
+  return `(max-width: 600px) ${Math.round(72 * r)}px, (max-width: 1024px) ${Math.round(104 * r)}px, ${Math.round(Math.max(170, 170 * r))}px`;
+};
+const coverSizes = (p: GalleryPhoto) =>
+  `(max-width: 600px) 100vw, (max-width: 1024px) 90vw, ${Math.round(Math.max(290, (446 * p.w) / p.h))}px`;
 
 /** Whether the element is on screen now, and whether it has ever been (for one-time reveals). */
 function useInView<T extends Element>(rootMargin = "0px 0px -4% 0px") {
@@ -445,7 +453,7 @@ function Stage({
               onClick={() => onPhoto(reel, at)}
               aria-label={`View photo ${at + 1} of ${reel.length}: ${collectionTitle(p.c)}`}
             >
-              {near && <Image src={thumbSrc(p)} alt="" fill unoptimized />}
+              {near && <Image src={thumbSrc(p)} alt="" fill sizes={stripSizes(p)} />}
             </button>
           </li>
         );
@@ -495,6 +503,15 @@ function Film({
   const [box, inView] = useInView<HTMLElement>("0px");
   const video = useRef<HTMLVideoElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
+
+  // A large screen on a slow connection takes the lighter cut too (the <source> media query only knows width).
+  // Nothing is fetched before this runs, so the full cut never starts downloading on a slow link.
+  useEffect(() => {
+    const v = video.current;
+    if (!v) return;
+    if (slowNet()) v.src = film.mobile;
+    if (first) v.preload = "metadata";
+  }, [film.mobile, first]);
 
   useEffect(() => {
     const v = video.current;
@@ -555,7 +572,7 @@ function Film({
         muted
         loop
         playsInline
-        preload={first ? "metadata" : "none"}
+        preload="none"
         aria-label={film.title}
         onTimeUpdate={(e) =>
           bar.current?.style.setProperty("--v", String(e.currentTarget.currentTime / (e.currentTarget.duration || 1)))
@@ -697,7 +714,7 @@ function Arches({
       style={{ "--hold": `${HOLD}s` } as CSSProperties}
     >
       <div className={styles.plaque} style={{ "--k": cover.k } as CSSProperties}>
-        {near && <Image src={thumbSrc(cover)} alt="" fill unoptimized className={styles["plaque-photo"]} />}
+        {near && <Image src={thumbSrc(cover)} alt="" fill sizes={coverSizes(cover)} className={styles["plaque-photo"]} />}
         <div className={styles["plaque-text"]}>
           {sub.name && <h3 className={styles.h3}>{sub.name}</h3>}
           <p className={styles.note}>{sub.note}</p>
@@ -723,7 +740,7 @@ function Arches({
         {photos.slice(1, 4).map((p, j) => (
           <div key={p.f} className={styles.arch} style={{ "--d": j + 1, "--k": p.k } as CSSProperties}>
             <button type="button" {...view(p)}>
-              {near && <Image src={thumbSrc(p)} alt="" fill unoptimized />}
+              {near && <Image src={thumbSrc(p)} alt="" fill sizes={archSizes(p)} />}
             </button>
           </div>
         ))}
@@ -760,6 +777,10 @@ function Album({ of, onClose, onPhoto }: { of: AlbumOf; onClose: () => void; onP
 }
 
 /** Tile shape from the photo's orientation and its place in the list; dense grid packing fills the gaps. */
+/** Album cells: six columns on desktops, four on tablets, two on phones; large, wide and tall cells span about two. */
+const MOSAIC = "(max-width: 600px) 50vw, (max-width: 1024px) 25vw, 17vw";
+const MOSAIC_WIDE = "(max-width: 600px) 100vw, (max-width: 1024px) 50vw, 34vw";
+
 function shape(p: GalleryPhoto, i: number) {
   const ar = p.w / p.h;
   if (ar < 0.85) return styles.tall;
@@ -787,7 +808,7 @@ function Mosaic({ photos, label, onPhoto }: { photos: GalleryPhoto[]; label: str
       {photos.map((p, i) => (
         <li key={p.f} className={`${styles.cell} ${shape(p, i)}`} style={{ "--k": p.k } as CSSProperties}>
           <button type="button" onClick={() => onPhoto(photos, i)} aria-label={`View photo ${i + 1} of ${photos.length}: ${label}`}>
-            <Image src={thumbSrc(p)} alt="" fill unoptimized />
+            <Image src={thumbSrc(p)} alt="" fill sizes={shape(p, i) ? MOSAIC_WIDE : MOSAIC} />
           </button>
         </li>
       ))}
