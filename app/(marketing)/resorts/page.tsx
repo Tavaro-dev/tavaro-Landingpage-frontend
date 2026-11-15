@@ -6,7 +6,7 @@ import { OfferHead } from "@/components/shared/OfferHead";
 import { SplitSection } from "@/components/shared/SplitSection";
 import { Icon } from "@/components/ui/Icon";
 import { RoomAvailability } from "@/features/accommodations/components/RoomAvailability";
-import StickyCta from "@/components/shared/StickyCta";
+import { BookStayStickyCta } from "@/features/accommodations/components/BookStayStickyCta";
 import { PlanEventButton } from "@/features/experiences/components/PlanEventButton";
 import { ResortDining } from "@/features/resorts/components/dining/ResortDining";
 import { ResortAmenitiesCarousel } from "@/features/resorts/components/amenities/ResortAmenitiesCarousel";
@@ -198,7 +198,7 @@ export default function ResortsPage() {
         </div>
       </section>
 
-      <StickyCta text="Ready to plan your stay at Tavaro Resorts?" ctaLabel="Book Your Stay" ctaHref="/contact" />
+      <BookStayStickyCta />
     </>
   );
 }

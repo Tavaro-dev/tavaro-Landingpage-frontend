@@ -5,92 +5,124 @@ import Link from "next/link";
 import { useState } from "react";
 import { Reveal } from "@/components/shared/Reveal";
 import { Icon } from "@/components/ui/Icon";
-import { getUpcomingEvents, getPastEvents, formatEventBadge } from "@/lib/content/events";
+import { getUpcomingEvents, getPastEvents, formatEventBadge, type EventItem } from "@/lib/content/events";
 import styles from "./experiences.module.css";
 
-const TABS = ["All", "Upcoming", "Past"] as const;
-type Tab = (typeof TABS)[number];
+type Tab = "upcoming" | "past";
+const TAB_LABELS: Record<Tab, string> = { upcoming: "Coming up", past: "Past experiences" };
 
+const monthYear = (iso: string) => `${formatEventBadge(iso).month} ${iso.slice(0, 4)}`;
+
+function EventCard({ event, past }: { event: EventItem; past: boolean }) {
+  const href = `/experiences/${event.id}`;
+  const { day, month } = formatEventBadge(event.date);
+  return (
+    <article className={styles.card}>
+      {/* The title link is the keyboard stop; the photo is a pointer shortcut to the same page. */}
+      <Link href={href} className={`${styles.media} ${event.placeholder}`} tabIndex={-1}>
+        <Image
+          src={event.src}
+          alt={event.alt}
+          fill
+          sizes="(min-width: 1081px) 30vw, (min-width: 601px) 45vw, 80vw"
+        />
+        {past ? (
+          <span className={styles.recap}>
+            <Icon name="play" />
+            Recap
+          </span>
+        ) : (
+          <span className={styles.badge}>
+            <strong>{day}</strong> {month}
+          </span>
+        )}
+      </Link>
+      <p className={styles.meta}>
+        <span className={styles.diamond} aria-hidden="true" />
+        {past ? monthYear(event.date) : event.venue}
+        <span aria-hidden="true">·</span>
+        {event.category}
+      </p>
+      <h3 className={styles.title}>
+        <Link href={href}>{event.title}</Link>
+      </h3>
+      {past && event.quote ? (
+        <p className={styles.quote}>&ldquo;{event.quote}&rdquo;</p>
+      ) : (
+        <p className={styles.desc}>{event.description}</p>
+      )}
+      {past ? (
+        <Link href={href} className={`text-link ${styles.cta}`}>
+          View recap <Icon name="arrow" className="icon-arrow" />
+        </Link>
+      ) : (
+        <Link href={href} className={`btn sm ${styles.cta}`}>
+          Book tickets
+        </Link>
+      )}
+    </article>
+  );
+}
+
+/**
+ * The experiences calendar: what can be booked next, and recaps of what has happened.
+ * Opens on "Coming up" when anything is announced, otherwise on the recaps.
+ */
 export function EventsSection() {
-  const [tab, setTab] = useState<Tab>("All");
-  const showUpcoming = tab !== "Past";
-  const showPast = tab !== "Upcoming";
-  const upcomingEvents = getUpcomingEvents();
-  const pastEvents = getPastEvents();
+  const upcoming = getUpcomingEvents();
+  const past = getPastEvents();
+  const [tab, setTab] = useState<Tab>(upcoming.length ? "upcoming" : "past");
+  const list = tab === "upcoming" ? upcoming : past;
 
   return (
     <>
-      <div className={styles["events-tabs"]}>
-        {TABS.map((t) => (
+      <div className={styles["events-tabs"]} role="tablist" aria-label="Experiences">
+        {(Object.keys(TAB_LABELS) as Tab[]).map((t) => (
           <button
             key={t}
             type="button"
+            role="tab"
+            id={`exp-tab-${t}`}
+            aria-selected={tab === t}
+            aria-controls="exp-panel"
             className={`${styles["events-tab"]}${tab === t ? " active" : ""}`}
             onClick={() => setTab(t)}
           >
-            {t}
+            {TAB_LABELS[t]}
           </button>
         ))}
       </div>
 
-      {showUpcoming && (
-        <Reveal stagger className="event-grid">
-          {upcomingEvents.map((event) => {
-            const { day, month } = formatEventBadge(event.date);
-            return (
-              <article className="event-card" key={event.id}>
-                <Link href={`/experiences/${event.id}`} className={`event-media ${event.placeholder}`}>
-                  <span className={styles["event-date-badge"]}>
-                    <span>{day}</span> {month}
-                  </span>
-                  <Image
-                    src={event.src}
-                    alt={event.alt}
-                    fill
-                    sizes="(min-width: 1081px) 33vw, (min-width: 521px) 50vw, 100vw"
-                  />
+      <div id="exp-panel" role="tabpanel" aria-labelledby={`exp-tab-${tab}`} className={styles.panel} key={tab}>
+        {list.length ? (
+          <Reveal stagger className={styles.grid}>
+            {list.map((event) => (
+              <EventCard event={event} past={tab === "past"} key={event.id} />
+            ))}
+          </Reveal>
+        ) : (
+          <div className={styles.empty}>
+            <span className={styles.diamond} aria-hidden="true" />
+            <div>
+              <h3 className={styles.title}>Nothing announced just now</h3>
+              <p className={styles.desc}>
+                New experiences are announced here first. Tell us what you&apos;d like to see, or
+                shape a gathering of your own with our team.
+              </p>
+              <div className={styles["empty-actions"]}>
+                <Link href="/contact" className="btn solid sm">
+                  Enquire
                 </Link>
-                <p className={styles["event-category"]}>{event.category}</p>
-                <h3 className="event-title">
-                  <Link href={`/experiences/${event.id}`}>{event.title}</Link>
-                </h3>
-                <p className="event-meta">{event.description}</p>
-                <Link href={`/experiences/${event.id}`} className="btn sm tw:mt-[18px]">
-                  Book Tickets
-                </Link>
-              </article>
-            );
-          })}
-        </Reveal>
-      )}
-
-      {showPast && (
-        <Reveal stagger className={`event-grid ${showUpcoming ? "tw:mt-[40px]" : "tw:mt-[0]"}`}>
-          {pastEvents.map((event) => (
-            <article className="event-card" key={event.id}>
-              <Link href={`/experiences/${event.id}`} className={`event-media ${event.placeholder}`}>
-                <Image
-                  src={event.src}
-                  alt={event.alt}
-                  fill
-                  sizes="(min-width: 1081px) 33vw, (min-width: 521px) 50vw, 100vw"
-                />
-                <span className={styles["event-play-badge"]}>
-                  <Icon name="play" />
-                </span>
-              </Link>
-              <p className={styles["event-category"]}>{event.stat}</p>
-              <h3 className="event-title">
-                <Link href={`/experiences/${event.id}`}>{event.title}</Link>
-              </h3>
-              <p className={styles["event-quote"]}>&ldquo;{event.quote}&rdquo;</p>
-              <Link href={`/experiences/${event.id}`} className="btn sm tw:mt-[4px]">
-                Watch Recap
-              </Link>
-            </article>
-          ))}
-        </Reveal>
-      )}
+                {past.length > 0 && (
+                  <button type="button" className={`text-link ${styles["link-btn"]}`} onClick={() => setTab("past")}>
+                    See past experiences <Icon name="arrow" className="icon-arrow" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }

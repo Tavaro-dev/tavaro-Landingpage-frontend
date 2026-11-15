@@ -1,16 +1,13 @@
-import Image from "next/image";
-import Link from "next/link";
 import { PageHero } from "@/components/shared/PageHero";
 import heroPhoto from "@/public/images/heroes/experiences-hero.jpg";
-import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
 import { SplitSection } from "@/components/shared/SplitSection";
 import { TriGrid, type TriCardData } from "@/components/shared/TriGrid";
 import { EventsSection } from "@/features/experiences/components/EventsSection";
+import { ExperienceGallery } from "@/features/experiences/components/ExperienceGallery";
 import { OffsiteEditButton } from "@/features/experiences/components/OffsiteEditButton";
 import { GalleryHeroButton } from "@/features/experiences/components/GalleryHeroButton";
 import { BandQuote } from "@/components/shared/BandQuote";
-import { Icon } from "@/components/ui/Icon";
 import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -20,15 +17,6 @@ export const metadata = pageMetadata({
     "Tavaro Experiences — social & cultural gatherings, corporate offsites and wellness retreats, curated as an ongoing platform of moments.",
   path: "/experiences",
 });
-
-const GALLERY: [src: string, alt: string][] = [
-  ["/images/experiences/poolside-banquet.jpg", "A long banquet table set on the pool deck"],
-  ["/images/experiences/bamboo-garden-dinner.jpg", "A candlelit dinner under a lit bamboo canopy"],
-  ["/photos/experiences-cars.jpg", "A curated car meet at the glasshouse"],
-  ["/images/experiences/sound-bath.jpg", "A sound bath session in the glasshouse hall"],
-  ["/images/experiences/pool-brunch.jpg", "A brunch spread by the pool"],
-  ["/images/resorts/wedding-celebration.jpg", "A lawn wedding under a lit canopy"],
-];
 
 const CATEGORIES: TriCardData[] = [
   {
@@ -143,16 +131,11 @@ export default function ExperiencesPage() {
       <section className="section on-panel" id="upcoming">
         <div className="container">
           <OfferHead
-            num="Upcoming"
+            num="The Experiences Calendar"
             heading="Experiences at Tavaro"
-            lede="A living calendar of gatherings — updated as new experiences are announced."
+            lede="Book a place at what's coming up, or look back at the gatherings that came before. New experiences are announced here first."
           />
           <EventsSection />
-          <div className="tw:text-center tw:mt-[56px]">
-            <Link href="/mare#events" className="text-link">
-              See More <Icon name="arrow" className="icon-arrow" />
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -162,15 +145,9 @@ export default function ExperiencesPage() {
           <OfferHead
             eyebrow="Visual Memories"
             heading="Experiences Gallery"
-            lede="A look back at moments, gatherings, and celebrations created at Tavaro."
+            lede="Banquets by the pool, dinners under the lights, sound baths and quiet mornings on the lawn — moments created at Tavaro."
           />
-          <Reveal stagger className="tw:grid tw:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] tw:gap-[20px] tw:mt-[40px]">
-            {GALLERY.map(([src, alt]) => (
-              <div key={src} className="split-media tw:aspect-[4/3] tw:rounded-[4px]">
-                <Image src={src} alt={alt} fill sizes="(min-width: 768px) 33vw, 100vw" />
-              </div>
-            ))}
-          </Reveal>
+          <ExperienceGallery />
         </div>
       </section>
 
