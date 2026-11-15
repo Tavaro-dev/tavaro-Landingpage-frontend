@@ -528,6 +528,16 @@ function Film({
   useEffect(() => {
     const v = video.current;
     if (!v || (!audible && v.muted)) return;
+    // iPhone and iPad ignore `volume` (it always reads 1): there the sound simply switches, with no fade,
+    // so two films never play aloud together.
+    const was = v.volume;
+    v.volume = was > 0.5 ? 0 : 1;
+    const fixed = v.volume === was;
+    v.volume = was;
+    if (fixed) {
+      v.muted = !audible;
+      return;
+    }
     if (audible && v.muted) {
       v.volume = 0;
       v.muted = false;
