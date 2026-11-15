@@ -81,11 +81,6 @@
     height: auto;
     overflow: visible;
   }
-  .map figcaption {
-    margin-top: 10px;
-    color: var(--on-surface-muted);
-    font-size: 13px;
-  }
   .ground {
     fill: var(--m-ground);
     stroke: var(--m-edge);

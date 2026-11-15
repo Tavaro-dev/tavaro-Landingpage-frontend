@@ -370,7 +370,6 @@ export function ResortGrounds() {
                 <Card place={place} />
               </div>
             )}
-            <figcaption>Not to scale. Drawn from the resort&apos;s master plan.</figcaption>
           </figure>
 
           <div className={styles.side}>
