@@ -7,10 +7,6 @@
   background: var(--on-surface);
 }
 
-.logo-word {
-  margin-top: 0;
-}
-
 .main-nav {
   display: flex;
   align-items: center;
@@ -236,19 +232,12 @@
 }
 
 .footer-brand :global(.logo) {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  font-size: 19px;
-  margin-bottom: 18px;
-  width: fit-content;
-  color: var(--on-surface);
+  margin-bottom: 22px;
+  color: var(--logo-ink);
 }
 
-.footer-brand :global(.logo) svg,
-.footer-brand :global(.logo) img {
-  width: 32px;
+.footer-brand :global(.logo-art) {
+  width: 104px;
 }
 
 .footer-brand p {

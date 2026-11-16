@@ -9,11 +9,8 @@ export default function Footer() {
       <div className="container">
         <div className={styles["footer-top"]}>
           <div className={styles["footer-brand"]}>
-            <Link href="/" className="logo">
-              <span>
-                <Icon name="logo" />
-              </span>
-              <span className={styles["logo-word"]}>TAVARO</span>
+            <Link href="/" className="logo" aria-label="Tavaro home">
+              <span className="logo-art" aria-hidden="true" />
             </Link>
             <p>
               Discover the world between worlds. A hospitality and lifestyle group creating places and

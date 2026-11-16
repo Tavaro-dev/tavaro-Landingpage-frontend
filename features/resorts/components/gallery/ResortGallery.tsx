@@ -376,13 +376,7 @@ function Intro({
             <i key={i} style={{ "--i": i } as CSSProperties} />
           ))}
         </span>
-        <p className={styles["intro-brand"]} aria-hidden="true">
-          {[..."TAVARO"].map((ch, i) => (
-            <span key={i} style={{ "--i": i } as CSSProperties}>
-              {ch}
-            </span>
-          ))}
-        </p>
+        <span className={`logo-art ${styles["intro-brand"]}`} aria-hidden="true" />
         <h2 id="gallery-intro-title" className={styles["intro-title"]}>
           This gallery plays music
         </h2>

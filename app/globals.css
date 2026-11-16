@@ -675,56 +675,54 @@ button,
   border-bottom-color: var(--surface-line);
 }
 
-[data-scrolled] .site-header .logo,
 [data-scrolled] .site-header .nav-links a,
-:where(html):not([data-scrolled]) .site-header.no-hero .logo,
 :where(html):not([data-scrolled]) .site-header.no-hero .nav-links a {
   color: var(--on-surface);
 }
 
 
 
+/* The master logo from the brand manual (horses above the wordmark), drawn in one brand colour:
+   gold on dark, maroon on light. Never rotated, stretched, rearranged or shadowed. */
+:root {
+  --brand-gold: #d4a362;
+  --brand-maroon: #671c33;
+  --logo-ink: var(--brand-gold);
+}
+
+:root[data-theme="light"] {
+  --logo-ink: var(--brand-maroon);
+}
+
 .logo {
-  font-family: var(--font-display);
-  font-size: 19px;
-  letter-spacing: 0.26em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  color: var(--cream);
-  line-height: 1;
+  display: inline-flex;
+  color: var(--brand-gold);
 }
 
-.logo svg,
-.logo img {
-  width: 36px;
-  height: auto;
-  object-fit: contain;
-  transition: transform 0.5s var(--ease);
+[data-scrolled] .site-header .logo,
+:where(html):not([data-scrolled]) .site-header.no-hero .logo {
+  color: var(--logo-ink);
 }
 
-.logo:hover svg,
-.logo:hover img {
-  transform: scale(1.08) rotate(-3deg);
+.logo-art {
+  display: block;
+  width: 88px;
+  aspect-ratio: 168.73 / 109.85;
+  background: currentColor;
+  -webkit-mask: url("/brand/tavaro-logo.svg") center / contain no-repeat;
+  mask: url("/brand/tavaro-logo.svg") center / contain no-repeat;
+  transition: background-color 0.4s var(--ease);
 }
 
-/* Phones and tablets: one slim bar (mark beside the wordmark) so the fixed header keeps the screen free. */
+/* Phones and tablets: the same stacked logo, smaller, so the fixed header stays slim. */
 @media (max-width: 1080px) {
   :root .site-header,
   :root[data-scrolled] .site-header {
-    padding-block: 12px;
+    padding-block: 10px;
   }
 
-  .site-header .logo {
-    flex-direction: row;
-    gap: 10px;
-    font-size: 16px;
-  }
-
-  .site-header .logo svg,
-  .site-header .logo img {
-    width: 30px;
+  .site-header .logo-art {
+    width: 62px;
   }
 }
 

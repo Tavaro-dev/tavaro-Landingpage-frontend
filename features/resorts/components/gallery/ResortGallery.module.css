@@ -106,15 +106,10 @@
     transform-origin: bottom;
     scale: 1 calc(0.35 + 0.15 * var(--i));
   }
-  .intro-brand {
-    margin: 0;
-    color: #c9a45a;
-    font-size: 13px;
-    letter-spacing: 0.5em;
-    margin-right: -0.5em;
-  }
-  .intro-brand span {
-    display: inline-block;
+  /* The brand's master logo, in its gold. */
+  .intro-body .intro-brand {
+    width: 84px;
+    color: var(--brand-gold);
   }
   .intro-title {
     margin: 0;
@@ -1022,9 +1017,8 @@
       animation: intro-eq 1s ease-in-out infinite alternate;
       animation-delay: calc(var(--i) * -0.23s);
     }
-    .intro-brand span {
-      animation: rise 0.9s var(--ease-luxury) both;
-      animation-delay: calc(0.15s + var(--i) * 0.07s);
+    .intro-brand {
+      animation: rise 0.9s var(--ease-luxury) 0.15s both;
     }
     .intro-title {
       animation: rise 1s var(--ease-luxury) 0.55s both;
