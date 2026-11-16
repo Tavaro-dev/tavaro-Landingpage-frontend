@@ -377,7 +377,14 @@
   }
   :is(.col, .row) img {
     object-fit: cover;
-    transition: scale 0.8s var(--ease-luxury);
+    transition:
+      scale 0.8s var(--ease-luxury),
+      opacity 0.7s var(--ease);
+  }
+  /* Each photo fades in over its colour as it arrives. */
+  :is(.col, .row) img:not([data-loaded]),
+  .plaque-photo:not([data-loaded]) {
+    opacity: 0;
   }
   :is(.col, .row) li::after {
     content: "";
@@ -763,6 +770,7 @@
   .plaque-photo {
     z-index: -2;
     object-fit: cover;
+    transition: opacity 0.8s var(--ease);
   }
   .plaque::after {
     content: "";

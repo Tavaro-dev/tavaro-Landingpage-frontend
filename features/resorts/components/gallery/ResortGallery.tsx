@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, memo, useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { Fragment, memo, useCallback, useEffect, useRef, useState, type CSSProperties, type SyntheticEvent } from "react";
 import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { Modal } from "@/components/ui/Modal";
@@ -81,6 +81,9 @@ const stripSizes = (p: GalleryPhoto) => {
 };
 const coverSizes = (p: GalleryPhoto) =>
   `(max-width: 600px) 100vw, (max-width: 1024px) 90vw, ${Math.round(Math.max(290, (446 * p.w) / p.h))}px`;
+
+/** Marks a photo as arrived, so it fades in over its colour placeholder instead of popping in. */
+const arrived = (e: SyntheticEvent<HTMLImageElement>) => e.currentTarget.setAttribute("data-loaded", "");
 
 /** Whether the element is on screen now, and whether it has ever been (for one-time reveals). */
 function useInView<T extends Element>(rootMargin = "0px 0px -4% 0px") {
@@ -227,7 +230,7 @@ export function ResortGallery() {
       film={CHAPTERS[i].film}
       reel={CHAPTERS[i].reel}
       audible={audible === i}
-      held={intro !== null}
+      held={intro === "open"}
       first={i === 0}
       onSound={(t) => filmSound(i, t)}
       onPhoto={openPhoto}
@@ -448,7 +451,7 @@ function Stage({
               onClick={() => onPhoto(reel, at)}
               aria-label={`View photo ${at + 1} of ${reel.length}: ${collectionTitle(p.c)}`}
             >
-              {near && <Image src={thumbSrc(p)} alt="" fill sizes={stripSizes(p)} loading="eager" />}
+              {near && <Image src={thumbSrc(p)} alt="" fill sizes={stripSizes(p)} loading="eager" onLoad={arrived} />}
             </button>
           </li>
         );
@@ -731,6 +734,7 @@ function Arches({
             fill
             sizes={coverSizes(cover)}
             loading="eager"
+            onLoad={arrived}
             className={styles["plaque-photo"]}
           />
         )}

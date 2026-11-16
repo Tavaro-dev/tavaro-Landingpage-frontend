@@ -13,7 +13,7 @@
     "test:visual:update": "playwright test --project=visual --update-snapshots",
     "test:e2e:ui": "playwright test --ui",
     "test:unit": "vitest run",
-    "warm:gallery": "node scripts/warm-gallery-images.mjs"
+    "warm:images": "node scripts/warm-images.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

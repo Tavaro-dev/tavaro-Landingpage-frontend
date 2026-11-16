@@ -25,6 +25,13 @@ const nextConfig: NextConfig = {
         source: "/gallery/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
+      // Other public files keep their names when replaced, so a day's cache, then served from the cache while
+      // the browser refreshes it in the background. Without this every image (and its optimized copies, which
+      // inherit the header) is re-checked with the server on every page view, so photos show late or flicker.
+      {
+        source: "/:dir(images|photos|icons|brand|videos|downloads)/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=2592000" }],
+      },
     ];
   },
 };
