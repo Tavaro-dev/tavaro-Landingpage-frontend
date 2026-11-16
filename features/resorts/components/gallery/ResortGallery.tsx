@@ -426,8 +426,9 @@ function Stage({
   onPhoto: OnPhoto;
 }) {
   // The drifting photos stop while the stage is off screen. Their files are requested only once the page is
-  // interactive and the stage is near, so on a slow connection the script arrives first (colour placeholders until then).
-  const [box, live, near] = useInView<HTMLElement>("600px 0px");
+  // interactive and the stage is within a screen and a half, so on a slow connection the script arrives first
+  // (colour placeholders until then). They load at once: lazy loading misses photos clipped inside moving lanes.
+  const [box, live, near] = useInView<HTMLElement>("150% 0px");
   const wide = film.w > film.h;
   const track = (photos: GalleryPhoto[], dir: "col" | "row", k: number) => (
     <ul key={k} className={styles[dir]} style={{ "--n": photos.length, "--c": k } as CSSProperties}>
@@ -447,7 +448,7 @@ function Stage({
               onClick={() => onPhoto(reel, at)}
               aria-label={`View photo ${at + 1} of ${reel.length}: ${collectionTitle(p.c)}`}
             >
-              {near && <Image src={thumbSrc(p)} alt="" fill sizes={stripSizes(p)} />}
+              {near && <Image src={thumbSrc(p)} alt="" fill sizes={stripSizes(p)} loading="eager" />}
             </button>
           </li>
         );
@@ -683,9 +684,9 @@ function Arches({
   onAlbum: () => void;
 }) {
   const [box, inView, seen] = useInView<HTMLDivElement>();
-  // Photos are requested once the page is interactive and the set is within a screen or so; until then each
-  // frame shows the photo's average colour.
-  const [nearBox, , near] = useInView<HTMLDivElement>("100% 0px");
+  // Photos are requested once the page is interactive and the set is within a screen and a half, and then load at
+  // once, so a quick scroll finds them ready; until then each frame shows the photo's average colour.
+  const [nearBox, , near] = useInView<HTMLDivElement>("150% 0px");
   const [show, setShow] = useState<{ k: number; prev: number | null }>({ k: 0, prev: null });
   const { photos, cycle } = sub;
   const n = photos.length;
@@ -723,7 +724,16 @@ function Arches({
       style={{ "--hold": `${HOLD}s` } as CSSProperties}
     >
       <div className={styles.plaque} style={{ "--k": cover.k } as CSSProperties}>
-        {near && <Image src={thumbSrc(cover)} alt="" fill sizes={coverSizes(cover)} className={styles["plaque-photo"]} />}
+        {near && (
+          <Image
+            src={thumbSrc(cover)}
+            alt=""
+            fill
+            sizes={coverSizes(cover)}
+            loading="eager"
+            className={styles["plaque-photo"]}
+          />
+        )}
         <div className={styles["plaque-text"]}>
           {sub.name && <h3 className={styles.h3}>{sub.name}</h3>}
           <p className={styles.note}>{sub.note}</p>
@@ -741,6 +751,7 @@ function Arches({
                   key={cycle[l].f}
                   {...archImage(cycle[l])}
                   alt=""
+                  loading="eager"
                   className={l === show.k ? styles.over : styles.under}
                 />
               ))}
@@ -749,7 +760,7 @@ function Arches({
         {photos.slice(1, 4).map((p, j) => (
           <div key={p.f} className={styles.arch} style={{ "--d": j + 1, "--k": p.k } as CSSProperties}>
             <button type="button" {...view(p)}>
-              {near && <Image src={thumbSrc(p)} alt="" fill sizes={archSizes(p)} />}
+              {near && <Image src={thumbSrc(p)} alt="" fill sizes={archSizes(p)} loading="eager" />}
             </button>
           </div>
         ))}
