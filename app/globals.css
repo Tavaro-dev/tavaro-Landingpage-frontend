@@ -2421,6 +2421,19 @@ button,
   }
 }
 
+/* Phones: Resorts, Residences and Experiences one per row, then Wellness and Màre side by side. */
+@media (max-width: 640px) {
+.pillar-card:nth-child(-n + 3) {
+    grid-column: span 2;
+    aspect-ratio: 16/10;
+  }
+
+.pillar-card:nth-child(5) {
+    grid-column: auto;
+    aspect-ratio: 3/3.8;
+  }
+}
+
 @media (min-width: 861px) and (max-width: 1080px) {
 .event-grid > .event-card:last-child:nth-child(odd) {
     grid-column: span 2;

@@ -80,7 +80,7 @@ const PLACES: Place[] = [
     kind: "In-house catering",
     at: [778, 634],
     stats: [{ label: "Sq ft", value: "6,000" }],
-    note: "Where our chefs prepare every function's menu.",
+    note: "Where our chefs prepare every celebration's menu.",
     venue: false,
   },
   {

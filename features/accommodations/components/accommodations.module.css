@@ -141,6 +141,11 @@
   overflow: hidden;
 }
 
+/* Crop the photo to the frame instead of stretching it. */
+.room-listing-media img {
+  object-fit: cover;
+}
+
 .room-listing-nav {
   position: absolute;
   top: 50%;

@@ -24,7 +24,7 @@ export default function ResortVenuesPage() {
         title="Weddings and celebrations at Tavaro"
         titleSize="clamp(34px,4.2vw,54px)"
         titleMaxWidth="20ch"
-        lede="A 15-acre resort in Kokapet with six spaces, from a lawn for 4,000 guests to a heritage villa for fifty. Pick one for every function."
+        lede="A 15-acre resort in Kokapet with six spaces, from a lawn for 4,000 guests to a heritage villa for fifty. Pick one for every celebration."
         ctas={[
           { label: "See the spaces", href: "#spaces", solid: true },
           { label: "Plan a site visit", href: "#plan" },

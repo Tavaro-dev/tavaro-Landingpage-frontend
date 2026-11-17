@@ -5,7 +5,7 @@ import styles from "./ResortPlan.module.css";
 const STEPS = [
   { title: "Send your dates and guest count", body: "On WhatsApp. Venue and room prices are on request." },
   { title: "We check availability", body: "And set up a site visit at a time that suits you." },
-  { title: "Walk the resort with us", body: "Pick a space for each function, with our team beside you." },
+  { title: "Walk the resort with us", body: "Pick a space for each celebration, with our team beside you." },
   {
     title: "Confirm, and we take it from there",
     body: "We coordinate with your planner from then until the last guest leaves.",
@@ -48,10 +48,7 @@ export function ResortPlan() {
             <h3>In-house catering</h3>
             <p className={styles.from}>
               <span>
-                from <strong>{rupees(CATERING_FROM.veg)}</strong> veg
-              </span>
-              <span>
-                from <strong>{rupees(CATERING_FROM.nonVeg)}</strong> non-veg
+                from <strong>{rupees(CATERING_FROM)}</strong>
               </span>
             </p>
             <p className={styles.small}>

@@ -46,7 +46,7 @@ export const VENUES: Venue[] = [
     sqft: 24000,
     bestFor: "Mehendi, sangeet and engagements.",
     photo: sanctuaryLawn,
-    alt: "Sanctuary Lawn from above at dusk, lit for an evening function",
+    alt: "Sanctuary Lawn from above at dusk, lit for an evening celebration",
   },
   {
     id: "sanctuary-hall",
@@ -55,7 +55,7 @@ export const VENUES: Venue[] = [
     seated: 250,
     floating: 350,
     sqft: 4000,
-    bestFor: "Intimate indoor functions and celebrations.",
+    bestFor: "Intimate indoor celebrations.",
     photo: sanctuaryHall,
     alt: "Sanctuary Hall lit up at night, a glass hall under a pitched roof",
   },
@@ -94,7 +94,7 @@ export const VENUES: Venue[] = [
 ];
 
 /** In-house catering, per plate, taxes extra. */
-export const CATERING_FROM = { veg: 2200, nonVeg: 2500 };
+export const CATERING_FROM = 2500;
 
 /** Resort facilities, from the A5 brochure. */
 export const FACILITIES = [

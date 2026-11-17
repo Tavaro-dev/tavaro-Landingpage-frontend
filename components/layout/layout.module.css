@@ -383,7 +383,15 @@
   }
 
 .footer-col a {
+    position: relative;
     font-size: 13px;
+  }
+
+/* An invisible tap area reaching into the gaps, so each link is about 30px tall to tap without moving anything. */
+.footer-col a::after {
+    content: "";
+    position: absolute;
+    inset: -6px -4px;
   }
 
 .footer-bottom {

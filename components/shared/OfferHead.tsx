@@ -6,11 +6,14 @@ export function OfferHead({
   num,
   heading,
   lede,
+  as: Heading = "h2",
 }: {
   eyebrow?: string;
   num?: string;
   heading: ReactNode;
   lede?: ReactNode;
+  /** The page's main heading uses "h1". */
+  as?: "h1" | "h2";
 }) {
   const label = num ? <span className="offer-num">{num}</span> : <p className="eyebrow">{eyebrow}</p>;
 
@@ -18,9 +21,9 @@ export function OfferHead({
     <Reveal className="offer-head">
       <div>
         {label}
-        <h2 className="display-2 tw:mt-[18px]">
+        <Heading className="display-2 tw:mt-[18px]">
           {heading}
-        </h2>
+        </Heading>
       </div>
       {lede && <p className="lede tw:max-w-[38ch]">{lede}</p>}
     </Reveal>

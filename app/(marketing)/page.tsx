@@ -42,6 +42,7 @@ const PILLAR_CARDS = [
     placeholder: "ph-3",
     src: "/images/home/experiences.jpg",
     alt: "Tavaro Experiences",
+    sizes: "(min-width: 1081px) 20vw, (max-width: 640px) 100vw, 50vw",
     num: "03 — Experiences",
     title: "Experiences",
     line: "Moments made extraordinary",
@@ -59,8 +60,8 @@ const PILLAR_CARDS = [
     href: "/mare",
     placeholder: "ph-gold",
     src: "/images/home/mare.jpg",
-    // full-width 16:9 card on tablet/phone: keep the cup (low in this tall photo) in frame
-    sizes: "(min-width: 1081px) 20vw, 100vw",
+    // full-width 16:9 card on tablet, half width on phones: keep the cup (low in this tall photo) in frame
+    sizes: "(min-width: 1081px) 20vw, (max-width: 640px) 50vw, 100vw",
     position: "center 80%",
     alt: "Màre Coffee House",
     num: "05 — Màre",

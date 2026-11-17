@@ -19,7 +19,7 @@ export function ResortSpaces() {
       <div className="container">
         <header className={styles.head}>
           <h2 id="spaces-title" className={styles.title}>
-            Every function can have a space of its own
+            Every celebration can have a space of its own
           </h2>
           <p className={styles.lede}>
             Six spaces across the resort, from a lawn for 4,000 to a heritage villa for fifty. Most

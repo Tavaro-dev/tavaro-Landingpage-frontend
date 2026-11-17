@@ -42,6 +42,7 @@ export default async function AccommodationsPage(props: PageProps<"/resorts/acco
           ← Back to Resorts
         </Link>
         <OfferHead
+          as="h1"
           eyebrow="Availability"
           heading={hasSearch ? "Rooms for your stay" : "All Accommodations"}
           lede={
