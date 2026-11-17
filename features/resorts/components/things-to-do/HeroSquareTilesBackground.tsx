@@ -121,7 +121,9 @@ export function HeroSquareTilesBackground({
         }
       };
       img.onerror = () => loadNext(i + 1);
-      img.src = canvasSrc(slide.image);
+      // The first one is the photo the fallback below already shows: reuse its file rather than download a second size.
+      const shown = i === 0 ? containerRef.current?.querySelector("img")?.currentSrc : "";
+      img.src = shown || canvasSrc(slide.image);
     };
     loadNext(0);
     return () => {

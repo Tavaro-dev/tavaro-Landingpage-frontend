@@ -11,22 +11,21 @@ const reveals = (page: Page) =>
     return { total: els.length, above: above.length, aboveHidden: above.filter(hidden).length, hidden: els.filter(hidden).length };
   });
 
-/** The PageTransition wrapper: the body child that holds the page content. */
-const wrapperAnimations = (page: Page) =>
-  page.evaluate(() => {
-    const wrapper = document.querySelector('h1')!.closest('body > div')!;
-    return wrapper.getAnimations().length;
-  });
-
 test.describe('Content loading', () => {
-  test('first load is not faded; client navigation is', async ({ page }) => {
+  test('client navigation shows the new page at once, with no fade from the background', async ({ page }) => {
+    // A page-wide fade from opacity 0 showed the cream body for ~0.3s before the dark hero.
     await page.goto('/');
-    await expect(page.locator('h1').first()).toBeVisible();
-    expect(await wrapperAnimations(page)).toBe(0);
-
     await page.locator('header a[href="/about"]').first().click();
     await expect(page).toHaveURL(/\/about$/);
-    await expect.poll(() => wrapperAnimations(page)).toBe(1);
+    // The photo's layer and everything around it: only the headline text animates in.
+    const media = page.locator('.page-hero > div').first();
+    await expect(media).toBeVisible();
+    const faded = await media.evaluate((el) => {
+      for (let n: Element | null = el; n && n !== document.body; n = n.parentElement)
+        if (n.getAnimations().some((a) => a.playState === 'running') || parseFloat(getComputedStyle(n).opacity) < 1) return true;
+      return false;
+    });
+    expect(faded).toBe(false);
   });
 
   test('sections above a restored scroll position stay visible', async ({ page }) => {

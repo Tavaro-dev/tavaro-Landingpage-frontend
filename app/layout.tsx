@@ -3,9 +3,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
+import { HeroPrefetch } from "@/components/shared/HeroPrefetch";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { PageTransition } from "@/components/layout/PageTransition";
 import { CartDrawer } from "@/features/booking/components/CartDrawer";
 import { CartProvider } from "@/features/booking/cart/CartProvider";
 import { SITE_URL } from "@/lib/metadata";
@@ -61,7 +61,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem={true}>
           <CartProvider>
             <Header />
-            <PageTransition>{children}</PageTransition>
+            {children}
+            <HeroPrefetch />
             <Footer />
             <CartDrawer />
           </CartProvider>
