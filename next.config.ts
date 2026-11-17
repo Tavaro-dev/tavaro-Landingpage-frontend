@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   // opening http://127.0.0.1:3000 rendered the page without React (no modals,
   // no navbar scroll state).
   allowedDevOrigins: ["127.0.0.1"],
+  // Next.js upgrade reminders during dev/build: only security fixes.
+  experimental: {
+    agentUpgrade: "security",
+  },
   images: {
     formats: ["image/avif", "image/webp"],
   },
