@@ -1,19 +1,23 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { submitEnquiryAction as SubmitEnquiryActionType } from '../../app/actions/enquiry';
+import { LEKVYA } from '../../lib/env';
 
 describe('Enquiry Service', () => {
   let submitEnquiryAction: typeof SubmitEnquiryActionType;
+  let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.resetModules();
+    fetchMock = vi.fn().mockResolvedValue({ ok: true });
+    vi.stubGlobal('fetch', fetchMock);
   });
 
   afterEach(() => {
     vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
   });
 
-  it('should return a demo success response in development mode', async () => {
-    vi.stubEnv('NODE_ENV', 'development');
+  it('should send contact enquiries to Lekvya', async () => {
     const { submitEnquiryAction: action } = await import('../../app/actions/enquiry');
     submitEnquiryAction = action;
 
@@ -29,12 +33,27 @@ describe('Enquiry Service', () => {
     });
 
     expect(result.success).toBe(true);
-    expect(result.isDemo).toBe(true);
-    expect(result.message).toContain('DEMO');
+    expect(result.isDemo).toBe(false);
+    expect(fetchMock).toHaveBeenCalledOnce();
+
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe(LEKVYA.sendFormUrl);
+    expect(init.method).toBe('POST');
+    expect(JSON.parse(init.body)).toMatchObject({
+      publicKey: LEKVYA.publicKey,
+      formName: 'Contact',
+      enquiryType: 'contact',
+      name: 'Jane Doe',
+      email: 'jane@example.com',
+      phone: '1234567890',
+      interest: 'Booking a Stay',
+      message: 'Hello',
+    });
   });
 
-  it('should return an unavailable error in production mode', async () => {
-    vi.stubEnv('NODE_ENV', 'production');
+  it('should return a friendly error when Lekvya responds with a failure', async () => {
+    fetchMock.mockResolvedValueOnce({ ok: false, status: 500 });
+
     const { submitEnquiryAction: action } = await import('../../app/actions/enquiry');
     submitEnquiryAction = action;
 
@@ -55,11 +74,10 @@ describe('Enquiry Service', () => {
   });
 
   it('should return validation errors for malformed input and strictly reject unknowns', async () => {
-    vi.stubEnv('NODE_ENV', 'development');
     const { submitEnquiryAction: action } = await import('../../app/actions/enquiry');
     submitEnquiryAction = action;
     const { enquiryService } = await import('../../lib/enquiry/service');
-    
+
     const spy = vi.spyOn(enquiryService, 'submitEnquiry');
 
     try {
@@ -100,37 +118,36 @@ describe('Enquiry Service', () => {
   });
 
   it('should handle all valid enquiry types', async () => {
-    vi.stubEnv('NODE_ENV', 'development');
     const { submitEnquiryAction: action } = await import('../../app/actions/enquiry');
     submitEnquiryAction = action;
-    const { enquiryService } = await import('../../lib/enquiry/service');
 
-    const spy = vi.spyOn(enquiryService, 'submitEnquiry');
+    const validDining = {
+      type: 'dining',
+      data: {
+        planningType: 'Private Dining',
+        requestType: 'Event Menu',
+        name: 'Jane Doe',
+        contact: '1234567890',
+        eventDate: '2027-10-10',
+        guestCount: '10',
+        occasion: 'Birthday',
+        diningStyle: 'Plated',
+        gatheringDescription: 'Looking forward to it'
+      }
+    };
 
-    try {
-      const validDining = {
-        type: 'dining',
-        data: {
-          planningType: 'Private Dining',
-          requestType: 'Event Menu',
-          name: 'Jane Doe',
-          contact: '1234567890',
-          eventDate: '2027-10-10',
-          guestCount: '10',
-          occasion: 'Birthday',
-          diningStyle: 'Plated',
-          gatheringDescription: 'Looking forward to it'
-        }
-      };
-      
-      const result = await submitEnquiryAction(validDining);
-      expect(result.success).toBe(true);
-      expect(result.isDemo).toBe(true);
-      
-      expect(spy).toHaveBeenCalledOnce();
-      expect(spy).toHaveBeenCalledWith(validDining);
-    } finally {
-      spy.mockRestore();
-    }
+    const result = await submitEnquiryAction(validDining);
+    expect(result.success).toBe(true);
+    expect(result.isDemo).toBe(false);
+
+    expect(fetchMock).toHaveBeenCalledOnce();
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(body).toMatchObject({
+      formName: 'Dining Enquiry',
+      enquiryType: 'dining',
+      name: 'Jane Doe',
+      contact: '1234567890',
+      phone: '1234567890',
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { THINGS_TO_DO_DATA } from "../../features/resorts/content/thingsToDoData";
 import { submitEnquiryAction } from "../../app/actions/enquiry";
 
@@ -131,20 +131,31 @@ describe("Things to Do Data Model", () => {
     expect(gatherCat?.heading).toBe("Bring people together.");
   });
 
-  it("processes real experience enquiries successfully through submitEnquiryAction", async () => {
-    const validEnquiry = {
-      type: "contact" as const,
-      data: {
-        name: "Arjun Verma",
-        email: "arjun@example.com",
-        phone: "+91 9876543210",
-        interest: "An Upcoming Experience",
-        message: "[Experience Request - Wellness] Preferred Date: Next month | Preferences: Sound healing retreat",
-      },
-    };
+  describe("experience enquiry submission", () => {
+    beforeEach(() => {
+      vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true }));
+    });
 
-    const result = await submitEnquiryAction(validEnquiry);
-    expect(result.success).toBe(true);
+    afterEach(() => {
+      vi.unstubAllGlobals();
+    });
+
+    it("processes real experience enquiries successfully through submitEnquiryAction", async () => {
+      const validEnquiry = {
+        type: "contact" as const,
+        data: {
+          name: "Arjun Verma",
+          email: "arjun@example.com",
+          phone: "+91 9876543210",
+          interest: "An Upcoming Experience",
+          message: "[Experience Request - Wellness] Preferred Date: Next month | Preferences: Sound healing retreat",
+        },
+      };
+
+      const result = await submitEnquiryAction(validEnquiry);
+      expect(result.success).toBe(true);
+      expect(fetch).toHaveBeenCalled();
+    });
   });
 });
 

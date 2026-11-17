@@ -1,14 +1,49 @@
 import type { EnquiryPayload, EnquiryResult } from "./types";
-import { CONTACT, DEMO_SERVICES } from "../env";
+import { CONTACT, LEKVYA } from "../env";
 
 export interface EnquiryService {
   submitEnquiry(payload: EnquiryPayload): Promise<EnquiryResult>;
 }
 
+const FORM_NAMES: Record<EnquiryPayload["type"], string> = {
+  contact: "Contact",
+  dining: "Dining Enquiry",
+  plan_event: "Plan an Event",
+  offsite: "Offsite Enquiry",
+  under_the_sky: "Under the Sky",
+};
+
+/** Flatten enquiry fields for Lekvya (arrays → comma-separated strings). */
+function flattenFields(data: Record<string, unknown>): Record<string, string | number | boolean> {
+  const out: Record<string, string | number | boolean> = {};
+
+  for (const [key, value] of Object.entries(data)) {
+    if (value === undefined || value === null) continue;
+    if (Array.isArray(value)) {
+      out[key] = value.map(String).join(", ");
+    } else if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+      out[key] = value;
+    } else {
+      out[key] = String(value);
+    }
+  }
+
+  // Normalise alternate contact keys so Lekvya always gets name / email / phone when present
+  if (!out.phone) {
+    const alt = out.contact ?? out.contactNumber ?? out.phoneNumber;
+    if (typeof alt === "string" && alt) out.phone = alt;
+  }
+  if (!out.email && typeof out.emailAddress === "string" && out.emailAddress) {
+    out.email = out.emailAddress;
+  }
+
+  return out;
+}
+
+/** Kept for unit tests that spy on a predictable local success path. */
 export class MockEnquiryService implements EnquiryService {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async submitEnquiry(_payload: EnquiryPayload): Promise<EnquiryResult> {
-    // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 800));
 
     return {
@@ -19,16 +54,44 @@ export class MockEnquiryService implements EnquiryService {
   }
 }
 
-export class UnavailableEnquiryService implements EnquiryService {
-  async submitEnquiry(): Promise<EnquiryResult> {
-    return {
-      success: false,
-      message: `We can't send enquiries online just yet. Please call or WhatsApp us on ${CONTACT.phone}, or email ${CONTACT.email}, and we'll take it from there.`,
-      isDemo: false,
-    };
+export class LekvyaEnquiryService implements EnquiryService {
+  async submitEnquiry(payload: EnquiryPayload): Promise<EnquiryResult> {
+    const formName = FORM_NAMES[payload.type];
+    const fields = flattenFields(payload.data as Record<string, unknown>);
+
+    try {
+      const res = await fetch(LEKVYA.sendFormUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          publicKey: LEKVYA.publicKey,
+          formName,
+          enquiryType: payload.type,
+          ...fields,
+        }),
+      });
+
+      if (!res.ok) {
+        return {
+          success: false,
+          message: `We couldn't send this right now. Please try again, or reach us on ${CONTACT.phone} / ${CONTACT.email}.`,
+          isDemo: false,
+        };
+      }
+
+      return {
+        success: true,
+        message: "Thank you for your enquiry. We've received your request and will be in touch shortly.",
+        isDemo: false,
+      };
+    } catch {
+      return {
+        success: false,
+        message: `We couldn't send this right now. Please try again, or reach us on ${CONTACT.phone} / ${CONTACT.email}.`,
+        isDemo: false,
+      };
+    }
   }
 }
 
-export const enquiryService: EnquiryService = DEMO_SERVICES
-  ? new MockEnquiryService()
-  : new UnavailableEnquiryService();
+export const enquiryService: EnquiryService = new LekvyaEnquiryService();
