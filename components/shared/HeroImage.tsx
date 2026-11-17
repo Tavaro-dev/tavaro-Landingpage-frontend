@@ -26,11 +26,13 @@ const loading = new Map<string, Promise<void>>();
  * Downloads and decodes a full-width hero (the same file the page's HeroImage with sizes="100vw" will pick), so
  * the page opens with it sharp. Resolves when it is ready (or failed); repeat calls share one download.
  */
-export function preloadHero(stem: string): Promise<void> {
+export function preloadHero(stem: string, priority: "high" | "low"): Promise<void> {
   let p = loading.get(stem);
   if (!p) {
     const { srcSet, sizes } = getImageProps({ src: `/${stem}.jpg`, alt: "", fill: true, sizes: "100vw", loader: heroLoader }).props;
     const img = new window.Image();
+    // Low for fetching ahead, so it never slows the page or a navigation the visitor is waiting on.
+    img.fetchPriority = priority;
     img.sizes = sizes ?? "100vw";
     img.srcset = srcSet ?? "";
     p = img.decode().catch(() => {});
@@ -41,26 +43,16 @@ export function preloadHero(stem: string): Promise<void> {
 
 /**
  * next/image for large photos at the top of a page: the ready-made files, and a soft preview while they load.
- * The preview is its own layer under the photo, not Next's placeholder on the photo itself: Next takes that
- * away when the file has loaded, which can be a frame before the photo is painted, and showed one dark frame.
+ * The preview is the photo element's own background, kept for good: the photo covers it once painted. (Next's
+ * placeholder is removed when the file has loaded, a frame before the photo paints, and showed one dark frame;
+ * a separate layer under the photo got drawn over it where the photo has a negative z-index.)
  */
-export function HeroImage({ alt, ...props }: ImageProps) {
+export function HeroImage({ alt, style, ...props }: ImageProps) {
   const blur = entry(srcOf(props.src))?.blur;
-  return (
-    <>
-      {blur && props.fill && (
-        <span
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundImage: `url("data:image/svg+xml;charset=utf-8,${getImageBlurSvg({ blurDataURL: blur, objectFit: "cover" })}")`,
-          }}
-        />
-      )}
-      <Image alt={alt} {...props} loader={heroLoader} />
-    </>
-  );
+  const preview = blur && {
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundImage: `url("data:image/svg+xml;charset=utf-8,${getImageBlurSvg({ blurDataURL: blur, objectFit: "cover" })}")`,
+  };
+  return <Image alt={alt} {...props} style={{ ...preview, ...style }} loader={heroLoader} />;
 }

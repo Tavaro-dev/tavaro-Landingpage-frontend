@@ -167,7 +167,8 @@ export function ResortGallery() {
     const el = page.current;
     if (!header || !el) return;
     const ro = new ResizeObserver(() => el.style.setProperty("--header", `${header.offsetHeight}px`));
-    ro.observe(header);
+    // border-box: scrolling shrinks the header by its padding, which the default (content box) never reports.
+    ro.observe(header, { box: "border-box" });
     return () => ro.disconnect();
   }, []);
 

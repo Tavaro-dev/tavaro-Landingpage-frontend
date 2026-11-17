@@ -62,6 +62,16 @@ const PLACES: Place[] = [
     venue: false,
   },
   {
+    id: "pilates",
+    mark: "S",
+    name: "Pilates Studio",
+    kind: "Wellness",
+    at: [1584, 758],
+    stats: [],
+    note: "A studio for Pilates, beside Màre and a few steps from the pool.",
+    venue: false,
+  },
+  {
     id: "rooms",
     mark: "R",
     name: "Sanctuary Rooms",
@@ -196,6 +206,12 @@ const SHAPES: Record<string, ReactNode> = {
     </>
   ),
   mare: <rect x="1492" y="740" width="52" height="34" className={styles.roof} />,
+  pilates: (
+    <>
+      <rect x="1562" y="736" width="44" height="44" className={styles.roof} />
+      <path d="M1562 758h44" className={styles.ridge} />
+    </>
+  ),
   rooms: (
     <>
       <rect x="1385" y="778" width="88" height="22" className={styles.roof} />
@@ -276,7 +292,7 @@ export function ResortGrounds() {
       <div className="container">
         <header className={styles.head}>
           <h2 id="grounds-title" className={styles.title}>
-            15 acres, laid out for celebrations
+            16 acres, laid out for celebrations
           </h2>
           <p className={styles.lede}>
             Mediterranean design and Indian hospitality, with every space a short walk from the next. Choose a
@@ -289,7 +305,7 @@ export function ResortGrounds() {
             <svg viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} aria-labelledby="map-desc" role="group">
               <desc id="map-desc">
                 Site plan of Tavaro Resorts. Tavaro Lawn sits at the centre, with Tavaro House and the Tree Deck
-                to its north. Sanctuary Lawn, Sanctuary Hall, the pool and Màre are to the east, inside a ring of
+                to its north. Sanctuary Lawn, Sanctuary Hall, the pool, Màre and the Pilates Studio are to the east, inside a ring of
                 trees. The entrance is to the south, with parking to the west and south.
               </desc>
               <defs>

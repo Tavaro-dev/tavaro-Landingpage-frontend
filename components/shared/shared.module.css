@@ -899,9 +899,11 @@ button.hero-quick-nav-item {
 }
 
 @media (max-width: 860px) {
+/* Equal gaps between the words, not equal columns: the labels range from MÀRE to EXPERIENCES, so equal
+   columns left the short ones looking adrift. */
 .pillar-grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    display: flex;
+    justify-content: space-evenly;
     gap: 4px;
     margin: 0;
     padding: 0;

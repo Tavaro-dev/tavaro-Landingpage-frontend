@@ -1562,6 +1562,14 @@ button,
   }
 }
 
+/* Phone: the photo runs edge to edge, like the desktop half; the text keeps the page margins. */
+@media (max-width: 640px) {
+  .container > .split > .split-media {
+    /* out to the screen edges, from wherever the centred container's padding leaves it */
+    margin-inline: calc(50% - 50vw);
+  }
+}
+
 .split-body .eyebrow {
   margin-bottom: 12px;
 }
