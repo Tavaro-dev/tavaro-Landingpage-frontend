@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { HeroImage } from "@/components/shared/HeroImage";
 import { useState, type CSSProperties } from "react";
 import styles from "../ExpandingPanelsShowcase.module.css";
 import type { ShowcaseCategory } from "../ExpandingPanelsShowcase";
@@ -44,7 +44,7 @@ export function ShowcasePanel({
     >
       <div className={styles["showcase-panel-bg"]}>
         {seen && (
-          <Image
+          <HeroImage
             src={cat.image}
             alt={cat.imageAlt}
             fill

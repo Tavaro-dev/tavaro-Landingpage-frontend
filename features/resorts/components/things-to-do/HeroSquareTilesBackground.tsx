@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import Image, { getImageProps } from "next/image";
+import { getImageProps } from "next/image";
+import { HeroImage, heroLoader } from "@/components/shared/HeroImage";
 
 /** The optimizer's copy sized to the screen (about 2x its width): the originals are up to 1.3 MB each. */
 const canvasSrc = (src: string) =>
-  getImageProps({ src, alt: "", width: Math.min(window.innerWidth, 960), height: 540 }).props.src;
+  getImageProps({ src, alt: "", width: Math.min(window.innerWidth, 960), height: 540, loader: heroLoader }).props.src;
 import styles from "./HeroSquareTilesBackground.module.css";
 
 export interface HeroSlideItem {
@@ -375,7 +376,7 @@ export function HeroSquareTilesBackground({
 
       {/* Fallback Next.js Image for immediate SSR rendering */}
       <div className={styles["hero-static-fallback"]}>
-        <Image
+        <HeroImage
           src={slides[currentIndex]?.image || slides[0].image}
           alt={slides[currentIndex]?.alt || slides[0].alt}
           fill

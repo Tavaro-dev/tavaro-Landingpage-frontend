@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { HeroImage } from "@/components/shared/HeroImage";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Modal } from "@/components/ui/Modal";
@@ -66,7 +66,7 @@ export function ThingsToDoModal({ isOpen, onClose }: ThingsToDoModalProps) {
               }}
               aria-label={`${explore.title}: ${explore.cardDescription}`}
             >
-              <Image
+              <HeroImage
                 src={explore.modalImage}
                 alt={explore.modalImageAlt}
                 fill
@@ -97,7 +97,7 @@ export function ThingsToDoModal({ isOpen, onClose }: ThingsToDoModalProps) {
               }}
               aria-label={`${create.title}: ${create.cardDescription}`}
             >
-              <Image
+              <HeroImage
                 src={create.modalImage}
                 alt={create.modalImageAlt}
                 fill

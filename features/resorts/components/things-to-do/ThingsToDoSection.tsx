@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { HeroImage } from "@/components/shared/HeroImage";
 import Link from "next/link";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
@@ -30,7 +30,7 @@ export function ThingsToDoSection() {
         <Reveal stagger className={styles["ttd-editorial-grid"]}>
           {[explore, create].map((path, i) => (
             <Link key={path.id} href={path.route} className={styles["ttd-editorial-card"]}>
-              <Image
+              <HeroImage
                 src={path.modalImage}
                 alt={path.modalImageAlt}
                 fill

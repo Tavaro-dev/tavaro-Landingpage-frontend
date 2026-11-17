@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import Image from "next/image";
+import { HeroImage } from "@/components/shared/HeroImage";
 import Link from "next/link";
 import styles from "./ExpandingPanelsShowcase.module.css";
 import { ShowcasePanel } from "./showcase/ShowcasePanel";
@@ -127,7 +127,7 @@ export function ExpandingPanelsShowcase({
                     aria-label={`Show ${cat.title}`}
                     tabIndex={-1}
                   >
-                    <Image src={cat.image} alt="" fill sizes="132px" className={styles["showcase-strip-img"]} />
+                    <HeroImage src={cat.image} alt="" fill sizes="132px" className={styles["showcase-strip-img"]} />
                     <span className={styles["showcase-strip-label"]}>{cat.title}</span>
                   </button>
                 ))}
@@ -151,7 +151,7 @@ export function ExpandingPanelsShowcase({
 
       <div className="container">
         <div className={styles["showcase-closing-bar"]}>
-          <Image src={closing.image} alt="" fill sizes="(max-width: 1360px) 100vw, 1360px" className={styles["showcase-closing-img"]} />
+          <HeroImage src={closing.image} alt="" fill sizes="(max-width: 1360px) 100vw, 1360px" className={styles["showcase-closing-img"]} />
           <div className={styles["showcase-closing-text"]}>
             <h3 className={styles["showcase-closing-title"]}>{closing.title}</h3>
             <p className={styles["showcase-closing-desc"]}>{closing.tagline}</p>

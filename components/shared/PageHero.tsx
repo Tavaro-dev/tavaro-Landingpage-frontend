@@ -1,6 +1,7 @@
 "use client";
 
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
+import { HeroImage } from "@/components/shared/HeroImage";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { Icon, type IconName } from "@/components/ui/Icon";
@@ -55,7 +56,7 @@ export function PageHero({
   return (
     <section className="page-hero" style={style}>
       <div className={`${styles["hero-media"]} ${placeholder}`}>
-        <Image src={photoSrc} alt={photoAlt} fill preload sizes="100vw" placeholder={typeof photoSrc === "string" ? "empty" : "blur"} style={photoPosition ? { objectPosition: photoPosition } : undefined} />
+        <HeroImage src={photoSrc} alt={photoAlt} fill preload sizes="100vw" style={photoPosition ? { objectPosition: photoPosition } : undefined} />
       </div>
       <div className={styles["hero-scrim"]} />
       <div className="page-hero-inner container">

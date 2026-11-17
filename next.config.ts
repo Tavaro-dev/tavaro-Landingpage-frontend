@@ -20,9 +20,9 @@ const nextConfig: NextConfig = {
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
         ],
       },
-      // Gallery files have content-hashed names, so they never change in place.
+      // Gallery and hero files have content-hashed names, so they never change in place.
       {
-        source: "/gallery/:path*",
+        source: "/:dir(gallery|heroes)/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
       // Other public files keep their names when replaced, so a day's cache, then served from the cache while
