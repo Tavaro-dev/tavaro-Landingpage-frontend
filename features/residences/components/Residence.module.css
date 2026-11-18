@@ -332,6 +332,11 @@
     grid-row: span 1;
   }
 
+  /* Only the opening photo runs full width; a later lead pairs up like the rest. */
+  .lead:not(:first-child) {
+    grid-column: span 1;
+  }
+
   .tall,
   .third,
   .half {

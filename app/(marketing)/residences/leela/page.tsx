@@ -32,7 +32,7 @@ const FACTS: Fact[] = [
   { label: "Floor plans", value: "Typical, Terrace & Sky Deck" },
   { label: "Spatial models", value: "Isometric & 3D volumetric" },
   { label: "Orientation", value: "Solar & wind-path aligned" },
-  { label: "Area information", value: "Shared in the brochure" },
+  { label: "Area information", value: "In the brochure" },
 ];
 
 const ARCHITECTURAL_PRINCIPLES = [
@@ -122,8 +122,80 @@ const GALLERY: MosaicItem[] = [
     size: "tall",
   },
   {
+    src: "/images/residences/leela-night.jpg",
+    alt: "Leela at night, every terrace lit warm against the dark",
+    caption: "By night",
+    size: "tall",
+  },
+  {
     src: "/images/residences/leela-living-room.jpg",
     alt: "A Leela living room with pale stone floors and soft seating",
+    caption: "Living",
+    size: "third",
+  },
+  {
+    src: "/images/residences/leela-lounge.jpg",
+    alt: "The home theatre lounge, with recliners facing a wall of glass and the city beyond",
+    caption: "Lounge",
+    size: "third",
+  },
+  {
+    src: "/images/residences/leela-dining.jpg",
+    alt: "The dining room: a timber table for eight beneath a sculpted pendant",
+    caption: "Dining",
+    size: "third",
+  },
+  {
+    src: "/images/residences/leela-kitchen.jpg",
+    alt: "A Leela kitchen in sage green and timber, open to the dining area",
+    caption: "Kitchen",
+    size: "third",
+  },
+  {
+    src: "/images/residences/leela-rooftop-lounge.jpg",
+    alt: "The rooftop lounge at dusk, beneath a timber canopy and a terracotta screen wall",
+    caption: "Rooftop lounge",
+    size: "half",
+  },
+  {
+    src: "/images/residences/leela-rooftop-yoga.jpg",
+    alt: "Morning yoga on the rooftop deck, beside the spiral stair",
+    caption: "Rooftop yoga",
+    size: "half",
+  },
+  {
+    src: "/images/residences/leela-aerial.jpg",
+    alt: "Leela from above at night, its terraces lit along the street",
+    caption: "From above",
+    size: "lead",
+  },
+  {
+    src: "/images/residences/leela-facade.jpg",
+    alt: "Leela's street facade by day, its balconies stepping up to the roof canopy",
+    caption: "Facade",
+    size: "tall",
+  },
+  {
+    src: "/images/residences/leela-bedroom-2.jpg",
+    alt: "A second bedroom, its timber wall panels cut in soft waves",
+    caption: "Bedroom",
+    size: "half",
+  },
+  {
+    src: "/images/residences/leela-terrace.jpg",
+    alt: "Leela's lit terraces at dusk",
+    caption: "Terraces",
+    size: "half",
+  },
+  {
+    src: "/images/residences/leela-bedroom.jpg",
+    alt: "A bedroom suite with a padded headboard wall, timber ceiling and soft cove light",
+    caption: "Bedroom",
+    size: "third",
+  },
+  {
+    src: "/images/residences/leela-hallway.jpg",
+    alt: "A Leela hallway with timber panelling and stone floors, leading to the living room",
     caption: "Interiors",
     size: "third",
   },
@@ -133,13 +205,10 @@ const GALLERY: MosaicItem[] = [
     caption: "Details",
     size: "third",
   },
-  {
-    src: "/images/residences/leela-terrace.jpg",
-    alt: "Leela's lit terraces at dusk",
-    caption: "Terraces",
-    size: "third",
-  },
 ];
+
+/** The Leela brochure from Bhairavi Realty: vision, floor plans, interiors, terrace and location. */
+const BROCHURE = { href: "/downloads/leela-brochure.pdf", size: "5.4 MB" };
 
 export default function LeelaPage() {
   return (
@@ -256,10 +325,10 @@ export default function LeelaPage() {
             lede="Each level considered for orientation, privacy and unhindered connection to nature."
           />
           <Reveal className={`${styles["living-split"]} ${styles.flip} tw:mt-[32px]`}>
-            <div className={`${styles["living-media"]} ${styles.portrait} ph-5`}>
+            <div className={`${styles["living-media"]} ${styles.plan}`}>
               <Image
-                src="/images/residences/leela-elevation.jpg"
-                alt="The full elevation of Leela, floor by floor"
+                src="/images/residences/leela-floor-plan-3d.webp"
+                alt="A 3D cut-away of a Leela apartment: living and dining, kitchen, bedrooms and balconies"
                 fill
                 sizes="(min-width: 861px) 40vw, 100vw"
               />
@@ -267,12 +336,17 @@ export default function LeelaPage() {
             <div>
               <RuledList items={PLANS} />
               <p className="tw:mt-[24px] tw:max-w-[56ch] tw:text-[13.5px] tw:leading-[1.7] tw:text-(color:--on-surface-muted)">
-                Detailed architectural plans, including floor-wise layouts, dimensioned room
-                configurations, terrace layouts and orientation studies, are shared on enquiry.
+                The brochure includes the typical and terrace floor plans. Dimensioned room
+                configurations and orientation studies are shared on enquiry.
               </p>
-              <Link href="#register" className="btn solid tw:mt-[24px]">
-                Request floor plans <span className="btn-arrow">→</span>
-              </Link>
+              <div className="tw:mt-[24px] tw:flex tw:flex-wrap tw:gap-[12px]">
+                <a href={BROCHURE.href} className="btn solid" download>
+                  Download the brochure (PDF, {BROCHURE.size})
+                </a>
+                <Link href="#register" className="btn">
+                  Request floor plans <span className="btn-arrow">→</span>
+                </Link>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -358,9 +432,12 @@ export default function LeelaPage() {
                 pressure — a conversation, not a sales call.
               </p>
               <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--on-surface-muted) tw:leading-[1.7]">
-                Whether you&apos;d like the brochure, pricing information, a private viewing or simply
-                a conversation with our team — we&apos;re here to help you understand if Leela is
-                right for you.
+                Whether you&apos;d like pricing information, a private viewing or simply a conversation
+                with our team — we&apos;re here to help you understand if Leela is right for you. The{" "}
+                <a href={BROCHURE.href} className="text-link" download>
+                  brochure
+                </a>{" "}
+                is ready to download now.
               </p>
             </div>
             {/* Dynamic import to avoid SSR issues with client form */}

@@ -179,6 +179,11 @@
   aspect-ratio: 9/10;
 }
 
+/* A drawing on a transparent background: shown whole, never cropped. */
+.living-media.plan img {
+  object-fit: contain;
+}
+
 .living-media img {
   object-fit: cover;
   transition: transform 1.4s var(--ease-luxury);
