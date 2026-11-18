@@ -1,17 +1,32 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { z } from "zod";
 
-const CartItemSchema = z.object({
-  slug: z.string().min(1),
-  name: z.string(),
-  image: z.string(),
-  pricePerNight: z.number().nonnegative(),
-  nights: z.number().int().positive(),
-});
+export type CartItem = {
+  slug: string;
+  name: string;
+  image: string;
+  pricePerNight: number;
+  nights: number;
+};
 
-export type CartItem = z.infer<typeof CartItemSchema>;
+/**
+ * Reads the cart saved in this browser: all items valid, or none. A hand check rather than zod, because the
+ * cart is on every page and zod would add about 55 KB of script to each.
+ */
+export function parseStoredCart(raw: string): CartItem[] | null {
+  const data: unknown = JSON.parse(raw);
+  if (!Array.isArray(data)) return null;
+  const items: CartItem[] = [];
+  for (const x of data) {
+    if (typeof x !== "object" || x === null) return null;
+    const { slug, name, image, pricePerNight, nights } = x as Record<string, unknown>;
+    if (typeof slug !== "string" || !slug || typeof name !== "string" || typeof image !== "string") return null;
+    if (typeof pricePerNight !== "number" || !(pricePerNight >= 0) || !Number.isInteger(nights) || (nights as number) <= 0) return null;
+    items.push({ slug, name, image, pricePerNight, nights: nights as number });
+  }
+  return items;
+}
 
 type CartContextValue = {
   items: CartItem[];
@@ -39,8 +54,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const loadCart = () => {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        const parsed = raw ? z.array(CartItemSchema).safeParse(JSON.parse(raw)) : null;
-        if (parsed?.success) setItems(parsed.data);
+        const saved = raw ? parseStoredCart(raw) : null;
+        if (saved) setItems(saved);
       } catch {
         // ignore malformed/unavailable storage
       }
