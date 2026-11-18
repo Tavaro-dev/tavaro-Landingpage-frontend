@@ -1,18 +1,22 @@
-import Image from "next/image";
 import type { CSSProperties } from "react";
 import styles from "./ui.module.css";
 
+/**
+ * Brand icons are ready-made WebP files (`npm run make:icons` writes them from assets/icons), served as
+ * they are: no runtime resizing, so they never wait on (or fail in) the image optimizer.
+ * `widths` lists the files that exist: `${file}-${w}.webp`.
+ */
 const BRAND_ICONS = {
-  logo: { src: "/icons/logo-mark.png", width: 300, height: 242 },
-  resorts: { src: "/icons/icon-resorts-tree.png", width: 400, height: 400 },
-  residences: { src: "/icons/icon-residences-heart.png", width: 400, height: 400 },
-  experiences: { src: "/icons/icon-experiences-sun.png", width: 400, height: 400 },
-  wellness: { src: "/icons/icon-wellness-bird.png", width: 400, height: 400 },
-  mare: { src: "/icons/icon-mare-keys.png", width: 400, height: 400 },
-  "mare-wordmark": { src: "/icons/mare-wordmark-white.png", width: 458, height: 153 },
-  sun: { src: "/icons/icon-experiences-sun.png", width: 400, height: 400 },
-  leaf: { src: "/icons/icon-resorts-tree.png", width: 400, height: 400 },
-  heart: { src: "/icons/icon-residences-heart.png", width: 400, height: 400 },
+  logo: { file: "logo-mark", width: 300, height: 242, widths: [96, 192] },
+  resorts: { file: "icon-resorts-tree", width: 400, height: 400, widths: [96, 192, 400] },
+  residences: { file: "icon-residences-heart", width: 400, height: 400, widths: [96, 192, 400] },
+  experiences: { file: "icon-experiences-sun", width: 400, height: 400, widths: [96, 192, 400] },
+  wellness: { file: "icon-wellness-bird", width: 400, height: 400, widths: [96, 192, 400] },
+  mare: { file: "icon-mare-keys", width: 400, height: 400, widths: [96, 192, 400] },
+  "mare-wordmark": { file: "mare-wordmark-white", width: 458, height: 153, widths: [96, 192, 400] },
+  sun: { file: "icon-experiences-sun", width: 400, height: 400, widths: [96, 192, 400] },
+  leaf: { file: "icon-resorts-tree", width: 400, height: 400, widths: [96, 192, 400] },
+  heart: { file: "icon-residences-heart", width: 400, height: 400, widths: [96, 192, 400] },
 } as const;
 
 const SVG_ICONS = {
@@ -235,17 +239,31 @@ export function Icon({
   name,
   className,
   style,
+  sizes = "180px",
 }: {
   name: IconName;
   className?: string;
   style?: CSSProperties;
+  /** How wide a brand icon shows, so the browser picks the smallest file that is sharp (at most ~170px). */
+  sizes?: string;
 }) {
   if (name in BRAND_ICONS) {
     const icon = BRAND_ICONS[name as BrandIconName];
-    // Shown at most ~170px wide (the logo far smaller); without `sizes` Next serves 640-828px files.
-    const sizes = name === "logo" ? "48px" : "180px";
+    const file = (w: number) => `/icons/${icon.file}-${w}.webp`;
     return (
-      <Image src={icon.src} alt="" width={icon.width} height={icon.height} sizes={sizes} className={className} style={style} />
+      // eslint-disable-next-line @next/next/no-img-element -- ready-sized static files; the optimizer would only add a wait
+      <img
+        src={file(icon.widths[icon.widths.length - 1])}
+        srcSet={icon.widths.map((w) => `${file(w)} ${w}w`).join(", ")}
+        sizes={sizes}
+        alt=""
+        width={icon.width}
+        height={icon.height}
+        loading="lazy"
+        decoding="async"
+        className={className}
+        style={style}
+      />
     );
   }
   const svg = SVG_ICONS[name as SvgIconName] ?? SVG_ICONS.close;

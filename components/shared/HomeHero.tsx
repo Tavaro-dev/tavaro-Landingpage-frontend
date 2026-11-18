@@ -58,7 +58,7 @@ export function HomeHero() {
             {PILLARS.map((pillar) => (
               <Link className={styles["pillar-item"]} href={pillar.href} key={pillar.href}>
                 <span className={styles["pillar-icon"]}>
-                  <Icon name={pillar.icon} />
+                  <Icon name={pillar.icon} sizes="24px" />
                 </span>
                 <span className={styles["pillar-label"]}>{pillar.label}</span>
               </Link>

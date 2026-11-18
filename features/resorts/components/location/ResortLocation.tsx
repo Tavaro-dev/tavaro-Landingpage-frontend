@@ -333,7 +333,7 @@ export function ResortLocation() {
                   className={styles.pin}
                 />
                 <circle cx={T.x} cy={head} r="31" className={styles.pinFace} />
-                <image href="/icons/logo-mark.png" x={T.x - 23} y={head - 19} width="46" height="37" />
+                <image href="/icons/logo-mark-96.webp" x={T.x - 23} y={head - 19} width="46" height="37" />
                 <text x={T.x} y={T.y + 70} textAnchor="middle" className={styles.homeName}>
                   Tavaro Resort
                 </text>
