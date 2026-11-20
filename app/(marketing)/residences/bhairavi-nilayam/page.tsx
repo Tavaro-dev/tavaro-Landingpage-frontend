@@ -9,7 +9,6 @@ import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
 import { ResidenceHero } from "@/features/residences/components/ResidenceHero";
 import { StoryScroll, type StoryStep } from "@/features/residences/components/StoryScroll";
-import BhairavDynamicForm from "./BhairavDynamicForm";
 import styles from "../residences.module.css";
 
 export const metadata = pageMetadata({
@@ -164,7 +163,7 @@ export default function BhairavPage() {
           { value: "7,000", label: "sq. ft. of garden and lawn" },
         ]}
         ctas={[
-          { label: "Register Interest", href: "#register", solid: true },
+          { label: "Register Interest", href: "#register-interest", solid: true },
           { label: "How it's designed", href: "#design" },
         ]}
       />
@@ -283,9 +282,9 @@ export default function BhairavPage() {
       {/* Register interest */}
       <section className="section on-dark" id="register">
         <div className="container">
-          <Reveal className="split">
-            <div className="split-body">
-              <p className="eyebrow">Register Your Interest</p>
+          <Reveal className="tw:mx-auto tw:max-w-[640px] tw:text-center">
+            <div>
+              <p className="eyebrow no-line">Register Your Interest</p>
               <h2 className="display-3">
                 A private home,
                 <br />
@@ -295,6 +294,9 @@ export default function BhairavPage() {
                 Photographs, plans and a private viewing are shared on enquiry. We&apos;ll get back
                 to you personally.
               </p>
+              <Link href="#register-interest" className="btn solid tw:mt-[28px]">
+                Register interest <span className="btn-arrow">→</span>
+              </Link>
               <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--on-surface-muted) tw:leading-[1.7]">
                 Prefer an apartment? See{" "}
                 <Link href="/residences/leela" className="text-link">
@@ -303,7 +305,6 @@ export default function BhairavPage() {
                 .
               </p>
             </div>
-            <BhairavDynamicForm />
           </Reveal>
         </div>
       </section>
@@ -311,7 +312,7 @@ export default function BhairavPage() {
       <StickyCta
         text="Interested in Bhairavi Nilayam?"
         ctaLabel="Register Interest"
-        ctaHref="#register"
+        ctaHref="#register-interest"
       />
     </>
   );

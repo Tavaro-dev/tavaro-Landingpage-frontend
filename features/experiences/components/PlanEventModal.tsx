@@ -47,7 +47,7 @@ export default function PlanEventModal({ isOpen, onClose }: PlanEventModalProps)
 
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy={fieldId("title")}>
-      <div className="event-modal-card">
+      <div className="event-modal-card sheet-card">
         {/* Header */}
         <div className="event-modal-head">
           <h3 className="event-modal-title" id={fieldId("title")}>Tell us about your celebration</h3>

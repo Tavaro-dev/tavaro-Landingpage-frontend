@@ -48,8 +48,8 @@ export function OffsiteEditModal({ isOpen, onClose }: OffsiteEditModalProps) {
 
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy="offsite-modal-title" bare>
-      <div className={styles["offsite-modal-backdrop"]} onClick={onClose}>
-        <div className={styles["offsite-modal-card"]} onClick={(e) => e.stopPropagation()}>
+      <div className={`${styles["offsite-modal-backdrop"]} sheet-overlay`} onClick={onClose}>
+        <div className={`${styles["offsite-modal-card"]} sheet-card`} onClick={(e) => e.stopPropagation()}>
           <header className={styles["offsite-modal-header"]}>
             <div className={styles["offsite-modal-header-text"]}>
               <span className="eyebrow no-line tw:text-[10px]">

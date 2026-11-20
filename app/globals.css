@@ -3159,3 +3159,37 @@ img[data-nimg="fill"]:not(.tw\:object-contain):not([src*=".png"]) {
     min-height: 40px;
   }
 }
+
+/* Phones: every pop-up rises from the bottom as a sheet, full width, like the register-interest window.
+   Tag the backdrop "sheet-overlay" (or let the dialog itself be it) and the window "sheet-card".
+   Unlayered, so it wins over each pop-up's own centred layout. */
+@media (max-width: 600px) {
+  .sheet-overlay,
+  dialog[open]:has(> .sheet-card) {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .sheet-card {
+    width: 100% !important; /* over the dining pop-up's inline wide width */
+    max-width: none !important;
+    max-height: 92dvh;
+    margin: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-width: 1px 0 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    animation: sheetUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+  .sheet-card {
+    animation: none;
+  }
+}
+@keyframes sheetUp {
+  from {
+    translate: 0 100%;
+  }
+}
+

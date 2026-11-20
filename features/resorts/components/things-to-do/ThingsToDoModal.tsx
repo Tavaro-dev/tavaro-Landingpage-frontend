@@ -23,8 +23,8 @@ export function ThingsToDoModal({ isOpen, onClose }: ThingsToDoModalProps) {
 
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy="ttd-modal-heading" bare>
-      <div className={styles["ttd-modal-backdrop"]} onClick={onClose}>
-        <div className={styles["ttd-modal-container"]} onClick={(e) => e.stopPropagation()}>
+      <div className={`${styles["ttd-modal-backdrop"]} sheet-overlay`} onClick={onClose}>
+        <div className={`${styles["ttd-modal-container"]} sheet-card`} onClick={(e) => e.stopPropagation()}>
           <div className={styles["ttd-modal-top"]}>
             <div className={styles["ttd-modal-header-text"]}>
               <p className={styles["ttd-modal-eyebrow"]}>THE TAVARO EXPERIENCE</p>

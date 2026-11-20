@@ -16,7 +16,6 @@ import {
   StoryScroll,
   type StoryStep,
 } from "@/features/residences/components/StoryScroll";
-import LeelaDynamicForm from "./LeelaDynamicForm";
 import styles from "../residences.module.css";
 
 export const metadata = pageMetadata({
@@ -180,7 +179,7 @@ export default function LeelaPage() {
           { value: "Rooftop", label: "Lounge, yoga deck and gazebo" },
         ]}
         ctas={[
-          { label: "Register Interest", href: "#register", solid: true },
+          { label: "Register Interest", href: "#register-interest", solid: true },
           { label: "See the floor plans", href: "#floor-plans" },
         ]}
       />
@@ -263,7 +262,7 @@ export default function LeelaPage() {
                 <a href={BROCHURE.href} className="btn solid" download>
                   Download the brochure (PDF, {BROCHURE.size})
                 </a>
-                <Link href="#register" className="btn">
+                <Link href="#register-interest" className="btn">
                   Ask for detailed plans
                 </Link>
               </div>
@@ -369,9 +368,9 @@ export default function LeelaPage() {
       {/* G. Register your interest */}
       <section className="section on-dark" id="register">
         <div className="container">
-          <Reveal className="split">
-            <div className="split-body">
-              <p className="eyebrow">Register Your Interest</p>
+          <Reveal className="tw:mx-auto tw:max-w-[640px] tw:text-center">
+            <div>
+              <p className="eyebrow no-line">Register Your Interest</p>
               <h2 className="display-3">
                 Ask us anything
                 <br />
@@ -381,6 +380,9 @@ export default function LeelaPage() {
                 Pricing, availability, plans or a private viewing. We&apos;ll
                 get back to you personally, without pressure.
               </p>
+              <Link href="#register-interest" className="btn solid tw:mt-[28px]">
+                Register interest <span className="btn-arrow">→</span>
+              </Link>
               <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--on-surface-muted) tw:leading-[1.7]">
                 The{" "}
                 <a href={BROCHURE.href} className="text-link" download>
@@ -394,7 +396,6 @@ export default function LeelaPage() {
                 .
               </p>
             </div>
-            <LeelaDynamicForm />
           </Reveal>
         </div>
       </section>
@@ -402,7 +403,7 @@ export default function LeelaPage() {
       <StickyCta
         text="Interested in Leela by Tavaro?"
         ctaLabel="Register Interest"
-        ctaHref="#register"
+        ctaHref="#register-interest"
       />
     </>
   );

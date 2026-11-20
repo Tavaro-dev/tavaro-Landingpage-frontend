@@ -73,8 +73,8 @@ export function ThirdPartyBookingModal({
 }: ThirdPartyBookingModalProps) {
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy="ota-modal-title" bare>
-      <div className={styles["ota-modal-overlay"]} onClick={onClose}>
-        <div className={styles["ota-modal-card"]} onClick={(e) => e.stopPropagation()}>
+      <div className={`${styles["ota-modal-overlay"]} sheet-overlay`} onClick={onClose}>
+        <div className={`${styles["ota-modal-card"]} sheet-card`} onClick={(e) => e.stopPropagation()}>
           {/* Header */}
           <div className={styles["ota-modal-header"]}>
             <div>

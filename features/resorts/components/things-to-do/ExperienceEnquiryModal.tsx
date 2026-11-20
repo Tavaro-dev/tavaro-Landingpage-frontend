@@ -71,8 +71,8 @@ export function ExperienceEnquiryModal({
 
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy="exp-modal-title" bare>
-      <div className={gstyles["event-modal-overlay"]} onClick={onClose}>
-        <div className={styles["exp-modal-card"]} onClick={(e) => e.stopPropagation()}>
+      <div className={`${gstyles["event-modal-overlay"]} sheet-overlay`} onClick={onClose}>
+        <div className={`${styles["exp-modal-card"]} sheet-card`} onClick={(e) => e.stopPropagation()}>
           <div className={styles["exp-modal-head"]}>
             <h3 id="exp-modal-title" className={styles["exp-modal-title"]}>
               Arrange an Experience

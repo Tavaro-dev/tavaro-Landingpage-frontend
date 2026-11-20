@@ -101,9 +101,9 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
 
   return (
     <Modal open={isOpen} onClose={close} labelledBy="dining-enquiry-title" bare>
-      <div className={gstyles["event-modal-overlay"]} onClick={close}>
+      <div className={`${gstyles["event-modal-overlay"]} sheet-overlay`} onClick={close}>
         <div
-          className={`event-modal-card ${view === "discover" ? "wide" : ""}`}
+          className={`event-modal-card sheet-card ${view === "discover" ? "wide" : ""}`}
           onClick={(e) => e.stopPropagation()}
           style={view === "discover" ? { maxWidth: "1200px", width: "95vw" } : {}}
         >

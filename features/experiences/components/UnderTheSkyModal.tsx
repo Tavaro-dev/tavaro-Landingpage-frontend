@@ -97,8 +97,8 @@ export function UnderTheSkyModal({ isOpen, onClose }: UnderTheSkyModalProps) {
 
   return (
     <Modal open={isOpen} onClose={onClose} labelledBy="uts-modal-title" bare>
-      <div className={styles["uts-modal-backdrop"]} onClick={onClose}>
-        <div className={styles["uts-modal-card"]} onClick={(e) => e.stopPropagation()}>
+      <div className={`${styles["uts-modal-backdrop"]} sheet-overlay`} onClick={onClose}>
+        <div className={`${styles["uts-modal-card"]} sheet-card`} onClick={(e) => e.stopPropagation()}>
           <header className={styles["uts-modal-header"]}>
             <div className={styles["uts-modal-header-text"]}>
               <span className="eyebrow no-line tw:text-[10px]">
