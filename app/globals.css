@@ -3146,3 +3146,16 @@ img[data-nimg="fill"]:not(.tw\:object-contain):not([src*=".png"]) {
 
 
 } /* @layer components */
+
+/* Touch screens. Form text at 16px: iPhones zoom the whole page into any field set smaller.
+   Buttons at least 40px tall, so a fingertip hits them. Unlayered, so these win over component styles. */
+@media (pointer: coarse) {
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="hidden"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+  .btn {
+    min-height: 40px;
+  }
+}

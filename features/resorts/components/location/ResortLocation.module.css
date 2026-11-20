@@ -523,6 +523,8 @@
       max-height: none;
     }
     .panel {
+      /* Below the map, so it does not wait for the drives to finish. */
+      animation-delay: 0.3s;
       position: relative;
       margin: 10px 0 0;
       display: grid;
@@ -552,6 +554,14 @@
       position: static;
       justify-self: center;
       margin-top: 16px;
+      min-height: 40px;
+    }
+    .contact {
+      gap: 0;
+    }
+    .contact a {
+      display: inline-block;
+      padding: 8px 0;
     }
     .findGrid {
       grid-template-columns: 1fr 1fr;

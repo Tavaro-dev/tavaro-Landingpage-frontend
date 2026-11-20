@@ -16,7 +16,12 @@
 .nav-toggle {
   display: none;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: -10px;
   background: none;
   border: none;
   padding: 6px;
@@ -300,6 +305,17 @@
 
 .footer-col a:hover {
   color: var(--on-surface-emphasis);
+}
+
+/* Touch screens: each footer link a full row to tap, at the same spacing. */
+@media (pointer: coarse) {
+  .footer-col ul {
+    gap: 0;
+  }
+  .footer-col a {
+    display: inline-block;
+    padding: 6px 0;
+  }
 }
 
 .footer-bottom {
