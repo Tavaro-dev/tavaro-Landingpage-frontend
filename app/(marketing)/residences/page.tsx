@@ -4,39 +4,48 @@ import { PageHero } from "@/components/shared/PageHero";
 import heroPhoto from "@/public/images/heroes/residences-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
-import { BandQuote } from "@/components/shared/BandQuote";
 import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
-import { ResidenceJourney } from "@/features/residences/components/Residence";
+import { ResidenceJourney } from "@/features/residences/components/ResidenceJourney";
 import styles from "./residences.module.css";
 
 export const metadata = pageMetadata({
   title: "Residences — Come Home to Yourself | Tavaro",
   description:
-    "Tavaro Residences — Leela by Tavaro Residences and Bhairavi Nilayam. Homes built around belonging, place, light and the rhythms of living.",
+    "Tavaro Residences: Leela, apartments wrapped in green near Hyderabad's Financial District, and Bhairavi Nilayam, a 15,000 sq. ft. private home in West Hyderabad.",
   path: "/residences",
 });
 
 const PRINCIPLES = [
   {
-    label: "Belong to the Place",
-    body: "Architecture that responds to its landscape, climate, orientation and surroundings.",
+    title: "Belong to the place",
+    body: "Built for its landscape, light and climate, not apart from them.",
+    src: "/images/residences/leela-exterior.jpg",
+    alt: "Planted terraces and hanging greenery among tall trees",
   },
   {
-    label: "Make Room for Life",
-    body: "Spaces designed around the many ways a home is actually lived in, not simply how it looks.",
+    title: "Make room for life",
+    body: "Planned for how a home is lived in, not just how it looks.",
+    src: "/images/residences/leela-dining.jpg",
+    alt: "A dining table for eight beside an open kitchen",
   },
   {
-    label: "Open & Retreat",
-    body: "A thoughtful balance between connection and privacy. Spaces that open outward when desired and allow retreat when needed.",
+    title: "Open and retreat",
+    body: "Open up to nature and people, or close the door for quiet.",
+    src: "/images/residences/leela-rooftop-lounge.jpg",
+    alt: "A rooftop lounge at dusk under a timber canopy",
   },
   {
-    label: "Live Well",
-    body: "Wellbeing woven into everyday living through opportunities for movement, stillness, nature, light and connection.",
+    title: "Live well",
+    body: "Room to move, rest and be still, every single day.",
+    src: "/images/residences/leela-rooftop-yoga.jpg",
+    alt: "Morning yoga on a rooftop deck",
   },
   {
-    label: "Age with Life",
-    body: "Homes designed to become more meaningful as they are lived in, accommodating changing needs, memories and generations.",
+    title: "Age with life",
+    body: "Homes that grow more meaningful as the years and generations go by.",
+    src: "/images/residences/leela-bedroom-2.jpg",
+    alt: "A bedroom with timber wall panels cut in soft waves",
   },
 ];
 
@@ -45,7 +54,7 @@ export default function ResidencesPage() {
     <>
       <PageHero
         photoSrc={heroPhoto}
-        photoAlt="Leela by Tavaro Residences — terraces wrapped in greenery"
+        photoAlt="Leela's terraces wrapped in greenery"
         placeholder="ph-2"
         breadcrumbLabel="Tavaro Residences"
         title={
@@ -56,164 +65,127 @@ export default function ResidencesPage() {
           </>
         }
         titleSize="clamp(38px,6.4vw,84px)"
-        lede="If earth is our only home, then the homes we create should help us live more consciously within it."
+        lede="Two homes, each designed around the place it stands in and the life lived inside it."
         ctas={[
           { label: "Explore Leela", href: "/residences/leela", solid: true },
-          { label: "View Bhairavi Nilayam", href: "/residences/bhairavi-nilayam" },
+          { label: "Explore Bhairavi Nilayam", href: "/residences/bhairavi-nilayam" },
         ]}
       />
 
-      {/* Residential Philosophy */}
-      <section className="section on-dark tight" id="philosophy">
+      {/* Philosophy */}
+      <section className="section on-dark" id="philosophy">
         <div className="container">
-          <Reveal className="two-col-text">
-            <p className="eyebrow">Residential Philosophy</p>
-            <p className="lede">
-              If earth is our only home, then the homes we create should help us live more
-              consciously within it. Tavaro Residences is an extension of Tavaro&apos;s larger
-              philosophy, expressed through the way we choose to live within our homes.
-            </p>
-          </Reveal>
-          <Reveal className="tw:mt-[40px] tw:max-w-[68ch]">
-            <p className="tw:leading-[1.8] tw:text-(color:--on-surface-muted)">
-              We believe a home should belong to its place, responding to its landscape, light,
-              climate and surroundings rather than existing apart from them.
-            </p>
-            <p className="tw:mt-[20px] tw:leading-[1.8] tw:text-(color:--on-surface-muted)">
-              We design for the life that happens after the architecture is finished. For changing
-              seasons, morning light, long conversations, quiet evenings, family gatherings and the
-              many ways a home evolves with the people who inhabit it.
-            </p>
-            <p className="tw:mt-[20px] tw:leading-[1.8] tw:text-(color:--on-surface-muted)">
-              We believe true luxury is not simply having more space, but having the freedom to
-              experience it in your own way. To open the home to nature, retreat into privacy,
-              gather with others, or simply slow down.
-            </p>
-            <p className="tw:mt-[20px] tw:leading-[1.8] tw:text-(color:--on-surface)">
-              Wellbeing is embedded in the rhythm of the home, in the spaces to move, rest, work,
-              eat, connect and be still.
-            </p>
+          <Reveal className={styles.intro}>
+            <h2 className={styles.statement}>A home should belong to its place.</h2>
+            <div className={styles.muted}>
+              <p>
+                Tavaro Residences carries Tavaro&apos;s way of living into the home. We design for
+                the life that happens after the building is finished: morning light, long
+                conversations, quiet evenings and family gatherings.
+              </p>
+              <p>
+                True luxury isn&apos;t more space. It&apos;s the freedom to open your home to nature,
+                retreat into privacy, gather with others, or simply slow down.
+              </p>
+            </div>
           </Reveal>
         </div>
       </section>
 
-      {/* Core Principles */}
-      <section className="section on-panel tight" id="principles">
+      {/* Five principles */}
+      <section className="section on-panel" id="principles">
         <div className="container">
           <OfferHead
-            num="Core Principles"
+            num="What guides every home"
             heading={
               <>
-                Five ways a home
+                Five ideas,
                 <br />
-                becomes a life
+                one way of living
               </>
             }
           />
-          <Reveal stagger className={`${styles["principles-grid"]} ${styles.numbered}`}>
+          <Reveal stagger className={styles.principles}>
             {PRINCIPLES.map((p) => (
-              <div className={styles["principle-item"]} key={p.label}>
-                <p className="eyebrow no-line">{p.label}</p>
+              <article className={styles.principle} key={p.title}>
+                <div className={`${styles.media} ph-2`}>
+                  <Image src={p.src} alt={p.alt} fill sizes="(min-width: 1081px) 18vw, (max-width: 600px) 72vw, 34vw" />
+                </div>
+                <h3>{p.title}</h3>
                 <p>{p.body}</p>
-              </div>
+              </article>
             ))}
           </Reveal>
         </div>
       </section>
 
-      {/* The Residences */}
+      {/* The two residences */}
       <section className="section on-dark" id="the-residences">
         <div className="container">
           <OfferHead
             num="The Residences"
             heading={
               <>
-                Two homes.
+                Two homes,
                 <br />
-                One philosophy.
+                each its own answer
               </>
             }
-            lede="Each Tavaro residence is an individual architectural response to our residential principles — shaped by its place, its people and the life lived within it."
+            lede="Same ideas, different places: an apartment building wrapped in green, and a private house among farmland."
           />
+          <Reveal stagger className={styles.homes}>
+            <Link href="/residences/leela" className={styles.home}>
+              <div className={`${styles.media} ph-2`}>
+                <Image
+                  src="/images/residences/leela-elevation.jpg"
+                  alt="Leela at dusk, its terraces lit and planted"
+                  fill
+                  sizes="(min-width: 861px) 50vw, 100vw"
+                />
+              </div>
+              <div className={styles["home-body"]}>
+                <h3>Leela</h3>
+                <p>
+                  Apartments wrapped in planted terraces near the Financial District, with a
+                  rooftop for yoga, gatherings and quiet evenings.
+                </p>
+                <ul className={styles.chips}>
+                  <li>3,027 sq. ft. homes</li>
+                  <li>Rooftop lounge and yoga deck</li>
+                  <li>15 min to the Financial District</li>
+                </ul>
+                <span className={styles.go}>Explore Leela</span>
+              </div>
+            </Link>
+
+            <Link href="/residences/bhairavi-nilayam" className={styles.home}>
+              <div className={`${styles.media} ph-2`}>
+                <Image
+                  src="/images/heroes/bhairavi-nilayam-hero.jpg"
+                  alt="An open-air terrace at dusk, wrapped in a terracotta jaali wall"
+                  fill
+                  sizes="(min-width: 861px) 50vw, 100vw"
+                />
+              </div>
+              <div className={styles["home-body"]}>
+                <h3>Bhairavi Nilayam</h3>
+                <p>
+                  A private house among farmland in West Hyderabad, designed by Praveen Architects
+                  around light, landscape and family life.
+                </p>
+                <ul className={styles.chips}>
+                  <li>15,000 sq. ft.</li>
+                  <li>5 bedrooms</li>
+                  <li>Vastu compliant</li>
+                </ul>
+                <span className={styles.go}>Explore Bhairavi Nilayam</span>
+              </div>
+            </Link>
+          </Reveal>
         </div>
       </section>
 
-      {/* Leela */}
-      <section className="offer-block on-dark tw:pt-[0]" id="leela">
-        <div className="container">
-          <div className={styles["residence-card-pair"]}>
-            <Reveal className={styles["residence-feature-card"]}>
-              <div className={`${styles["residence-card-media"]} ph-2`}>
-                <Image
-                  src="/images/residences/leela-exterior.jpg"
-                  alt="Leela by Tavaro Residences"
-                  fill
-                  sizes="(min-width: 860px) 55vw, 100vw"
-                />
-                <div className={styles["residence-card-scrim"]} />
-                <span className={styles["residence-card-tag"]}>01 — Leela</span>
-              </div>
-              <div className={styles["residence-card-body"]}>
-                <h2 className="display-3">
-                  A home shaped
-                  <br />
-                  by stillness
-                </h2>
-                <p className="tw:mt-[16px]">
-                  Leela is a residence built around calm — considered architecture, natural materials
-                  and light that changes through the day. Every detail, from the amenities to the
-                  landscaping, is designed to make ordinary days feel unhurried.
-                </p>
-                <ul className="split-list tw:mt-[20px]">
-                  <li>Architecture &amp; design story</li>
-                  <li>Floor plans &amp; area information</li>
-                  <li>Curated interiors &amp; gallery</li>
-                  <li>Location &amp; proximity</li>
-                </ul>
-                <Link href="/residences/leela" className="btn tw:mt-[28px]">
-                  Explore Leela <span className="btn-arrow">→</span>
-                </Link>
-              </div>
-            </Reveal>
-
-            <Reveal className={`${styles["residence-feature-card"]} reverse`}>
-              <div className={`${styles["residence-card-media"]} ph-4`}>
-                <Image
-                  src="/images/residences/bhairavi-nilayam-exterior.jpg"
-                  alt="Bhairavi Nilayam residence"
-                  fill
-                  sizes="(min-width: 860px) 55vw, 100vw"
-                />
-                <div className={styles["residence-card-scrim"]} />
-                <span className={styles["residence-card-tag"]}>02 — Bhairavi Nilayam</span>
-              </div>
-              <div className={styles["residence-card-body"]}>
-                <h2 className="display-3">
-                  Rooted in place,
-                  <br />
-                  built for living
-                </h2>
-                <p className="tw:mt-[16px]">
-                  A 15,000 sq. ft. private residence on the outskirts of West Hyderabad — surrounded
-                  by farmland, shaped by light, and designed around the full rhythms of family
-                  living.
-                </p>
-                <ul className="split-list tw:mt-[20px]">
-                  <li>Project story &amp; philosophy</li>
-                  <li>Architecture &amp; residence plans</li>
-                  <li>Location &amp; surrounds</li>
-                  <li>Gallery &amp; enquiry</li>
-                </ul>
-                <Link href="/residences/bhairavi-nilayam" className="btn tw:mt-[28px]">
-                  Discover Bhairavi Nilayam <span className="btn-arrow">→</span>
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* How it works */}
+      {/* How registering works */}
       <section className="section on-panel" id="how-it-works">
         <div className="container">
           <ResidenceJourney
@@ -227,14 +199,6 @@ export default function ResidencesPage() {
             cta={{ label: "Register Interest", href: "/residences/register" }}
           />
         </div>
-      </section>
-
-      <section className="section on-dark">
-        <BandQuote
-          label="Register Your Interest"
-          quote="A home is not just where you live. It is who you become when you're there."
-          ctas={[{ label: "Register Interest", href: "/residences/register", solid: true }]}
-        />
       </section>
 
       <StickyCta

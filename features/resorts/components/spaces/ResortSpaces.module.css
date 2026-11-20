@@ -2,22 +2,54 @@
   .spaces {
     background: var(--surface);
     color: var(--on-surface);
-    padding: clamp(64px, 9vw, 120px) 0;
-    overflow-x: clip; /* the phone rows bleed to the screen edge */
+    padding: clamp(56px, 8vw, 112px) 0;
   }
+
+  /* ---------- The resort at a glance ---------- */
+  .glance {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 0 0 clamp(56px, 7vw, 96px);
+    border-top: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+  .glance > div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: clamp(20px, 2.4vw, 30px) clamp(12px, 1.6vw, 24px);
+  }
+  .glance > div + div {
+    border-left: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+  }
+  .glance dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 1;
+    color: var(--gold);
+  }
+  .glance dt {
+    color: var(--on-surface-muted);
+    font-size: 13.5px;
+    line-height: 1.45;
+  }
+
+  /* ---------- Heading ---------- */
   .head {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    gap: 24px clamp(32px, 6vw, 96px);
+    gap: 20px clamp(32px, 6vw, 96px);
     align-items: end;
-    margin-bottom: clamp(28px, 4vw, 44px);
+    margin-bottom: clamp(28px, 3.6vw, 40px);
   }
   .title {
     margin: 0;
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: clamp(34px, 4.4vw, 60px);
-    line-height: 1.04;
+    font-size: clamp(32px, 4.2vw, 56px);
+    line-height: 1.06;
     letter-spacing: -0.01em;
   }
   .lede {
@@ -35,7 +67,14 @@
     align-items: center;
     gap: 12px 18px;
     margin-bottom: clamp(24px, 3vw, 36px);
+    padding: 16px 0;
+    border-top: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
     font-size: 14px;
+  }
+  .ask {
+    font-family: var(--font-display);
+    font-size: 18px;
   }
   .chips {
     display: flex;
@@ -51,6 +90,7 @@
     color: var(--on-surface);
     font: inherit;
     font-size: 13px;
+    white-space: nowrap;
     cursor: pointer;
     transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
   }
@@ -69,11 +109,12 @@
     }
   }
   .count {
-    margin: 0;
-    color: var(--on-surface-muted);
+    margin: 0 0 0 auto;
+    color: var(--gold);
+    font-size: 14px;
   }
 
-  /* ---------- Cards ---------- */
+  /* ---------- Cards: photo with its name, then three figures, then what it suits ---------- */
   .grid {
     list-style: none;
     margin: 0;
@@ -85,11 +126,12 @@
   .card {
     display: flex;
     flex-direction: column;
+    border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent);
     background: var(--surface-2);
-    transition: opacity 0.4s var(--ease), filter 0.4s var(--ease);
+    transition: opacity 0.4s var(--ease), filter 0.4s var(--ease), border-color 0.4s var(--ease);
   }
   .card[data-fits="false"] {
-    opacity: 0.38;
+    opacity: 0.35;
     filter: grayscale(0.8);
   }
   .photo {
@@ -99,130 +141,197 @@
   }
   .photo img {
     object-fit: cover;
-    transition: transform 1s var(--ease-luxury);
+    transition: transform 0.9s var(--ease);
   }
   @media (hover: hover) and (pointer: fine) {
-    .card[data-fits="true"]:hover .photo img {
-      transform: scale(1.04);
+    .card:hover .photo img {
+      transform: scale(1.05);
+    }
+    .card:hover {
+      border-color: var(--gold);
     }
   }
-  .body {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding: 22px clamp(18px, 2vw, 26px) 26px;
+  .photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 9, 8, 0.85) 0%, rgba(10, 9, 8, 0.25) 45%, transparent 70%);
+  }
+  .no {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--cream);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  }
+  .fit {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 1;
+    padding: 5px 10px;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .over {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 16px;
+    z-index: 1;
+    color: var(--cream);
   }
   .kind {
-    margin: 0 0 6px;
-    color: var(--gold);
-    font-size: 13px;
+    margin: 0 0 4px;
+    color: var(--gold-light, #e6cf9e);
+    font-size: 12.5px;
   }
   .name {
-    margin: 0 0 18px;
+    margin: 0;
     font-family: var(--font-display);
     font-weight: 400;
     font-size: clamp(24px, 2.2vw, 30px);
     line-height: 1.1;
   }
   .cap {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 28px;
-    margin: 0 0 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid color-mix(in srgb, var(--gold) 30%, transparent);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+  }
+  .cap > div {
+    padding: 16px 20px;
+  }
+  .cap > div + div {
+    border-left: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
   }
   .cap dt {
     color: var(--on-surface-muted);
     font-size: 12px;
   }
   .cap dd {
-    margin: 2px 0 0;
+    margin: 6px 0 0;
     font-family: var(--font-display);
-    font-size: clamp(28px, 2.6vw, 36px);
+    font-size: clamp(22px, 2vw, 28px);
     line-height: 1;
+    white-space: nowrap;
   }
   .best {
+    flex: 1;
     margin: 0;
+    padding: 16px 20px 20px;
     color: var(--on-surface-2);
-    font-size: 15px;
+    font-size: 14.5px;
     line-height: 1.55;
   }
+  .best span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--gold);
+    font-size: 12px;
+  }
+
   .note {
     margin: clamp(24px, 3vw, 36px) 0 0;
-    max-width: 52em;
     color: var(--on-surface-muted);
     font-size: 14px;
     line-height: 1.6;
   }
-
-  @media (max-width: 1024px) {
-    .head {
-      grid-template-columns: 1fr;
-    }
-    .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  /* Phones: the cards become a swipeable row; the filter stays above it. */
-  @media (max-width: 600px) {
-    .grid {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-padding: 0 var(--pad);
-      margin: 0 calc(var(--pad) * -1);
-      padding: 0 var(--pad) 6px;
-      scrollbar-width: none;
-    }
-    .grid::-webkit-scrollbar {
-      display: none;
-    }
-    .card {
-      flex: none;
-      width: 84%;
-      scroll-snap-align: start;
-    }
-    .chips {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      margin: 0 calc(var(--pad) * -1);
-      padding: 0 var(--pad);
-      scrollbar-width: none;
-    }
-    .chips::-webkit-scrollbar {
-      display: none;
-    }
-    .chips button {
-      flex: none;
-    }
-    .cap {
-      gap: 12px 18px;
-    }
-    .cap dd {
-      font-size: 24px;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .card,
-    .photo img {
-      transition: none;
-    }
-  }
-}
-
-@layer components {
   .more {
     color: var(--gold);
     text-decoration: underline;
     text-underline-offset: 4px;
     white-space: nowrap;
   }
-  .download {
-    margin-top: 20px;
-  }
   .more:focus-visible {
     outline: 2px solid var(--gold);
     outline-offset: 3px;
+  }
+
+  /* ---------- Tablet ---------- */
+  @media (max-width: 1024px) {
+    .glance {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    /* Five figures in two rows: 3 then 2, each row ruled. */
+    .glance > div:nth-child(n + 4) {
+      border-top: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+    }
+    .glance > div:nth-child(4) {
+      border-left: 0;
+    }
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .head {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- Phone ---------- */
+  @media (max-width: 640px) {
+    .glance {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .glance > div:first-child {
+      grid-column: 1 / -1;
+    }
+    .glance > div:nth-child(n + 2) {
+      border-top: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+    }
+    .glance > div:nth-child(2),
+    .glance > div:nth-child(4) {
+      border-left: 0;
+    }
+    .glance > div:nth-child(3),
+    .glance > div:nth-child(5) {
+      border-left: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+    }
+    .glance > div {
+      padding: 18px 12px;
+    }
+
+    /* The chips run in one swipeable line instead of wrapping into a block. */
+    .filter {
+      gap: 10px;
+    }
+    .chips {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      margin-inline: calc(50% - 50vw);
+      padding-inline: var(--pad, 20px);
+      scrollbar-width: none;
+    }
+    .chips::-webkit-scrollbar {
+      display: none;
+    }
+    .count {
+      margin-left: 0;
+    }
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .cap > div {
+      padding: 14px 14px;
+    }
+    .best {
+      padding: 14px 14px 18px;
+    }
+    .over {
+      left: 16px;
+      right: 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .photo img {
+      transition: none;
+    }
   }
 }

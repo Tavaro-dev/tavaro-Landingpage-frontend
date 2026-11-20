@@ -6,7 +6,7 @@ export const HERO_BY_ROUTE: Record<string, string> = {
   "/experiences": "experiences-hero",
   "/mare": "mare-hero-cup-right",
   "/residences": "residences-hero",
-  "/residences/leela": "residences-hero",
+  "/residences/leela": "leela-hero",
   "/residences/register": "residences-hero",
   "/residences/bhairavi-nilayam": "bhairavi-nilayam-hero",
   "/resorts": "resorts-hero",

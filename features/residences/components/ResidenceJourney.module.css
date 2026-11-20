@@ -1,0 +1,168 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .head {
+    max-width: 720px;
+  }
+
+  /* ---------- All four steps side by side; two by two on smaller screens ---------- */
+  .journey {
+    --gold: #c9a45a;
+    --step: 5s;
+    list-style: none;
+    margin: clamp(32px, 4vw, 52px) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(10px, 1.4vw, 20px);
+  }
+
+  .journey li {
+    position: relative;
+    padding: clamp(30px, 3vw, 40px) clamp(18px, 2vw, 28px) clamp(26px, 2.6vw, 34px);
+    border: 1px solid var(--surface-line);
+    border-top: 0;
+    transition: background 0.5s var(--ease-luxury), border-color 0.5s var(--ease-luxury);
+  }
+
+  .journey li.on {
+    border-color: color-mix(in srgb, var(--gold) 70%, transparent);
+    background: color-mix(in srgb, var(--gold) 7%, transparent);
+  }
+
+  /* Each step's stretch of rail along its top: grey, gold once passed, filling like a timer while lit. */
+  .journey li::before,
+  .fill {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+  }
+
+  .journey li::before {
+    background: var(--surface-line);
+  }
+
+  .fill {
+    z-index: 1;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .done .fill {
+    transform: scaleX(1);
+  }
+
+  .mark {
+    position: absolute;
+    top: -4px;
+    left: -5px;
+    z-index: 2;
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--gold);
+    background: var(--surface);
+    transform: rotate(45deg);
+    transition: background 0.4s var(--ease-luxury);
+  }
+
+  .done .mark,
+  .on .mark {
+    background: var(--gold);
+  }
+
+  /* The number in gold outline; the lit step's fills in. */
+  .num {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(56px, 6vw, 92px);
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--gold);
+    transition: color 0.5s var(--ease-luxury);
+  }
+
+  .on .num {
+    color: var(--gold);
+  }
+
+  .journey h3 {
+    margin-top: clamp(18px, 2vw, 26px);
+    font-family: var(--font-display);
+    font-size: clamp(19px, 1.7vw, 24px);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--on-surface);
+  }
+
+  .journey p {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--on-surface-muted);
+  }
+
+  .cta {
+    margin-top: clamp(28px, 3.6vw, 44px);
+  }
+
+  /* ---------- Motion ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .on .fill {
+      animation: timer var(--step) linear both paused;
+    }
+
+    /* It runs only while in view, and holds while the pointer rests on a step. */
+    .journey[data-run] .on .fill {
+      animation-play-state: running;
+    }
+
+    .journey:hover .on .fill {
+      animation-play-state: paused;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .on .fill {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes timer {
+    to { transform: scaleX(1); }
+  }
+
+  /* ---------- Tablet and phone: two by two ---------- */
+  @media (max-width: 900px) {
+    .journey {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .journey {
+      gap: 8px;
+    }
+
+    .journey li {
+      padding: 24px 14px 20px;
+    }
+
+    .num {
+      font-size: 48px;
+    }
+
+    .journey h3 {
+      margin-top: 14px;
+      font-size: 17px;
+    }
+
+    .journey p {
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+  }
+}

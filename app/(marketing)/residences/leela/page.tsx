@@ -1,125 +1,120 @@
 import Image from "next/image";
 import Link from "next/link";
-import { PageHero } from "@/components/shared/PageHero";
-import heroPhoto from "@/public/images/heroes/residences-hero.jpg";
+import type { CSSProperties } from "react";
+import heroPhoto from "@/public/images/heroes/leela-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
-import { BandQuote } from "@/components/shared/BandQuote";
+import { SplitSection } from "@/components/shared/SplitSection";
 import StickyCta from "@/components/shared/StickyCta";
 import { pageMetadata } from "@/lib/metadata";
 import {
-  ResidenceFacts,
-  ResidenceJourney,
   ResidenceMosaic,
-  RuledList,
-  type Fact,
   type MosaicItem,
-  type RuledItem,
 } from "@/features/residences/components/Residence";
+import { ResidenceHero } from "@/features/residences/components/ResidenceHero";
+import {
+  StoryScroll,
+  type StoryStep,
+} from "@/features/residences/components/StoryScroll";
 import LeelaDynamicForm from "./LeelaDynamicForm";
 import styles from "../residences.module.css";
 
 export const metadata = pageMetadata({
-  title: "Leela by Tavaro Residences — A Home Shaped by Stillness | Tavaro",
+  title: "Leela by Tavaro Residences — Apartments Wrapped in Green | Tavaro",
   description:
-    "Leela by Tavaro Residences — considered architecture, natural materials and light that changes through the day. Floor plans, interiors, gallery and location.",
+    "Leela: 3,027 sq. ft. apartments with planted terraces and a rooftop lounge and yoga deck, 15 minutes from Hyderabad's Financial District. Floor plans, interiors, gallery and brochure.",
   path: "/residences/leela",
 });
 
-const FACTS: Fact[] = [
-  { label: "Residence", value: "Leela by Tavaro Residences" },
-  { label: "Configuration", value: "Curated multi-level layouts" },
-  { label: "Floor plans", value: "Typical, Terrace & Sky Deck" },
-  { label: "Spatial models", value: "Isometric & 3D volumetric" },
-  { label: "Orientation", value: "Solar & wind-path aligned" },
-  { label: "Area information", value: "In the brochure" },
-];
+/** The Leela brochure from Bhairavi Realty: vision, floor plans, interiors, terrace and location. */
+const BROCHURE = { href: "/downloads/leela-brochure.pdf", size: "5.4 MB" };
 
-const ARCHITECTURAL_PRINCIPLES = [
+// How Leela answers each of the five Tavaro principles.
+const STORY: StoryStep[] = [
   {
-    label: "Belong to the Place",
-    body: "Leela's architecture responds to its orientation, natural light and surrounding landscape — not apart from it.",
+    label: "Belong to the place",
+    title: "Green on every level",
+    body: "Planters and hanging gardens line every terrace, so the building sits among the trees rather than apart from them.",
+    src: "/images/residences/leela-exterior.jpg",
+    alt: "Leela's terraces with glass balustrades and hanging greenery among tall trees",
   },
   {
-    label: "Make Room for Life",
-    body: "Each space is considered for how it is actually used — morning routines, quiet afternoons, evening gatherings.",
+    label: "Make room for life",
+    title: "Rooms that flow together",
+    body: "Living, dining and kitchen open into one another, so cooking, eating and talking happen in the same place.",
+    src: "/images/residences/leela-dining.jpg",
+    alt: "A timber dining table for eight beside a sage-green kitchen",
   },
   {
-    label: "Open & Retreat",
-    body: "Large openings connect the interior to nature while intimate volumes offer genuine privacy and calm.",
+    label: "Open and retreat",
+    title: "A rooftop to share, rooms to retreat to",
+    body: "Evenings with friends happen up on the rooftop lounge. Bedrooms sit apart from it all, kept for quiet and rest.",
+    src: "/images/residences/leela-rooftop-lounge.jpg",
+    alt: "The rooftop lounge at dusk, beneath a timber canopy and a terracotta screen wall",
   },
   {
-    label: "Live Well",
-    body: "Movement, stillness, light and green — wellbeing is built into the daily rhythm of the home.",
+    label: "Live well",
+    title: "Morning yoga under the sky",
+    body: "A yoga and meditation deck on the roof, and large windows that bring light and air into every home below.",
+    src: "/images/residences/leela-rooftop-yoga.jpg",
+    alt: "Morning yoga on the rooftop deck, beside the spiral stair",
   },
   {
-    label: "Age with Life",
-    body: "Designed with enduring natural materials and flexible spaces that become more meaningful as generations inhabit them.",
-  },
-];
-
-const LIVING: RuledItem[] = [
-  {
-    label: "Refined contemporary interiors",
-    body: "Contemporary detailing balanced with a deep relationship to nature.",
-  },
-  {
-    label: "Natural textures, honest finishes",
-    body: "Materials chosen for how they age: warm, honest and quietly luxurious.",
-  },
-  {
-    label: "Light through considered openings",
-    body: "Large openings bring in light that changes through the day.",
-  },
-  {
-    label: "Indoor–outdoor connection",
-    body: "Deep perimeter verandas and terraces open the home to the landscape.",
-  },
-  {
-    label: "Room to retreat",
-    body: "Private family sanctuaries buffered from entertaining zones.",
-  },
-  {
-    label: "Wellbeing built in",
-    body: "Movement, stillness, light and green in the daily rhythm of the home.",
+    label: "Age with life",
+    title: "Materials that wear well",
+    body: "Timber, stone and terracotta, chosen because they soften and settle as the years go by.",
+    src: "/images/residences/leela-bedroom-2.jpg",
+    alt: "A bedroom with timber wall panels cut in soft waves",
   },
 ];
 
-const PLANS: RuledItem[] = [
-  {
-    label: "Typical floor plan — Living & bedroom suites",
-    body: "Generous social living pavilions opening onto deep perimeter verandas, with private family sanctuaries buffered from entertaining zones.",
-  },
-  {
-    label: "Terrace plan — Sky pavilion & landscape deck",
-    body: "An open-to-sky entertaining terrace with shaded pergolas, lush planters and panoramic views of morning sun and twilight breezes.",
-  },
-  {
-    label: "Isometric & 3D plans — Volumetric flow",
-    body: "Double-height light shafts, cross-ventilation pathways and intuitive circulation connecting every level.",
-  },
+const PLAN_CONTENTS = [
+  ["Typical floor plan", "In the brochure"],
+  ["Terrace floor plan", "In the brochure"],
+  ["3D isometric view", "Shown here"],
+  ["Super built-up area", "3,027 sq. ft."],
+  ["Common area", "303 sq. ft."],
 ];
 
-const PROXIMITY: RuledItem[] = [
-  { label: "Outer Ring Road access", meta: "5 min" },
-  { label: "Gachibowli", meta: "10 min" },
-  { label: "Kokapet Financial District", meta: "12 min" },
-  { label: "HITEC City", meta: "18 min" },
-  { label: "Rajiv Gandhi International Airport", meta: "25 min" },
+const INTERIORS = [
+  {
+    src: "/images/residences/leela-hallway.jpg",
+    alt: "A hallway with timber panelling and stone floors, leading to the living room",
+    title: "Hallway",
+    body: "From the front door, straight into light.",
+  },
+  {
+    src: "/images/residences/leela-living-room.jpg",
+    alt: "A living room with pale stone floors, soft seating and timber shelving",
+    title: "Living room",
+    body: "Pale stone, warm timber and space to gather.",
+  },
+  {
+    src: "/images/residences/leela-kitchen.jpg",
+    alt: "A kitchen in sage green and timber, open to the dining area",
+    title: "Kitchen",
+    body: "Open to the dining table, so the cook is never alone.",
+  },
+  {
+    src: "/images/residences/leela-lounge.jpg",
+    alt: "A home theatre with recliners facing a wall of glass and the city beyond",
+    title: "Home theatre",
+    body: "Recliners, a bar unit and the city through the glass.",
+  },
+  {
+    src: "/images/residences/leela-bedroom.jpg",
+    alt: "A master bedroom with a padded headboard wall, timber ceiling and soft cove light",
+    title: "Master bedroom",
+    body: "Soft light and timber, away from the living spaces.",
+  },
 ];
 
 const GALLERY: MosaicItem[] = [
   {
-    src: "/images/residences/leela-exterior.jpg",
-    alt: "Leela's terraces, glass balustrades and hanging greenery among the trees",
-    caption: "Architecture",
+    src: "/images/residences/leela-aerial.jpg",
+    alt: "Leela from above at night, its terraces lit along the street",
+    caption: "From above",
     size: "lead",
-  },
-  {
-    src: "/images/residences/leela-elevation.jpg",
-    alt: "The full elevation of Leela at dusk, with its curved stone facade and roof canopy",
-    caption: "Elevation",
-    size: "tall",
   },
   {
     src: "/images/residences/leela-night.jpg",
@@ -128,46 +123,10 @@ const GALLERY: MosaicItem[] = [
     size: "tall",
   },
   {
-    src: "/images/residences/leela-living-room.jpg",
-    alt: "A Leela living room with pale stone floors and soft seating",
-    caption: "Living",
-    size: "third",
-  },
-  {
-    src: "/images/residences/leela-lounge.jpg",
-    alt: "The home theatre lounge, with recliners facing a wall of glass and the city beyond",
-    caption: "Lounge",
-    size: "third",
-  },
-  {
-    src: "/images/residences/leela-dining.jpg",
-    alt: "The dining room: a timber table for eight beneath a sculpted pendant",
-    caption: "Dining",
-    size: "third",
-  },
-  {
-    src: "/images/residences/leela-kitchen.jpg",
-    alt: "A Leela kitchen in sage green and timber, open to the dining area",
-    caption: "Kitchen",
-    size: "third",
-  },
-  {
-    src: "/images/residences/leela-rooftop-lounge.jpg",
-    alt: "The rooftop lounge at dusk, beneath a timber canopy and a terracotta screen wall",
-    caption: "Rooftop lounge",
-    size: "half",
-  },
-  {
-    src: "/images/residences/leela-rooftop-yoga.jpg",
-    alt: "Morning yoga on the rooftop deck, beside the spiral stair",
-    caption: "Rooftop yoga",
-    size: "half",
-  },
-  {
-    src: "/images/residences/leela-aerial.jpg",
-    alt: "Leela from above at night, its terraces lit along the street",
-    caption: "From above",
-    size: "lead",
+    src: "/images/residences/leela-elevation.jpg",
+    alt: "The full elevation of Leela at dusk, with its roof canopy",
+    caption: "Elevation",
+    size: "tall",
   },
   {
     src: "/images/residences/leela-facade.jpg",
@@ -176,10 +135,10 @@ const GALLERY: MosaicItem[] = [
     size: "tall",
   },
   {
-    src: "/images/residences/leela-bedroom-2.jpg",
-    alt: "A second bedroom, its timber wall panels cut in soft waves",
-    caption: "Bedroom",
-    size: "half",
+    src: "/images/residences/leela-entrance.jpg",
+    alt: "The planted entrance and front steps at night",
+    caption: "Entrance",
+    size: "tall",
   },
   {
     src: "/images/residences/leela-terrace.jpg",
@@ -188,180 +147,182 @@ const GALLERY: MosaicItem[] = [
     size: "half",
   },
   {
-    src: "/images/residences/leela-bedroom.jpg",
-    alt: "A bedroom suite with a padded headboard wall, timber ceiling and soft cove light",
-    caption: "Bedroom",
-    size: "third",
-  },
-  {
-    src: "/images/residences/leela-hallway.jpg",
-    alt: "A Leela hallway with timber panelling and stone floors, leading to the living room",
-    caption: "Interiors",
-    size: "third",
-  },
-  {
     src: "/images/residences/leela-detail.jpg",
-    alt: "Material detail: timber, stone and greenery at Leela",
-    caption: "Details",
-    size: "third",
+    alt: "The main door in timber panelling, beside the stair and a planter",
+    caption: "Main door",
+    size: "half",
   },
 ];
 
-/** The Leela brochure from Bhairavi Realty: vision, floor plans, interiors, terrace and location. */
-const BROCHURE = { href: "/downloads/leela-brochure.pdf", size: "5.4 MB" };
+// Drive times from the brochure, in minutes.
+const NEARBY: [string, number][] = [
+  ["Financial District", 15],
+  ["Microsoft and Amazon campuses", 15],
+  ["KIMS and Continental hospitals", 15],
+  ["Indus and Birla international schools", 15],
+  ["Inorbit Mall", 15],
+  ["Outer Ring Road", 15],
+  ["IKEA", 30],
+  ["Rajiv Gandhi International Airport", 45],
+];
 
 export default function LeelaPage() {
   return (
     <>
-      <PageHero
-        photoSrc={heroPhoto}
-        photoAlt="Leela by Tavaro Residences — architectural exterior"
-        placeholder="ph-2"
-        breadcrumbLabel="Tavaro Residences"
-        eyebrow="01 — Leela by Tavaro Residences"
-        title={
-          <>
-            A home shaped
-            <br />
-            by stillness
-          </>
-        }
-        titleSize="clamp(34px,5.6vw,72px)"
-        lede="Considered architecture, natural materials and light that changes through the day. Every detail designed to make ordinary days feel unhurried."
+      <ResidenceHero
+        name="Leela"
+        tagline="Apartments wrapped in planted terraces, with a rooftop made for yoga, gatherings and quiet evenings."
+        photo={heroPhoto}
+        photoAlt="Leela at dusk: the street front, planted terraces and entrance"
+        figures={[
+          { value: "3,027 sq. ft.", label: "Each home, super built-up" },
+          { value: "15 min", label: "To the Financial District" },
+          { value: "Rooftop", label: "Lounge, yoga deck and gazebo" },
+        ]}
         ctas={[
           { label: "Register Interest", href: "#register", solid: true },
-          { label: "View Floor Plans", href: "#floor-plans" },
-        ]}
-        quickNav={[
-          { label: "At a glance", href: "#overview", icon: "facilities" },
-          { label: "Floor Plans", href: "#floor-plans", icon: "compass" },
-          { label: "Gallery", href: "#gallery", icon: "photos" },
-          { label: "Location", href: "#location", icon: "location" },
-          { label: "How it works", href: "#how-it-works", icon: "mail" },
+          { label: "See the floor plans", href: "#floor-plans" },
         ]}
       />
 
-      {/* A. Overview + at a glance */}
-      <section className="section on-dark tight" id="overview">
+      {/* A. The residence in a sentence: the photo runs out to the screen edge */}
+      <section className="offer-block on-dark" id="overview">
         <div className="container">
-          <Reveal className="two-col-text">
-            <p className="eyebrow">The Residence</p>
-            <p className="lede">
-              Leela is a residence built around calm. It is not simply architecture — it is a way of
-              experiencing the day, from the quality of morning light to the ease of an evening
-              gathered with people you love.
-            </p>
-          </Reveal>
-          <ResidenceFacts facts={FACTS} />
-        </div>
-      </section>
-
-      {/* B. The Architectural Story */}
-      <section className="section on-panel" id="architecture">
-        <div className="container">
-          <OfferHead
-            num="The Architectural Story"
-            heading={
-              <>
-                How Leela interprets
-                <br />
-                the Tavaro philosophy
-              </>
-            }
-            lede="Each of Tavaro's residential principles is expressed through Leela's architecture — in the way it meets its landscape, handles light and creates space for living."
-          />
-          <Reveal stagger className={`${styles["principles-grid"]} ${styles.numbered} tw:mt-[40px]`}>
-            {ARCHITECTURAL_PRINCIPLES.map((p) => (
-              <div className={styles["principle-item"]} key={p.label}>
-                <p className="eyebrow no-line">{p.label}</p>
-                <p>{p.body}</p>
-              </div>
-            ))}
-          </Reveal>
-        </div>
-      </section>
-
-      {/* C. What living here includes */}
-      <section className="section on-dark" id="interiors">
-        <div className="container">
-          <Reveal className={styles["living-split"]}>
-            <div className={`${styles["living-media"]} ph-3`}>
-              <Image
-                src="/images/residences/leela-living-room.jpg"
-                alt="Leela interiors — a light-filled living space"
-                fill
-                sizes="(min-width: 861px) 45vw, 100vw"
-              />
-            </div>
-            <div>
-              <span className="offer-num">Living at Leela</span>
-              <h2 className="display-2 tw:mt-[18px]">
-                What living
-                <br />
-                here includes
-              </h2>
-              <p className="tw:mt-[18px] tw:mb-[24px] tw:max-w-[52ch] tw:text-(color:--on-surface-muted) tw:leading-[1.75]">
-                Leela&apos;s interiors balance refined contemporary detailing with a deep relationship
-                to nature. Each space is designed for the life that happens within it.
+          <SplitSection
+            placeholder="ph-2"
+            src="/images/residences/leela-dusk.jpg"
+            alt="Leela's terraces at dusk, each one planted and lit"
+          >
+            <h2 className={styles.statement}>
+              A calm, green building, close to the city.
+            </h2>
+            <div className={`${styles.muted} tw:mt-[24px]`}>
+              <p>
+                Leela is a building of large homes, each about 3,027 sq. ft.,
+                with terraces full of plants and a shared rooftop where the day
+                can start with yoga and end with friends.
               </p>
-              <RuledList items={LIVING} columns={2} />
+              <p className="tw:mt-[16px]">
+                It sits west of Hyderabad&apos;s Financial District: fifteen
+                minutes from work, schools and hospitals, and far enough to feel
+                quiet.
+              </p>
             </div>
-          </Reveal>
+          </SplitSection>
         </div>
       </section>
 
-      {/* D. Floor Plans */}
-      <section className="section on-panel" id="floor-plans">
+      {/* B. The architectural story, one principle at a time */}
+      <section className="section on-panel" id="story">
         <div className="container">
           <OfferHead
-            num="Floor Plans"
+            num="The idea behind Leela"
             heading={
               <>
-                Thoughtfully
+                Five Tavaro ideas,
                 <br />
-                planned spaces
+                built into one home
               </>
             }
-            lede="Each level considered for orientation, privacy and unhindered connection to nature."
           />
-          <Reveal className={`${styles["living-split"]} ${styles.flip} tw:mt-[32px]`}>
-            <div className={`${styles["living-media"]} ${styles.plan}`}>
+          <StoryScroll steps={STORY} />
+        </div>
+      </section>
+
+      {/* C. Floor plans */}
+      <section className="section on-dark" id="floor-plans">
+        <div className="container">
+          <div className={styles["plan-split"]}>
+            <div className={`${styles.media} ${styles.float}`}>
               <Image
+                className="tw:object-contain"
                 src="/images/residences/leela-floor-plan-3d.webp"
                 alt="A 3D cut-away of a Leela apartment: living and dining, kitchen, bedrooms and balconies"
                 fill
-                sizes="(min-width: 861px) 40vw, 100vw"
+                sizes="(min-width: 861px) 55vw, 100vw"
               />
             </div>
-            <div>
-              <RuledList items={PLANS} />
-              <p className="tw:mt-[24px] tw:max-w-[56ch] tw:text-[13.5px] tw:leading-[1.7] tw:text-(color:--on-surface-muted)">
-                The brochure includes the typical and terrace floor plans. Dimensioned room
-                configurations and orientation studies are shared on enquiry.
+            <Reveal>
+              <span className="offer-num">Floor Plans</span>
+              <h2 className="display-2 tw:mt-[18px]">
+                See how a home is laid out
+              </h2>
+              <p className={`${styles.muted} tw:mt-[16px]`}>
+                The 3D view shows one full home: living and dining, kitchen,
+                bedrooms and balconies. The brochure has every plan.
               </p>
-              <div className="tw:mt-[24px] tw:flex tw:flex-wrap tw:gap-[12px]">
+              <ul className={styles.ticks}>
+                {PLAN_CONTENTS.map(([label, value]) => (
+                  <li key={label}>
+                    <span>{label}</span>
+                    <span>{value}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="tw:mt-[28px] tw:flex tw:flex-wrap tw:gap-[12px]">
                 <a href={BROCHURE.href} className="btn solid" download>
                   Download the brochure (PDF, {BROCHURE.size})
                 </a>
                 <Link href="#register" className="btn">
-                  Request floor plans <span className="btn-arrow">→</span>
+                  Ask for detailed plans
                 </Link>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* E. Gallery */}
+      {/* D. Interiors: on a wide screen the row pins and scrolling walks through it */}
+      <section className={`on-panel ${styles.pin}`} id="interiors">
+        <div className={styles["pin-inner"]}>
+          <div className="container">
+            <OfferHead
+              num="Interiors"
+              heading={
+                <>
+                  Walk through
+                  <br />a Leela home
+                </>
+              }
+              lede="From the front door to the bedroom: light floors, warm timber and soft colours, made for everyday life."
+            />
+          </div>
+          <div
+            className={styles.track}
+            tabIndex={0}
+            role="region"
+            aria-label="Leela interiors"
+          >
+            {INTERIORS.map((it) => (
+              <figure key={it.src}>
+                <div className={`${styles.media} ph-3`}>
+                  <Image
+                    src={it.src}
+                    alt={it.alt}
+                    fill
+                    sizes="(min-width: 861px) 56vw, 84vw"
+                  />
+                </div>
+                <figcaption>
+                  <strong>{it.title}</strong>
+                  <span>{it.body}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* E. Gallery: the building and its terraces */}
       <section className="section on-dark" id="gallery">
         <div className="container">
           <OfferHead
             num="Gallery"
             heading={
               <>
-                Architecture. Interiors.
+                The building,
                 <br />
-                Landscape. Life.
+                day and night
               </>
             }
           />
@@ -369,92 +330,73 @@ export default function LeelaPage() {
         </div>
       </section>
 
-      {/* F. Location & Proximity */}
+      {/* F. Location */}
       <section className="section on-panel" id="location">
         <div className="container">
           <OfferHead
-            num="Location & Proximity"
+            num="Location"
             heading={
               <>
-                Set within reach,
+                Close to the city,
                 <br />
-                away from the noise
+                quiet at home
               </>
             }
-            lede="Leela is positioned to offer genuine connection to nature while remaining close to the rhythms of city life."
+            lede="Leela sits off Radial Road 7 towards Gandipet, west of the Financial District. Each line is the drive time."
           />
-          <Reveal className={`${styles["living-split"]} tw:mt-[32px]`}>
-            <div className={`${styles["living-media"]} ph-1`}>
-              <Image
-                src="/images/residences/leela-terrace.jpg"
-                alt="Leela's terraces at dusk, open to the sky"
-                fill
-                sizes="(min-width: 861px) 45vw, 100vw"
-              />
-            </div>
-            <div>
-              <p className="eyebrow no-line tw:mb-[16px]">Key destinations</p>
-              <RuledList items={PROXIMITY} />
-              <p className="tw:text-[12px] tw:text-(color:--on-surface-muted) tw:mt-[16px]">
-                Travel times are indicative. Verified times available on request.
-              </p>
-            </div>
+          <Reveal>
+            <ul className={styles.bars}>
+              {NEARBY.map(([place, min], i) => (
+                <li
+                  key={place}
+                  style={{ "--m": min, "--i": i } as CSSProperties}
+                >
+                  <span>{place}</span>
+                  <span>{min} min</span>
+                  <span className={styles.bar} aria-hidden="true">
+                    <span />
+                  </span>
+                </li>
+              ))}
+            </ul>
           </Reveal>
+          <p className="tw:mt-[20px] tw:text-[12.5px] tw:text-(color:--on-surface-muted)">
+            Driving times from the brochure; they change with traffic.
+          </p>
         </div>
       </section>
 
-      {/* G. How it works */}
-      <section className="section on-dark" id="how-it-works">
-        <div className="container">
-          <ResidenceJourney
-            heading={
-              <>
-                From first enquiry
-                <br />
-                to a private viewing
-              </>
-            }
-          />
-        </div>
-      </section>
-
-      {/* H. Register Your Interest */}
-      <section className="section on-panel" id="register">
+      {/* G. Register your interest */}
+      <section className="section on-dark" id="register">
         <div className="container">
           <Reveal className="split">
             <div className="split-body">
               <p className="eyebrow">Register Your Interest</p>
-              <h2 className="display-3">A discreet enquiry,
-                <br />at your pace
+              <h2 className="display-3">
+                Ask us anything
+                <br />
+                about Leela
               </h2>
               <p className="lede tw:mt-[16px]">
-                Tell us what you&apos;d like to know. We&apos;ll follow up personally and without
-                pressure — a conversation, not a sales call.
+                Pricing, availability, plans or a private viewing. We&apos;ll
+                get back to you personally, without pressure.
               </p>
               <p className="tw:mt-[24px] tw:text-[13px] tw:text-(color:--on-surface-muted) tw:leading-[1.7]">
-                Whether you&apos;d like pricing information, a private viewing or simply a conversation
-                with our team — we&apos;re here to help you understand if Leela is right for you. The{" "}
+                The{" "}
                 <a href={BROCHURE.href} className="text-link" download>
                   brochure
                 </a>{" "}
-                is ready to download now.
+                is ready to download now. Looking for a private house instead?
+                See{" "}
+                <Link href="/residences/bhairavi-nilayam" className="text-link">
+                  Bhairavi Nilayam
+                </Link>
+                .
               </p>
             </div>
-            {/* Dynamic import to avoid SSR issues with client form */}
             <LeelaDynamicForm />
           </Reveal>
         </div>
-      </section>
-
-      <section className="section on-dark">
-        <BandQuote
-          label="Tavaro Residences"
-          quote="A home shaped by stillness, light and the way you choose to live."
-          ctas={[
-            { label: "Discover Bhairavi Nilayam", href: "/residences/bhairavi-nilayam" },
-            { label: "Back to Residences", href: "/residences", solid: true },
-          ]}
-        />
       </section>
 
       <StickyCta

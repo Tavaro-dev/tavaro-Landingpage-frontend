@@ -18,6 +18,12 @@
     --m-road: #3a352b;
     --m-stall: rgba(255, 255, 255, 0.14);
     --m-shrub: #4e6a36;
+    --m-field: #2a2a1c;
+    --m-crop: rgba(150, 170, 90, 0.18);
+    --m-blade: rgba(170, 190, 120, 0.16);
+    --m-line: rgba(255, 236, 190, 0.55);
+    --m-glass: #6f8a93;
+    --m-coping: #e9e2d2;
 
     background: var(--surface-2);
     color: var(--on-surface);
@@ -38,6 +44,12 @@
     --m-ridge: rgba(255, 240, 220, 0.7);
     --m-walk: #fffaf0;
     --m-road: #d6c8aa;
+    --m-field: #e3dcbd;
+    --m-crop: rgba(120, 140, 60, 0.22);
+    --m-blade: rgba(90, 120, 50, 0.18);
+    --m-line: rgba(255, 255, 255, 0.9);
+    --m-glass: #a9c3ca;
+    --m-coping: #ffffff;
     --m-stall: rgba(90, 70, 40, 0.25);
     --m-shrub: #93ae69;
   }
@@ -67,19 +79,120 @@
     display: grid;
     grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
     gap: clamp(28px, 4vw, 56px);
-    align-items: start;
+    align-items: center;
   }
 
   /* ---------- The drawn plan ---------- */
   .map {
+    --pin-px: 0.8;
+    --unit: 0.8;
     position: relative;
     margin: 0;
   }
-  .map svg {
+  /* The plan sits in a framed window. At zoom 1 it fits; zoomed, it grows and the window scrolls. */
+  .viewport {
+    aspect-ratio: 1130 / 640;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--gold) 50%, transparent) transparent;
+  }
+  .map[data-zoomed] .viewport {
+    cursor: grab;
+    user-select: none;
+  }
+  .map[data-zoomed] .viewport:active {
+    cursor: grabbing;
+  }
+  .viewport > svg {
     display: block;
-    width: 100%;
+    width: calc(var(--zoom, 1) * 100%);
+    max-width: none;
     height: auto;
-    overflow: visible;
+  }
+
+  /* Zoom and full-screen buttons, stacked in the top right corner. */
+  .tools {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    grid-auto-flow: column;
+    z-index: 3;
+    display: grid;
+    gap: 1px;
+    border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+    background: color-mix(in srgb, var(--gold) 45%, transparent);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+  }
+  .tools button {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    background: var(--surface);
+    color: var(--gold);
+    font: 300 24px/1 var(--font-sans);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background 0.2s var(--ease), color 0.2s var(--ease);
+  }
+  .tools button svg {
+    width: 18px;
+    height: 18px;
+  }
+  .tools button:hover:not(:disabled) {
+    background: var(--gold);
+    color: var(--black, #000);
+  }
+  .tools button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: -4px;
+  }
+  .tools button:disabled {
+    color: color-mix(in srgb, var(--on-surface) 30%, transparent);
+    cursor: default;
+  }
+
+  /* Zoomed or full screen, the chosen place shows in a small card in the bottom left corner. */
+  .sheet {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 3;
+    width: min(280px, calc(100% - 24px));
+  }
+  .sheet .cardPhoto {
+    display: none;
+  }
+
+  /* Full screen: the plan fills the window and covers it edge to edge. */
+  .map[data-full] {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: var(--surface);
+  }
+  .map[data-full] .viewport {
+    overscroll-behavior: contain;
+    height: 100%;
+    aspect-ratio: auto;
+    container-type: size;
+  }
+  .map[data-full] .viewport > svg {
+    width: calc(var(--zoom, 1) * max(100cqw, 100cqh * 1130 / 640));
+  }
+  .map[data-full] .tools {
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    left: auto;
+    bottom: auto;
+    grid-auto-flow: row;
+  }
+  .map[data-full] .sheet {
+    right: auto;
+    left: max(16px, env(safe-area-inset-left));
+    bottom: max(16px, env(safe-area-inset-bottom));
   }
   .ground {
     fill: var(--m-ground);
@@ -110,12 +223,164 @@
   .lawnDark {
     stop-color: var(--m-lawn-2);
   }
-  /* Mowing stripes, a hint of grass. */
-  .mow {
+  /* Mowing stripes, and the clipped edge a little in from each lawn's border. */
+  .stripes {
+    fill: url(#rg-stripes);
+    stroke: none;
+  }
+  .stripe {
+    fill: var(--m-mow);
+  }
+  .edging {
     fill: none;
-    stroke: var(--m-mow);
-    stroke-width: 22;
-    stroke-dasharray: 2 26;
+    stroke: color-mix(in srgb, var(--m-lawn-2) 70%, black);
+    stroke-width: 1;
+    stroke-dasharray: 1 5;
+    opacity: 0.6;
+  }
+
+  /* ---------- Ground, fields, roads and walks ---------- */
+  .field {
+    fill: var(--m-field);
+  }
+  .crops {
+    fill: url(#rg-crops);
+  }
+  .cropRow {
+    stroke: var(--m-crop);
+    stroke-width: 5;
+  }
+  .groundTex {
+    fill: url(#rg-grass);
+    pointer-events: none;
+  }
+  .blade {
+    stroke: var(--m-blade);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  /* The boundary wall: a light coping over a darker line. */
+  .wall {
+    fill: none;
+    stroke: var(--m-coping);
+    stroke-width: 1.5;
+    stroke-dasharray: 10 4;
+    opacity: 0.55;
+  }
+  .roadEdge {
+    fill: none;
+    stroke: color-mix(in srgb, var(--m-road) 70%, white);
+    stroke-width: 26;
+    stroke-linecap: round;
+  }
+  .roadLine {
+    fill: none;
+    stroke: var(--m-line);
+    stroke-width: 1.5;
+    stroke-dasharray: 10 9;
+  }
+  .walkEdge {
+    fill: none;
+    stroke: color-mix(in srgb, var(--m-walk) 55%, black);
+    stroke-width: 9;
+    stroke-linecap: round;
+    opacity: 0.35;
+  }
+
+  /* ---------- Pool and decks ---------- */
+  .deckBase {
+    fill: var(--m-wood);
+  }
+  .deck {
+    fill: url(#rg-planks);
+    stroke: color-mix(in srgb, var(--m-wood) 70%, black);
+    stroke-width: 1;
+  }
+  .plank {
+    stroke: color-mix(in srgb, var(--m-wood) 75%, black);
+    stroke-width: 0.8;
+    opacity: 0.6;
+  }
+  .caustic {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.55);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+  }
+  .lounger {
+    fill: var(--m-coping);
+    stroke: rgba(0, 0, 0, 0.25);
+    stroke-width: 0.6;
+  }
+  .waterLight {
+    stop-color: color-mix(in srgb, var(--m-water) 70%, white);
+  }
+  .waterDeep {
+    stop-color: color-mix(in srgb, var(--m-water) 80%, #0a3a55);
+  }
+
+  /* ---------- Hipped roofs, lit from the top left ---------- */
+  .roofLight {
+    fill: color-mix(in srgb, var(--m-roof) 78%, white);
+  }
+  .roofMid {
+    fill: var(--m-roof);
+  }
+  .roofDark {
+    fill: color-mix(in srgb, var(--m-roof) 72%, black);
+  }
+  .glass.roofLight {
+    fill: color-mix(in srgb, var(--m-glass) 70%, white);
+  }
+  .glass.roofMid {
+    fill: var(--m-glass);
+  }
+  .glass.roofDark {
+    fill: color-mix(in srgb, var(--m-glass) 70%, black);
+  }
+
+  /* ---------- Cars ---------- */
+  .carLight rect:first-child {
+    fill: #f1ede4;
+  }
+  .carSilver rect:first-child {
+    fill: #a9adb2;
+  }
+  .carDark rect:first-child {
+    fill: #2c3138;
+  }
+  .carRed rect:first-child {
+    fill: #8c2f2b;
+  }
+  .carLight rect:first-child,
+  .carSilver rect:first-child,
+  .carDark rect:first-child,
+  .carRed rect:first-child {
+    stroke: rgba(0, 0, 0, 0.35);
+    stroke-width: 0.8;
+  }
+  .windscreen {
+    fill: rgba(30, 45, 60, 0.75);
+  }
+
+  /* ---------- North arrow ---------- */
+  .compass {
+    pointer-events: none;
+  }
+  .compass circle {
+    fill: color-mix(in srgb, var(--surface) 70%, transparent);
+    stroke: var(--gold);
+    stroke-width: 1.5;
+  }
+  .compass path {
+    fill: var(--gold);
+  }
+  .compass text {
+    fill: var(--gold);
+    font-family: var(--font-display);
+    font-size: 13px;
+    text-anchor: middle;
+    dominant-baseline: central;
   }
   .terrace {
     fill: none;
@@ -124,9 +389,9 @@
     opacity: 0.8;
   }
   .water {
-    fill: var(--m-water);
-    stroke: color-mix(in srgb, var(--m-water) 60%, white);
-    stroke-width: 2;
+    fill: url(#rg-water);
+    stroke: var(--m-coping);
+    stroke-width: 2.5;
   }
   .wood {
     fill: var(--m-wood);
@@ -136,8 +401,9 @@
     filter: drop-shadow(3px 4px 0 var(--m-shade));
   }
   .ridge {
+    fill: none;
     stroke: var(--m-ridge);
-    stroke-width: 2;
+    stroke-width: 1;
   }
   .park {
     fill: url(#stalls);
@@ -183,6 +449,9 @@
   .pin {
     cursor: pointer;
     outline: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(calc(var(--pin-px) / var(--unit)));
   }
   .pin circle:not(.halo) {
     fill: var(--gold);
@@ -277,6 +546,25 @@
   .cardPhoto img {
     object-fit: cover;
   }
+  .cardMark {
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--gold) 22%, transparent), transparent 65%),
+      var(--surface-2);
+  }
+  .cardMark span {
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 40px;
+  }
+
   .cardBody {
     padding: 16px 18px 18px;
   }
@@ -321,35 +609,51 @@
   .below {
     display: none;
   }
-  .hint {
-    margin: 0;
-    padding: 16px 18px;
-    border: 1px dashed color-mix(in srgb, var(--gold) 45%, transparent);
-    color: var(--on-surface-muted);
-    font-size: 14px;
+  .group + .group {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
+  }
+  .groupTitle {
+    margin: 0 0 8px;
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 500;
   }
   .legend {
     list-style: none;
-    margin: 0 0 8px;
+    margin: 0;
     padding: 0;
     display: grid;
     gap: 2px;
+  }
+  /* The smaller places have short names: two to a row keeps the list as tall as the plan. */
+  .legendPair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 8px;
   }
   .legend button {
     display: flex;
     align-items: center;
     gap: 12px;
     width: 100%;
-    min-height: 40px;
-    padding: 4px 8px;
+    min-height: 36px;
+    padding: 3px 8px;
     border: 0;
     background: transparent;
     color: var(--on-surface);
     font: inherit;
     font-size: 15px;
+    line-height: 1.3;
+    white-space: normal;
     text-align: left;
     cursor: pointer;
     transition: background 0.25s var(--ease);
+  }
+  /* Long names wrap inside their column instead of running into the next one. */
+  .legend button > span:last-child {
+    min-width: 0;
+    white-space: normal;
   }
   .legend button[aria-pressed="true"],
   .legend button:hover {
@@ -377,25 +681,62 @@
     color: var(--gold);
     font-size: 13px;
   }
-  .factsTitle {
-    margin: 24px 0 12px;
-    padding-top: 22px;
-    border-top: 1px solid color-mix(in srgb, var(--gold) 30%, transparent);
-    color: var(--gold);
-    font-size: 14px;
-    font-weight: 500;
-  }
+  /* ---------- Around the resort: a ruled strip under the plan ---------- */
   .facts {
-    margin: 0;
-    padding-left: 1.1em;
+    list-style: none;
     display: grid;
-    gap: 6px;
-    color: var(--on-surface-2);
-    font-size: 15px;
-    line-height: 1.5;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: clamp(40px, 5vw, 64px) 0 0;
+    padding: 0;
+    border-top: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
   }
-  .facts li::marker {
+  .facts li {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 18px 20px;
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 22%, transparent);
+    color: var(--on-surface-2);
+    font-size: 14.5px;
+    line-height: 1.45;
+  }
+  .facts li:not(:nth-child(4n + 1)) {
+    border-left: 1px solid color-mix(in srgb, var(--gold) 22%, transparent);
+  }
+  .facts li:not(.factsTitle)::before {
+    content: "";
+    flex: none;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg) translateY(-2px);
+  }
+  .facts .factsTitle {
+    padding-left: 0;
     color: var(--gold);
+    font-family: var(--font-display);
+    font-size: 22px;
+  }
+
+  /* ---------- The plan draws itself in the first time it is seen ---------- */
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .viewport > svg {
+      transition: opacity 0.9s var(--ease), translate 0.9s var(--ease);
+    }
+    .map:not([data-seen]) .viewport > svg {
+      opacity: 0;
+      translate: 0 24px;
+    }
+    .pin {
+      transform-box: fill-box;
+      transform-origin: center;
+      transition: opacity 0.4s var(--ease), scale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition-delay: calc(0.5s + var(--i) * 0.08s);
+    }
+    .map:not([data-seen]) .pin {
+      opacity: 0;
+      scale: 0.2;
+    }
   }
 
   /* Tablets and phones: no floating card; the chosen place shows under the map. */
@@ -410,6 +751,33 @@
     .below {
       display: block;
       margin-bottom: 20px;
+      scroll-margin-bottom: 16px;
+    }
+    /* Touch: larger pins (phones make them larger still, below). */
+    .map {
+      --pin-px: 0.72;
+    }
+    /* The card under the map already shows the place, except in full screen. */
+    .map:not([data-full]) .sheet {
+      display: none;
+    }
+    .sheet {
+      width: min(420px, calc(100% - 32px));
+    }
+    .sheet .cardNote {
+      display: none;
+    }
+    /* Room under the plan for the card, so the pins along the bottom can scroll up from behind it. */
+    .map[data-full] .viewport {
+      padding-bottom: 150px;
+    }
+    /* With no floating card, the pin of the place shown below stays marked. */
+    .pin[data-current] circle:not(.halo) {
+      transform: scale(1.18);
+    }
+    .pin[data-current] .halo {
+      opacity: 1;
+      animation: none;
     }
     .below .card {
       display: grid;
@@ -422,25 +790,75 @@
     }
     .legend {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 20px;
+    }
+    .legendPair {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .facts li:not(:nth-child(4n + 1)) {
+      border-left: 0;
+    }
+    .facts li:nth-child(even) {
+      border-left: 1px solid color-mix(in srgb, var(--gold) 22%, transparent);
     }
   }
   @media (max-width: 600px) {
-    /* Bigger pins for fingers. */
-    .pin {
-      transform-box: fill-box;
-      transform-origin: center;
-      transform: scale(1.4);
+    /* The whole plan fits the screen; pins stay finger-sized, and the buttons zoom in or open it full screen. */
+    .map {
+      --pin-px: 0.52;
     }
+    .tools button {
+      width: 36px;
+      height: 36px;
+    }
+    /* A compact card, photo beside the words, so the plan and the card fit on one screen. */
     .below .card {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
     }
     .below .cardPhoto {
-      aspect-ratio: 16 / 10;
-      min-height: 0;
+      aspect-ratio: auto;
+      min-height: 168px;
+    }
+    .below .cardBody {
+      padding: 12px 14px;
+    }
+    .below .cardName {
+      margin-bottom: 8px;
+      font-size: 19px;
+    }
+    .below .cardStats {
+      gap: 4px 14px;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+    }
+    .below .cardStats dd {
+      font-size: 18px;
+    }
+    .below .cardNote {
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .cardMark span {
+      width: 56px;
+      height: 56px;
+      font-size: 28px;
     }
     .legend button {
       font-size: 14px;
       gap: 8px;
+    }
+    .legendPair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .facts li {
+      padding: 14px 12px;
+      font-size: 13.5px;
+    }
+    .facts .factsTitle {
+      font-size: 19px;
     }
   }
   @media (prefers-reduced-motion: reduce) {

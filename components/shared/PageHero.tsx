@@ -9,6 +9,7 @@ import { PlanEventButton } from "@/features/experiences/components/PlanEventButt
 import { OffsiteEditButton } from "@/features/experiences/components/OffsiteEditButton";
 import { UnderTheSkyButton } from "@/features/experiences/components/UnderTheSkyButton";
 import { ThingsToDoButton } from "@/features/resorts/components/things-to-do/ThingsToDoButton";
+import { BookStayButton } from "@/features/accommodations/components/BookStayButton";
 import styles from "./shared.module.css";
 
 export function PageHero({
@@ -46,7 +47,7 @@ export function PageHero({
   titleSize: string;
   titleMaxWidth?: string;
   lede?: ReactNode;
-  ctas?: { label: string; href?: string; solid?: boolean; isEventModal?: boolean; isOffsiteModal?: boolean; isUnderTheSkyModal?: boolean }[];
+  ctas?: { label: string; href?: string; solid?: boolean; isEventModal?: boolean; isOffsiteModal?: boolean; isUnderTheSkyModal?: boolean; isBookingModal?: boolean }[];
   extraCta?: ReactNode;
   topRightCta?: ReactNode;
   quickNav?: { label: string; href?: string; icon?: IconName; desc?: string; isOffsiteModal?: boolean; isUnderTheSkyModal?: boolean; isThingsToDoModal?: boolean }[];
@@ -104,6 +105,14 @@ export function PageHero({
                     >
                       {cta.label}
                     </PlanEventButton>
+                  );
+                }
+
+                if (cta.isBookingModal) {
+                  return (
+                    <BookStayButton key={cta.label} className={`btn${cta.solid ? " solid" : ""}`}>
+                      {cta.label}
+                    </BookStayButton>
                   );
                 }
 

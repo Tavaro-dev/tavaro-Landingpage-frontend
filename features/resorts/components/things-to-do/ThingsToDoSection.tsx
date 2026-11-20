@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Reveal } from "@/components/shared/Reveal";
 import { OfferHead } from "@/components/shared/OfferHead";
 import { THINGS_TO_DO_DATA } from "../../content/thingsToDoData";
-import { ThingsToDoButton } from "./ThingsToDoButton";
 import styles from "./ThingsToDoSection.module.css";
 
 export function ThingsToDoSection() {
@@ -21,9 +20,6 @@ export function ThingsToDoSection() {
               Whether wandering through quiet mango trails at your own pace or arranging a curated
               experience with our team, discover two distinct ways to experience Tavaro.
             </p>
-            <ThingsToDoButton className="btn tw:px-[18px] tw:py-[8px] tw:text-[11.5px]">
-              Choose Experience Mode
-            </ThingsToDoButton>
           </div>
         </Reveal>
 

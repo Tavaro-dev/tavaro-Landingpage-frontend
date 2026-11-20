@@ -13,127 +13,6 @@
   transition: transform 0.5s var(--ease-luxury);
 }
 
-/* ---------- At a glance: ruled facts ---------- */
-.facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: clamp(20px, 3vw, 48px);
-  margin-top: clamp(32px, 4vw, 48px);
-  border-top: 1px solid var(--surface-line);
-}
-
-.fact {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px 0 22px;
-  border-bottom: 1px solid var(--surface-line);
-  min-width: 0;
-}
-
-.fact-label {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--on-surface-muted);
-}
-
-.fact-value {
-  font-family: var(--font-display);
-  font-size: clamp(19px, 1.8vw, 24px);
-  line-height: 1.25;
-  color: var(--on-surface);
-}
-
-/* ---------- Ruled list with diamonds ---------- */
-.ruled {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--surface-line);
-}
-
-.ruled.two {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: clamp(24px, 3vw, 48px);
-}
-
-.ruled.two {
-  border-top: none;
-}
-
-.ruled.two li:nth-child(-n + 2) {
-  border-top: 1px solid var(--surface-line);
-}
-
-.ruled li {
-  position: relative;
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--surface-line);
-}
-
-/* A gold rule draws along the line under the pointer. */
-.ruled li::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 1px;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.6s var(--ease-luxury);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .ruled li:hover::after {
-    transform: scaleX(1);
-  }
-
-  .ruled li:hover .diamond {
-    transform: rotate(225deg);
-  }
-}
-
-.ruled-text {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-  flex: 1;
-}
-
-.ruled-label {
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--on-surface);
-}
-
-.ruled-body {
-  font-size: 13.5px;
-  line-height: 1.65;
-  color: var(--on-surface-muted);
-}
-
-.ruled-meta {
-  flex-shrink: 0;
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
 /* ---------- Photo mosaic ---------- */
 .mosaic {
   display: grid;
@@ -200,127 +79,6 @@
   }
 }
 
-/* ---------- How it works ---------- */
-.journey-head {
-  max-width: 720px;
-}
-
-.journey {
-  position: relative;
-  margin-top: clamp(36px, 4vw, 56px);
-}
-
-.journey ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: clamp(20px, 3vw, 44px);
-}
-
-/* The base line, then a gold rail that draws across it once the steps are revealed. */
-.journey::before,
-.rail {
-  position: absolute;
-  top: 4px;
-  left: 0;
-  right: 0;
-  height: 1px;
-}
-
-.journey::before {
-  content: "";
-  background: var(--surface-line);
-}
-
-.rail {
-  background: var(--gold);
-  transform-origin: left;
-  transition: transform 1.6s var(--ease-luxury) 0.2s;
-}
-
-.journey:global(.reveal-init):not(:global(.in)) .rail {
-  transform: scaleX(0);
-}
-
-.journey li {
-  position: relative;
-  padding-top: 32px;
-}
-
-.step-mark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 9px;
-  height: 9px;
-  background: var(--surface);
-  border: 1px solid var(--gold);
-  transform: rotate(45deg);
-  transition: transform 0.7s var(--ease-luxury), opacity 0.7s var(--ease-luxury);
-  transition-delay: calc(0.35s + var(--i) * 0.28s);
-}
-
-.journey:global(.reveal-init):not(:global(.in)) .step-mark {
-  opacity: 0;
-  transform: rotate(-135deg) scale(0.4);
-}
-
-.step-num {
-  font-family: var(--font-display);
-  font-size: 15px;
-  letter-spacing: 0.1em;
-  color: var(--gold);
-}
-
-.journey h3 {
-  margin-top: 10px;
-  font-family: var(--font-display);
-  font-size: clamp(20px, 1.8vw, 24px);
-  font-weight: 400;
-  line-height: 1.25;
-  color: var(--on-surface);
-}
-
-.journey p {
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--on-surface-muted);
-}
-
-.journey-cta {
-  margin-top: clamp(32px, 4vw, 48px);
-}
-
-/* ---------- Tablet ---------- */
-@media (max-width: 1024px) {
-  .facts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .journey ol {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 40px;
-  }
-
-  /* Two rows of steps: each carries its own rule, so drop the single rail. */
-  .journey::before,
-  .rail {
-    display: none;
-  }
-
-  .journey li {
-    border-top: 1px solid var(--surface-line);
-    padding-top: 28px;
-  }
-
-  .step-mark {
-    top: -5px;
-  }
-}
-
 @media (max-width: 860px) {
   .mosaic {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -352,19 +110,6 @@
 
 /* ---------- Phone ---------- */
 @media (max-width: 600px) {
-  .ruled.two {
-    grid-template-columns: 1fr;
-  }
-
-  .ruled.two li:nth-child(2) {
-    border-top: none;
-  }
-
-  .journey ol {
-    grid-template-columns: 1fr;
-    row-gap: 32px;
-  }
-
   .mosaic {
     grid-auto-rows: 44vw;
   }
@@ -381,34 +126,50 @@
   }
 }
 
-@media (max-width: 600px) {
-  .fact {
-    padding: 16px 0 18px;
-  }
-
-  .fact-label {
-    font-size: 9px;
-    letter-spacing: 0.18em;
-  }
-
-  .fact-value {
-    font-size: 17px;
-  }
-}
-
-@media (max-width: 340px) {
-  .facts {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .rail,
-  .step-mark,
   .tile img,
   .diamond {
     transition: none;
   }
 }
 
+}
+
+/* Gallery photos wipe up into view as they scroll in (where scroll-linked animation is supported). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .tile {
+      animation: tile-wipe linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 85%;
+    }
+
+    .tile img {
+      animation: tile-settle linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 60%;
+    }
+  }
+}
+
+@keyframes tile-wipe {
+  from { clip-path: inset(100% 0 0 0); }
+  to { clip-path: inset(0); }
+}
+
+@keyframes tile-settle {
+  from { transform: scale(1.2); }
+  to { transform: scale(1); }
+}
+
+/* Phone: the gallery runs edge to edge, like the site's other photos. */
+@media (max-width: 640px) {
+  .mosaic {
+    margin-inline: calc(50% - 50vw);
+    gap: 4px;
+  }
+
+  .tile {
+    border-radius: 0;
+  }
 }

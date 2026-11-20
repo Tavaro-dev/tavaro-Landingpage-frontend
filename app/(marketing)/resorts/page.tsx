@@ -7,6 +7,7 @@ import { SplitSection } from "@/components/shared/SplitSection";
 import { Icon } from "@/components/ui/Icon";
 import { RoomAvailability } from "@/features/accommodations/components/RoomAvailability";
 import { BookStayStickyCta } from "@/features/accommodations/components/BookStayStickyCta";
+import { BookStayButton } from "@/features/accommodations/components/BookStayButton";
 import { PlanEventButton } from "@/features/experiences/components/PlanEventButton";
 import { ResortDining } from "@/features/resorts/components/dining/ResortDining";
 import { ResortAmenitiesCarousel } from "@/features/resorts/components/amenities/ResortAmenitiesCarousel";
@@ -40,7 +41,7 @@ export default function ResortsPage() {
         titleSize="clamp(34px,4.2vw,54px)"
         lede="From quiet stays and long lunches to grand celebrations and shared experiences, Tavaro brings people together in one expansive destination."
         ctas={[
-          { label: "Book Your Stay", href: "#availability", solid: true },
+          { label: "Book Your Stay", isBookingModal: true, solid: true },
           { label: "Plan Your Event", href: "#celebrate" },
         ]}
         quickNav={[
@@ -116,9 +117,9 @@ export default function ResortsPage() {
               <li>Daily dining, coffee and wellness access</li>
               <li>Flexible rates and seasonal offers</li>
             </ul>
-            <Link href="#availability" className="btn">
+            <BookStayButton>
               Book Your Stay <span className="btn-arrow">→</span>
-            </Link>
+            </BookStayButton>
           </SplitSection>
         </div>
       </section>

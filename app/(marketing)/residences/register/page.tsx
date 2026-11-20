@@ -3,7 +3,7 @@ import heroPhoto from "@/public/images/heroes/residences-hero.jpg";
 import { Reveal } from "@/components/shared/Reveal";
 import { pageMetadata } from "@/lib/metadata";
 import ResidenceInterestForm from "@/features/residences/components/ResidenceInterestForm";
-import { ResidenceJourney } from "@/features/residences/components/Residence";
+import { ResidenceJourney } from "@/features/residences/components/ResidenceJourney";
 
 export const metadata = pageMetadata({
   title: "Register Your Interest — Tavaro Residences | Tavaro",

@@ -3,12 +3,22 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { SPACES_SHEET, VENUES } from "../../content/venues";
+import { CountUp } from "@/features/residences/components/CountUp";
+import { VENUES } from "../../content/venues";
 import styles from "./ResortSpaces.module.css";
 
 const fmt = (n: number) => n.toLocaleString("en-IN");
 /** Guest counts to check against; a space fits when its standing capacity covers the count. */
 const GUESTS = [50, 150, 350, 600, 2500];
+
+/** The resort in five numbers, read before the spaces themselves. */
+const GLANCE = [
+  { value: "16", label: "acres in Kokapet" },
+  { value: "6", label: "spaces for celebrations" },
+  { value: "4,000", label: "guests on the largest lawn" },
+  { value: "13", label: "rooms for the couple and family" },
+  { value: "1,500", label: "cars parked on site" },
+];
 
 export function ResortSpaces() {
   const [guests, setGuests] = useState<number | null>(null);
@@ -17,19 +27,31 @@ export function ResortSpaces() {
   return (
     <section className={styles.spaces} id="spaces" aria-labelledby="spaces-title">
       <div className="container">
+        <dl className={styles.glance}>
+          {GLANCE.map((g) => (
+            <div key={g.label}>
+              <dt>{g.label}</dt>
+              <dd>
+                <CountUp value={g.value} />
+              </dd>
+            </div>
+          ))}
+        </dl>
+
         <header className={styles.head}>
           <h2 id="spaces-title" className={styles.title}>
             Every celebration can have a space of its own
           </h2>
           <p className={styles.lede}>
-            Six spaces across the resort, from a lawn for 4,000 to a heritage villa for fifty. Most
-            celebrations use several: haldi by the pool, sangeet on the Sanctuary Lawn, the wedding on Tavaro
-            Lawn.
+            Most celebrations use several: haldi by the pool, sangeet on the Sanctuary Lawn, the wedding on
+            Tavaro Lawn. Choose your guest count to see which spaces fit.
           </p>
         </header>
 
         <div className={styles.filter}>
-          <span id="guests-label">How many guests?</span>
+          <span id="guests-label" className={styles.ask}>
+            How many guests?
+          </span>
           <div className={styles.chips} role="group" aria-labelledby="guests-label">
             <button type="button" aria-pressed={guests === null} onClick={() => setGuests(null)}>
               Any
@@ -42,13 +64,13 @@ export function ResortSpaces() {
           </div>
           <p className={styles.count} aria-live="polite">
             {guests === null
-              ? `${VENUES.length} spaces`
+              ? `All ${VENUES.length} spaces`
               : `${fitting} ${fitting === 1 ? "space fits" : "spaces fit"} ${fmt(guests)} guests`}
           </p>
         </div>
 
         <ul className={styles.grid}>
-          {VENUES.map((v) => {
+          {VENUES.map((v, i) => {
             const fits = guests === null || v.floating >= guests;
             return (
               <li key={v.id} className={styles.card} data-fits={fits}>
@@ -58,45 +80,46 @@ export function ResortSpaces() {
                     alt={v.alt}
                     fill
                     placeholder="blur"
-                    sizes="(min-width: 1025px) 30vw, (min-width: 601px) 46vw, 84vw"
+                    sizes="(min-width: 1025px) 30vw, (min-width: 641px) 46vw, 100vw"
                   />
+                  <span className={styles.no} aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {guests !== null && fits && <span className={styles.fit}>Fits {fmt(guests)}</span>}
+                  <div className={styles.over}>
+                    <p className={styles.kind}>{v.kind}</p>
+                    <h3 className={styles.name}>{v.name}</h3>
+                  </div>
                 </div>
-                <div className={styles.body}>
-                  <p className={styles.kind}>{v.kind}</p>
-                  <h3 className={styles.name}>{v.name}</h3>
-                  <dl className={styles.cap}>
-                    <div>
-                      <dt>Seated</dt>
-                      <dd>{fmt(v.seated)}</dd>
-                    </div>
-                    <div>
-                      <dt>Standing</dt>
-                      <dd>{fmt(v.floating)}</dd>
-                    </div>
-                    {v.sqft && (
-                      <div>
-                        <dt>Sq ft</dt>
-                        <dd>{fmt(v.sqft)}</dd>
-                      </div>
-                    )}
-                  </dl>
-                  <p className={styles.best}>{v.bestFor}</p>
-                </div>
+                <dl className={styles.cap}>
+                  <div>
+                    <dt>Seated</dt>
+                    <dd>{fmt(v.seated)}</dd>
+                  </div>
+                  <div>
+                    <dt>Standing</dt>
+                    <dd>{fmt(v.floating)}</dd>
+                  </div>
+                  <div>
+                    <dt>{v.sqft ? "Area, sq ft" : "Area"}</dt>
+                    <dd>{v.sqft ? fmt(v.sqft) : "Villa"}</dd>
+                  </div>
+                </dl>
+                <p className={styles.best}>
+                  <span>Best for</span>
+                  {v.bestFor}
+                </p>
               </li>
             );
           })}
         </ul>
 
         <p className={styles.note}>
-          Standing means a cocktail format. Capacities depend on the set-up. Also at the resort: 13 rooms for
-          the couple and family, and Màre Coffee House &amp; Gallery.{" "}
+          Standing means a cocktail format. Capacities depend on the set-up.{" "}
           <Link href="/resorts/photos" className={styles.more}>
             See celebrations in the gallery
           </Link>
         </p>
-        <a className={`btn ${styles.download}`} href={SPACES_SHEET.href} download>
-          Download the spaces sheet (PDF, {SPACES_SHEET.size})
-        </a>
       </div>
     </section>
   );

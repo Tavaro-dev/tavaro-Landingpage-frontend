@@ -2,254 +2,663 @@
 
 @layer components {
 
-.principles-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1px;
-  background: var(--surface-line);
-  margin-top: 32px;
-  border: 1px solid var(--surface-line);
-}
+/* ---------- Shared bits ---------- */
 
-.principle-item {
+.media {
   position: relative;
-  grid-column: span 2;
-  background: var(--surface);
-  padding: 30px 26px;
-}
-
-/* Numbered principles: a display-font index above each label. */
-.numbered {
-  counter-reset: principle;
-}
-
-.numbered .principle-item::before {
-  counter-increment: principle;
-  content: counter(principle, decimal-leading-zero);
-  display: block;
-  margin-bottom: 14px;
-  font-family: var(--font-display);
-  font-size: clamp(26px, 2.4vw, 34px);
-  line-height: 1;
-  color: var(--gold);
-}
-
-/* A gold rule draws along the top edge under the pointer. */
-.principle-item::after {
-  content: "";
-  position: absolute;
-  top: -1px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.6s var(--ease-luxury);
-}
-
-.principles-grid .principle-item:nth-child(4):nth-last-child(2),
-.principles-grid .principle-item:nth-child(5):last-child {
-  grid-column: span 3;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .principle-item:hover::after {
-    transform: scaleX(1);
-  }
-}
-
-.principle-item :global(.eyebrow) {
-  margin-bottom: 12px;
-  display: block;
-}
-
-.principle-item p {
-  font-size: 14px;
-  color: var(--on-surface-muted);
-  line-height: 1.7;
-}
-
-.residence-card-pair {
-  display: flex;
-  flex-direction: column;
-  gap: 80px;
-  margin-top: 0;
-}
-
-.residence-feature-card {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 56px;
-  align-items: start;
-}
-
-.residence-feature-card:global(.reverse) {
-  grid-template-columns: 1fr 1.1fr;
-  direction: rtl;
-}
-
-.residence-feature-card:global(.reverse) > * {
-  direction: ltr;
-}
-
-.residence-card-media {
-  position: relative;
-  aspect-ratio: 4/3;
   overflow: hidden;
   border-radius: var(--radius);
 }
 
-/* Crop the photo to the frame instead of stretching it. */
-.residence-card-media img {
-  object-fit: cover;
-}
-
-.residence-card-scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(10, 9, 8, 0.72) 0%,
-    rgba(10, 9, 8, 0.15) 50%,
-    transparent 100%
-  );
-  z-index: 1;
-}
-
-.residence-card-tag {
-  position: absolute;
-  bottom: 20px;
-  left: 24px;
-  z-index: 2;
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--gold-light);
-}
-
-.residence-card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 20px 0;
-}
-
-/* Size the button to its label, and let a long one wrap on narrow screens rather than clip. */
-.residence-card-body :global(.btn) {
-  align-self: flex-start;
-  max-width: 100%;
-  white-space: normal !important;
-  text-align: left;
-}
-
-/* Photo beside text, used for the living, floor-plan and location sections. */
-.living-split {
-  display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: clamp(28px, 4.5vw, 72px);
-  align-items: center;
-}
-
-.living-split.flip {
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-}
-
-.living-split.top {
-  align-items: start;
-}
-
-/* The photo holds its place while the list beside it scrolls. */
-.living-media.sticky {
-  position: sticky;
-  top: 110px;
-  aspect-ratio: 1/1;
-}
-
-.living-media {
-  position: relative;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-  border-radius: var(--radius);
-}
-
-.living-media.portrait {
-  aspect-ratio: 9/10;
-}
-
-/* A drawing on a transparent background: shown whole, never cropped. */
-.living-media.plan img {
-  object-fit: contain;
-}
-
-.living-media img {
+.media img {
   object-fit: cover;
   transition: transform 1.4s var(--ease-luxury);
 }
 
+.small-label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+}
+
+.muted {
+  color: var(--on-surface-muted);
+  line-height: 1.75;
+}
+
+/* ---------- Philosophy: one statement beside two short paragraphs ---------- */
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 6vw, 96px);
+  align-items: start;
+}
+
+.statement {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4.2vw, 56px);
+  line-height: 1.08;
+  max-width: 14ch;
+}
+
+.intro p + p {
+  margin-top: 18px;
+}
+
+/* ---------- Five principles, each shown with a photo ---------- */
+
+.principles {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 40px;
+}
+
+.principle .media {
+  aspect-ratio: 3 / 4;
+}
+
+.principle h3 {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 1.6vw, 24px);
+  line-height: 1.15;
+}
+
+.principle p {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--on-surface-muted);
+}
+
+/* ---------- The two homes ---------- */
+
+.homes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.home {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: clamp(520px, 62vw, 760px);
+  padding: clamp(24px, 3vw, 44px);
+  overflow: hidden;
+  border-radius: var(--radius);
+  color: var(--cream);
+  text-decoration: none;
+}
+
+.home > .media {
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+}
+
+.home > .media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 9, 8, 0.94) 0%, rgba(10, 9, 8, 0.8) 38%, rgba(10, 9, 8, 0.3) 66%, transparent 86%);
+}
+
+.home-body {
+  position: relative;
+  z-index: 1;
+  max-width: 46ch;
+}
+
+.home-body h3 {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 4vw, 54px);
+  line-height: 1;
+}
+
+.home-body p {
+  margin-top: 14px;
+  line-height: 1.65;
+  color: var(--cream-2);
+}
+
+/* Key facts as a ruled list with small gold diamonds, as elsewhere on the site. */
+.chips {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  max-width: 420px;
+}
+
+.chips li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(247, 242, 231, 0.3);
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+}
+
+.chips li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+/* A gold rule draws along each line when the card is pointed at. */
+.chips li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-luxury);
+}
+
+.home:hover .chips li::after,
+.home:focus-visible .chips li::after {
+  transform: scaleX(1);
+}
+
+.home:hover .chips li:nth-child(2)::after { transition-delay: 0.08s; }
+.home:hover .chips li:nth-child(3)::after { transition-delay: 0.16s; }
+
+.go {
+  display: inline-block;
+  margin-top: 24px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--gold);
+  font-size: 14px;
+  color: var(--cream);
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .living-split:hover .living-media img {
+  .home:hover > .media img {
     transform: scale(1.04);
+  }
+
+  .home:hover .go {
+    color: var(--gold-light);
   }
 }
 
-@media (max-width: 900px) {
-.living-split,
-  .living-split.flip {
-    grid-template-columns: 1fr;
+.home:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+/* ---------- Floor plans ---------- */
+
+.plan-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+}
+
+/* A drawing on a transparent background: shown whole, never cropped. */
+.plan-split .media {
+  aspect-ratio: 1800 / 1331;
+}
+
+.plan-split .media {
+  overflow: visible;
+}
+
+/* A cut-out model: its own shadow on the page, and a slow float, so it reads as 3D. */
+.plan-split .media img {
+  object-fit: contain;
+  filter: drop-shadow(0 36px 30px rgba(10, 9, 8, 0.26)) drop-shadow(0 8px 10px rgba(10, 9, 8, 0.16));
+}
+
+.float {
+  animation: float 7s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  from { translate: 0 -8px; rotate: -0.5deg; }
+  to { translate: 0 8px; rotate: 0.5deg; }
+}
+
+.ticks {
+  margin-top: 22px;
+  border-top: 1px solid var(--surface-line);
+}
+
+.ticks li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--surface-line);
+  font-size: 14.5px;
+}
+
+.ticks li span:last-child {
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* ---------- Leela: interiors, walked through sideways ---------- */
+
+/* By default (phones, older browsers, reduced motion) a row you swipe. */
+.track {
+  --inset: calc((100vw - min(100vw, var(--container))) / 2 + var(--pad));
+  display: flex;
+  gap: 20px;
+  margin-top: 36px;
+  padding: 0 var(--inset) 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--inset);
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+
+.track:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+
+.track figure {
+  flex: 0 0 min(84vw, 720px);
+  scroll-snap-align: start;
+}
+
+.track .media {
+  aspect-ratio: 16 / 10;
+}
+
+.track figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin-top: 14px;
+}
+
+.track figcaption strong {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.track figcaption span {
+  font-size: 14px;
+  color: var(--on-surface-muted);
+}
+
+.pin {
+  padding: clamp(64px, 9vw, 120px) 0;
+}
+
+/* On a wide screen with scroll-linked animation: the row pins, and scrolling down walks it sideways. */
+@supports (animation-timeline: view()) {
+  @media (min-width: 861px) and (prefers-reduced-motion: no-preference) {
+    .pin {
+      height: 320vh;
+      padding: 0;
+      view-timeline-name: --interiors;
+    }
+
+    .pin-inner {
+      position: sticky;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+      padding-top: 70px;
+      overflow: hidden;
+    }
+
+    .track {
+      width: max-content;
+      overflow: visible;
+      animation: walk linear both;
+      animation-timeline: --interiors;
+      animation-range: contain 0% contain 100%;
+    }
+
+    .track figure {
+      flex-basis: min(56vw, 760px);
+    }
+
+    /* The floor plan tips into place. */
+    .plan-split .media img {
+      animation: tip linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+  }
+}
+
+@keyframes walk {
+  to { transform: translateX(calc(-100% + 100vw)); }
+}
+
+@keyframes tip {
+  from { opacity: 0.2; transform: perspective(1400px) rotateX(28deg) scale(0.84); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Leela: how far things are ---------- */
+
+.bars {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px clamp(28px, 5vw, 72px);
+  margin-top: 40px;
+}
+
+.bars li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px 16px;
+  font-size: 15px;
+}
+
+.bars li > span:nth-child(2) {
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.bar {
+  grid-column: 1 / -1;
+  height: 3px;
+  background: var(--surface-line);
+}
+
+/* Length is the drive time, out of the longest (45 minutes). */
+.bar span {
+  display: block;
+  width: calc(var(--m) / 45 * 100%);
+  height: 100%;
+  background: var(--gold);
+  transform-origin: left;
+  transition: transform 1.4s var(--ease-luxury) calc(var(--i) * 0.08s + 0.2s);
+}
+
+:global(.reveal-init):not(:global(.in)) > .bars .bar span {
+  transform: scaleX(0);
+}
+
+/* ---------- Bhairavi Nilayam: a day, from morning to night ---------- */
+
+.sky {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 40px;
+}
+
+.sky > div {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 520px;
+  padding: 26px 24px;
+  overflow: hidden;
+  color: var(--cream);
+  view-timeline-name: --panel;
+}
+
+.sky img {
+  z-index: -2;
+  object-fit: cover;
+}
+
+/* The light of each hour over its photo, darkening to the foot where the words sit. */
+.sky > div::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to top, rgba(10, 9, 8, 0.9) 0%, rgba(10, 9, 8, 0.4) 48%, var(--tint) 100%);
+}
+
+.morning { --tint: rgba(240, 196, 110, 0.38); }
+.noon { --tint: rgba(205, 226, 234, 0.3); }
+.evening { --tint: rgba(196, 104, 63, 0.42); }
+.night { --tint: rgba(14, 19, 34, 0.62); }
+
+.time {
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  color: var(--gold-light);
+}
+
+.sky h3 {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.sky p {
+  margin-top: 10px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--cream-2);
+}
+
+/* Each panel opens upward as it scrolls in, its photo settling from a slight zoom. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .sky > div {
+      animation: panel-open linear both;
+      animation-timeline: --panel;
+      animation-range: entry 0% entry 90%;
+    }
+
+    .sky img {
+      animation: panel-settle linear both;
+      animation-timeline: --panel;
+      animation-range: entry 0% cover 60%;
+    }
+  }
+}
+
+@keyframes panel-open {
+  from { clip-path: inset(100% 0 0 0); }
+  to { clip-path: inset(0); }
+}
+
+@keyframes panel-settle {
+  from { transform: scale(1.2); }
+  to { transform: scale(1); }
+}
+
+/* ---------- Tablet and phone ---------- */
+
+@media (max-width: 1080px) {
+  .principles {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(220px, 34%);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) transparent;
   }
 
-.living-media,
-  .living-media.portrait {
-    aspect-ratio: 16/10;
+  .principle {
+    scroll-snap-align: start;
   }
 
-.living-media.sticky {
-    position: relative;
-    top: auto;
-    aspect-ratio: 16/10;
+  .sky {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .intro,
+  .homes,
+  .plan-split,
+  .bars {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-.principles-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .home {
+    min-height: 500px;
   }
 
-.principle-item {
-    grid-column: span 1;
-  }
-
-.principles-grid .principle-item:nth-child(4):nth-last-child(2),
-  .principles-grid .principle-item:nth-child(5):last-child {
-    grid-column: span 1;
-  }
-
-.principles-grid .principle-item:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-  }
-
-.residence-feature-card,
-  .residence-feature-card:global(.reverse) {
-    grid-template-columns: 1fr;
-    direction: ltr;
+  /* The text covers more of the photo on a narrow card, so the shade reaches higher. */
+  .home > .media::after {
+    background: linear-gradient(to top, rgba(10, 9, 8, 0.92) 0%, rgba(10, 9, 8, 0.72) 60%, rgba(10, 9, 8, 0.15) 100%);
   }
 }
 
 @media (max-width: 600px) {
-.principles-grid {
-    grid-template-columns: 1fr;
+  .principles {
+    grid-auto-columns: 72%;
   }
 
-.principle-item,
-  .principles-grid .principle-item:nth-child(4):nth-last-child(2),
-  .principles-grid .principle-item:nth-child(5):last-child,
-  .principles-grid .principle-item:last-child:nth-child(odd) {
-    grid-column: span 1;
+  .sky {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-.residence-card-pair {
-    gap: 48px;
+  .sky > div {
+    min-height: 420px;
+  }
+
+  .home {
+    min-height: 460px;
+  }
+}
+
+/* ---------- Bhairavi Nilayam: rooms in arched frames ---------- */
+
+.arches {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 32px);
+  margin-top: 44px;
+}
+
+/* The middle column sits lower, so the row reads as a colonnade rather than a grid. */
+.arch:nth-child(3n + 2) {
+  margin-top: clamp(32px, 5vw, 72px);
+}
+
+.arch-frame {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+}
+
+.arch-frame img {
+  object-fit: cover;
+}
+
+.arch figcaption {
+  margin-top: 16px;
+}
+
+.arch strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.arch figcaption span {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--on-surface-muted);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .arch-frame {
+      animation: arch-open linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+
+    .arch-frame img {
+      animation: arch-settle linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 60%;
+    }
+  }
+}
+
+@keyframes arch-open {
+  from { clip-path: inset(100% 0 0 0 round 999px 999px 0 0); }
+  to { clip-path: inset(0 round 999px 999px 0 0); }
+}
+
+@keyframes arch-settle {
+  from { transform: scale(1.2) translateY(6%); }
+  to { transform: none; }
+}
+
+@media (max-width: 860px) {
+  .arches {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .arch:nth-child(3n + 2) {
+    margin-top: 0;
+  }
+
+  .arch:nth-child(even) {
+    margin-top: 40px;
+  }
+}
+
+/* Phone: a row of arches you swipe, running edge to edge. */
+@media (max-width: 600px) {
+  .arches {
+    display: flex;
+    gap: 14px;
+    margin-inline: calc(50% - 50vw);
+    padding: 0 20px 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 20px;
+    scrollbar-width: none;
+  }
+
+  .arch,
+  .arch:nth-child(even) {
+    flex: 0 0 68vw;
+    margin-top: 0;
+    scroll-snap-align: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media img {
+    transition: none;
+  }
+
+  .float {
+    animation: none;
   }
 }
 

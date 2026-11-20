@@ -106,6 +106,3 @@ export const FACILITIES = [
   "Clean restrooms across the resort",
   "Reliable power and water supply",
 ];
-
-/** The client's one-page sheet, served from public/downloads. */
-export const SPACES_SHEET = { href: "/downloads/tavaro-spaces-and-capacities.pdf", size: "420 KB" };
