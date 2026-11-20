@@ -10,5 +10,5 @@ export const FOOTER_JOURNEYS = [
   { label: "Book a Stay", href: "/resorts#stay" },
   { label: "Plan an Event", href: "/resorts/venues" },
   { label: "Corporate Experience", href: "/experiences#corporate" },
-  { label: "Register Interest", href: "/residences/register" },
+  { label: "Register Interest", href: "#register-interest" },
 ] as const;

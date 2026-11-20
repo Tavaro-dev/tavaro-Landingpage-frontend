@@ -8,7 +8,7 @@ const bookable = EVENTS.find((e) => e.ticketTypes?.length && isBookable(e));
 
 const PAGES = [
   '/', '/about', '/contact', '/experiences', '/experiences/stillness-project', '/mare',
-  '/residences', '/residences/leela', '/residences/bhairavi-nilayam', '/residences/register',
+  '/residences', '/residences/leela', '/residences/bhairavi-nilayam',
   '/resorts', '/resorts/accommodations', '/resorts/location', '/resorts/photos', '/resorts/venues',
   '/resorts/things-to-do/explore', '/resorts/things-to-do/create', '/wellness',
 ];

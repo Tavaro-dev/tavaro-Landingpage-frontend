@@ -1,119 +1,135 @@
 @layer theme, base, components, utilities;
 
 @layer components {
-
-/* Optional intents as a ruled two-column list with gold diamond markers. */
-.intent-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 24px;
-}
-
-.intent-list li {
-  position: relative;
-  border-bottom: 1px solid var(--surface-line);
-}
-
-.intent-list li::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 1px;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.5s var(--ease-luxury);
-  pointer-events: none;
-}
-
-.intent-list li:has([aria-pressed="true"])::after {
-  transform: scaleX(1);
-}
-
-.intent {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 12px 0;
-  background: none;
-  border: none;
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.4;
-  text-align: left;
-  color: var(--on-surface-muted);
-  cursor: pointer;
-  /* List lines, not call-to-action buttons: opt out of the site-wide one-line rule. */
-  white-space: normal !important;
-  word-break: normal !important;
-  overflow-wrap: anywhere !important;
-  transition: transform 0.4s var(--ease-luxury);
-}
-
-.intent[aria-pressed="true"] {
-  color: var(--on-surface);
-}
-
-.intent:focus-visible {
-  outline: 1px solid var(--gold);
-  outline-offset: 2px;
-}
-
-.intent:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.intent-mark {
-  width: 7px;
-  height: 7px;
-  flex-shrink: 0;
-  border: 1px solid var(--gold);
-  transform: rotate(45deg);
-  transition: transform 0.4s var(--ease-luxury);
-}
-
-/* The fill fades in as its own layer so only opacity animates. */
-.intent-mark::after {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: var(--gold);
-  opacity: 0;
-  transition: opacity 0.3s var(--ease-luxury);
-}
-
-.intent[aria-pressed="true"] .intent-mark::after {
-  opacity: 1;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .intent:not(:disabled):hover {
-    transform: translateX(4px);
-    color: var(--on-surface);
+  /* Hints inside empty fields, quiet enough not to read as filled in. */
+  .form :global(.field) input::placeholder {
+    color: color-mix(in srgb, var(--on-surface) 38%, transparent);
+    opacity: 1;
   }
 
-  .intent:not(:disabled):hover .intent-mark {
-    transform: rotate(225deg);
+  /* ---------- "I would like to": real checkboxes, each a row you can tap ---------- */
+  .intents {
+    margin: 30px 0 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
   }
-
-  .intent-list li:hover::after {
-    transform: scaleX(1);
+  .legend {
+    margin-bottom: 14px;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
   }
-}
-
-@media (max-width: 480px) {
+  .legend span {
+    letter-spacing: 0.06em;
+    text-transform: none;
+    font-weight: 400;
+    color: var(--on-surface-muted);
+  }
   .intent-list {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
-}
+  .intent {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 12px 14px;
+    border: 1px solid color-mix(in srgb, var(--on-surface) 20%, transparent);
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--on-surface);
+    cursor: pointer;
+    transition:
+      border-color 0.25s var(--ease),
+      background 0.25s var(--ease);
+  }
+  /* The real checkbox stays in the page for keyboards and screen readers; the box below is what shows. */
+  .intent input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+  }
+  .box {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid color-mix(in srgb, var(--on-surface) 45%, transparent);
+    border-radius: 3px;
+    transition:
+      background 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+  .box svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: var(--black, #0a0908);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 16;
+    stroke-dashoffset: 16;
+    transition: stroke-dashoffset 0.25s var(--ease);
+  }
+  .intent:hover {
+    border-color: color-mix(in srgb, var(--gold) 70%, transparent);
+  }
+  .intent:has(input:checked) {
+    border-color: var(--gold);
+    background: color-mix(in srgb, var(--gold) 12%, transparent);
+  }
+  .intent:has(input:checked) .box {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+  .intent:has(input:checked) .box svg {
+    stroke-dashoffset: 0;
+  }
+  .intent:has(input:focus-visible) {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+  .intent:has(input:disabled) {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
 
+  /* ---------- Send row (the pop-up puts it in its footer, on the right) ---------- */
+  .actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px 24px;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 480px) {
+    .intent-list {
+      grid-template-columns: 1fr;
+    }
+    .actions :global(.btn) {
+      flex: 1 1 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .box svg {
+      transition: none;
+    }
+  }
 }

@@ -196,7 +196,7 @@ export default function ResidencesPage() {
                 step by step
               </>
             }
-            cta={{ label: "Register Interest", href: "/residences/register" }}
+            cta={{ label: "Register Interest", href: "#register-interest" }}
           />
         </div>
       </section>
@@ -204,7 +204,7 @@ export default function ResidencesPage() {
       <StickyCta
         text="Interested in a Tavaro Residence?"
         ctaLabel="Register Interest"
-        ctaHref="/residences/register"
+        ctaHref="#register-interest"
       />
     </>
   );

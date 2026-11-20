@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  // Register interest is a window over the page now: the old page's address opens it on Residences.
+  async redirects() {
+    return [{ source: "/residences/register", destination: "/residences#register-interest", permanent: true }];
+  },
   // ponytail: baseline headers only; add a CSP once third-party scripts/embeds are settled
   async headers() {
     return [

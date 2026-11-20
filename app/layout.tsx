@@ -7,6 +7,7 @@ import { HeroPrefetch } from "@/components/shared/HeroPrefetch";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { CartDrawer } from "@/features/booking/components/CartDrawer";
+import { RegisterInterestModal } from "@/features/residences/components/RegisterInterestModal";
 import { CartProvider } from "@/features/booking/cart/CartProvider";
 import { SITE_URL } from "@/lib/metadata";
 
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <HeroPrefetch />
             <Footer />
             <CartDrawer />
+            <RegisterInterestModal />
           </CartProvider>
         </ThemeProvider>
       </body>

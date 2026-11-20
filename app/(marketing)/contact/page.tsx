@@ -75,8 +75,7 @@ export default function ContactPage() {
                 <p className="eyebrow">Enquire</p>
                 <h3 className="display-3">Send us a message</h3>
                 <p className="lede tw:mt-[16px]">
-                  Tell us what brings you to Tavaro, and the right team will be in touch within one business
-                  day.
+                  Tell us what brings you to Tavaro, and the right team will be in touch.
                 </p>
               </div>
               <div className={`tw:mt-[40px] tw:flex tw:flex-col tw:gap-[16px] ${styles.reach}`}>

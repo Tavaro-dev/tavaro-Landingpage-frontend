@@ -38,7 +38,7 @@ export default function ResidenceInterestForm({
 
   return (
     <form
-      className="split-body"
+      className={`split-body ${styles.form}`}
       suppressHydrationWarning
       onSubmit={async (e) => {
         e.preventDefault();
@@ -67,6 +67,7 @@ export default function ResidenceInterestForm({
             name="name"
             type="text"
             autoComplete="name"
+            placeholder="Your full name"
             required
             disabled={submitted}
             suppressHydrationWarning
@@ -81,6 +82,7 @@ export default function ResidenceInterestForm({
             name="phone"
             type="tel"
             autoComplete="tel"
+            placeholder="+91"
             required
             disabled={submitted}
             suppressHydrationWarning
@@ -95,6 +97,7 @@ export default function ResidenceInterestForm({
             name="email"
             type="email"
             autoComplete="email"
+            placeholder="you@example.com"
             required
             disabled={submitted}
             suppressHydrationWarning
@@ -115,48 +118,36 @@ export default function ResidenceInterestForm({
       </div>
 
       {/* Optional intents */}
-      <div className="residence-intent-group tw:mt-[28px]">
-        <p className="eyebrow no-line tw:mb-[14px] tw:text-[10px]">
-          I would like to (optional)
-        </p>
-        <ul className={styles["intent-list"]}>
-          {INTENT_OPTIONS.map((opt) => {
-            const on = intents.includes(opt.value);
-            return (
-              <li key={opt.value}>
-                <button
-                  type="button"
-                  className={styles.intent}
-                  aria-pressed={on}
-                  onClick={() => toggleIntent(opt.value)}
-                  disabled={submitted}
-                  suppressHydrationWarning
-                >
-                  <span className={styles["intent-mark"]} aria-hidden="true" />
-                  {opt.label}
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      <fieldset className={styles.intents}>
+        <legend className={styles.legend}>
+          I would like to <span>(optional, choose any)</span>
+        </legend>
+        <div className={styles["intent-list"]}>
+          {INTENT_OPTIONS.map((opt) => (
+            <label key={opt.value} className={styles.intent}>
+              <input
+                type="checkbox"
+                checked={intents.includes(opt.value)}
+                onChange={() => toggleIntent(opt.value)}
+                disabled={submitted}
+                suppressHydrationWarning
+              />
+              <span className={styles.box} aria-hidden="true">
+                <svg viewBox="0 0 16 16">
+                  <path d="M3.5 8.5l3 3 6-7" />
+                </svg>
+              </span>
+              <span>{opt.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
 
       {submitError && (
         <div className="form-error tw:mt-[20px] tw:text-(color:--danger)">
           {submitError}
         </div>
       )}
-
-      <button
-        type="submit"
-        id="residence-register-submit"
-        className="btn solid tw:mt-[32px]"
-        disabled={submitted || isSubmitting}
-        suppressHydrationWarning
-      >
-        {isSubmitting ? "REGISTERING..." : "REGISTER INTEREST"}{" "}
-        <span className="btn-arrow">→</span>
-      </button>
 
       {submitted && (
         <div className="form-success">
@@ -165,14 +156,25 @@ export default function ResidenceInterestForm({
             — exactly as a home of this nature deserves.
           </p>
           {isDemo && (
-            <p
-              className="order-summary-muted tw:mt-[12px] tw:text-(color:--gold-dark)"
-            >
+            <p className="order-summary-muted tw:mt-[12px] tw:text-(color:--gold-dark)">
               (Demo: No real enquiry was delivered.)
             </p>
           )}
         </div>
       )}
+
+      <div className={styles.actions} data-form-actions>
+        <button
+          type="submit"
+          id="residence-register-submit"
+          className="btn solid"
+          disabled={submitted || isSubmitting}
+          suppressHydrationWarning
+        >
+          {isSubmitting ? "Registering…" : submitted ? "Registered" : "Register interest"}
+          {!isSubmitting && !submitted && <span className="btn-arrow">→</span>}
+        </button>
+      </div>
     </form>
   );
 }
