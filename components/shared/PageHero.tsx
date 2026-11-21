@@ -16,6 +16,7 @@ export function PageHero({
   photoSrc,
   photoAlt,
   photoPosition,
+  lightScrim,
   placeholder,
   minHeight,
   breadcrumbLabel,
@@ -35,6 +36,8 @@ export function PageHero({
   photoAlt: string;
   /** CSS object-position for the photo, e.g. "68% center" to keep a subject in a narrow (phone) crop. */
   photoPosition?: string;
+  /** A bright photo: shade only behind the menu and the words, not the whole picture. */
+  lightScrim?: boolean;
   placeholder: string;
   minHeight?: string;
   /** The section the page belongs to, e.g. "Tavaro Resorts". */
@@ -59,7 +62,7 @@ export function PageHero({
       <div className={`${styles["hero-media"]} ${placeholder}`}>
         <HeroImage src={photoSrc} alt={photoAlt} fill preload sizes="100vw" style={photoPosition ? { objectPosition: photoPosition } : undefined} />
       </div>
-      <div className={styles["hero-scrim"]} />
+      <div className={`${styles["hero-scrim"]} ${lightScrim ? styles["hero-scrim-light"] : ""}`} />
       <div className="page-hero-inner container">
         <div className="page-hero-top-row tw:flex tw:items-center tw:justify-between tw:w-full tw:z-[10] tw:mb-[20px]">
           <div className={`${styles.breadcrumb} tw:m-[0]`}>

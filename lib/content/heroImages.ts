@@ -48,8 +48,17 @@ export const HERO_IMAGES: Record<string, { h: string; w: number[]; blur: string 
     ],
     "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAAAQAgCdASoQAAoAAsBMJZgCdEf/gdoZ5zIAAP3hfM3Ueo9+tKRDKuatx5152sM8ETDAumypXx9mxuJf7EDNk9luBOShvRwAAAA="
   },
+  "residences-hero-mobile": {
+    "h": "2daeeca4",
+    "w": [
+      640,
+      828,
+      1075
+    ],
+    "blur": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAABwAwCdASoQACAAPtFUo0uoJKMhsAgBABoJZVTAAJQI/m/K6UAA/uMTf7My/q6V9J34Y3zum8WFUHl0k5POyPQGfH3aIz27lq49E4mZ8dO7k826FKgn+AI6MeQqJqsj/Vwh2HEEvumF0ybiY/t72KUyAAA="
+  },
   "residences-hero": {
-    "h": "01714981",
+    "h": "e86411c0",
     "w": [
       640,
       828,
@@ -58,7 +67,7 @@ export const HERO_IMAGES: Record<string, { h: string; w: number[]; blur: string 
       1920,
       2560
     ],
-    "blur": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAABwAQCdASoQAAkAAsBMJQBdgAq3wAD+4du7qrNTyVi1vtAMfuDfXLp6KQQwDWTNpEWlofcSrPyo91AGky9CgK+mkAi99iI7hhij5AAA"
+    "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADQAQCdASoQAAkAAsBMJYwC7AEIREv/AADxkoIYrWnG56JD7qpN7nNT3BdvJYFCm6Z7ok4R/rq3IvEWmN7qrZqSvUAQjAAA"
   },
   "resorts-hero": {
     "h": "e6e5a92c",

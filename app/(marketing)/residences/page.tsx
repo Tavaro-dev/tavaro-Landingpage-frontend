@@ -54,7 +54,10 @@ export default function ResidencesPage() {
     <>
       <PageHero
         photoSrc={heroPhoto}
-        photoAlt="Leela's terraces wrapped in greenery"
+        photoAlt="Leela at dusk, its windows lit, under the first stars"
+        // The building stands on the right of the photo; phones get the upright residences-hero-mobile.jpg.
+        photoPosition="75% 50%"
+        lightScrim
         placeholder="ph-2"
         breadcrumbLabel="Tavaro Residences"
         title={
