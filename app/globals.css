@@ -342,12 +342,32 @@ select {
   z-index: -1;
 }
 
-.btn:hover {
+.btn:focus-visible {
   color: var(--black);
 }
 
-.btn:hover::before {
+.btn:focus-visible::before {
   transform: translateX(0);
+}
+
+/* Only where there is a real pointer: iPhone and iPad Safari keep a button in its hover state after a finger
+   touches it (even just to scroll past), which left outline buttons stuck filled gold. */
+@media (hover: hover) {
+  .btn:hover {
+    color: var(--black);
+  }
+
+  .btn:hover::before {
+    transform: translateX(0);
+  }
+
+  .btn.solid:hover {
+    color: var(--gold);
+  }
+
+  .btn:hover .btn-arrow {
+    transform: translateX(4px);
+  }
 }
 
 .btn:disabled {
@@ -368,7 +388,7 @@ select {
   background: var(--black);
 }
 
-.btn.solid:hover {
+.btn.solid:focus-visible {
   color: var(--gold);
 }
 
@@ -386,7 +406,7 @@ select {
   transition: transform 0.4s var(--ease);
 }
 
-.btn:hover .btn-arrow {
+.btn:focus-visible .btn-arrow {
   transform: translateX(4px);
 }
 
