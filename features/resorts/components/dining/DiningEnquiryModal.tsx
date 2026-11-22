@@ -6,6 +6,7 @@ import { Icon } from "@/components/ui/Icon";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { CustomDatePicker } from "@/components/ui/CustomDatePicker";
 import { Modal } from "@/components/ui/Modal";
+import { ThankYou } from "@/components/shared/ThankYou";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
 import styles from "./DiningEnquiryModal.module.css";
 import gstyles from "../enquiry.module.css";
@@ -142,26 +143,7 @@ export function DiningEnquiryModal({ isOpen, onClose }: DiningEnquiryModalProps)
                 </div>
               </div>
             ) : submitted ? (
-              <div className={gstyles["event-success-box"]}>
-                <p className="eyebrow center no-line">Enquiry Received</p>
-                <h4 className={gstyles["event-success-heading"]}>Thank You for Reaching Out</h4>
-                <p className={gstyles["event-success-body"]}>
-                  We&apos;re delighted to hear from you. Your enquiry has been received, and our team will be in touch
-                  with you shortly to help bring your plans to life. We look forward to welcoming you to Tavaro.
-                </p>
-                {isDemo && (
-                  <p className="order-summary-muted tw:mt-[16px] tw:text-(color:--gold-dark)">
-                    (Demo: No real enquiry was delivered.)
-                  </p>
-                )}
-                <button
-                  type="button"
-                  className="btn solid tw:mt-[28px]"
-                  onClick={close}
-                >
-                  Close
-                </button>
-              </div>
+              <ThankYou isDemo={isDemo} onClose={close} />
             ) : (
               <form
                 onSubmit={async (e) => {

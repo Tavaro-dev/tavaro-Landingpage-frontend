@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, type ReactNode } from "react";
+import { ThankYou } from "@/components/shared/ThankYou";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
 import styles from "./ResidenceInterestForm.module.css";
@@ -20,8 +21,13 @@ const INTENT_OPTIONS = [
 
 export default function ResidenceInterestForm({
   defaultResidence,
+  intro,
+  onClose,
 }: {
   defaultResidence?: string;
+  /** Shown above the form, and gone once it is sent. */
+  intro?: ReactNode;
+  onClose: () => void;
 }) {
   const { submit, isSubmitting, submitted, error: submitError, isDemo } = useEnquirySubmit();
   const [residence, setResidence] = useState(defaultResidence ?? RESIDENCE_OPTIONS[0].value);
@@ -36,7 +42,17 @@ export default function ResidenceInterestForm({
     );
   }
 
+  if (submitted) {
+    return (
+      <ThankYou eyebrow="Interest Registered" heading="Thank You for Your Interest" isDemo={isDemo} onClose={onClose}>
+        We&apos;ll be in touch discreetly and personally, exactly as a home of this nature deserves.
+      </ThankYou>
+    );
+  }
+
   return (
+    <>
+    {intro}
     <form
       className={`split-body ${styles.form}`}
       suppressHydrationWarning
@@ -149,20 +165,6 @@ export default function ResidenceInterestForm({
         </div>
       )}
 
-      {submitted && (
-        <div className="form-success">
-          <p className="tw:text-[14px] tw:leading-[1.7] tw:text-(color:--on-surface)">
-            Thank you for your interest. We&apos;ll be in touch discreetly and personally
-            — exactly as a home of this nature deserves.
-          </p>
-          {isDemo && (
-            <p className="order-summary-muted tw:mt-[12px] tw:text-(color:--gold-dark)">
-              (Demo: No real enquiry was delivered.)
-            </p>
-          )}
-        </div>
-      )}
-
       <div className={styles.actions} data-form-actions>
         <button
           type="submit"
@@ -176,5 +178,6 @@ export default function ResidenceInterestForm({
         </button>
       </div>
     </form>
+    </>
   );
 }

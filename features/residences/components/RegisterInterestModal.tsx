@@ -78,11 +78,19 @@ export function RegisterInterestModal() {
             </button>
           </header>
           <div className={styles.body}>
-            <p className={styles.lede}>
-              Leela or Bhairavi Nilayam: tell us what you&apos;d like to know, and we&apos;ll follow up personally.
-              Your details stay with us.
-            </p>
-            {open && <ResidenceInterestForm key={round} defaultResidence={RESIDENCE_BY_PATH[pathname]} />}
+            {open && (
+              <ResidenceInterestForm
+                key={round}
+                defaultResidence={RESIDENCE_BY_PATH[pathname]}
+                onClose={close}
+                intro={
+                  <p className={styles.lede}>
+                    Leela or Bhairavi Nilayam: tell us what you&apos;d like to know, and we&apos;ll follow up
+                    personally. Your details stay with us.
+                  </p>
+                }
+              />
+            )}
           </div>
         </div>
       </div>

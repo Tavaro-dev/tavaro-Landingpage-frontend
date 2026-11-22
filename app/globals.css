@@ -3110,13 +3110,6 @@ img[data-nimg="fill"]:not(.tw\:object-contain):not([src*=".png"]) {
 }
 
 /* Success panel shared by the contact and residence interest forms. */
-.form-success {
-  margin-top: 20px;
-  padding: 18px;
-  border: 1px solid var(--gold-dark);
-  background: var(--surface-overlay);
-}
-
 /* Booking flows (CheckoutFlow, TicketBooking): shared step layout. */
 
 

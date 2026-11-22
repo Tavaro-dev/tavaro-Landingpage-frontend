@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
+import { ThankYouModal } from "@/components/shared/ThankYou";
 import { CustomSelect } from "@/components/ui/CustomSelect";
 import { useEnquirySubmit } from "@/lib/enquiry/useEnquirySubmit";
 import styles from "./ContactForm.module.css";
@@ -29,7 +30,8 @@ export default function ContactForm() {
   const [interest, setInterest] = useState("Booking a Stay");
   const [rooms, setRooms] = useState("");
   const [needCatering, setNeedCatering] = useState(false);
-  const { submit, isSubmitting, submitted, error: submitError, isDemo } = useEnquirySubmit();
+  const { submit, reset, isSubmitting, submitted, error: submitError, isDemo } = useEnquirySubmit();
+  const formRef = useRef<HTMLFormElement>(null);
 
   const uid = useId();
   const fieldId = (field: string) => `${uid}-${field}`;
@@ -38,6 +40,7 @@ export default function ContactForm() {
 
   return (
     <form
+      ref={formRef}
       className="split-body"
       onSubmit={async (e) => {
         e.preventDefault();
@@ -122,20 +125,18 @@ export default function ContactForm() {
       <button type="submit" className="btn solid tw:mt-[28px]" disabled={submitted || isSubmitting} suppressHydrationWarning>
         {isSubmitting ? "SUBMITTING..." : "ENQUIRE"} <span className="btn-arrow">→</span>
       </button>
-      {submitted && (
-        <div className="form-success">
-          <p className="tw:text-[14px] tw:leading-[1.6] tw:text-(color:--on-surface)">
-            Thank You for Reaching Out. We&apos;re delighted to hear from you. Your enquiry has been received, and
-            our team will be in touch with you shortly to help bring your plans to life. We look forward to welcoming
-            you to Tavaro.
-          </p>
-          {isDemo && (
-            <p className="order-summary-muted tw:mt-[12px] tw:text-(color:--gold-dark)">
-              (Demo: No real enquiry was delivered.)
-            </p>
-          )}
-        </div>
-      )}
+      <ThankYouModal
+        open={submitted}
+        isDemo={isDemo}
+        onClose={() => {
+          // A clean form for the next enquiry.
+          formRef.current?.reset();
+          setInterest("Booking a Stay");
+          setRooms("");
+          setNeedCatering(false);
+          reset();
+        }}
+      />
     </form>
   );
 }

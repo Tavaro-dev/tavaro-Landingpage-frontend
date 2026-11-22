@@ -48,26 +48,6 @@
   letter-spacing: 0.24em;
 }
 
-.event-success-box {
-  padding: 30px 10px;
-  text-align: center;
-}
-
-.event-success-heading {
-  font-family: var(--font-display);
-  font-size: clamp(24px, 3.5vw, 32px);
-  color: var(--on-surface);
-  margin: 12px 0 16px;
-}
-
-.event-success-body {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--on-surface-muted);
-  max-width: 52ch;
-  margin: 0 auto;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
