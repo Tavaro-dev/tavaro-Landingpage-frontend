@@ -68,12 +68,6 @@ export default function Footer() {
               <li>
                 <Link href="/contact">Contact</Link>
               </li>
-              <li>
-                <Link href="/contact">Careers</Link>
-              </li>
-              <li>
-                <Link href="/contact">Press</Link>
-              </li>
             </ul>
           </div>
           <div className={styles["footer-col"]}>
