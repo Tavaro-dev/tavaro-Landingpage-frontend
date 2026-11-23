@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShareLink } from "@/lib/useShareLink";
 import { UnderTheSkyModal } from "./UnderTheSkyModal";
 
 interface UnderTheSkyButtonProps {
@@ -15,6 +16,7 @@ export function UnderTheSkyButton({
   children,
 }: UnderTheSkyButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  useShareLink("#under-the-sky", () => setIsOpen(true));
 
   return (
     <>

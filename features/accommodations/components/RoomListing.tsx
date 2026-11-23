@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useShareLink } from "@/lib/useShareLink";
 import { Icon } from "@/components/ui/Icon";
 import { useCart } from "@/features/booking/cart/CartProvider";
 import { formatInr } from "@/lib/format";
@@ -94,6 +95,7 @@ function RoomListingCard({ availability, onBook }: { availability: RoomAvailabil
 
 export function RoomListing({ availability }: { availability: readonly RoomAvailability[] }) {
   const [bookingOpen, setBookingOpen] = useState(false);
+  useShareLink("#book-stay", () => setBookingOpen(true));
   return (
     <div className={styles["room-listings"]}>
       <h2 className="display-3 tw:mb-[30px]">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShareLink } from "@/lib/useShareLink";
 import PlanEventModal from "./PlanEventModal";
 
 interface PlanEventButtonProps {
@@ -11,6 +12,7 @@ interface PlanEventButtonProps {
 
 export function PlanEventButton({ className = "btn", style, children }: PlanEventButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  useShareLink("#plan-event", () => setIsOpen(true));
 
   return (
     <>

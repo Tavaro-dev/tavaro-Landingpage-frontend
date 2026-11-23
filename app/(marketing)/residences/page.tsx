@@ -165,7 +165,7 @@ export default function ResidencesPage() {
               <div className={`${styles.media} ph-2`}>
                 <Image
                   src="/images/heroes/bhairavi-nilayam-hero.jpg"
-                  alt="An open-air terrace at dusk, wrapped in a terracotta jaali wall"
+                  alt="Bhairavi Nilayam: white terraces planted with green above a terracotta jaali wall"
                   fill
                   sizes="(min-width: 861px) 50vw, 100vw"
                 />

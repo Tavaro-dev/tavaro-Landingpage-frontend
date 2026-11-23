@@ -18,8 +18,8 @@ export const metadata = pageMetadata({
   path: "/residences/bhairavi-nilayam",
 });
 
-// Photographs of the house are still to come. Until then the architect's renders stand in, graded warmer
-// than Leela's, and none of them is used on the Leela page.
+// Photographs of the house are still to come. Until then the architect's renders stand in: the exteriors
+// (sky trimmed to drop the architect's mark) and interiors graded warmer than Leela's, none used on Leela's page.
 
 // The brief's design ideas, one photo each.
 const DESIGN: StoryStep[] = [
@@ -27,15 +27,15 @@ const DESIGN: StoryStep[] = [
     label: "Belong to place",
     title: "A garden all around",
     body: "About 7,000 sq. ft. of green space and lawn wraps the house in its own private landscape, with farmland beyond.",
-    src: "/images/residences/bhairavi-nilayam-open-terrace.jpg",
-    alt: "An open terrace under a wide sky, with clipped trees in planters and a jaali screen",
+    src: "/images/residences/bhairavi-nilayam-aerial.jpg",
+    alt: "The house from above: planted terraces stepping down to a lawn and a paved drive",
   },
   {
     label: "Light and openness",
     title: "A wall of glass, facing north",
     body: "A large north-facing glass wall fills the rooms with soft, even daylight and keeps the garden always in view.",
-    src: "/images/residences/bhairavi-nilayam-living.jpg",
-    alt: "A long living room ending in a full-height window, with soft seating and timber shelves",
+    src: "/images/residences/bhairavi-nilayam-north.jpg",
+    alt: "The north face of the house, with tall glass windows under planted terraces",
   },
   {
     label: "Volume",
@@ -155,7 +155,7 @@ export default function BhairavPage() {
         name="Bhairavi Nilayam"
         tagline="A private residence shaped by light, landscape and the rhythms of living."
         photo={heroPhoto}
-        photoAlt="An open-air terrace at dusk, wrapped in a terracotta jaali wall, with two people at yoga"
+        photoAlt="Bhairavi Nilayam from the north-east: white terraces planted with green, terracotta jaali and a paved drive"
         figures={[
           { value: "15,000", label: "sq. ft. of home" },
           { value: "3", label: "floors" },
@@ -174,8 +174,8 @@ export default function BhairavPage() {
           <SplitSection
             reverse
             placeholder="ph-3"
-            src="/images/residences/bhairavi-nilayam-lounge.jpg"
-            alt="A family lounge with deep cream sofas, a bar wall and timber panelling"
+            src="/images/residences/bhairavi-nilayam-east.jpg"
+            alt="The house from the east: a terracotta jaali wall and white terraces above a wide lawn"
           >
             <h2 className={styles.statement}>A home among farmland.</h2>
             <div className={`${styles.muted} tw:mt-[24px]`}>

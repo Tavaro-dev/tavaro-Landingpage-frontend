@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShareLink } from "@/lib/useShareLink";
 import { ThingsToDoModal } from "./ThingsToDoModal";
 
 interface ThingsToDoButtonProps {
@@ -15,6 +16,7 @@ export function ThingsToDoButton({
   children,
 }: ThingsToDoButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  useShareLink("#things-to-do-options", () => setIsOpen(true));
 
   return (
     <>

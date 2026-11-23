@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShareLink } from "@/lib/useShareLink";
 import { OffsiteEditModal } from "./OffsiteEditModal";
 
 interface OffsiteEditButtonProps {
@@ -15,6 +16,7 @@ export function OffsiteEditButton({
   children,
 }: OffsiteEditButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  useShareLink("#offsite-enquiry", () => setIsOpen(true));
 
   return (
     <>

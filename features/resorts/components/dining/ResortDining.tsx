@@ -5,12 +5,14 @@ import { OfferHead } from "@/components/shared/OfferHead";
 import { SplitSection } from "@/components/shared/SplitSection";
 
 import { useState } from "react";
+import { useShareLink } from "@/lib/useShareLink";
 import { DiningEnquiryModal } from "./DiningEnquiryModal";
 
 
 
 export function ResortDining() {
   const [modalOpen, setModalOpen] = useState(false);
+  useShareLink("#dining-enquiry", () => setModalOpen(true));
 
   return (
     <>

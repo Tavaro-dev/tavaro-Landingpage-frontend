@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShareLink } from "@/lib/useShareLink";
 import { Reveal } from "@/components/shared/Reveal";
 import { ThirdPartyBookingModal } from "./ThirdPartyBookingModal";
 
@@ -17,6 +18,7 @@ import { ThirdPartyBookingModal } from "./ThirdPartyBookingModal";
 
 export function RoomAvailability() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  useShareLink("#book-stay", () => setIsModalOpen(true));
 
   return (
     <section className="section on-panel tight" id="availability">

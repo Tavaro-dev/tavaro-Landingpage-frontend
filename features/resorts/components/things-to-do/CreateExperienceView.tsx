@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useShareLink } from "@/lib/useShareLink";
 import { Reveal } from "@/components/shared/Reveal";
 import { THINGS_TO_DO_DATA } from "../../content/thingsToDoData";
 import { ExperienceEnquiryModal } from "./ExperienceEnquiryModal";
@@ -48,6 +49,7 @@ export function CreateExperienceView() {
     setSelectedCategory(categoryTitle || "General");
     setIsModalOpen(true);
   };
+  useShareLink("#create-experience", () => handleOpenEnquiry());
 
   return (
     <>
