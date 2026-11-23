@@ -16,7 +16,7 @@ export function ThingsToDoButton({
   children,
 }: ThingsToDoButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  useShareLink("#things-to-do-options", () => setIsOpen(true));
+  useShareLink("#things-to-do-options", isOpen, () => setIsOpen(true));
 
   return (
     <>

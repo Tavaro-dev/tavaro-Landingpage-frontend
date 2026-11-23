@@ -16,7 +16,7 @@ export function OffsiteEditButton({
   children,
 }: OffsiteEditButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  useShareLink("#offsite-enquiry", () => setIsOpen(true));
+  useShareLink("#offsite-enquiry", isOpen, () => setIsOpen(true));
 
   return (
     <>

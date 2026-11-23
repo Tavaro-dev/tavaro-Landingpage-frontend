@@ -12,7 +12,7 @@ import { DiningEnquiryModal } from "./DiningEnquiryModal";
 
 export function ResortDining() {
   const [modalOpen, setModalOpen] = useState(false);
-  useShareLink("#dining-enquiry", () => setModalOpen(true));
+  useShareLink("#dining-enquiry", modalOpen, () => setModalOpen(true));
 
   return (
     <>

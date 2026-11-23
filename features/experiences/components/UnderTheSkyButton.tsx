@@ -16,7 +16,7 @@ export function UnderTheSkyButton({
   children,
 }: UnderTheSkyButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  useShareLink("#under-the-sky", () => setIsOpen(true));
+  useShareLink("#under-the-sky", isOpen, () => setIsOpen(true));
 
   return (
     <>

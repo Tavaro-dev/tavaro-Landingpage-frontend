@@ -12,7 +12,7 @@ interface PlanEventButtonProps {
 
 export function PlanEventButton({ className = "btn", style, children }: PlanEventButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  useShareLink("#plan-event", () => setIsOpen(true));
+  useShareLink("#plan-event", isOpen, () => setIsOpen(true));
 
   return (
     <>

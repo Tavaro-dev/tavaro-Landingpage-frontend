@@ -95,7 +95,7 @@ function RoomListingCard({ availability, onBook }: { availability: RoomAvailabil
 
 export function RoomListing({ availability }: { availability: readonly RoomAvailability[] }) {
   const [bookingOpen, setBookingOpen] = useState(false);
-  useShareLink("#book-stay", () => setBookingOpen(true));
+  useShareLink("#book-stay", bookingOpen, () => setBookingOpen(true));
   return (
     <div className={styles["room-listings"]}>
       <h2 className="display-3 tw:mb-[30px]">

@@ -7,7 +7,7 @@ import { ThirdPartyBookingModal } from "./ThirdPartyBookingModal";
 /** A "Book Your Stay" button that opens the same booking modal as "Check Availability". */
 export function BookStayButton({ className = "btn", children }: { className?: string; children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  useShareLink("#book-stay", () => setOpen(true));
+  useShareLink("#book-stay", open, () => setOpen(true));
   return (
     <>
       <button type="button" className={className} onClick={() => setOpen(true)}>

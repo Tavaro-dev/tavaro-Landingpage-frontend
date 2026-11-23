@@ -30,7 +30,7 @@ export function RegisterInterestModal() {
   const [round, setRound] = useState(0);
   const pathname = usePathname();
 
-  useShareLink(REGISTER_INTEREST, () => {
+  useShareLink(REGISTER_INTEREST, open, () => {
     setRound((n) => n + 1);
     setOpen(true);
   });

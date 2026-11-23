@@ -49,7 +49,7 @@ export function CreateExperienceView() {
     setSelectedCategory(categoryTitle || "General");
     setIsModalOpen(true);
   };
-  useShareLink("#create-experience", () => handleOpenEnquiry());
+  useShareLink("#create-experience", isModalOpen, () => handleOpenEnquiry());
 
   return (
     <>
