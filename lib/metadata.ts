@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import type { Metadata } from "next";
 import { ROOT_DOMAIN, siteUrl } from "./subdomains";
 
@@ -17,11 +18,17 @@ const SITE_NAME = "Tavaro Group";
 /** A page's full public address, on its subdomain when those are on. */
 export const publicUrl = (path: string) => (ROOT_DOMAIN ? siteUrl(path) : `${SITE_URL}${path}`);
 
+/** The page's own link preview (public/og/, built by scripts/make-og.mjs): /resorts/venues is resorts-venues.jpg; any other page gets the home one. */
+function ogImage(path: string) {
+  const name = path === "/" ? "home" : path.slice(1).replace(/\//g, "-");
+  return `/og/${existsSync(`public/og/${name}.jpg`) ? name : "home"}.jpg`;
+}
+
 export function pageMetadata({
   title,
   description,
   path,
-  image = "/photos/drone-hero.jpg", // ponytail: swap for a dedicated 1200x630 /og-image.jpg when design supplies one
+  image = ogImage(path),
 }: {
   title: string;
   description: string;
