@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { submitEnquiryAction } from "@/app/actions/enquiry";
 import { CONTACT } from "@/lib/env";
+import { currentSection } from "@/lib/subdomains";
 import type { EnquiryPayload } from "./types";
 
 /**
@@ -20,7 +21,7 @@ export function useEnquirySubmit() {
     setIsSubmitting(true);
     setError(null);
     try {
-      const result = await submitEnquiryAction(payload);
+      const result = await submitEnquiryAction(payload, currentSection());
       if (result.success) {
         setIsDemo(Boolean(result.isDemo));
         setSubmitted(true);

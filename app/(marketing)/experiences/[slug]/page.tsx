@@ -4,7 +4,7 @@ import { PageHero } from "@/components/shared/PageHero";
 import { JsonLd } from "@/components/shared/JsonLd";
 import { eventSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/metadata";
-import { EVENTS, getEvent, formatEventSchedule, isBookable, getFromPrice, getBookingDates } from "@/lib/content/events";
+import { EVENTS, getEvent, formatEventSchedule, isBookable, isPast, getFromPrice, getBookingDates } from "@/lib/content/events";
 import { formatInr } from "@/lib/format";
 
 export function generateStaticParams() {
@@ -44,7 +44,8 @@ export default async function ExperienceDetailPage(props: PageProps<"/experience
 
   return (
     <>
-      <JsonLd data={eventSchema(event)} />
+      {/* Google's Event data needs a date; an undated recap goes without it. */}
+      {event.date && <JsonLd data={eventSchema(event)} />}
       <PageHero
         photoSrc={event.src}
         photoAlt={event.alt}
@@ -54,7 +55,7 @@ export default async function ExperienceDetailPage(props: PageProps<"/experience
         title={event.title}
         titleSize="clamp(34px,5.6vw,68px)"
         titleMaxWidth="20ch"
-        lede={event.venue ? `${schedule} · ${event.venue}` : schedule}
+        lede={[schedule, event.venue].filter(Boolean).join(" · ") || event.description}
       />
 
       <section className="section on-dark">
@@ -66,9 +67,11 @@ export default async function ExperienceDetailPage(props: PageProps<"/experience
           <div className="checkout-layout">
             <div className="checkout-main">
               <h2 className="display-3">About</h2>
-              <p className="lede tw:mt-[18px]">
-                {event.about}
-              </p>
+              {event.about.split("\n\n").map((para) => (
+                <p key={para} className="lede tw:mt-[18px]">
+                  {para}
+                </p>
+              ))}
 
               {facts.length > 0 && (
                 <>
@@ -113,6 +116,18 @@ export default async function ExperienceDetailPage(props: PageProps<"/experience
                   </p>
                   <Link href="/contact" className="btn solid tw:w-full tw:justify-center tw:mt-[20px]">
                     Watch Recap
+                  </Link>
+                </>
+              ) : isPast(event) ? (
+                <>
+                  <p className="order-summary-label tw:m-[0]">
+                    A past experience
+                  </p>
+                  <p className="lede tw:mt-[14px]">
+                    New experiences are announced on our Experiences page first. Ask us about the next one.
+                  </p>
+                  <Link href="/contact" className="btn solid tw:w-full tw:justify-center tw:mt-[20px]">
+                    Enquire
                   </Link>
                 </>
               ) : (

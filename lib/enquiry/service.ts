@@ -1,8 +1,9 @@
 import type { EnquiryPayload, EnquiryResult } from "./types";
 import { CONTACT, LEKVYA } from "../env";
+import type { Section } from "../subdomains";
 
 export interface EnquiryService {
-  submitEnquiry(payload: EnquiryPayload): Promise<EnquiryResult>;
+  submitEnquiry(payload: EnquiryPayload, site?: Section): Promise<EnquiryResult>;
 }
 
 const FORM_NAMES: Record<EnquiryPayload["type"], string> = {
@@ -55,16 +56,18 @@ export class MockEnquiryService implements EnquiryService {
 }
 
 export class LekvyaEnquiryService implements EnquiryService {
-  async submitEnquiry(payload: EnquiryPayload): Promise<EnquiryResult> {
+  async submitEnquiry(payload: EnquiryPayload, site?: Section): Promise<EnquiryResult> {
     const formName = FORM_NAMES[payload.type];
+    const publicKey = (site && LEKVYA.siteKeys[site]) || LEKVYA.siteKeys.resort;
     const fields = flattenFields(payload.data as Record<string, unknown>);
 
     try {
+      if (!publicKey) throw new Error("No Lekvya key: set LEKVYA_KEY_RESORT");
       const res = await fetch(LEKVYA.sendFormUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          publicKey: LEKVYA.publicKey,
+          publicKey,
           formName,
           enquiryType: payload.type,
           ...fields,
@@ -84,7 +87,8 @@ export class LekvyaEnquiryService implements EnquiryService {
         message: "Thank you for your enquiry. We've received your request and will be in touch shortly.",
         isDemo: false,
       };
-    } catch {
+    } catch (err) {
+      console.error("Enquiry not sent:", err);
       return {
         success: false,
         message: `We couldn't send this right now. Please try again, or reach us on ${CONTACT.phone} / ${CONTACT.email}.`,

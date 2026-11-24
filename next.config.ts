@@ -15,7 +15,15 @@ const nextConfig: NextConfig = {
   },
   // Register interest is a window over the page now: the old page's address opens it on Residences.
   async redirects() {
-    return [{ source: "/residences/register", destination: "/residences#register-interest", permanent: true }];
+    return [
+      { source: "/residences/register", destination: "/residences#register-interest", permanent: true },
+      // Sample events replaced by the client's real past experiences (Nov 2026): old links land on the list.
+      {
+        source: "/experiences/:id(stillness-project|monsoon-table|rain-rhythm|founders-night|live-at-mare|stillness-retreat-recap)/:rest*",
+        destination: "/experiences",
+        permanent: true,
+      },
+    ];
   },
   // ponytail: baseline headers only; add a CSP once third-party scripts/embeds are settled
   async headers() {

@@ -22,6 +22,7 @@ export default function Header() {
   const noHero =
     pathname === "/resorts/accommodations" ||
     pathname === "/resorts/location" ||
+    pathname === "/residences/leela/location" ||
     pathname.startsWith("/checkout") ||
     pathname.endsWith("/book");
 

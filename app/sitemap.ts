@@ -19,6 +19,7 @@ const ROUTES = [
   "/resorts/things-to-do/explore",
   "/resorts/things-to-do/create",
   "/residences/leela",
+  "/residences/leela/location",
   "/residences/bhairavi-nilayam",
   "/wellness",
 ];

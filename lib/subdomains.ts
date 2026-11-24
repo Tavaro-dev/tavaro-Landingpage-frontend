@@ -29,7 +29,12 @@ export function sectionOf(path: string): Section | undefined {
   return (Object.keys(SECTIONS) as Section[]).find((s) => under(path, SECTIONS[s]));
 }
 
-export const isShared = (path: string) => SHARED.some((p) => under(path, p));
+/** In the browser: the section of the page being viewed, from the subdomain, or from the path when subdomains are off. */
+export function currentSection(): Section | undefined {
+  return siteOf(location.host) || sectionOf(location.pathname);
+}
+
+export const isShared =(path: string) => SHARED.some((p) => under(path, p));
 
 /**
  * Which site a host is: a section, "" for the root domain (or www.), undefined for any other host

@@ -24,6 +24,7 @@ const PAGES = [
   { file: "resorts-things-to-do-explore", photo: T + "explore-hero.jpg", kicker: "EXPLORE AT YOUR OWN PACE", lines: ["A little more room", "~to be."], logo: "resorts" },
   { file: "residences", photo: H + "residences-hero.jpg", pos: "75% 50%", kicker: "TAVARO RESIDENCES", lines: ["Come home", "~to yourself"] },
   { file: "residences-leela", photo: H + "leela-hero.jpg", kicker: "TAVARO RESIDENCES", lines: ["Leela", "~apartments wrapped in green"] },
+  { file: "residences-leela-location", photo: H + "leela-hero.jpg", kicker: "WELCOME HOME", lines: ["Leela", "~off Radial Road 7, Hyderabad"] },
   { file: "residences-bhairavi-nilayam", photo: H + "bhairavi-nilayam-hero.jpg", kicker: "A PRIVATE RESIDENCE", lines: ["Bhairavi Nilayam", "~shaped by light"] },
   { file: "experiences", photo: H + "experiences-hero.jpg", kicker: "TAVARO EXPERIENCES", lines: ["Moments made", "~extraordinary"] },
   { file: "wellness", photo: H + "wellness-hero.jpg", kicker: "WELLNESS AT TAVARO", lines: ["A Tavaro", "~way of life"] },

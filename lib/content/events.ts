@@ -7,14 +7,14 @@ export type TicketType = {
 
 export type EventItem = {
   id: string;
-  date: string; // ISO yyyy-mm-dd — the primary date, drives upcoming/past filtering
+  date?: string; // ISO yyyy-mm-dd — the primary date, drives upcoming/past filtering. None: a past event, listed last
   extraDates?: readonly string[]; // further bookable dates for the same event
   times?: readonly string[]; // 24h HH:mm slots, ticketed events only
   ticketTypes?: readonly TicketType[]; // present = bookable
   category: string;
   title: string;
   description: string;
-  about: string;
+  about: string; // paragraphs separated by a blank line
   placeholder: string;
   src: string;
   alt: string;
@@ -28,158 +28,127 @@ export type EventItem = {
   quote?: string; // shown on past/recap cards instead of the description
 };
 
+// Past experiences, from the client's "Past Events" document (Nov 2026). Photos are the ones these cards used before.
 export const EVENTS: readonly EventItem[] = [
   {
-    id: "stillness-project",
-    date: "2026-10-12",
-    times: ["07:00"],
+    id: "rituals-of-rain",
+    date: "2026-08-09",
     category: "Wellness",
-    title: "The Stillness Project",
-    description: "A one-day retreat of movement, breathwork and quiet, held across the grounds.",
+    title: "Rituals of Rain",
+    description: "A monsoon-inspired evening of gentle movement, water, sound and seasonal nourishment.",
     about:
-      "The Stillness Project is a day-long retreat moving through guided breathwork, slow movement and quiet " +
-      "sitting practice, held across the resort grounds from sunrise. Come as you are — no experience needed.",
+      "As part of Rituals at Tavaro, a year-round platform of curated experiences centred around wellbeing, intentional living and human connection, Rituals of Rain explored the relationship between water, movement and rest.\n\n" +
+      "Inspired by the monsoon, the evening brought together Tai Chi, a candlelit Sound Bath and a thoughtfully " +
+      "curated sattvic dinner. From gentle movement in water to moments of stillness and nourishment, each part of " +
+      "the evening offered a way to slow down, unwind and move with the season.",
     placeholder: "ph-green",
     src: "/images/wellness/stillness-retreat.jpg",
-    alt: "The Stillness Project retreat",
-    venue: "Tavaro Resorts, Kokapet",
-    duration: "6 Hours",
-    language: "English",
-    ageLimit: "16 and above",
-    layout: "Outdoor",
-    seating: "Mat seating",
-    ticketTypes: [
-      { id: "day-pass", name: "Day Pass", price: 2500, description: "Full access to all sessions, plus tea service." },
-      {
-        id: "day-pass-lunch",
-        name: "Day Pass + Lunch",
-        price: 3400,
-        description: "Everything in the Day Pass, with a seasonal lunch at the estate.",
-      },
-      {
-        id: "partner-pass",
-        name: "Partner Pass",
-        price: 4500,
-        description: "Two Day Passes with adjacent mats, for practising together.",
-      },
-    ],
+    alt: "Guests sitting together in a guided session on the lawn",
   },
   {
-    id: "monsoon-table",
-    date: "2026-09-28",
-    times: ["19:30"],
-    category: "Culinary",
-    title: "Monsoon Table",
-    description: "A seasonal dining experience celebrating the last of the monsoon harvest.",
+    id: "rituals-of-renewal",
+    date: "2026-09-05",
+    category: "Wellness",
+    title: "Rituals of Renewal",
+    description: "An evening exploring movement, gut health, fermentation and mindful creativity.",
     about:
-      "Monsoon Table is a seasonal tasting menu built around the last of the monsoon harvest, served family-style " +
-      "under the estate's canopy with pairings chosen by our resident chef.",
+      "As part of Rituals at Tavaro, a year-round platform of curated experiences centred around wellbeing, intentional living and human connection, Rituals of Renewal brought together movement, nourishment, transformation and mindful making.\n\n" +
+      "An evening that moved through Pilates, gut health, fermentation and Kintsugi-inspired creativity, it offered " +
+      "different ways to reconnect with the body, explore new practices, get hands-on and slow down. From movement " +
+      "to making, each part of the evening was an invitation to pause, reset and renew.",
     placeholder: "ph-5",
     src: "/images/resorts/monsoon-table.jpg",
-    alt: "Monsoon Table dining experience",
-    venue: "Tavaro Resorts, Kokapet",
-    duration: "2 Hours 30 Minutes",
-    language: "English, Telugu",
-    ageLimit: "All ages",
-    layout: "Outdoor",
-    seating: "Seated",
-    ticketTypes: [
-      {
-        id: "communal-table",
-        name: "Communal Table",
-        price: 4500,
-        description: "A seat at the long table, with the full tasting menu.",
-      },
-      {
-        id: "chefs-counter",
-        name: "Chef's Counter",
-        price: 6500,
-        description: "A counter seat beside the kitchen, with extra courses and pairings.",
-      },
-    ],
+    alt: "A table set with seasonal food and a printed menu",
   },
   {
-    id: "rain-rhythm",
-    date: "2026-09-05",
-    extraDates: ["2026-09-12", "2026-09-19"],
-    times: ["18:00", "20:30"],
-    category: "Social & Cultural",
-    title: "Rain & Rhythm",
-    description: "Music, chai and conversation at Màre Coffee House.",
+    id: "rituals-of-rising",
+    date: "2026-10-10",
+    category: "Wellness",
+    title: "Rituals of Rising",
+    description: "A morning reset bringing together boxing, cold-water immersion and nourishing food.",
     about:
-      "Rain & Rhythm brings live acoustic sets, hand-brewed chai and unhurried conversation to Màre Coffee House " +
-      "for a monsoon evening built for slowing down.",
+      "As part of Rituals at Tavaro, a year-round platform of curated experiences centred around wellbeing, intentional living and human connection, Rituals of Rising was a morning reset built around movement, breath, cold water and nourishment.\n\n" +
+      "The morning began with a beginner-friendly boxing session where participants learnt the fundamentals, tried " +
+      "their hand at a few punches and worked up a sweat. This was followed by a pool plunge and a nourishing " +
+      "breakfast, bringing together moments of effort, recovery and replenishment.\n\n" +
+      "A few hours to wake the body, clear the head and start the day with intention. A ritual to rise into your day.",
     placeholder: "ph-gold",
     src: "/images/mare/rain-rhythm.jpg",
-    alt: "Rain and Rhythm at Màre",
-    venue: "Màre Coffee House",
-    duration: "3 Hours",
-    language: "English, Hindi",
-    ageLimit: "All ages",
-    layout: "Indoor",
-    seating: "Seated",
-    ticketTypes: [
-      { id: "early-bird", name: "Early Bird", price: 800, description: "One seat, with a cup of the evening's brew." },
-      { id: "couple", name: "Couple Ticket", price: 1400, description: "Two seats together, with a shared chai board." },
-      { id: "group-5", name: "For 5 People", price: 3200, description: "A reserved table for five, with a chai board." },
-    ],
+    alt: "A crowd gathered under red lights at an outdoor event",
   },
   {
-    id: "founders-night",
-    date: "2026-06-14",
-    category: "Social & Cultural",
-    title: "Founders' Night",
-    description: "An evening marking the opening of Tavaro Resorts, Kokapet.",
-    about: "Founders' Night marked the opening of Tavaro Resorts, Kokapet, with an evening of music and celebration.",
-    placeholder: "ph-1",
-    src: "/photos/drone-hero.jpg",
-    alt: "An aerial view of Founders' Night at Tavaro",
-    venue: "Tavaro Resorts, Kokapet",
-    stat: "~800 Guests",
-    quote: "Nothing in Kokapet felt like that night.",
-  },
-  {
-    id: "live-at-mare",
-    date: "2026-07-19",
-    category: "Social & Cultural",
-    title: "Live at Màre",
-    description: "A live evening of music at Màre Coffee House.",
-    about: "Live at Màre was an evening of live music at Màre Coffee House, running from dusk into a full house.",
-    placeholder: "ph-gold",
-    src: "/images/mare/coffee-house-arch.jpg",
-    alt: "A live evening at Màre Coffee House",
-    venue: "Màre Coffee House",
-    stat: "Sold Out",
-    quote: "An evening that didn't need an encore.",
-  },
-  {
-    id: "stillness-retreat-recap",
-    date: "2026-08-02",
-    category: "Wellness",
-    title: "The Stillness Retreat",
-    description: "A retreat of movement, breathwork and quiet.",
-    about: "The Stillness Retreat moved guests through breathwork, slow movement and quiet sitting practice.",
+    id: "solstice",
+    date: "2026-06-21",
+    category: "Festival",
+    title: "Solstice",
+    description: "A festival for conscious living.",
+    about:
+      "An EXP original inspired by the Summer Solstice and the spirit of International Day of Yoga, bringing " +
+      "together movement, music, art, nature and meaningful connection. A day-long celebration of conscious living, " +
+      "expression and experiencing life fully.",
     placeholder: "ph-green",
     src: "/images/wellness/future-retreat.jpg",
-    alt: "Guests at The Stillness Retreat",
+    alt: "A tree on an open lawn, with a circular path around it",
+  },
+  {
+    id: "irl-social",
+    date: "2026-08-02",
+    category: "Social & Cultural",
+    title: "IRL Social",
+    description: "Making new friends, minus the awkward introductions and forced small talk.",
+    about:
+      "A social gathering designed to make adult friendships a little less complicated.\n\n" +
+      "Thoughtful questions, fun games, shared activities and a science-backed matching experience to help " +
+      "strangers meet, connect and hopefully leave with a new friend or two.",
+    placeholder: "ph-gold",
+    src: "/images/mare/coffee-house-arch.jpg",
+    alt: "The arched glass front of Màre Coffee House",
+  },
+  {
+    id: "morning-mercato",
+    category: "Social & Cultural",
+    title: "Morning Mercato",
+    description: "A Sunday morning market bringing together local makers, fresh finds, coffee, movement and good company.",
+    about:
+      "A Sunday morning market bringing together movement, flowers, seasonal produce, independent design, coffee " +
+      "and brunch. A recurring city ritual designed for discovery, slow mornings, local makers and good company, " +
+      "where a morning run can turn into coffee, browsing, brunch and a few hours well spent.",
+    placeholder: "ph-gold",
+    src: "/images/mare/coffee-house-arch.jpg",
+    alt: "The arched glass front of Màre Coffee House",
+  },
+  {
+    id: "countryside",
+    category: "Outdoor",
+    title: "Countryside",
+    description: "Outdoor experiences built around shared passions, thoughtful hospitality and time well spent.",
+    about:
+      "Countryside is an invitation to step away from the city's usual rhythm and spend a day differently.\n\n" +
+      "Set amidst the open spaces of Tavaro Resorts, the experience brings together nature, food, music, movement " +
+      "and community creating a day that feels less like an event and more like a journey outdoors.\n\n" +
+      "A place to arrive without a schedule, and spend an entire day with communities that share their passions.",
+    placeholder: "ph-1",
+    src: "/photos/drone-hero.jpg",
+    alt: "Tavaro Resorts from above at night",
     venue: "Tavaro Resorts, Kokapet",
-    stat: "Fully Booked",
-    quote: "Curated in a way that actually felt curated.",
   },
 ] as const;
 
-/** Upcoming until the end of its last date, so multi-date events stay bookable. */
+/** Upcoming until the end of its last date, so multi-date events stay bookable. An undated event is past. */
 function isUpcoming(event: EventItem, now: Date) {
   const lastDate = getBookingDates(event).at(-1);
-  return new Date(`${lastDate}T23:59:59`) >= now;
+  return Boolean(lastDate) && new Date(`${lastDate}T23:59:59`) >= now;
 }
 
+export const isPast = (event: EventItem, now = new Date()) => !isUpcoming(event, now);
+
 export function getUpcomingEvents(now = new Date()): EventItem[] {
-  return EVENTS.filter((e) => isUpcoming(e, now)).sort((a, b) => a.date.localeCompare(b.date));
+  return EVENTS.filter((e) => isUpcoming(e, now)).sort((a, b) => a.date!.localeCompare(b.date!));
 }
 
 export function getPastEvents(now = new Date()): EventItem[] {
-  return EVENTS.filter((e) => !isUpcoming(e, now)).sort((a, b) => b.date.localeCompare(a.date));
+  // Newest first; undated ones last.
+  return EVENTS.filter((e) => !isUpcoming(e, now)).sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
 }
 
 export function getEvent(id: string): EventItem | undefined {
@@ -193,7 +162,7 @@ export function isBookable(event: EventItem, now = new Date()): boolean {
 
 /** Every date this event can be booked on, earliest first. */
 export function getBookingDates(event: EventItem): string[] {
-  return [event.date, ...(event.extraDates ?? [])].sort();
+  return [...(event.date ? [event.date] : []), ...(event.extraDates ?? [])].sort();
 }
 
 /** Lowest ticket price, for "from ₹X" copy. */
@@ -226,8 +195,9 @@ export function formatEventDate(date: string) {
   return `${WEEKDAYS[d.getDay()]}, ${String(d.getDate()).padStart(2, "0")} ${monthTitleCase} ${d.getFullYear()}`;
 }
 
-/** "Sat, 05 Sep 2026 · 6:00 PM" */
+/** "Sat, 05 Sep 2026 · 6:00 PM"; "" for an undated event. */
 export function formatEventSchedule(event: Pick<EventItem, "date" | "times">) {
+  if (!event.date) return "";
   const datePart = formatEventDate(event.date);
   const first = event.times?.[0];
   return first ? `${datePart} · ${formatTime(first)}` : datePart;

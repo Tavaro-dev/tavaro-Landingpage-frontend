@@ -16,12 +16,12 @@ type Audio = { ctx: AudioContext; gain: GainNode };
 export function HeroVideo({ src }: { src: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
+  // Sound is off until the visitor turns it on with the button: clicks elsewhere on the page never start it.
   const [muted, setMuted] = useState(true);
   const [slot, setSlot] = useState<HTMLElement | null>(null);
   // Loudness runs through a Web Audio gain: iOS ignores video.volume, and a gain can glide.
   const audio = useRef<Audio | null>(null);
   const soundOn = useRef(false);
-  const userChose = useRef(false);
   const visible = useRef(1);
 
   /** Glide toward the level for the current state: off, or VOLUME scaled by how much of the hero shows. */
@@ -90,19 +90,6 @@ export function HeroVideo({ src }: { src: string }) {
     };
     video.play().catch(() => {}); // blocked (e.g. low-power mode): the poster stays
 
-    // Sound starts by itself. Browsers only allow that where autoplay policy says so
-    // (or after a high media-engagement score); otherwise it starts on the first
-    // click/key/tap. Either way, the button turns it off, and a manual choice wins.
-    const auto = () => {
-      if (userChose.current) return;
-      userChose.current = true;
-      setSound(true);
-    };
-    const policy = (navigator as Navigator & { getAutoplayPolicy?: (el: HTMLMediaElement) => string }).getAutoplayPolicy?.(video);
-    const events = ["click", "keydown", "touchend"] as const;
-    if (policy === "allowed") auto();
-    else events.forEach((e) => document.addEventListener(e, auto, { once: true }));
-
     // Sound fades with the hero as it scrolls away; once it is fully off screen
     // (and silent), stop decoding frames nobody can see.
     let pauseTimer = 0;
@@ -118,16 +105,12 @@ export function HeroVideo({ src }: { src: string }) {
     );
     observer.observe(video);
     return () => {
-      events.forEach((e) => document.removeEventListener(e, auto));
       observer.disconnect();
       window.clearTimeout(pauseTimer);
     };
   }, [src]);
 
-  const toggleSound = () => {
-    userChose.current = true;
-    setSound(!soundOn.current);
-  };
+  const toggleSound = () => setSound(!soundOn.current);
 
   return (
     <>

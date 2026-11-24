@@ -2,12 +2,17 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import type { submitEnquiryAction as SubmitEnquiryActionType } from '../../app/actions/enquiry';
 import { LEKVYA } from '../../lib/env';
 
+// Stand-in keys: the real ones live in .env, which tests never read.
+const KEYS = { resort: 'pk_test_resort', experiences: 'pk_test_experiences' };
+
 describe('Enquiry Service', () => {
   let submitEnquiryAction: typeof SubmitEnquiryActionType;
   let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
     vi.resetModules();
+    vi.stubEnv('LEKVYA_KEY_RESORT', KEYS.resort);
+    vi.stubEnv('LEKVYA_KEY_EXPERIENCES', KEYS.experiences);
     fetchMock = vi.fn().mockResolvedValue({ ok: true });
     vi.stubGlobal('fetch', fetchMock);
   });
@@ -40,7 +45,7 @@ describe('Enquiry Service', () => {
     expect(url).toBe(LEKVYA.sendFormUrl);
     expect(init.method).toBe('POST');
     expect(JSON.parse(init.body)).toMatchObject({
-      publicKey: LEKVYA.publicKey,
+      publicKey: KEYS.resort,
       formName: 'Contact',
       enquiryType: 'contact',
       name: 'Jane Doe',
@@ -49,6 +54,33 @@ describe('Enquiry Service', () => {
       interest: 'Booking a Stay',
       message: 'Hello',
     });
+  });
+
+  it('sends each brand site to its own inbox, and everything else to the resort one', async () => {
+    const { submitEnquiryAction: action } = await import('../../app/actions/enquiry');
+    const data = { name: 'Jane Doe', email: 'jane@example.com', phone: '1234567890', interest: 'Booking a Stay' };
+    const keyFor = async (site?: string) => {
+      fetchMock.mockClear();
+      await action({ type: 'contact', data }, site);
+      return JSON.parse(fetchMock.mock.calls[0][1].body).publicKey;
+    };
+
+    expect(await keyFor('resort')).toBe(KEYS.resort);
+    expect(await keyFor('experiences')).toBe(KEYS.experiences);
+    expect(await keyFor('mare')).toBe(KEYS.resort); // no key of its own yet
+    expect(await keyFor(undefined)).toBe(KEYS.resort); // group pages
+    expect(await keyFor('toString')).toBe(KEYS.resort); // not a site
+  });
+
+  it('does not send, and says so, when no key is set', async () => {
+    vi.stubEnv('LEKVYA_KEY_RESORT', '');
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const { submitEnquiryAction: action } = await import('../../app/actions/enquiry');
+    const data = { name: 'Jane Doe', email: 'jane@example.com', phone: '1234567890', interest: 'Booking a Stay' };
+
+    const result = await action({ type: 'contact', data });
+    expect(result.success).toBe(false);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('should return a friendly error when Lekvya responds with a failure', async () => {

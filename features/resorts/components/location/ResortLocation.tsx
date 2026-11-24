@@ -1,16 +1,40 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { CONTACT } from "@/lib/env";
-import lawnPhoto from "@/public/images/resorts/venues/tavaro-lawn.jpg";
-import { DRIVE_TIMES, RESORT_PLACE, directionsUrl } from "../../content/resortLocation";
+import { RESORT_LOCATION } from "../../content/resortLocation";
 import styles from "./ResortLocation.module.css";
 
-const mapsSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(RESORT_PLACE)}`;
+export type Drive = {
+  id: string;
+  /** In the panel: "from Gachibowli". */
+  name: string;
+  /** On the map. */
+  short: string;
+  /** Typical drive time by car. */
+  minutes: number;
+  /** Google Maps directions from this start. */
+  directions: string;
+};
+
+/** A Tavaro place and the three drives that lead to it (nearest first), for PlaceLocation. */
+export type Place = {
+  name: string;
+  /** Under the map pin. */
+  pinName: string;
+  where: string;
+  /** The panel's first line. */
+  arrived: string;
+  mapsUrl: string;
+  drives: [Drive, Drive, Drive];
+  photo: StaticImageData;
+  photoAlt: string;
+  address: string[];
+};
 
 /*
- * Three drives into Tavaro, drawn as roads with turns. Each road's length is its drive time,
+ * Three drives into a Tavaro place, drawn as roads with turns. Each road's length is its drive time,
  * and the three points travel at one speed, so they arrive in the order a guest would.
  * Not a scale map: only the times are true.
  */
@@ -23,9 +47,9 @@ type Geo = {
   tavaro: { x: number; y: number };
   /** The last stretch every drive shares into Tavaro. */
   lastMile: Leg;
-  /** Each drive's legs before the last stretch, in travel order, and where its name goes. */
-  from: Record<string, { legs: Leg[]; label: Label }>;
-  /** Drawn units per minute of driving. */
+  /** Each drive's legs before the last stretch, in travel order, and where its name goes: nearest drive first. */
+  from: { legs: Leg[]; label: Label }[];
+  /** Drawn units per minute of driving, for a longest drive of FIT minutes (longer ones are drawn smaller). */
   perMinute: number;
   /** Stacked layouts: a short stem from the pin down into the panel. */
   stem?: boolean;
@@ -33,6 +57,8 @@ type Geo = {
   roads?: string[];
   /** The map pans past the starts, so each time chip names its place too. */
   named?: boolean;
+  /** Where along each drive's own road its time chip sits (default halfway), so side-by-side chips don't touch. */
+  chipAt?: number[];
 };
 
 /** Wide screens: drives come in from the left; the arrival panel takes the right. */
@@ -40,11 +66,11 @@ const WIDE: Geo = {
   view: "0 170 1600 560",
   tavaro: { x: 940, y: 450 },
   lastMile: [0, 100],
-  from: {
-    gachibowli: { legs: [[0, 0.35], [90, 0.65]], label: "above" },
-    "jubilee-hills": { legs: [[0, 0.3], [35, 0.35], [0, 0.2], [30, 0.15]], label: "above" },
-    rgi: { legs: [[0, 0.25], [-40, 0.3], [0, 0.25], [-20, 0.2]], label: "below" },
-  },
+  from: [
+    { legs: [[0, 0.35], [90, 0.65]], label: "above" },
+    { legs: [[0, 0.3], [35, 0.35], [0, 0.2], [30, 0.15]], label: "above" },
+    { legs: [[0, 0.25], [-40, 0.3], [0, 0.25], [-20, 0.2]], label: "below" },
+  ],
   perMinute: 22,
 };
 /** Tablets and phones: Tavaro at the foot of the drawing, its panel opening straight out of the pin. */
@@ -52,11 +78,11 @@ const STACK: Geo = {
   view: "20 50 740 560",
   tavaro: { x: 560, y: 500 },
   lastMile: [0, 120],
-  from: {
-    gachibowli: { legs: [[0, 0.25], [90, 0.75]], label: "above" },
-    "jubilee-hills": { legs: [[90, 0.45], [0, 0.2], [45, 0.35]], label: "above" },
-    rgi: { legs: [[90, 0.4], [0, 0.6]], label: "above" },
-  },
+  from: [
+    { legs: [[0, 0.25], [90, 0.75]], label: "above" },
+    { legs: [[90, 0.45], [0, 0.2], [45, 0.35]], label: "above" },
+    { legs: [[90, 0.4], [0, 0.6]], label: "above" },
+  ],
   perMinute: 20,
   stem: true,
 };
@@ -68,23 +94,24 @@ const PHONE: Geo = {
   view: "-60 -100 620 1450",
   tavaro: { x: 400, y: 1100 },
   lastMile: [0, 100],
-  from: {
-    gachibowli: { legs: [[180, 0.2], [90, 0.8]], label: "above" },
-    "jubilee-hills": { legs: [[90, 0.4], [0, 0.0515], [90, 0.4285], [45, 0.12]], label: "right" },
-    rgi: { legs: [[90, 0.45], [45, 0.04], [90, 0.315], [0, 0.195]], label: "above" },
-  },
+  from: [
+    { legs: [[180, 0.2], [90, 0.8]], label: "above" },
+    { legs: [[90, 0.4], [0, 0.0515], [90, 0.4285], [45, 0.12]], label: "right" },
+    { legs: [[90, 0.45], [45, 0.04], [90, 0.315], [0, 0.195]], label: "above" },
+  ],
   perMinute: 40,
   stem: true,
   roads: ["M400 1100H560", "M46 1100V1350", "M-60 1260H560", "M520 380V1260", "M150 95V-100"],
   named: true,
+  chipAt: [0.5, 0.5, 0.68],
 };
 
-const SHORT: Record<string, string> = { gachibowli: "Gachibowli", "jubilee-hills": "Jubilee Hills", rgi: "Airport" };
+/** The longest drive the layouts are drawn for; a longer one shrinks every road alike, so the times stay true. */
+const FIT = 35;
 
 /** Seconds of animation per minute of driving: the same speed for every drive. */
 const PACE = 0.1;
 const START = 0.6;
-const ARRIVE = START + Math.max(...DRIVE_TIMES.map((d) => d.minutes)) * PACE;
 
 const t = (s: number) => `${s.toFixed(2)}s`;
 const r1 = (n: number) => Math.round(n * 10) / 10;
@@ -97,9 +124,11 @@ const unit = (deg: number) => [Math.cos((deg * Math.PI) / 180), Math.sin((deg * 
  * Its total length is the drive time, so equal speed means honest arrival order.
  * Also returns the start, and the halfway point of the drive's own legs (for its time chip).
  */
-function drive(geo: Geo, id: string, minutes: number) {
-  const own = minutes * geo.perMinute - geo.lastMile[1];
-  const legs = [...geo.from[id].legs.map(([a, f]) => [a, f * own]), geo.lastMile];
+function drive(geo: Geo, slot: number, minutes: number, perMinute: number) {
+  // A shrunk map shrinks the shared last stretch too, so a short drive keeps room for its own road.
+  const lastMile: Leg = [geo.lastMile[0], (geo.lastMile[1] * perMinute) / geo.perMinute];
+  const own = minutes * perMinute - lastMile[1];
+  const legs = [...geo.from[slot].legs.map(([a, f]) => [a, f * own]), lastMile];
   // Walk back from Tavaro to find the start, then lay the corners forward.
   let [x, y] = [geo.tavaro.x, geo.tavaro.y];
   for (const [a, l] of legs) {
@@ -122,8 +151,8 @@ function drive(geo: Geo, id: string, minutes: number) {
     d += `L${r1(cx - ax * r)} ${r1(cy - ay * r)}Q${r1(cx)} ${r1(cy)} ${r1(cx + bx * r)} ${r1(cy + by * r)}`;
   }
   d += `L${r1(geo.tavaro.x)} ${r1(geo.tavaro.y)}`;
-  // Halfway along the drive's own legs.
-  let left = own / 2;
+  // Halfway (or the layout's chipAt) along the drive's own legs.
+  let left = own * (geo.chipAt?.[slot] ?? 0.5);
   let mid = pts[0];
   for (let i = 0; i < legs.length - 1; i++) {
     const l = legs[i][1];
@@ -138,7 +167,7 @@ function drive(geo: Geo, id: string, minutes: number) {
 }
 
 /** Where a label sits around its point. */
-function place(label: Label, x: number, y: number, gap = 34) {
+function labelAt(label: Label, x: number, y: number, gap = 34) {
   switch (label) {
     case "above":
       return { x, y: y - gap - 30, anchor: "middle" as const };
@@ -152,6 +181,14 @@ function place(label: Label, x: number, y: number, gap = 34) {
 }
 
 export function ResortLocation() {
+  return <PlaceLocation place={RESORT_LOCATION} />;
+}
+
+/** A place's "how to get here" page: three drives drawn to scale of time, arriving at its pin and panel. */
+export function PlaceLocation({ place }: { place: Place }) {
+  const longest = Math.max(...place.drives.map((d) => d.minutes));
+  const ARRIVE = START + longest * PACE;
+  const mapsSearch = place.mapsUrl;
   const [run, setRun] = useState(0);
   const [play, setPlay] = useState(false);
   const [geo, setGeo] = useState<Geo>(WIDE);
@@ -216,6 +253,8 @@ export function ResortLocation() {
   const [vx, vy, vw, vh] = geo.view.split(" ").map(Number);
   // Where the pin stands across the drawing, so the panel's pointer lines up under it.
   const tip = `${(((T.x - vx) / vw) * 100).toFixed(2)}%`;
+  const perMinute = geo.perMinute * Math.min(1, FIT / longest);
+  const [d0, d1, d2] = place.drives;
 
   return (
     <>
@@ -245,19 +284,17 @@ export function ResortLocation() {
               aria-labelledby="loc-map-desc"
             >
               <desc id="loc-map-desc">
-                Three drives to Tavaro Resorts in Kokapet, drawn to the same scale of time: 15 minutes from Gachibowli,
-                30 minutes from Jubilee Hills Checkpost and 35 minutes from Rajiv Gandhi International Airport. Select a
-                starting point for directions from there.
+                {`Three drives to ${place.name}, ${place.where}, drawn to the same scale of time: ${d0.minutes} minutes from ${d0.name}, ${d1.minutes} minutes from ${d1.name} and ${d2.minutes} minutes from ${d2.name}. Select a starting point for directions from there.`}
               </desc>
 
               {geo.roads?.map((d) => (
                 <path key={d} d={d} className={styles.road} />
               ))}
 
-              {DRIVE_TIMES.map((d) => {
-                const r = drive(geo, d.id, d.minutes);
+              {place.drives.map((d, slot) => {
+                const r = drive(geo, slot, d.minutes, perMinute);
                 const [x, y] = r.from;
-                const label = place(geo.from[d.id].label, x, y);
+                const label = labelAt(geo.from[slot].label, x, y);
                 const arrive = START + d.minutes * PACE;
                 const vars = {
                   "--delay": t(START),
@@ -272,7 +309,7 @@ export function ResortLocation() {
 
                     {/* The start: dot and name show from the outset, and open directions from there */}
                     <a
-                      href={directionsUrl(d.origin)}
+                      href={d.directions}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`Directions from ${d.name}`}
@@ -281,16 +318,30 @@ export function ResortLocation() {
                       <circle cx={x} cy={y} r="18" className={styles.burst} />
                       <circle cx={x} cy={y} r="14" className={styles.dot} />
                       <text x={label.x} y={label.y} textAnchor={label.anchor} className={styles.tagName}>
-                        {SHORT[d.id]}
+                        {d.short}
                       </text>
                     </a>
 
-                    {/* The drive time, on its own line, once that point arrives */}
+                    {/* A point travelling this drive at the shared pace */}
+                    <circle r="11" className={styles.car} opacity="0">
+                      <set attributeName="opacity" to="1" begin={t(START)} />
+                      <animateMotion path={r.d} begin={t(START)} dur={t(d.minutes * PACE)} fill="freeze" />
+                      <set attributeName="opacity" to="0" begin={t(arrive)} />
+                    </circle>
+                  </g>
+                );
+              })}
+
+              {/* Each drive's time, once its point arrives: drawn after every road, so no road crosses a chip */}
+              {place.drives.map((d, slot) => {
+                const r = drive(geo, slot, d.minutes, perMinute);
+                return (
+                  <g key={`${geo.view}-${d.id}-chip`} style={{ "--at": t(START + d.minutes * PACE) } as CSSProperties}>
                     {geo.named ? (
                       <g className={styles.chip}>
-                        <rect x={r.mid[0] - 104} y={r.mid[1] - 44} width="208" height="88" rx="6" />
+                        <rect x={r.mid[0] - 122} y={r.mid[1] - 44} width="244" height="88" rx="6" />
                         <text x={r.mid[0]} y={r.mid[1] - 16} className={styles.chipName}>
-                          {SHORT[d.id]}
+                          {d.short}
                         </text>
                         <text x={r.mid[0]} y={r.mid[1] + 18}>
                           {d.minutes} min
@@ -304,13 +355,6 @@ export function ResortLocation() {
                         </text>
                       </g>
                     )}
-
-                    {/* A point travelling this drive at the shared pace */}
-                    <circle r="11" className={styles.car} opacity="0">
-                      <set attributeName="opacity" to="1" begin={t(START)} />
-                      <animateMotion path={r.d} begin={t(START)} dur={t(d.minutes * PACE)} fill="freeze" />
-                      <set attributeName="opacity" to="0" begin={t(arrive)} />
-                    </circle>
                   </g>
                 );
               })}
@@ -320,7 +364,7 @@ export function ResortLocation() {
                 href={mapsSearch}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Tavaro Resorts on Google Maps"
+                aria-label={`${place.name} on Google Maps`}
                 className={styles.home}
                 style={{ "--arrive": t(ARRIVE) } as CSSProperties}
               >
@@ -335,7 +379,7 @@ export function ResortLocation() {
                 <circle cx={T.x} cy={head} r="31" className={styles.pinFace} />
                 <image href="/icons/logo-mark-96.webp" x={T.x - 23} y={head - 19} width="46" height="37" />
                 <text x={T.x} y={T.y + 70} textAnchor="middle" className={styles.homeName}>
-                  Tavaro Resort
+                  {place.pinName}
                 </text>
               </a>
             </svg>
@@ -345,24 +389,24 @@ export function ResortLocation() {
           <article className={styles.panel} style={{ "--arrive": t(ARRIVE + 0.2) } as CSSProperties}>
             <a className={styles.panelPhoto} href={mapsSearch} target="_blank" rel="noopener noreferrer" tabIndex={-1}>
               <Image
-                src={lawnPhoto}
-                alt="Tavaro Resorts at night from above, lit for a wedding"
+                src={place.photo}
+                alt={place.photoAlt}
                 fill
                 placeholder="blur"
                 sizes="(min-width: 1025px) 400px, (min-width: 601px) 45vw, 100vw"
               />
             </a>
             <div className={styles.panelBody}>
-              <p className={styles.arrived}>You&apos;ve arrived</p>
+              <p className={styles.arrived}>{place.arrived}</p>
               <h1 id="loc-title" className={styles.name}>
-                Tavaro Resorts
+                {place.name}
               </h1>
-              <p className={styles.where}>Kokapet, Hyderabad</p>
+              <p className={styles.where}>{place.where}</p>
 
-              <ul className={styles.drives} aria-label="Drive times to Tavaro">
-                {DRIVE_TIMES.map((d) => (
+              <ul className={styles.drives} aria-label={`Drive times to ${place.name}`}>
+                {place.drives.map((d) => (
                   <li key={d.id}>
-                    <a href={directionsUrl(d.origin)} target="_blank" rel="noopener noreferrer">
+                    <a href={d.directions} target="_blank" rel="noopener noreferrer">
                       <span className={styles.min}>
                         {d.minutes}
                         <small>min</small>
@@ -402,11 +446,12 @@ export function ResortLocation() {
             Lost on the way? We&apos;ll talk you in.
           </h2>
           <address className={styles.address}>
-            Tavaro Resorts
-            <br />
-            Kokapet, Hyderabad
-            <br />
-            Telangana, India
+            {place.address.map((line, i) => (
+              <span key={line}>
+                {i > 0 && <br />}
+                {line}
+              </span>
+            ))}
           </address>
           <ul className={styles.contact}>
             <li>

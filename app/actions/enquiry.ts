@@ -2,8 +2,10 @@
 
 import { EnquiryPayloadSchema, type EnquiryResult } from "../../lib/enquiry/types";
 import { enquiryService } from "../../lib/enquiry/service";
+import { SECTIONS, type Section } from "../../lib/subdomains";
 
-export async function submitEnquiryAction(payload: unknown): Promise<EnquiryResult> {
+/** `site`: the brand site the form was sent from (lib/subdomains.ts), which picks the inbox it goes to. */
+export async function submitEnquiryAction(payload: unknown, site?: unknown): Promise<EnquiryResult> {
   const result = EnquiryPayloadSchema.safeParse(payload);
   
   if (!result.success) {
@@ -15,5 +17,6 @@ export async function submitEnquiryAction(payload: unknown): Promise<EnquiryResu
   }
 
   // At this point result.data is fully typed and validated as an EnquiryPayload
-  return enquiryService.submitEnquiry(result.data);
+  const section = typeof site === "string" && Object.hasOwn(SECTIONS, site) ? (site as Section) : undefined;
+  return enquiryService.submitEnquiry(result.data, section);
 }

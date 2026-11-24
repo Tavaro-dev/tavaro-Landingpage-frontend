@@ -181,6 +181,7 @@ export default function LeelaPage() {
         ctas={[
           { label: "Register Interest", href: "#register-interest", solid: true },
           { label: "See the floor plans", href: "#floor-plans" },
+          { label: "Location", href: "/residences/leela/location" },
         ]}
       />
 
@@ -362,6 +363,9 @@ export default function LeelaPage() {
           <p className="tw:mt-[20px] tw:text-[12.5px] tw:text-(color:--on-surface-muted)">
             Driving times from the brochure; they change with traffic.
           </p>
+          <Link href="/residences/leela/location" className="btn tw:mt-[24px]">
+            Map and directions
+          </Link>
         </div>
       </section>
 

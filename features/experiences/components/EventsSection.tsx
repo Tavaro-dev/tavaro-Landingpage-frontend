@@ -15,7 +15,7 @@ const monthYear = (iso: string) => `${formatEventBadge(iso).month} ${iso.slice(0
 
 function EventCard({ event, past }: { event: EventItem; past: boolean }) {
   const href = `/experiences/${event.id}`;
-  const { day, month } = formatEventBadge(event.date);
+  const { day, month } = event.date ? formatEventBadge(event.date) : { day: "", month: "" };
   return (
     <article className={styles.card}>
       {/* The title link is the keyboard stop; the photo is a pointer shortcut to the same page. */}
@@ -39,8 +39,8 @@ function EventCard({ event, past }: { event: EventItem; past: boolean }) {
       </Link>
       <p className={styles.meta}>
         <span className={styles.diamond} aria-hidden="true" />
-        {past ? monthYear(event.date) : event.venue}
-        <span aria-hidden="true">·</span>
+        {past ? event.date && monthYear(event.date) : event.venue}
+        {(past ? event.date : event.venue) && <span aria-hidden="true">·</span>}
         {event.category}
       </p>
       <h3 className={styles.title}>

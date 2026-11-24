@@ -7,7 +7,7 @@ import { EVENTS, isBookable } from '../../lib/content/events';
 const bookable = EVENTS.find((e) => e.ticketTypes?.length && isBookable(e));
 
 const PAGES = [
-  '/', '/about', '/contact', '/experiences', '/experiences/stillness-project', '/mare',
+  '/', '/about', '/contact', '/experiences', '/experiences/rituals-of-rain', '/mare',
   '/residences', '/residences/leela', '/residences/bhairavi-nilayam',
   '/resorts', '/resorts/accommodations', '/resorts/location', '/resorts/photos', '/resorts/venues',
   '/resorts/things-to-do/explore', '/resorts/things-to-do/create', '/wellness',
