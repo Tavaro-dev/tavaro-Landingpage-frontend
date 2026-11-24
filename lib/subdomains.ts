@@ -11,8 +11,8 @@ export const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "";
 /** Subdomain → the section's path in app/. */
 export const SECTIONS = {
   resort: "/resorts",
-  residence: "/residences",
-  experience: "/experiences",
+  residences: "/residences",
+  experiences: "/experiences",
   wellness: "/wellness",
   mare: "/mare",
 } as const;

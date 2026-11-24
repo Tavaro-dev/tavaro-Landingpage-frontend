@@ -21,6 +21,7 @@ export function HeroVideo({ src }: { src: string }) {
   // Loudness runs through a Web Audio gain: iOS ignores video.volume, and a gain can glide.
   const audio = useRef<Audio | null>(null);
   const soundOn = useRef(false);
+  const userChose = useRef(false);
   const visible = useRef(1);
 
   /** Glide toward the level for the current state: off, or VOLUME scaled by how much of the hero shows. */
@@ -36,6 +37,31 @@ export function HeroVideo({ src }: { src: string }) {
     }
     a.gain.gain.cancelScheduledValues(a.ctx.currentTime);
     a.gain.gain.setTargetAtTime(level, a.ctx.currentTime, seconds);
+  };
+
+  const setSound = (on: boolean) => {
+    const video = ref.current;
+    if (!video) return;
+    soundOn.current = on;
+    setMuted(!on);
+    const Ctx = window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!Ctx) {
+      // No Web Audio: plain mute toggle at the reduced volume.
+      video.volume = VOLUME;
+      video.muted = !soundOn.current;
+      return;
+    }
+    if (!audio.current) {
+      const ctx = new Ctx();
+      const gain = ctx.createGain();
+      gain.gain.value = 0;
+      ctx.createMediaElementSource(video).connect(gain).connect(ctx.destination);
+      audio.current = { ctx, gain };
+    }
+    audio.current.ctx.resume().catch(() => {});
+    video.volume = 1;
+    video.muted = false; // the gain sets the loudness from here on
+    glide(soundOn.current ? 0.35 : 0.15);
   };
 
   useEffect(() => {
@@ -64,6 +90,19 @@ export function HeroVideo({ src }: { src: string }) {
     };
     video.play().catch(() => {}); // blocked (e.g. low-power mode): the poster stays
 
+    // Sound starts by itself. Browsers only allow that where autoplay policy says so
+    // (or after a high media-engagement score); otherwise it starts on the first
+    // click/key/tap. Either way, the button turns it off, and a manual choice wins.
+    const auto = () => {
+      if (userChose.current) return;
+      userChose.current = true;
+      setSound(true);
+    };
+    const policy = (navigator as Navigator & { getAutoplayPolicy?: (el: HTMLMediaElement) => string }).getAutoplayPolicy?.(video);
+    const events = ["click", "keydown", "touchend"] as const;
+    if (policy === "allowed") auto();
+    else events.forEach((e) => document.addEventListener(e, auto, { once: true }));
+
     // Sound fades with the hero as it scrolls away; once it is fully off screen
     // (and silent), stop decoding frames nobody can see.
     let pauseTimer = 0;
@@ -79,34 +118,15 @@ export function HeroVideo({ src }: { src: string }) {
     );
     observer.observe(video);
     return () => {
+      events.forEach((e) => document.removeEventListener(e, auto));
       observer.disconnect();
       window.clearTimeout(pauseTimer);
     };
   }, [src]);
 
   const toggleSound = () => {
-    const video = ref.current;
-    if (!video) return;
-    soundOn.current = !soundOn.current;
-    setMuted(!soundOn.current);
-    const Ctx = window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!Ctx) {
-      // No Web Audio: plain mute toggle at the reduced volume.
-      video.volume = VOLUME;
-      video.muted = !soundOn.current;
-      return;
-    }
-    if (!audio.current) {
-      const ctx = new Ctx();
-      const gain = ctx.createGain();
-      gain.gain.value = 0;
-      ctx.createMediaElementSource(video).connect(gain).connect(ctx.destination);
-      audio.current = { ctx, gain };
-    }
-    audio.current.ctx.resume().catch(() => {});
-    video.volume = 1;
-    video.muted = false; // the gain sets the loudness from here on
-    glide(soundOn.current ? 0.35 : 0.15);
+    userChose.current = true;
+    setSound(!soundOn.current);
   };
 
   return (

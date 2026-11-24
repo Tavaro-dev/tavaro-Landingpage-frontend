@@ -19,7 +19,7 @@ describe('subdomain addresses', () => {
   it('gives each section its subdomain', () => {
     expect(siteUrl('/resorts')).toBe('https://resort.tavaro.in/');
     expect(siteUrl('/resorts/venues#map')).toBe('https://resort.tavaro.in/venues#map');
-    expect(siteUrl('/residences/leela')).toBe('https://residence.tavaro.in/leela');
+    expect(siteUrl('/residences/leela')).toBe('https://residences.tavaro.in/leela');
     expect(siteUrl('/wellness')).toBe('https://wellness.tavaro.in/');
     expect(siteUrl('/contact')).toBe('https://tavaro.in/contact');
     expect(siteUrl('#register-interest')).toBe('#register-interest');
@@ -43,7 +43,7 @@ describe('proxy', () => {
     ['tavaro.in', '/resorts/venues', 'https://resort.tavaro.in/venues'],
     ['resort.tavaro.in', '/resorts/venues', 'https://resort.tavaro.in/venues'],
     ['resort.tavaro.in', '/contact', 'https://tavaro.in/contact'],
-    ['resort.tavaro.in', '/residences/leela', 'https://residence.tavaro.in/leela'],
+    ['resort.tavaro.in', '/residences/leela', 'https://residences.tavaro.in/leela'],
   ])('%s%s moves to %s', (host, path, to) => {
     const res = visit(host, path);
     expect(res?.status).toBe(308);
