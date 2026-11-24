@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { usePathname } from "next/navigation";
+import { useAppPath } from "@/lib/useAppPath";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
 import { useShareLink } from "@/lib/useShareLink";
@@ -28,7 +28,7 @@ export function RegisterInterestModal() {
   const [open, setOpen] = useState(false);
   // A fresh form each time the window opens.
   const [round, setRound] = useState(0);
-  const pathname = usePathname();
+  const pathname = useAppPath();
 
   useShareLink(REGISTER_INTEREST, open, () => {
     setRound((n) => n + 1);

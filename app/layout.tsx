@@ -47,6 +47,9 @@ export const metadata: Metadata = {
 // scroll position on reload.
 const SCROLL_STATE_SCRIPT = `(function(){var d=document.documentElement;function u(){d.toggleAttribute("data-scrolled",window.scrollY>40)}u();window.addEventListener("scroll",u,{passive:true})})()`;
 
+// The light/dark choice, carried between subdomains by a cookie on the whole domain (ThemeToggle sets it).
+const THEME_FROM_COOKIE_SCRIPT = `try{var m=document.cookie.match(/(?:^|; )theme=(light|dark)/);if(m)localStorage.setItem("theme",m[1])}catch(e){}`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -57,6 +60,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: SCROLL_STATE_SCRIPT }} />
+        {/* Before next-themes reads its saved choice: take the one made on another subdomain. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_FROM_COOKIE_SCRIPT }} />
       </head>
       <body>
         <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem={true}>

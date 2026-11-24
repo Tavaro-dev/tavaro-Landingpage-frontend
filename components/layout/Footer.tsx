@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { siteUrl } from "@/lib/subdomains";
 import { Icon } from "@/components/ui/Icon";
 import { NAV_ITEMS, FOOTER_JOURNEYS } from "@/lib/nav";
 import styles from "./layout.module.css";
@@ -9,7 +10,7 @@ export default function Footer() {
       <div className="container">
         <div className={styles["footer-top"]}>
           <div className={styles["footer-brand"]}>
-            <Link href="/" className="logo" aria-label="Tavaro home">
+            <Link href={siteUrl("/")} className="logo" aria-label="Tavaro home">
               <span className="logo-art" aria-hidden="true" />
             </Link>
             <p>
@@ -54,7 +55,7 @@ export default function Footer() {
             <ul>
               {NAV_ITEMS.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link href={siteUrl(item.href)}>{item.label}</Link>
                 </li>
               ))}
             </ul>
@@ -63,10 +64,10 @@ export default function Footer() {
             <h5>Tavaro</h5>
             <ul>
               <li>
-                <Link href="/about">About Tavaro</Link>
+                <Link href={siteUrl("/about")}>About Tavaro</Link>
               </li>
               <li>
-                <Link href="/contact">Contact</Link>
+                <Link href={siteUrl("/contact")}>Contact</Link>
               </li>
             </ul>
           </div>
@@ -75,7 +76,7 @@ export default function Footer() {
             <ul>
               {FOOTER_JOURNEYS.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link href={siteUrl(item.href)}>{item.label}</Link>
                 </li>
               ))}
             </ul>

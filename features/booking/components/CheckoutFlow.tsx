@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { siteUrl } from "@/lib/subdomains";
 import { useId, useState, useEffect, type FormEvent } from "react";
 import { useCart } from "@/features/booking/cart/CartProvider";
 import { ENHANCEMENTS } from "@/lib/content/enhancements";
@@ -186,7 +187,7 @@ export function CheckoutFlow() {
           Booking Reference: <strong>{bookingResult?.reference}</strong>
         </p>
         <div className="status-actions">
-          <Link href="/" className="btn solid">
+          <Link href={siteUrl("/")} className="btn solid">
             Back to Home
           </Link>
         </div>

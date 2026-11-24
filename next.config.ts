@@ -4,7 +4,8 @@ const nextConfig: NextConfig = {
   // Dev only: the dev server blocks its scripts for any host but localhost, so
   // opening http://127.0.0.1:3000 rendered the page without React (no modals,
   // no navbar scroll state).
-  allowedDevOrigins: ["127.0.0.1"],
+  // *.localhost: the brand subdomains, tried locally (lib/subdomains.ts).
+  allowedDevOrigins: ["127.0.0.1", "*.localhost"],
   // Next.js upgrade reminders during dev/build: only security fixes.
   experimental: {
     agentUpgrade: "security",

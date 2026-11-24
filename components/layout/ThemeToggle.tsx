@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
+import { ROOT_DOMAIN } from "@/lib/subdomains";
 import styles from "./layout.module.css";
 
 const emptySubscribe = () => () => {};
@@ -16,7 +17,12 @@ export function ThemeToggle({ className }: { className?: string }) {
   }
 
   const toggle = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+    const next = resolvedTheme === "dark" ? "light" : "dark";
+    setTheme(next);
+    // Each subdomain keeps its own copy of the choice; this cookie carries it to the others (app/layout.tsx).
+    if (ROOT_DOMAIN) {
+      document.cookie = `theme=${next}; domain=${ROOT_DOMAIN.split(":")[0]}; path=/; max-age=31536000; samesite=lax`;
+    }
   };
 
   return (

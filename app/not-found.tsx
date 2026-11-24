@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { siteUrl } from "@/lib/subdomains";
 
 export default function NotFound() {
   return (
@@ -15,7 +16,7 @@ export default function NotFound() {
           somewhere real.
         </p>
         <div className="tw:mt-[40px] tw:flex tw:gap-[18px] tw:justify-center tw:flex-wrap">
-          <Link href="/" className="btn solid">
+          <Link href={siteUrl("/")} className="btn solid">
             Back to Home
           </Link>
           <Link href="/contact" className="btn">

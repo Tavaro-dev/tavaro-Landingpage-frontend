@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/metadata";
+import { publicUrl } from "@/lib/metadata";
 import { EVENTS } from "@/lib/content/events";
 
 const ROUTES = [
@@ -23,11 +23,11 @@ const ROUTES = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = ROUTES.map((path) => ({
-    url: `${SITE_URL}${path}`,
+    url: publicUrl(path),
   }));
 
   const dynamicRoutes = EVENTS.map((event) => ({
-    url: `${SITE_URL}/experiences/${event.id}`,
+    url: publicUrl(`/experiences/${event.id}`),
   }));
 
   return [...staticRoutes, ...dynamicRoutes];

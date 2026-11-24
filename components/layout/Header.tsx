@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useAppPath } from "@/lib/useAppPath";
+import { siteUrl } from "@/lib/subdomains";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
@@ -12,7 +13,7 @@ import { DEMO_SERVICES } from "@/lib/env";
 import styles from "./layout.module.css";
 
 export default function Header() {
-  const pathname = usePathname();
+  const pathname = useAppPath();
   const isHome = pathname === "/";
   const showCart = DEMO_SERVICES && pathname === "/resorts/accommodations";
   const [pastPillarStrip, setPastPillarStrip] = useState(false);
@@ -94,21 +95,21 @@ export default function Header() {
           .filter(Boolean)
           .join(" ")}
       >
-        <Link href="/" className="logo" aria-label="Tavaro home">
+        <Link href={siteUrl("/")} className="logo" aria-label="Tavaro home">
           <span className="logo-art" aria-hidden="true" />
         </Link>
         <nav className={styles["main-nav"]}>
           <div className="nav-links">
             {NAV_ITEMS.map((item) => (
-              <Link key={item.href} href={item.href} className={pathname === item.href || pathname.startsWith(`${item.href}/`) ? "active" : ""}>
+              <Link key={item.href} href={siteUrl(item.href)} className={pathname === item.href || pathname.startsWith(`${item.href}/`) ? "active" : ""}>
                 {item.label}
               </Link>
             ))}
           </div>
-          <Link href="/about" className={`nav-cta${pathname === "/about" ? " active" : ""}`}>
+          <Link href={siteUrl("/about")} className={`nav-cta${pathname === "/about" ? " active" : ""}`}>
             About
           </Link>
-          <Link href="/contact" className="nav-cta outline">
+          <Link href={siteUrl("/contact")} className="nav-cta outline">
             Enquire
           </Link>
           {showCart && <CartButton />}
@@ -133,20 +134,20 @@ export default function Header() {
           <button type="button" className={styles["mobile-close-btn"]} aria-label="Close menu" onClick={closeMobile}>
             <Icon name="x" />
           </button>
-          <Link href="/" onClick={closeMobile}>
+          <Link href={siteUrl("/")} onClick={closeMobile}>
             Home
           </Link>
           {NAV_ITEMS.map((item) => (
-            <Link key={item.href} href={item.href} onClick={closeMobile}>
+            <Link key={item.href} href={siteUrl(item.href)} onClick={closeMobile}>
               {item.label}
             </Link>
           ))}
           <div className={styles["mobile-sub"]}>
             <div className={styles["mobile-sub-buttons"]}>
-              <Link href="/about" className={`nav-cta${pathname === "/about" ? " active" : ""}`} onClick={closeMobile}>
+              <Link href={siteUrl("/about")} className={`nav-cta${pathname === "/about" ? " active" : ""}`} onClick={closeMobile}>
                 About
               </Link>
-              <Link href="/contact" className="nav-cta outline" onClick={closeMobile}>
+              <Link href={siteUrl("/contact")} className="nav-cta outline" onClick={closeMobile}>
                 Enquire
               </Link>
             </div>

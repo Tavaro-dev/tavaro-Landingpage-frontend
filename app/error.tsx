@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { siteUrl } from "@/lib/subdomains";
 
 export default function Error({ error, retry }: { error: Error & { digest?: string }; retry: () => void }) {
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function Error({ error, retry }: { error: Error & { digest?: stri
           <button type="button" className="btn solid" onClick={() => retry()}>
             Try Again
           </button>
-          <Link href="/" className="btn">
+          <Link href={siteUrl("/")} className="btn">
             Back to Home
           </Link>
         </div>
