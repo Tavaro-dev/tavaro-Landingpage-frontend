@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
-import { publicUrl } from "@/lib/metadata";
+import { headers } from "next/headers";
+import { SITE_URL, publicUrl } from "@/lib/metadata";
+import { sectionOf, siteOf } from "@/lib/subdomains";
 import { EVENTS } from "@/lib/content/events";
 
 const ROUTES = [
@@ -21,14 +23,14 @@ const ROUTES = [
   "/wellness",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ROUTES.map((path) => ({
-    url: publicUrl(path),
-  }));
+/** The main domain's own list: the group pages plus each brand's entry address (these redirect to the brand's subdomain). */
+const MAIN = ["/", "/resorts", "/residences", "/experiences", "/wellness", "/mare", "/about", "/contact"];
 
-  const dynamicRoutes = EVENTS.map((event) => ({
-    url: publicUrl(`/experiences/${event.id}`),
-  }));
-
-  return [...staticRoutes, ...dynamicRoutes];
+/** Each subdomain lists only its own pages; tavaro.in lists MAIN. */
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const site = siteOf((await headers()).get("host") ?? "");
+  if (site === "") return MAIN.map((path) => ({ url: `${SITE_URL}${path}` }));
+  return [...ROUTES, ...EVENTS.map((e) => `/experiences/${e.id}`)]
+    .filter((path) => site === undefined || sectionOf(path) === site)
+    .map((path) => ({ url: publicUrl(path) }));
 }
