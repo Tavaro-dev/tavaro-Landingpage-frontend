@@ -9,8 +9,9 @@ export const metadata = pageMetadata({
   path: "/residences/leela/location",
 });
 
-/** Leela's place on Google Maps (the client's link), and its pin for directions. */
-const MAP = "https://maps.app.goo.gl/KPksSZ5ngF3qGbCg8";
+/** Leela's place on Google Maps (the client's link, without its tracking parameters), and its pin for directions. */
+const MAP =
+  "https://www.google.com/maps/place/Leela+By+Tavaro+Residences/@17.4566428,78.1981187,17z/data=!3m1!4b1!4m6!3m5!1s0x3bcbefe79b820785:0xf8b7b7d83f9dcd19!8m2!3d17.4566428!4d78.2006936!16s%2Fg%2F11x27q4rv6";
 const PIN = "17.4566428,78.2006936";
 
 const directionsFrom = (origin: string) =>
