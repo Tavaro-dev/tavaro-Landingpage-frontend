@@ -1,0 +1,59 @@
+@layer components {
+  .faq {
+    background: var(--surface);
+    color: var(--on-surface);
+    padding: clamp(64px, 9vw, 120px) 0;
+    border-top: 1px solid var(--surface-line);
+  }
+  .title {
+    margin: 18px 0 clamp(28px, 3.5vw, 44px);
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(34px, 4.4vw, 60px);
+    line-height: 1.04;
+  }
+  .list {
+    max-width: 920px;
+    border-top: 1px solid var(--surface-line);
+  }
+  .item {
+    border-bottom: 1px solid var(--surface-line);
+  }
+  .item summary {
+    position: relative;
+    padding: 24px 48px 24px 0;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-display);
+    font-size: clamp(19px, 1.8vw, 24px);
+    line-height: 1.3;
+  }
+  .item summary::-webkit-details-marker {
+    display: none;
+  }
+  .item summary::after {
+    content: "+";
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold);
+    font-size: 28px;
+    transition: transform 0.3s var(--ease);
+  }
+  .item[open] summary::after {
+    transform: translateY(-50%) rotate(45deg);
+  }
+  .item summary:focus-visible {
+    outline: 1px solid var(--gold);
+    outline-offset: 4px;
+  }
+  .item p {
+    margin: 0;
+    padding: 0 48px 26px 0;
+    max-width: 70ch;
+    color: var(--on-surface-muted);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+}

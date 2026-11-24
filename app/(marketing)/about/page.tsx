@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/metadata";
 import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
-  title: "About Tavaro — A Hospitality & Lifestyle Group",
+  title: "About Tavaro Group — Hospitality & Lifestyle in Hyderabad",
   description:
     "Tavaro creates places for people to stay, live, gather and grow. Discover why Resorts, Residences, Experiences, Wellness and Màre belong together.",
   path: "/about",

@@ -6,12 +6,14 @@ import { SplitSection } from "@/components/shared/SplitSection";
 import { Verbs } from "@/components/shared/Verbs";
 import { BandQuote } from "@/components/shared/BandQuote";
 import { Icon } from "@/components/ui/Icon";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { organizationSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
-  title: "Tavaro — Discover the World Between Worlds",
+  title: "Tavaro Group — Resorts, Residences & Experiences in Hyderabad",
   description:
-    "Tavaro is a hospitality and lifestyle group creating places and experiences around a more meaningful way of living — Resorts, Residences, Experiences, Wellness and Màre.",
+    "Tavaro is a hospitality and lifestyle group in Hyderabad: Tavaro Resorts in Kokapet, Tavaro Residences, Experiences, Wellness and Màre Coffee House.",
   path: "/",
 });
 
@@ -73,6 +75,7 @@ const PILLAR_CARDS = [
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={organizationSchema} />
       <HomeHero />
 
       {/* Introduction */}

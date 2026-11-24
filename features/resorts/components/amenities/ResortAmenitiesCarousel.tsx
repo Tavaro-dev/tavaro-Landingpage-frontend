@@ -76,7 +76,7 @@ function AmenityCard({ item, eager }: { item: AmenityItem; eager: boolean }) {
       <div className={styles["amenity-card-image-wrap"]}>
         <Image
           src={item.heroImage}
-          alt=""
+          alt={item.title}
           fill
           sizes="(max-width: 600px) 200px, (max-width: 1024px) 240px, 280px"
           loading={eager ? "eager" : "lazy"}

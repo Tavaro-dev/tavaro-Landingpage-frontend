@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/shared/PageHero";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { eventSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/metadata";
 import { EVENTS, getEvent, formatEventSchedule, isBookable, getFromPrice, getBookingDates } from "@/lib/content/events";
 import { formatInr } from "@/lib/format";
@@ -14,7 +16,7 @@ export async function generateMetadata(props: PageProps<"/experiences/[slug]">) 
   const event = getEvent(slug);
   if (!event) return pageMetadata({ title: "Experience Not Found | Tavaro", description: "", path: "/experiences" });
   return pageMetadata({
-    title: `${event.title} — Tavaro Experiences`,
+    title: `${event.title} — Tavaro Experiences, Hyderabad`,
     description: event.description,
     path: `/experiences/${event.id}`,
     image: event.src,
@@ -42,6 +44,7 @@ export default async function ExperienceDetailPage(props: PageProps<"/experience
 
   return (
     <>
+      <JsonLd data={eventSchema(event)} />
       <PageHero
         photoSrc={event.src}
         photoAlt={event.alt}

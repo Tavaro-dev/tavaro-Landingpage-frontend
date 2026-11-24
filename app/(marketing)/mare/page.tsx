@@ -6,18 +6,21 @@ import { OfferHead } from "@/components/shared/OfferHead";
 import { SplitSection } from "@/components/shared/SplitSection";
 import { BandQuote } from "@/components/shared/BandQuote";
 import StickyCta from "@/components/shared/StickyCta";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { mareSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
   path: "/mare",
   title: "Màre Coffee House — Where Life Comes Together | Tavaro",
   description:
-    "Màre is a lifestyle brand by Tavaro — coffee, food, conversation and community.",
+    "Màre Coffee House at Tavaro, Kokapet, Hyderabad: specialty coffee and pour overs, a daily bakery and all-day breakfast. A place to meet, work and slow down.",
 });
 
 export default function MarePage() {
   return (
     <>
+      <JsonLd data={mareSchema} />
       <PageHero
         photoSrc={heroPhoto}
         photoPosition="68% center"

@@ -3,6 +3,8 @@ import heroPhoto from "@/public/images/resorts/venues/tavaro-lawn.jpg";
 import { ResortSpaces } from "@/features/resorts/components/spaces/ResortSpaces";
 import { ResortGrounds } from "@/features/resorts/components/spaces/ResortGrounds";
 import { ResortPlan } from "@/features/resorts/components/spaces/ResortPlan";
+import { Faq } from "@/components/shared/Faq";
+import { VENUE_FAQ } from "@/features/resorts/content/venueFaq";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata({
@@ -33,6 +35,7 @@ export default function ResortVenuesPage() {
       <ResortSpaces />
       <ResortGrounds />
       <ResortPlan />
+      <Faq items={VENUE_FAQ} title="Planning a wedding at Tavaro" />
     </>
   );
 }

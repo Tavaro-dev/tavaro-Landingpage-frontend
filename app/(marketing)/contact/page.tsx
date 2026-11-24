@@ -8,9 +8,9 @@ import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
   path: "/contact",
-  title: "Contact & Enquire | Tavaro",
+  title: "Contact Tavaro — Stays, Weddings & Events in Hyderabad",
   description:
-    "Get in touch with Tavaro — book a stay, plan an event, enquire about a residence, or register for an experience.",
+    "Contact Tavaro in Kokapet, Hyderabad to book a stay, plan a wedding or event, enquire about a residence or join an experience. Call or WhatsApp +91 998 998 3029.",
 });
 
 const JOURNEYS = [

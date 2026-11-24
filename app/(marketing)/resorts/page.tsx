@@ -12,19 +12,22 @@ import { PlanEventButton } from "@/features/experiences/components/PlanEventButt
 import { ResortDining } from "@/features/resorts/components/dining/ResortDining";
 import { ResortAmenitiesCarousel } from "@/features/resorts/components/amenities/ResortAmenitiesCarousel";
 import { ThingsToDoSection } from "@/features/resorts/components/things-to-do/ThingsToDoSection";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { resortSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/metadata";
 import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
-  title: "Resorts — A World Away, Yet Close to You | Tavaro",
+  title: "Tavaro Resorts, Kokapet — Resort & Event Venue in Hyderabad",
   description:
-    "Tavaro Resorts, Kokapet — stays, celebrations, culinary experiences, coffee and movement. Plus Leaf by Tavaro, Mahalingapuram, coming soon.",
+    "A 16-acre resort in Kokapet, Hyderabad: 13 rooms and suites, six wedding and event venues for up to 4,000 guests, dining, Màre Coffee House and Sol Pilates.",
   path: "/resorts",
 });
 
 export default function ResortsPage() {
   return (
     <>
+      <JsonLd data={resortSchema} />
       <PageHero
         photoSrc={heroPhoto}
         photoAlt="Horses on the grounds at Tavaro Resorts, Kokapet"

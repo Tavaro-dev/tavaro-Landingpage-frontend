@@ -53,7 +53,7 @@ const THEME_FROM_COOKIE_SCRIPT = `try{var m=document.cookie.match(/(?:^|; )theme
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
+      lang="en-IN"
       className={`${hypatia.variable} ${archivo.variable}`}
       suppressHydrationWarning
       data-scroll-behavior="smooth"

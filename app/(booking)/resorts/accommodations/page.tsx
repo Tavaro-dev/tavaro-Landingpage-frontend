@@ -7,8 +7,8 @@ import { bookingService } from "@/lib/booking/service";
 import { DEMO_SERVICES } from "@/lib/env";
 
 export const metadata = pageMetadata({
-  title: "Accommodations — Availability | Tavaro Resorts",
-  description: "Browse room availability at Tavaro Resorts, Kokapet — Executive Rooms, Suites and Tavaro House.",
+  title: "Rooms & Suites — Tavaro Resorts, Kokapet, Hyderabad",
+  description: "Check availability and book Executive Rooms, Suites and Tavaro House at Tavaro Resorts in Kokapet, Hyderabad, 15 minutes from Gachibowli.",
   path: "/resorts/accommodations",
 });
 
