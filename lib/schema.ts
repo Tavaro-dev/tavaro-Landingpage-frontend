@@ -1,5 +1,6 @@
 import { SITE_URL, publicUrl } from "./metadata";
 import { VENUES } from "@/features/resorts/content/venues";
+import { GALLERY_FILMS } from "@/features/resorts/content/galleryCollections";
 import { getBookingDates, isBookable, type EventItem } from "./content/events";
 
 /**
@@ -69,6 +70,22 @@ export const resortSchema = {
   })),
   parentOrganization: { "@id": ORG_ID },
   sameAs: SAME_AS,
+};
+
+/** The resort gallery's two films (/resorts/photos), so Google can list them in video results. */
+export const galleryVideosSchema = {
+  "@context": "https://schema.org",
+  "@graph": GALLERY_FILMS.map((film) => ({
+    "@type": "VideoObject",
+    name: `${film.title} — Tavaro Resorts, Kokapet, Hyderabad`,
+    description: `${film.title}: a film from Tavaro Resorts, a wedding and event venue in Kokapet, Hyderabad.`,
+    thumbnailUrl: abs(film.poster),
+    contentUrl: abs(film.src),
+    uploadDate: "2026-11-15T00:00:00+05:30", // when the client's films were added
+    width: film.w,
+    height: film.h,
+    publisher: { "@id": ORG_ID },
+  })),
 };
 
 export const mareSchema = {

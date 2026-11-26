@@ -1,4 +1,6 @@
 import { pageMetadata } from "@/lib/metadata";
+import { JsonLd } from "@/components/shared/JsonLd";
+import { galleryVideosSchema } from "@/lib/schema";
 import { ResortGallery } from "@/features/resorts/components/gallery/ResortGallery";
 
 export const metadata = pageMetadata({
@@ -9,5 +11,10 @@ export const metadata = pageMetadata({
 });
 
 export default function ResortPhotosPage() {
-  return <ResortGallery />;
+  return (
+    <>
+      <JsonLd data={galleryVideosSchema} />
+      <ResortGallery />
+    </>
+  );
 }
