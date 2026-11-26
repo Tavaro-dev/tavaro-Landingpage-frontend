@@ -1,4 +1,6 @@
-// Builds the 1200x630 link-preview images in public/og/ (one per page).
+// Builds the 1200x630 link-preview images in public/og/ (one per page), a 1200x1200 version of each in public/og/square/
+// (Google's search thumbnail is a square crop, so these keep the logo and headline in the middle; lib/PageImageJsonLd.tsx),
+// and the square site icons app/icon.png and app/apple-icon.png (Google only shows a square favicon).
 // Run: node scripts/make-og.mjs   (renders in Chromium with the site's own fonts; uses the installed Google Chrome)
 import sharp from "sharp";
 import { chromium } from "@playwright/test";
@@ -6,6 +8,7 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { EVENTS } from "../lib/content/events.ts";
 
 const GOLD = "#e6cf9e";
 const url = (f) => pathToFileURL(resolve(f)).href;
@@ -29,6 +32,8 @@ const PAGES = [
   { file: "experiences", photo: H + "experiences-hero.jpg", kicker: "TAVARO EXPERIENCES", lines: ["Moments made", "~extraordinary"] },
   { file: "wellness", photo: H + "wellness-hero.jpg", kicker: "WELLNESS AT TAVARO", lines: ["A Tavaro", "~way of life"] },
   { file: "mare", photo: H + "mare-hero-cup-right.jpg", kicker: "MÀRE COFFEE HOUSE", lines: ["Where life", "~comes together"], logo: "mare" },
+  // One per experience page (/experiences/<id>; its /book page uses it too), from lib/content/events.ts.
+  ...EVENTS.map((e) => ({ file: `experiences-${e.id}`, photo: `public${e.src}`, kicker: "TAVARO EXPERIENCES", lines: [e.title, "~at Tavaro"] })),
 ];
 
 const gold = (f, h) => readFileSync(f, "utf8").replace("<svg ", `<svg fill="#c9a45a" height="${h}" `);
@@ -39,7 +44,7 @@ const LOGOS = {
 };
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
-const html = ({ photo, pos = "center", kicker, lines, logo = "tavaro" }) => `<style>
+const html = ({ photo, pos = "center", kicker, lines, logo = "tavaro" }, square) => `<style>
 @font-face{font-family:H;src:url(${url("app/fonts/HypatiaSansPro-SemiBold.woff2")})}
 @font-face{font-family:A;src:url(${url("app/fonts/ArchivoExpanded-SemiBold.woff2")})}
 *{margin:0;box-sizing:border-box}
@@ -56,18 +61,42 @@ h1 i{color:${GOLD}}
 .f b{width:48px;height:2px;background:${GOLD}}
 </style><body><div class=g></div><div class=s></div><div class=logo>${LOGOS[logo]}</div>
 <div class=t><div class=k>${esc(kicker)}</div><h1 class="${lines.some((l) => l.length > 24) ? "long" : ""}">${lines.map((l) => (l[0] === "~" ? `<i>${esc(l.slice(1))}</i>` : esc(l))).join("<br>")}</h1></div>
-<div class=f><b></b>TAVARO.IN</div>`;
+<div class=f><b></b>TAVARO.IN</div>${square ? SQUARE_CSS : ""}`;
 
-mkdirSync("public/og", { recursive: true });
+// Square: everything centred, logo large enough to read in a small search thumbnail.
+const SQUARE_CSS = `<style>
+body{width:1200px;height:1200px}
+.g{background:radial-gradient(circle at 50% 55%,rgba(11,9,6,.55),rgba(11,9,6,.88))}
+.s{display:none}
+.logo{right:auto;left:50%;top:150px;transform:translateX(-50%) scale(2.6);transform-origin:top center}
+.t{left:60px;right:60px;top:auto;bottom:220px;transform:none;text-align:center}
+.k{font-size:28px;letter-spacing:8px;margin-bottom:32px}
+h1,h1.long{font-size:92px;line-height:104px}
+.f{left:50%;bottom:90px;transform:translateX(-50%);font-size:24px}
+</style>`;
+
+mkdirSync("public/og/square", { recursive: true });
 const browser = await chromium.launch({ channel: "chrome" });
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
-for (const p of PAGES) {
-  const tmp = `${tmpdir()}/og-${p.file}.html`;
-  writeFileSync(tmp, html(p));
-  await page.goto(`file://${tmp}`);
-  await page.evaluate(() => document.fonts.ready);
-  const png = await page.screenshot();
-  await sharp(png).jpeg({ quality: 80, mozjpeg: true }).toFile(`public/og/${p.file}.jpg`);
-  console.log(p.file);
+for (const [square, dir, height] of [[false, "public/og", 630], [true, "public/og/square", 1200]]) {
+  await page.setViewportSize({ width: 1200, height });
+  for (const p of PAGES) {
+    const tmp = `${tmpdir()}/og-${p.file}.html`;
+    writeFileSync(tmp, html(p, square));
+    await page.goto(`file://${tmp}`);
+    await page.evaluate(() => document.fonts.ready);
+    const png = await page.screenshot();
+    await sharp(png).jpeg({ quality: 80, mozjpeg: true }).toFile(`${dir}/${p.file}.jpg`);
+    console.log(dir, p.file);
+  }
 }
+
+// Site icon: the gold horse on the brand's dark ground, square (sizes are multiples of 48 for Google).
+const horse = readFileSync("public/brand/tavaro-symbol.svg", "utf8").replace("<svg ", '<svg fill="#c9a45a" ');
+const icon = (size) =>
+  sharp({ create: { width: size, height: size, channels: 4, background: "#0b0906" } })
+    .composite([{ input: Buffer.from(horse.replace("<svg ", `<svg width="${Math.round(size * 0.74)}" `)), gravity: "center" }])
+    .png();
+await icon(480).toFile("app/icon.png");
+await icon(180).toFile("app/apple-icon.png");
 await browser.close();

@@ -19,7 +19,6 @@ export async function generateMetadata(props: PageProps<"/experiences/[slug]">) 
     title: `${event.title} — Tavaro Experiences, Hyderabad`,
     description: event.description,
     path: `/experiences/${event.id}`,
-    image: event.src,
   });
 }
 

@@ -10,6 +10,10 @@ import { CartDrawer } from "@/features/booking/components/CartDrawer";
 import { RegisterInterestModal } from "@/features/residences/components/RegisterInterestModal";
 import { CartProvider } from "@/features/booking/cart/CartProvider";
 import { SITE_URL } from "@/lib/metadata";
+import { readdirSync } from "node:fs";
+import { PageImageJsonLd } from "@/components/shared/PageImageJsonLd";
+
+const SQUARE_OG = readdirSync("public/og/square").map((f) => f.replace(/\.jpg$/, ""));
 
 // Fonts are subset to the characters the site uses (Latin, Latin-1/Extended-A, punctuation, arrows, rupee, check)
 // with their standard OpenType features, as WOFF2: about 69 KB for all three instead of about 295 KB. Re-subset from the
@@ -66,6 +70,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body>
         <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem={true}>
           <CartProvider>
+            <PageImageJsonLd base={SITE_URL} names={SQUARE_OG} />
             <Header />
             {children}
             <HeroPrefetch />

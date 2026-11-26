@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import type { Metadata } from "next";
 import { ROOT_DOMAIN, siteUrl } from "./subdomains";
+import { ogName } from "./ogName";
 
 // Prefers an explicit custom domain (set NEXT_PUBLIC_SITE_URL once one is
 // configured), falls back to Vercel's own deployment URL, then to a
@@ -18,11 +19,8 @@ const SITE_NAME = "Tavaro Group";
 /** A page's full public address, on its subdomain when those are on. */
 export const publicUrl = (path: string) => (ROOT_DOMAIN ? siteUrl(path) : `${SITE_URL}${path}`);
 
-/** The page's own link preview (public/og/, built by scripts/make-og.mjs): /resorts/venues is resorts-venues.jpg; any other page gets the home one. */
-function ogImage(path: string) {
-  const name = path === "/" ? "home" : path.slice(1).replace(/\//g, "-");
-  return `/og/${existsSync(`public/og/${name}.jpg`) ? name : "home"}.jpg`;
-}
+/** The page's own link preview (public/og/, built by scripts/make-og.mjs). */
+const ogImage = (path: string) => `/og/${ogName(path, (name) => existsSync(`public/og/${name}.jpg`))}.jpg`;
 
 export function pageMetadata({
   title,
