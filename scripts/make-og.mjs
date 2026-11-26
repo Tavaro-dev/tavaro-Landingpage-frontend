@@ -91,12 +91,14 @@ for (const [square, dir, height] of [[false, "public/og", 630], [true, "public/o
   }
 }
 
-// Site icon: the gold horse on the brand's dark ground, square (sizes are multiples of 48 for Google).
+// Site icon: the gold horse, square (sizes are multiples of 48 for Google). Transparent for browser tabs and search;
+// the iPhone home-screen icon keeps the brand's dark ground, since iOS fills transparency with black anyway.
 const horse = readFileSync("public/brand/tavaro-symbol.svg", "utf8").replace("<svg ", '<svg fill="#c9a45a" ');
-const icon = (size) =>
-  sharp({ create: { width: size, height: size, channels: 4, background: "#0b0906" } })
-    .composite([{ input: Buffer.from(horse.replace("<svg ", `<svg width="${Math.round(size * 0.74)}" `)), gravity: "center" }])
+// The tab icon fills the square edge to edge so it matches other tabs; the home-screen one keeps a margin.
+const icon = (size, background = "#0000", fill = 1) =>
+  sharp({ create: { width: size, height: size, channels: 4, background } })
+    .composite([{ input: Buffer.from(horse.replace("<svg ", `<svg width="${Math.round(size * fill)}" `)), gravity: "center" }])
     .png();
 await icon(480).toFile("app/icon.png");
-await icon(180).toFile("app/apple-icon.png");
+await icon(180, "#0b0906", 0.74).toFile("app/apple-icon.png");
 await browser.close();
